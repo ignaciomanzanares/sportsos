@@ -378,6 +378,8 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
       );
     };
 
+    const pendingCount = joinRequests.filter(r => r.status === "pendiente").length;
+
     return (
       <div>
         <SectionTitle
@@ -390,6 +392,77 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             </motion.button>
           }
         />
+
+        {/* Tabs: Plantel | Solicitudes */}
+        <div style={{display:"flex",gap:"6px",marginBottom:"20px"}}>
+          {[
+            { id:"plantel",      label:`👥 Plantel (${players.length})` },
+            { id:"solicitudes",  label:`📩 Solicitudes${pendingCount>0?` (${pendingCount})`:""}` },
+          ].map(t=>(
+            <motion.button key={t.id} whileTap={{scale:0.97}} onClick={()=>setJugTab(t.id)}
+              style={{...ss.btn, fontSize:"12px", padding:"8px 16px",
+                background:jugTab===t.id?`${sportColor}22`:"var(--bg-elev-2)",
+                color:jugTab===t.id?sportColor:"var(--text-2)",
+                border:`1px solid ${jugTab===t.id?sportColor+"55":"var(--border-soft)"}`,
+                fontWeight:jugTab===t.id?700:400,
+                boxShadow:jugTab===t.id&&pendingCount>0&&t.id==="solicitudes"?`0 0 12px ${sportColor}44`:"none"}}>
+              {t.label}
+              {t.id==="solicitudes"&&pendingCount>0&&(
+                <span style={{marginLeft:"4px",padding:"1px 6px",borderRadius:"99px",background:sportColor,color:"#fff",fontSize:"10px",fontWeight:800}}>
+                  {pendingCount}
+                </span>
+              )}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* ── Vista: Solicitudes ── */}
+        {jugTab === "solicitudes" && (
+          <div>
+            {pendingCount === 0 ? (
+              <EmptyState icon="📩" title="Sin solicitudes pendientes"
+                desc="Cuando un jugador use el código del club, su solicitud aparecerá aquí para que la apruebes o rechaces."
+                color={sportColor}/>
+            ) : (
+              joinRequests.filter(r => r.status === "pendiente").map(req => (
+                <motion.div key={req.id} initial={{opacity:0,y:8}} animate={{opacity:1,y:0}}
+                  style={{...ss.card, marginBottom:"10px", border:"1px solid rgba(59,130,246,0.2)"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"12px",flexWrap:"wrap"}}>
+                    <div style={{width:44,height:44,borderRadius:"50%",background:`${sportColor}18`,
+                      border:`1.5px solid ${sportColor}44`,display:"flex",alignItems:"center",
+                      justifyContent:"center",fontSize:"18px",flexShrink:0}}>👤</div>
+                    <div style={{flex:1}}>
+                      <div style={{fontWeight:700,fontSize:"13px"}}>{req.nombre}</div>
+                      <div style={{fontSize:"11px",color:"var(--text-3)"}}>{req.email}</div>
+                      <div style={{display:"flex",gap:"6px",marginTop:"5px",flexWrap:"wrap"}}>
+                        {req.posicion && <span style={{fontSize:"10px",padding:"2px 8px",borderRadius:"99px",background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)"}}>{req.posicion}</span>}
+                        {req.categoria && <span style={{fontSize:"10px",padding:"2px 8px",borderRadius:"99px",background:`${sportColor}15`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600}}>{req.categoria}</span>}
+                      </div>
+                    </div>
+                    <div style={{display:"flex",gap:"6px",flexShrink:0}}>
+                      <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                        onClick={()=>approveRequest(req)}
+                        style={{...ss.btn,background:"rgba(34,197,94,0.15)",color:"#22C55E",border:"1px solid rgba(34,197,94,0.3)",fontSize:"12px",padding:"8px 14px",fontWeight:700}}>
+                        ✅ Aprobar
+                      </motion.button>
+                      <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                        onClick={()=>rejectRequest(req)}
+                        style={{...ss.btn,background:"rgba(239,68,68,0.1)",color:"#EF4444",border:"1px solid rgba(239,68,68,0.25)",fontSize:"12px",padding:"8px 14px"}}>
+                        ✕ Rechazar
+                      </motion.button>
+                    </div>
+                  </div>
+                  <div style={{fontSize:"10px",color:"var(--text-4)",marginTop:"8px"}}>
+                    Solicitó el {new Date(req.created_at).toLocaleDateString("es-CL",{day:"numeric",month:"long"})} a las {new Date(req.created_at).toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"})}
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </div>
+        )}
+
+        {/* ── Vista: Plantel ── */}
+        {jugTab === "plantel" && (<>
 
         {/* Formulario agregar/editar */}
         {playerForm && (
@@ -535,6 +608,44 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
               : <EmptyState icon="👥" title="No hay jugadores aún" desc="Agrega tu primer jugador para empezar a gestionar el plantel." color={sportColor} action={()=>setPlayerForm({...EMPTY_PLAYER})} actionLabel="+ Agregar primer jugador"/>
           )}
         </motion.div>
+        </>)}
+
+        {/* ── Modal: solicitud aprobada ── */}
+        {approvedReq && (
+          <div style={{position:"fixed",inset:0,zIndex:999,background:"rgba(0,0,0,0.75)",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"}}
+            onClick={()=>setApprovedReq(null)}>
+            <motion.div initial={{scale:0.9,opacity:0}} animate={{scale:1,opacity:1}}
+              onClick={e=>e.stopPropagation()}
+              style={{...ss.card,maxWidth:"500px",width:"100%",padding:"28px"}}>
+              <div style={{fontWeight:800,fontSize:"16px",marginBottom:"6px"}}>✅ Solicitud aprobada</div>
+              <div style={{fontSize:"13px",color:"var(--text-2)",marginBottom:"16px"}}>
+                Envíale este link a <strong>{approvedReq.request.nombre}</strong> ({approvedReq.request.email}) para que cree su cuenta en SportOS.
+              </div>
+              <div style={{fontFamily:"monospace",fontSize:"11px",color:"#22C55E",padding:"10px 12px",background:"rgba(34,197,94,0.08)",borderRadius:"var(--r-sm)",border:"1px solid rgba(34,197,94,0.2)",wordBreak:"break-all",marginBottom:"14px"}}>
+                {approvedReq.invLink}
+              </div>
+              <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                  onClick={()=>{ navigator.clipboard.writeText(approvedReq.invLink); showToast("Link copiado ✅","success"); }}
+                  style={{...ss.btn,background:"rgba(34,197,94,0.15)",color:"#22C55E",border:"1px solid rgba(34,197,94,0.3)",fontSize:"12px",padding:"9px 16px",fontWeight:700}}>
+                  📋 Copiar link
+                </motion.button>
+                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                  onClick={()=>{
+                    const msg = encodeURIComponent(`¡Hola ${approvedReq.request.nombre}! Tu solicitud para unirte al club fue aprobada en SportOS 🎉\n\nEntra aquí para crear tu cuenta:\n${approvedReq.invLink}`);
+                    window.open(`https://wa.me/?text=${msg}`,"_blank");
+                  }}
+                  style={{...ss.btn,background:"rgba(37,211,102,0.15)",color:"#25D366",border:"1px solid rgba(37,211,102,0.3)",fontSize:"12px",padding:"9px 16px",fontWeight:700}}>
+                  WhatsApp
+                </motion.button>
+                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setApprovedReq(null)}
+                  style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)",fontSize:"12px",padding:"9px 16px"}}>
+                  Cerrar
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </div>
     );
   }
