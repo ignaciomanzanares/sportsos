@@ -22,16 +22,13 @@ export default function JoinRequestScreen({ onBack }) {
     setBusy(true);
     setError("");
     const { data, error: dbErr } = await supabase
-      .from("clubs")
-      .select("id, name, sport")
-      .eq("join_code", code.trim().toUpperCase())
-      .single();
+      .rpc("lookup_club_by_code", { p_code: code.trim() });
     setBusy(false);
-    if (dbErr || !data) {
+    if (dbErr || !data || data.length === 0) {
       setError("Código no encontrado. Pídele el código correcto a tu administrador.");
       return;
     }
-    setClub(data);
+    setClub(data[0]);
     setStep("form");
   };
 

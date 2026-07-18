@@ -4,10 +4,10 @@ import { MOCK_POSTS } from "../data/mockData";
 
 /**
  * Hook para El Muro — carga posts desde Supabase.
- * Fallback a mock data en modo demo.
+ * Sin club_id (demo/preview) usa la vitrina; con club_id, siempre lo real (aunque esté vacío).
  */
 export function usePosts(clubId) {
-  const [posts,   setPosts]   = useState(MOCK_POSTS);
+  const [posts,   setPosts]   = useState(clubId ? [] : MOCK_POSTS);
   const [loading, setLoading] = useState(false);
   const isReal = !!clubId;
 
@@ -31,9 +31,9 @@ export function usePosts(clubId) {
         text:   p.text,
         likes:  0,
       }));
-      setPosts(normalized.length > 0 ? normalized : MOCK_POSTS);
+      setPosts(normalized);
     } catch {
-      setPosts(MOCK_POSTS);
+      setPosts([]);
     } finally {
       setLoading(false);
     }

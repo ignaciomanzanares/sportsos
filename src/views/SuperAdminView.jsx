@@ -79,15 +79,16 @@ const SUPERADMIN_ID  = "fe1c22a4-c990-49cb-a28b-c8ab0175ad3c";
 
 // ── Hook: carga datos reales de Supabase ──────────────────────────────────
 function useAdminData() {
-  const [data, setData] = useState({ clubs:[], users:[], history:[], loading:true });
+  const [data, setData] = useState({ clubs:[], users:[], history:[], clubRequests:[], loading:true });
 
   const load = async () => {
-    const [{ data: clubs }, { data: users }, { data: hist }] = await Promise.all([
+    const [{ data: clubs }, { data: users }, { data: hist }, { data: clubReqs }] = await Promise.all([
       supabase.from("clubs").select("*").order("created_at", { ascending:false }),
       supabase.from("profiles").select("id,nombre,rol,plan,club_id,created_at").order("created_at", { ascending:false }),
       supabase.from("plan_history").select("*").order("created_at", { ascending:false }).limit(50),
+      supabase.from("club_requests").select("*").order("created_at", { ascending:false }).limit(50),
     ]);
-    setData({ clubs: clubs||[], users: users||[], history: hist||[], loading:false });
+    setData({ clubs: clubs||[], users: users||[], history: hist||[], clubRequests: clubReqs||[], loading:false });
   };
 
   useEffect(() => { load(); }, []);
@@ -128,7 +129,14 @@ function useAdminData() {
     await load();
   };
 
-  return { ...data, cambiarPlan, suspenderClub, reload: load };
+  const marcarClubRequestsVistos = async () => {
+    const idsNuevos = data.clubRequests.filter(r => !r.visto).map(r => r.id);
+    if (idsNuevos.length === 0) return;
+    await supabase.from("club_requests").update({ visto: true }).in("id", idsNuevos);
+    setData(d => ({ ...d, clubRequests: d.clubRequests.map(r => idsNuevos.includes(r.id) ? { ...r, visto: true } : r) }));
+  };
+
+  return { ...data, cambiarPlan, suspenderClub, marcarClubRequestsVistos, reload: load };
 }
 
 // ── Vista previa de roles ─────────────────────────────────────────────────
@@ -244,7 +252,12 @@ function VistaRoles({ rolePreviewProps, showToast }) {
 
 // ── Vista principal ───────────────────────────────────────────────────────
 export default function SuperAdminView({ module, commData, clubList, setClubList, showToast, COUNTRY_COUNTS, rolePreviewProps={} }) {
-  const { clubs, users, loading, cambiarPlan, suspenderClub } = useAdminData();
+  const { clubs, users, loading, clubRequests, cambiarPlan, suspenderClub, marcarClubRequestsVistos } = useAdminData();
+
+  useEffect(() => {
+    if (module === "clubes") marcarClubRequestsVistos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [module]);
 
   const totalClubes  = clubs.length || clubList.length;
   const totalUsuarios = users.length;
@@ -420,6 +433,40 @@ export default function SuperAdminView({ module, commData, clubList, setClubList
                   </motion.tr>
                 );
               })}
+            </tbody>
+          </table>
+        </motion.div>
+      )}
+
+      {/* Auditoría: solicitudes de creación de club (self-serve, auto-aprobadas) */}
+      {clubRequests.length > 0 && (
+        <motion.div {...fadeUp} transition={{ delay:0.05 }} style={{ ...ss.card, padding:0, overflow:"hidden", marginBottom:"20px" }}>
+          <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--border-soft)", fontWeight:600, fontSize:"13px" }}>
+            📋 Solicitudes de club recientes (auditoría)
+          </div>
+          <table style={{ width:"100%", fontSize:"12px", borderCollapse:"collapse" }}>
+            <thead><tr>
+              {["Club","Deporte","País","Solicitante","Email","Fecha"].map(h => (
+                <th key={h} style={{ textAlign:"left", color:"var(--text-3)", padding:"12px", borderBottom:"1px solid var(--border-soft)", textTransform:"uppercase", letterSpacing:"0.05em", fontSize:"10px" }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {clubRequests.map((r,i) => (
+                <motion.tr key={r.id} initial={{opacity:0,x:-16}} animate={{opacity:1,x:0}} transition={{delay:i*0.03}}
+                  style={{ borderBottom:"1px solid var(--border-soft)" }}>
+                  <td style={{ padding:"12px", fontWeight:600 }}>
+                    {r.nombre_club}
+                    {!r.visto && <span style={{marginLeft:"8px",fontSize:"9px",padding:"2px 7px",borderRadius:"99px",background:"#3B82F622",color:"#3B82F6",border:"1px solid #3B82F644",fontWeight:800}}>NUEVO</span>}
+                  </td>
+                  <td style={{ padding:"12px" }}>{(SPORTS_CONFIG[r.deporte]||{}).icon} {r.deporte || "—"}</td>
+                  <td style={{ padding:"12px" }}>{r.pais || "—"}</td>
+                  <td style={{ padding:"12px" }}>{r.nombre_solicitante || "—"}</td>
+                  <td style={{ padding:"12px", color:"var(--text-3)" }}>{r.email_solicitante || "—"}</td>
+                  <td style={{ padding:"12px", color:"var(--text-3)" }}>
+                    {r.created_at ? new Date(r.created_at).toLocaleDateString("es-CL") : "—"}
+                  </td>
+                </motion.tr>
+              ))}
             </tbody>
           </table>
         </motion.div>

@@ -83,9 +83,10 @@ function Modal({ title, onClose, children }) {
 export default function FinanzasView({ countryData, payments=[], sportColor, showToast, clubId=null }) {
   const sym = countryData?.symbol || "$";
   const [tab,          setTab]          = useState("resumen");
-  const [movimientos,  setMovimientos]  = useState(MOCK_MOVIMIENTOS);
-  const [sueldos,      setSueldos]      = useState(MOCK_SUELDOS);
-  const [gastosAdmin,  setGastosAdmin]  = useState(MOCK_GASTOS_ADMIN);
+  // Sin club_id (demo/preview) se usa vitrina; con club_id, siempre lo real de Supabase (aunque esté vacío).
+  const [movimientos,  setMovimientos]  = useState(clubId ? [] : MOCK_MOVIMIENTOS);
+  const [sueldos,      setSueldos]      = useState(clubId ? [] : MOCK_SUELDOS);
+  const [gastosAdmin,  setGastosAdmin]  = useState(clubId ? [] : MOCK_GASTOS_ADMIN);
   const [loading,      setLoading]      = useState(false);
 
   // Carga datos reales si hay club_id
@@ -97,9 +98,9 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
       supabase.from("finanzas_sueldos").select("*").eq("club_id", clubId).order("created_at"),
       supabase.from("finanzas_gastos_admin").select("*").eq("club_id", clubId).order("created_at"),
     ]).then(([movRes, suelRes, admRes]) => {
-      if (movRes.data?.length)  setMovimientos(movRes.data.map(r => ({ ...r, desc: r.descripcion })));
-      if (suelRes.data?.length) setSueldos(suelRes.data);
-      if (admRes.data?.length)  setGastosAdmin(admRes.data.map(r => ({ ...r, desc: r.descripcion })));
+      setMovimientos((movRes.data || []).map(r => ({ ...r, desc: r.descripcion })));
+      setSueldos(suelRes.data || []);
+      setGastosAdmin((admRes.data || []).map(r => ({ ...r, desc: r.descripcion })));
       setLoading(false);
     });
   }, [clubId]);

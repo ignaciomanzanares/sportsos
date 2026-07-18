@@ -66,13 +66,24 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
         clubId = clubData?.id ?? null;
       } catch (_) { /* continuar sin club_id */ }
 
+      // Registro de auditoría (no bloquea el flujo si falla)
+      try {
+        await supabase.from("club_requests").insert({
+          club_id: clubId,
+          nombre_club: clubName.trim(),
+          deporte: sport,
+          pais: country,
+          nombre_solicitante: (existingUser?.nombre || nombre || "").trim(),
+          email_solicitante: (existingUser?.email || email || "").trim(),
+        });
+      } catch (_) { /* no crítico */ }
+
       if (existingUser) {
-        // Usuario ya autenticado (Google): solo actualizar su perfil
+        // Usuario ya autenticado (Google): reclamar admin del club recién creado
         if (existingUser.id && clubId) {
           try {
-            await supabase.from("profiles")
-              .update({ nombre: existingUser.nombre, rol: "admin", club_id: clubId })
-              .eq("id", existingUser.id);
+            await supabase.from("profiles").update({ nombre: existingUser.nombre }).eq("id", existingUser.id);
+            await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
           } catch (_) { /* no crítico */ }
         }
         onComplete({ ...existingUser, rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });
@@ -88,9 +99,8 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
         const userId = authData.user?.id;
         if (userId && clubId) {
           try {
-            await supabase.from("profiles")
-              .update({ nombre: nombre.trim(), rol: "admin", club_id: clubId })
-              .eq("id", userId);
+            await supabase.from("profiles").update({ nombre: nombre.trim() }).eq("id", userId);
+            await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
           } catch (_) { /* no crítico */ }
         }
         onComplete({ nombre: nombre.trim(), email: email.trim(), rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });

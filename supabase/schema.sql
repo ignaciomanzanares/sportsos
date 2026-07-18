@@ -14,8 +14,20 @@ create table if not exists clubs (
   country     text not null default 'CL',
   plan        text not null default 'starter', -- starter | pro | enterprise
   colors      jsonb default '{"primary":"#1B4332","secondary":"#FFD700"}',
-  created_at  timestamptz default now()
+  created_at  timestamptz default now(),
+  join_code       text unique,          -- código para que jugadores/staff soliciten unirse (ej. RUGBY-4F2A)
+  plan_vence      date,
+  plan_notas      text,
+  suspended       boolean not null default false,
+  plan_updated_at timestamptz
 );
+
+-- Si la tabla ya existía sin estas columnas
+alter table clubs add column if not exists join_code       text unique;
+alter table clubs add column if not exists plan_vence      date;
+alter table clubs add column if not exists plan_notas      text;
+alter table clubs add column if not exists suspended       boolean not null default false;
+alter table clubs add column if not exists plan_updated_at timestamptz;
 
 -- ─── PROFILES (extiende auth.users) ──────────────────────────
 create table if not exists profiles (
@@ -24,8 +36,22 @@ create table if not exists profiles (
   rol         text not null,           -- superadmin | admin | entrenador | preparador | jugador
   club_id     uuid references clubs(id),
   avatar_url  text,
-  created_at  timestamptz default now()
+  created_at  timestamptz default now(),
+  invited_by      uuid references profiles(id),
+  onboarding_done boolean not null default false,
+  plan            text not null default 'free'
 );
+
+-- Si la tabla ya existía sin estas columnas
+alter table profiles add column if not exists invited_by      uuid references profiles(id);
+alter table profiles add column if not exists onboarding_done boolean not null default false;
+alter table profiles add column if not exists plan            text not null default 'free';
+
+-- Si se borra un club, los perfiles de sus miembros quedan sin club_id en
+-- vez de bloquear el delete (por defecto la FK no tenía ON DELETE, lo que
+-- impedía borrar cualquier club con usuarios).
+alter table profiles drop constraint if exists profiles_club_id_fkey;
+alter table profiles add constraint profiles_club_id_fkey foreign key (club_id) references clubs(id) on delete set null;
 
 -- Crear perfil automáticamente al registrarse
 create or replace function handle_new_user()
@@ -61,11 +87,37 @@ create table if not exists players (
   cuota_status text default 'ok',     -- ok | vencida
   profile_id  uuid references profiles(id),
   avatar_url  text,
-  created_at  timestamptz default now()
+  created_at  timestamptz default now(),
+  telefono                     text,
+  email                        text,
+  contacto_emergencia_nombre   text,
+  contacto_emergencia_telefono text,
+  rut               text,
+  fecha_nacimiento  date,
+  isapre            text,
+  seguro            text,
+  peso_kg           numeric(5,2),
+  altura_m          numeric(3,2)
 );
 
--- Si la tabla ya existe, agregar la columna avatar_url si falta
+-- Si la tabla ya existe, agregar columnas si faltan
 alter table players add column if not exists avatar_url text;
+alter table players add column if not exists telefono                     text;
+alter table players add column if not exists email                        text;
+alter table players add column if not exists contacto_emergencia_nombre   text;
+alter table players add column if not exists contacto_emergencia_telefono text;
+alter table players add column if not exists rut              text;
+alter table players add column if not exists fecha_nacimiento date;
+alter table players add column if not exists isapre           text;
+alter table players add column if not exists seguro           text;
+alter table players add column if not exists peso_kg          numeric(5,2);
+alter table players add column if not exists altura_m         numeric(3,2);
+
+-- RUT único por club (permite hacer upsert al re-subir la nómina sin
+-- crear duplicados); NULL no choca con NULL así que jugadores sin RUT
+-- no se ven afectados.
+drop index if exists players_club_rut_unique;
+create unique index players_club_rut_unique on players (club_id, rut) where rut is not null;
 
 -- ─── TEAMS (equipos dentro de un club) ───────────────────────
 create table if not exists teams (
@@ -148,6 +200,71 @@ create table if not exists post_likes (
   primary key (post_id, user_id)
 );
 
+-- ─── JOIN REQUESTS (solicitudes de unión vía código de club) ──
+create table if not exists join_requests (
+  id          uuid primary key default uuid_generate_v4(),
+  club_id     uuid not null references clubs(id) on delete cascade,
+  nombre      text not null,
+  email       text not null,
+  posicion    text,
+  categoria   text,
+  status      text not null default 'pendiente', -- pendiente | aprobado | rechazado
+  created_at  timestamptz default now()
+);
+
+-- ─── PLAN HISTORY (historial de cambios de membresía) ─────────
+create table if not exists plan_history (
+  id            uuid primary key default uuid_generate_v4(),
+  club_id       uuid not null references clubs(id) on delete cascade,
+  plan_antes    text,
+  plan_nuevo    text,
+  notas         text,
+  cambiado_por  uuid references profiles(id),
+  created_at    timestamptz default now()
+);
+
+-- Corrige nombres de columna si la tabla ya existía con los nombres antiguos
+alter table plan_history add column if not exists plan_antes   text;
+alter table plan_history add column if not exists cambiado_por uuid references profiles(id);
+alter table plan_history drop column if exists plan_anterior;
+alter table plan_history drop column if exists changed_by;
+
+-- ─── CLUB REQUESTS (auditoría de clubes creados por self-serve) ───
+-- La creación de club sigue siendo instantánea (ver "anyone can create a
+-- club"), pero acá queda un registro para que el superadmin pueda revisar
+-- quién creó qué club y cuándo.
+create table if not exists club_requests (
+  id                 uuid primary key default uuid_generate_v4(),
+  club_id            uuid references clubs(id) on delete set null,
+  nombre_club        text not null,
+  deporte            text,
+  pais               text,
+  nombre_solicitante text,
+  email_solicitante  text,
+  status             text not null default 'auto-aprobado',
+  visto              boolean not null default false,
+  created_at         timestamptz default now()
+);
+
+alter table club_requests add column if not exists visto boolean not null default false;
+
+-- ─── INVITATIONS (respaldo real de los links de invitación) ───
+-- El token deja de ser cosmético: cada link generado por un admin
+-- crea una fila acá, y accept_invitation() es la única vía que
+-- asigna rol/club_id a un perfil nuevo (ver sección RLS más abajo).
+create table if not exists invitations (
+  id          uuid primary key default uuid_generate_v4(),
+  token       text not null unique,
+  club_id     uuid not null references clubs(id) on delete cascade,
+  rol         text not null,
+  cats        text,
+  player_id   uuid references players(id),
+  created_by  uuid references profiles(id),
+  expires_at  timestamptz not null,
+  used_at     timestamptz,
+  created_at  timestamptz default now()
+);
+
 -- ─── LINEUPS (nóminas) ────────────────────────────────────────
 create table if not exists lineups (
   id          uuid primary key default uuid_generate_v4(),
@@ -172,9 +289,13 @@ alter table matches    enable row level security;
 alter table attendance enable row level security;
 alter table gym_logs   enable row level security;
 alter table payments   enable row level security;
-alter table posts      enable row level security;
-alter table post_likes enable row level security;
-alter table lineups    enable row level security;
+alter table posts         enable row level security;
+alter table post_likes    enable row level security;
+alter table lineups       enable row level security;
+alter table join_requests enable row level security;
+alter table plan_history  enable row level security;
+alter table invitations   enable row level security;
+alter table club_requests enable row level security;
 
 -- Función auxiliar: obtener club_id del usuario actual
 create or replace function my_club_id()
@@ -182,9 +303,30 @@ returns uuid language sql stable as $$
   select club_id from profiles where id = auth.uid()
 $$;
 
+-- Funciones auxiliares SECURITY DEFINER: se usan DENTRO de políticas de
+-- la propia tabla profiles, así que deben ser security definer para no
+-- volver a disparar las políticas de profiles y causar recursión.
+create or replace function is_superadmin()
+returns boolean language sql stable security definer as $$
+  select exists (select 1 from profiles where id = auth.uid() and rol = 'superadmin')
+$$;
+
+create or replace function current_profile_snapshot()
+returns table(rol text, club_id uuid, plan text)
+language sql stable security definer as $$
+  select rol, club_id, plan from profiles where id = auth.uid()
+$$;
+
 -- Eliminar políticas si ya existen (para poder re-ejecutar el script)
 drop policy if exists "club members see their club"   on clubs;
+drop policy if exists "anyone can create a club"      on clubs;
+drop policy if exists "club admin updates own club"   on clubs;
+drop policy if exists "superadmin manages all clubs"  on clubs;
 drop policy if exists "own profile"                   on profiles;
+drop policy if exists "own profile select"            on profiles;
+drop policy if exists "own profile insert"            on profiles;
+drop policy if exists "own profile update"            on profiles;
+drop policy if exists "superadmin manages all profiles" on profiles;
 drop policy if exists "club players"                  on players;
 drop policy if exists "club teams"                    on teams;
 drop policy if exists "club matches"                  on matches;
@@ -194,10 +336,52 @@ drop policy if exists "club payments"                 on payments;
 drop policy if exists "club posts"                    on posts;
 drop policy if exists "club post likes"               on post_likes;
 drop policy if exists "club lineups"                  on lineups;
+drop policy if exists "anyone can request to join"    on join_requests;
+drop policy if exists "club admins see join requests" on join_requests;
+drop policy if exists "club admins update join requests" on join_requests;
+drop policy if exists "superadmin manages plan history"  on plan_history;
+drop policy if exists "club admins create invitations"    on invitations;
+drop policy if exists "club admins see their invitations" on invitations;
+drop policy if exists "anyone can log a club request"     on club_requests;
+drop policy if exists "superadmin sees club requests"     on club_requests;
+drop policy if exists "superadmin marks club requests seen" on club_requests;
 
 -- Políticas: solo ver/editar registros de tu club
 create policy "club members see their club"   on clubs      for select using (id = my_club_id());
-create policy "own profile"                   on profiles   for all    using (id = auth.uid());
+
+-- Cualquiera puede crear un club nuevo (self-serve signup, ClubOnboarding.jsx)
+create policy "anyone can create a club" on clubs for insert with check (true);
+
+-- El admin de un club puede editar SU club (join_code, colores, etc.)
+create policy "club admin updates own club" on clubs for update using (
+  id = my_club_id() and exists (select 1 from profiles where id = auth.uid() and rol = 'admin')
+);
+-- El superadmin gestiona todos los clubes (reemplaza el policy viejo hardcodeado por UUID)
+create policy "superadmin manages all clubs" on clubs for all using (is_superadmin());
+
+-- profiles: separado en select/insert/update para poder restringir qué
+-- columnas puede tocar un usuario normal sobre SU PROPIA fila.
+create policy "own profile select" on profiles for select using (id = auth.uid());
+create policy "own profile insert" on profiles for insert with check (id = auth.uid());
+
+-- Un usuario normal puede actualizar su propia fila, PERO no puede cambiar
+-- su propio rol/club_id/plan (eso solo lo hace accept_invitation(), que es
+-- SECURITY DEFINER y por lo tanto no pasa por esta política, o el superadmin).
+-- Esto cierra el hueco por el que cualquier cuenta podía auto-asignarse
+-- rol:"superadmin" haciendo un update directo a su propio perfil.
+create policy "own profile update" on profiles for update using (id = auth.uid()) with check (
+  id = auth.uid() and (
+    is_superadmin()
+    or (
+      rol = (select rol from current_profile_snapshot())
+      and club_id is not distinct from (select club_id from current_profile_snapshot())
+      and plan = (select plan from current_profile_snapshot())
+    )
+  )
+);
+-- El superadmin gestiona cualquier perfil (reemplaza el policy viejo hardcodeado por UUID)
+create policy "superadmin manages all profiles" on profiles for all using (is_superadmin());
+
 create policy "club players"                  on players    for all    using (club_id = my_club_id());
 create policy "club teams"                    on teams      for all    using (club_id = my_club_id());
 create policy "club matches"                  on matches    for all    using (club_id = my_club_id());
@@ -207,6 +391,99 @@ create policy "club payments"                 on payments   for all    using (cl
 create policy "club posts"                    on posts      for all    using (club_id = my_club_id());
 create policy "club post likes"               on post_likes for all    using (post_id in (select id from posts where club_id = my_club_id()));
 create policy "club lineups"                  on lineups    for all    using (club_id = my_club_id());
+
+-- Cualquiera (sin cuenta) puede enviar una solicitud de unión con un código válido
+create policy "anyone can request to join" on join_requests for insert with check (true);
+
+-- Solo admin/entrenador del club correspondiente ven y gestionan sus solicitudes
+create policy "club admins see join requests" on join_requests for select using (
+  club_id in (select club_id from profiles where id = auth.uid() and rol in ('admin','entrenador'))
+);
+create policy "club admins update join requests" on join_requests for update using (
+  club_id in (select club_id from profiles where id = auth.uid() and rol = 'admin')
+);
+
+-- Solo superadmin gestiona el historial de planes
+create policy "superadmin manages plan history" on plan_history for all using (
+  exists (select 1 from profiles where id = auth.uid() and rol = 'superadmin')
+);
+
+-- Función pública (RPC): buscar club por join_code sin exponer toda la fila
+-- (evita filtrar plan_notas, suspended, etc. a un visitante anónimo)
+create or replace function lookup_club_by_code(p_code text)
+returns table(id uuid, name text, sport text)
+language sql security definer stable as $$
+  select id, name, sport from clubs where join_code = upper(p_code);
+$$;
+grant execute on function lookup_club_by_code(text) to anon, authenticated;
+
+-- Cualquiera puede dejar un registro de auditoría al crear un club (mismo
+-- momento que "anyone can create a club" — puede ser antes de autenticarse)
+create policy "anyone can log a club request" on club_requests for insert with check (true);
+-- Solo el superadmin revisa el historial de clubes creados y marca cuáles ya vio
+create policy "superadmin sees club requests" on club_requests for select using (is_superadmin());
+create policy "superadmin marks club requests seen" on club_requests for update using (is_superadmin());
+
+-- Solo admin/entrenador de un club pueden generar invitaciones para su club
+create policy "club admins create invitations" on invitations for insert with check (
+  club_id in (select club_id from profiles where id = auth.uid() and rol in ('admin','entrenador'))
+);
+-- Y ver las que ellos mismos generaron (auditoría/UI)
+create policy "club admins see their invitations" on invitations for select using (
+  club_id in (select club_id from profiles where id = auth.uid() and rol in ('admin','entrenador'))
+);
+
+-- RPC: única vía para canjear un link de invitación y asignar rol/club_id.
+-- SECURITY DEFINER: valida el token contra la tabla invitations (no confía
+-- en nada que venga del cliente) y solo entonces escribe en profiles/players.
+create or replace function accept_invitation(p_token text)
+returns table(rol text, club_id uuid, club_name text, sport text, cats text, player_id uuid)
+language plpgsql security definer as $$
+declare
+  inv record;
+begin
+  select * into inv from invitations where token = p_token;
+
+  if inv.id is null then
+    raise exception 'invitacion_no_encontrada';
+  end if;
+  if inv.used_at is not null then
+    raise exception 'invitacion_ya_usada';
+  end if;
+  if inv.expires_at < now() then
+    raise exception 'invitacion_expirada';
+  end if;
+
+  update profiles
+    set rol = inv.rol, club_id = inv.club_id, invited_by = inv.created_by
+    where id = auth.uid();
+
+  if inv.player_id is not null then
+    update players set profile_id = auth.uid() where id = inv.player_id;
+  end if;
+
+  update invitations set used_at = now() where id = inv.id;
+
+  return query
+    select inv.rol, inv.club_id, c.name, c.sport, inv.cats, inv.player_id
+    from clubs c where c.id = inv.club_id;
+end;
+$$;
+grant execute on function accept_invitation(text) to authenticated;
+
+-- RPC: reclamar el rol de admin de un club RECIÉN CREADO (self-serve signup,
+-- ClubOnboarding.jsx). Solo funciona si el club todavía no tiene ningún admin,
+-- para que no sirva para tomar control de un club ya existente.
+create or replace function claim_new_club_admin(p_club_id uuid)
+returns void language plpgsql security definer as $$
+begin
+  if exists (select 1 from profiles where club_id = p_club_id and rol = 'admin') then
+    raise exception 'club_ya_tiene_admin';
+  end if;
+  update profiles set rol = 'admin', club_id = p_club_id where id = auth.uid();
+end;
+$$;
+grant execute on function claim_new_club_admin(uuid) to authenticated;
 
 -- ══════════════════════════════════════════════════════════════
 --  DATOS DE PRUEBA (opcional — borra si no los necesitas)

@@ -11,10 +11,11 @@ import Badge from "../components/Badge";
 import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
 import FinanzasView from "../components/FinanzasView";
+import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, clubId=null, currentUser=null, userPlan="free"}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, clubId=null, currentUser=null, userPlan="free"}) {
   const [primaryColor, setPrimaryColor] = useState("#1B4332");
   const [secondaryColor, setSecondaryColor] = useState("#FFD700");
 
@@ -34,6 +35,24 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   const [joinRequests, setJoinRequests] = useState([]);
   const [jugTab, setJugTab]             = useState("plantel");
   const [approvedReq, setApprovedReq]   = useState(null);
+  const [importBusy, setImportBusy]     = useState(false);
+  const [importError, setImportError]   = useState("");
+
+  const handleImportFile = async (file) => {
+    if (!file) return;
+    setImportBusy(true);
+    setImportError("");
+    try {
+      const result = await parsePlayersFile(file);
+      if (!result.ok) { setImportError(result.error); return; }
+      await importOrUpdatePlayers(result.players);
+      showToast(`${result.players.length} jugadores importados/actualizados ✅`, "success");
+    } catch (e) {
+      setImportError("Error al leer el archivo: " + e.message);
+    } finally {
+      setImportBusy(false);
+    }
+  };
 
   // Cargar miembros del club desde Supabase
   useEffect(() => {
@@ -73,19 +92,25 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     return invCats.length > 0;
   };
 
-  const generateLink = () => {
+  const generateLink = async () => {
     if(!canGenerate()){ showToast("Asigna al menos una categoría antes de generar","warning"); return; }
-    const token = Math.random().toString(36).slice(2,8).toUpperCase();
+    const token = Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,8).toUpperCase();
+    const catsValue = invRol==="jugador" ? invPlantel : invCats.join(",");
+    const exp = Date.now() + 48 * 60 * 60 * 1000; // expira en 48 horas
+
+    // El token queda respaldado en la tabla invitations — accept_invitation()
+    // es la única vía que realmente asigna el rol/club_id al aceptar.
+    const { error: invErr } = await supabase.from("invitations").insert({
+      token, club_id: clubId, rol: invRol, cats: catsValue,
+      created_by: currentUser?.id || null, expires_at: new Date(exp).toISOString(),
+    });
+    if (invErr) { showToast("Error al generar el link","warning"); return; }
+
     const base = window.location.origin;
-    const catsParam = invRol==="jugador"
-      ? encodeURIComponent(invPlantel)
-      : encodeURIComponent(invCats.join(","));
-    // Incluye club_id real para vincular al jugador al club correcto en Supabase
-    const clubParam = clubId || club.name.toLowerCase().replace(/\s+/g,"-");
+    const catsParam = encodeURIComponent(catsValue);
     const nameParam = encodeURIComponent(club.name);
     const inviterParam = currentUser?.id ? `&inviter=${currentUser.id}` : "";
-    const exp = Date.now() + 48 * 60 * 60 * 1000; // expira en 48 horas
-    setInvLink(`${base}/?token=${token}&rol=${invRol}&club=${clubParam}&name=${nameParam}&sport=${sport}&cats=${catsParam}${inviterParam}&exp=${exp}`);
+    setInvLink(`${base}/?token=${token}&rol=${invRol}&club=${clubId||""}&name=${nameParam}&sport=${sport}&cats=${catsParam}${inviterParam}&exp=${exp}`);
     setCopied(false);
   };
 
@@ -114,15 +139,23 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   };
 
   const approveRequest = async (req) => {
-    const base       = window.location.origin;
-    const catsParam  = encodeURIComponent(req.categoria || "");
-    const nameParam  = encodeURIComponent(club?.name || "");
-    const invParam   = currentUser?.id ? `&inviter=${currentUser.id}` : "";
-    const exp        = Date.now() + 48 * 60 * 60 * 1000;
-    const token      = Math.random().toString(36).slice(2,8).toUpperCase();
-    const invLink    = `${base}/?token=${token}&rol=jugador&club=${clubId||""}&name=${nameParam}&sport=${sport}&cats=${catsParam}${invParam}&exp=${exp}`;
+    const base  = window.location.origin;
+    const exp   = Date.now() + 48 * 60 * 60 * 1000;
+    const token = Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,8).toUpperCase();
+
+    const { error: invErr } = await supabase.from("invitations").insert({
+      token, club_id: clubId, rol: "jugador", cats: req.categoria || "",
+      created_by: currentUser?.id || null, expires_at: new Date(exp).toISOString(),
+    });
+    if (invErr) { showToast("Error al aprobar la solicitud","warning"); return; }
+
     await supabase.from("join_requests").update({ status:"aprobado" }).eq("id", req.id);
     setJoinRequests(prev => prev.filter(r => r.id !== req.id));
+
+    const catsParam = encodeURIComponent(req.categoria || "");
+    const nameParam = encodeURIComponent(club?.name || "");
+    const invParam  = currentUser?.id ? `&inviter=${currentUser.id}` : "";
+    const invLink   = `${base}/?token=${token}&rol=jugador&club=${clubId||""}&name=${nameParam}&sport=${sport}&cats=${catsParam}${invParam}&exp=${exp}`;
     setApprovedReq({ request: req, invLink });
   };
 
@@ -353,11 +386,22 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
       if (!playerForm?.name?.trim()) { showToast("El nombre es obligatorio","warning"); return; }
       setPlayerSaving(true);
       try {
-        if (playerForm.id) {
-          await updatePlayer(playerForm.id, playerForm);
+        // playerForm usa keys cortas (cat/med/cuota) para el form; la tabla
+        // real usa category/med_status/cuota_status — mapear antes de guardar.
+        const { cat, med, cuota, id, ...rest } = playerForm;
+        const dbPlayer = {
+          ...rest,
+          category: cat || null,
+          med_status: med || "verde",
+          cuota_status: cuota || "ok",
+          number: playerForm.number ? Number(playerForm.number) : null,
+          age: playerForm.age ? Number(playerForm.age) : null,
+        };
+        if (id) {
+          await updatePlayer(id, dbPlayer);
           showToast("Jugador actualizado ✅","success");
         } else {
-          await addPlayer(playerForm);
+          await addPlayer(dbPlayer);
           showToast("Jugador agregado ✅","success");
         }
         setPlayerForm(null);
@@ -398,6 +442,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           {[
             { id:"plantel",      label:`👥 Plantel (${players.length})` },
             { id:"solicitudes",  label:`📩 Solicitudes${pendingCount>0?` (${pendingCount})`:""}` },
+            { id:"importar",     label:`📥 Importar Excel` },
           ].map(t=>(
             <motion.button key={t.id} whileTap={{scale:0.97}} onClick={()=>setJugTab(t.id)}
               style={{...ss.btn, fontSize:"12px", padding:"8px 16px",
@@ -457,6 +502,43 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                   </div>
                 </motion.div>
               ))
+            )}
+          </div>
+        )}
+
+        {/* ── Vista: Importar Excel ── */}
+        {jugTab === "importar" && (
+          <div style={{...ss.card, maxWidth:"560px"}}>
+            <div style={{fontWeight:700,fontSize:"14px",marginBottom:"6px"}}>📥 Importar / actualizar plantel desde Excel</div>
+            <div style={{fontSize:"12px",color:"var(--text-3)",lineHeight:1.7,marginBottom:"16px"}}>
+              Sube la nómina de tu club tal como la tengas — detectamos automáticamente nombre,
+              RUT, edad/fecha de nacimiento, teléfono, email, posición y otros datos, sin importar
+              el orden ni los títulos exactos de las columnas. Puedes volver a subirla cuando
+              quieras: a los jugadores que ya existen (por RUT o nombre) se les actualiza su info,
+              y los nuevos se agregan.
+            </div>
+
+            <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}}
+              onClick={downloadTemplate}
+              style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",border:"1px solid var(--border-soft)",fontSize:"12px",padding:"10px 18px",fontWeight:600,marginBottom:"18px"}}>
+              ⬇️ Descargar plantilla de ejemplo (.xlsx)
+            </motion.button>
+
+            <div style={{marginBottom:"10px"}}>
+              <div style={ss.label}>Subir Excel de tu club</div>
+              <input type="file" accept=".xlsx,.xls,.csv"
+                disabled={importBusy}
+                onChange={e => handleImportFile(e.target.files?.[0])}
+                style={{...ss.input, padding:"8px", cursor:importBusy?"not-allowed":"pointer"}}/>
+            </div>
+
+            {importBusy && (
+              <div style={{fontSize:"12px",color:"var(--text-3)"}}>⏳ Leyendo archivo...</div>
+            )}
+            {importError && (
+              <div style={{fontSize:"12px",color:"#EF4444",marginTop:"8px",padding:"10px 12px",borderRadius:"var(--r-sm)",background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)"}}>
+                ⚠️ {importError}
+              </div>
             )}
           </div>
         )}
@@ -581,14 +663,20 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                 <td style={{padding:"12px"}}>
                   <div style={{display:"flex",gap:"6px"}}>
                     <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}
-                      onClick={()=>setPlayerForm({...p})}
+                      onClick={()=>setPlayerForm({...p, cat: p.category, med: p.med_status, cuota: p.cuota_status})}
                       style={{...ss.btn,background:"transparent",color:sportColor,border:`1px solid ${sportColor}44`,padding:"4px 10px",fontSize:"11px"}}>✏️</motion.button>
                     <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}
-                      onClick={()=>{
+                      onClick={async ()=>{
                         const base = window.location.origin;
                         const exp = Date.now() + 48*60*60*1000;
+                        const token = Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,8).toUpperCase();
+                        const { error: invErr } = await supabase.from("invitations").insert({
+                          token, club_id: clubId, rol: "jugador", cats: p.cat || "", player_id: p.id,
+                          created_by: currentUser?.id || null, expires_at: new Date(exp).toISOString(),
+                        });
+                        if (invErr) { showToast("Error al generar el link","warning"); return; }
                         const inviterParam = currentUser?.id ? `&inviter=${currentUser.id}` : "";
-                        const link = `${base}/?rol=jugador&club=${clubId||""}&name=${encodeURIComponent(club?.name||"")}&sport=${sport}&cats=${encodeURIComponent(p.cat||"")}&pid=${p.id}${inviterParam}&exp=${exp}`;
+                        const link = `${base}/?token=${token}&rol=jugador&club=${clubId||""}&name=${encodeURIComponent(club?.name||"")}&sport=${sport}&cats=${encodeURIComponent(p.cat||"")}&pid=${p.id}${inviterParam}&exp=${exp}`;
                         navigator.clipboard.writeText(link);
                         showToast(`Link para ${p.name} copiado ✅`,"success");
                       }}

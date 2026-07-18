@@ -15,15 +15,27 @@ import ProgressBar from "../components/ProgressBar";
 import RankingView from "../components/RankingView";
 
 /* ── MiCuota ────────────────────────────────────────────────── */
-function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments}) {
+function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment}) {
   const [selectedMethod, setSelectedMethod] = useState(countryData.payments[0]);
   const [paying, setPaying] = useState(false);
-  const [paid, setPaid] = useState(player.cuota === "ok");
+  const [paid, setPaid] = useState(player.cuota_status ? player.cuota_status === "ok" : player.cuota === "ok");
 
   const myPayments = payments.filter(p => p.playerId === player.id);
 
-  const handlePay = () => {
+  const handlePay = async () => {
     setPaying(true);
+    if (addPayment) {
+      try {
+        await addPayment({ playerId: player.id, amount: club.cuota, method: selectedMethod });
+        setPaid(true);
+        showToast(`✅ Cuota pagada con ${selectedMethod}`, "success");
+      } catch (e) {
+        showToast("Error al registrar el pago", "error");
+      } finally {
+        setPaying(false);
+      }
+      return;
+    }
     setTimeout(() => {
       const newPayment = {
         id: payments.length + 1,
@@ -32,7 +44,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
         amount: club.cuota,
         method: selectedMethod,
         date: new Date().toISOString().split("T")[0],
-        status: "pagado",
+        estado: "pagado",
       };
       setPayments(prev => [newPayment, ...prev]);
       setPaid(true);
@@ -219,7 +231,7 @@ function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, se
 }
 
 /* ── JugadorView ────────────────────────────────────────────── */
-export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, rankTab, setRankTab, payments, setPayments, userCats=[], isDemo=true, partidos=[], clubId=null}) {
+export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, rankTab, setRankTab, payments, setPayments, addPayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
   const camiseta = player.num;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};
@@ -536,7 +548,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
     );
   }
 
-  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments}/>;
+  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment}/>;
 
   if(module==="migym") return <GymJugador player={player} sportColor={sportColor} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players}/>;
 

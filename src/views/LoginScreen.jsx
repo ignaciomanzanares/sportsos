@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import AuroraBg from "../components/AuroraBg";
-import { MOCK_USERS } from "../data/mockUsers";
 import { supabase } from "../lib/supabase";
 import BackButton from "../components/BackButton";
 
@@ -73,7 +72,7 @@ function PlanesSection({ onRegister }) {
         <div style={{fontSize:"12px",color:"var(--text-3)",marginTop:"6px"}}>Cancela cuando quieras · Sin contratos</div>
       </div>
 
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px"}}>
+      <div className="planes-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px"}}>
         {PLANS.map((plan, i) => (
           <motion.div key={plan.id}
             initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:i*0.08}}
@@ -146,59 +145,47 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
     if (!password.trim()) { setError("Escribe tu contraseña");  return; }
     setLoading(true);
 
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    if (supabaseUrl && !supabaseUrl.includes("xxxx")) {
-      try {
-        const { data, error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-        if (authError) throw authError;
-        const { data: profile } = await supabase
-          .from("profiles").select("*").eq("id", data.user.id).single();
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (authError) throw authError;
+      const { data: profile } = await supabase
+        .from("profiles").select("*").eq("id", data.user.id).single();
 
-        const rolPerfil = profile?.rol || "jugador";
-        let planEfectivo = profile?.plan || "free";
-        // Usuarios no-admin heredan el plan del admin de su club
-        if (profile?.club_id && !["admin","superadmin"].includes(rolPerfil)) {
-          const { data: adminClub } = await supabase
-            .from("profiles")
-            .select("plan")
-            .eq("club_id", profile.club_id)
-            .eq("rol", "admin")
-            .single();
-          if (adminClub?.plan) planEfectivo = adminClub.plan;
-        }
-
-        setLoading(false);
-        const user = {
-          id: data.user.id,
-          nombre: profile?.nombre || data.user.email,
-          email: data.user.email,
-          rol: rolPerfil,
-          club: profile?.clubs?.name || "Club",
-          sport: profile?.clubs?.sport || "rugby",
-          club_id: profile?.club_id || null,
-          plan: planEfectivo,
-          onboarding_done: profile?.onboarding_done || false,
-          avatar_url: profile?.avatar_url || null,
-          cats: [],
-          isReal: true,
-        };
-        setLoggedUser(user);
-        setStep("success");
-        setTimeout(() => onLogin(user), 1200);
-        return;
-      } catch (err) {
-        console.warn("Supabase auth falló, intentando mock:", err.message);
+      const rolPerfil = profile?.rol || "jugador";
+      let planEfectivo = profile?.plan || "free";
+      // Usuarios no-admin heredan el plan del admin de su club
+      if (profile?.club_id && !["admin","superadmin"].includes(rolPerfil)) {
+        const { data: adminClub } = await supabase
+          .from("profiles")
+          .select("plan")
+          .eq("club_id", profile.club_id)
+          .eq("rol", "admin")
+          .single();
+        if (adminClub?.plan) planEfectivo = adminClub.plan;
       }
-    }
 
-    setTimeout(() => {
-      const user = MOCK_USERS.find(u => u.email.toLowerCase()===email.trim().toLowerCase() && u.password===password);
       setLoading(false);
-      if (!user) { setError("Email o contraseña incorrectos"); return; }
+      const user = {
+        id: data.user.id,
+        nombre: profile?.nombre || data.user.email,
+        email: data.user.email,
+        rol: rolPerfil,
+        club: profile?.clubs?.name || "Club",
+        sport: profile?.clubs?.sport || "rugby",
+        club_id: profile?.club_id || null,
+        plan: planEfectivo,
+        onboarding_done: profile?.onboarding_done || false,
+        avatar_url: profile?.avatar_url || null,
+        cats: [],
+        isReal: true,
+      };
       setLoggedUser(user);
       setStep("success");
       setTimeout(() => onLogin(user), 1200);
-    }, 900);
+    } catch (err) {
+      setLoading(false);
+      setError("Email o contraseña incorrectos");
+    }
   };
 
   const handleKey = (e) => { if (e.key==="Enter" && loginMode==="form") handleLogin(); };
@@ -221,7 +208,6 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
     });
     if (error) setError("Error al conectar con Google: " + error.message);
   };
-  const demoAccounts = MOCK_USERS.slice(0, 5);
 
   // ── Pantalla de éxito ───────────────────────────────────────────────────
   if (step==="success" && loggedUser) {
@@ -306,6 +292,7 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
           {/* ── TAB: LOGIN ── */}
           {tab==="login" && (
             <motion.div key="login" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-12}} transition={{duration:0.25}}
+              className="login-columns"
               style={{display:"flex",gap:"48px",maxWidth:"1000px",margin:"0 auto",padding:"40px 24px",alignItems:"flex-start"}}>
 
               {/* Columna izquierda — mini comparativa */}
@@ -413,19 +400,6 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
                     )}
                   </AnimatePresence>
 
-                  {/* Botón Google */}
-                  <motion.button whileHover={{scale:1.02,y:-1}} whileTap={{scale:0.98}}
-                    onClick={handleGoogle}
-                    style={{...ss.btn,width:"100%",padding:"12px",fontSize:"13px",fontWeight:600,background:"#fff",color:"#1a1a1a",border:"1px solid #e0e0e0",marginBottom:"10px",display:"flex",alignItems:"center",justifyContent:"center",gap:"10px",boxShadow:"0 2px 8px rgba(0,0,0,0.15)"}}>
-                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
-                    Continuar con Google
-                  </motion.button>
-
-                  <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"10px"}}>
-                    <div style={{flex:1,height:"1px",background:"var(--border-soft)"}}/>
-                    <span style={{fontSize:"11px",color:"var(--text-4)"}}>o con email</span>
-                    <div style={{flex:1,height:"1px",background:"var(--border-soft)"}}/>
-                  </div>
 
                   <motion.button whileHover={!loading?{scale:1.02,y:-2}:{}} whileTap={!loading?{scale:0.98}:{}}
                     onClick={handleLogin} disabled={loading}
@@ -507,32 +481,6 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
                   )}
 
                   </AnimatePresence>
-                </motion.div>
-
-                {/* Cuentas de demo */}
-                <motion.div {...fadeUp} transition={{delay:0.1}} style={{...ss.card,padding:"14px 18px"}}>
-                  <div style={{fontSize:"10px",color:"var(--text-3)",fontWeight:600,textTransform:"uppercase",letterSpacing:"0.07em",marginBottom:"10px"}}>
-                    Cuentas de prueba · contraseña: <strong style={{color:"#C0392B"}}>demo123</strong>
-                  </div>
-                  <div style={{display:"flex",flexDirection:"column",gap:"5px"}}>
-                    {demoAccounts.map(u=>{
-                      const info = ROL_INFO[u.rol];
-                      return (
-                        <motion.button key={u.id} whileHover={{x:3}} whileTap={{scale:0.98}}
-                          onClick={()=>{setEmail(u.email);setPassword(u.password);setError("");}}
-                          style={{...ss.btn,background:"transparent",border:"1px solid var(--border-soft)",padding:"7px 10px",display:"flex",alignItems:"center",gap:"9px",textAlign:"left",width:"100%",cursor:"pointer"}}>
-                          <div style={{width:"28px",height:"28px",borderRadius:"50%",background:`${info.color}18`,border:`1.5px solid ${info.color}33`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"10px",fontWeight:800,color:info.color,flexShrink:0}}>
-                            {u.avatar}
-                          </div>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:"11px",fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{u.nombre}</div>
-                            <div style={{fontSize:"9px",color:"var(--text-3)",marginTop:"1px"}}>{u.email}</div>
-                          </div>
-                          <span style={{fontSize:"9px",padding:"2px 7px",borderRadius:"99px",background:`${info.color}15`,color:info.color,border:`1px solid ${info.color}33`,fontWeight:600,flexShrink:0}}>{info.icon} {info.label}</span>
-                        </motion.button>
-                      );
-                    })}
-                  </div>
                 </motion.div>
               </div>
             </motion.div>

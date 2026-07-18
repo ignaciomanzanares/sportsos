@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
@@ -21,13 +21,77 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
   const sport     = params.get("sport")   || "rugby";
   const catsRaw   = params.get("cats")    || "";
   const cats      = catsRaw ? decodeURIComponent(catsRaw).split(",").map(c=>c.trim()).filter(Boolean) : [];
-  const inviterId = params.get("inviter") || null;
   const playerId  = params.get("pid")     || null;
+  const token     = params.get("token")   || null;
   const expiry    = parseInt(params.get("exp") || "0", 10);
   const info      = ROL_INFO[rol] || ROL_INFO.jugador;
+  const isExpired = expiry > 0 && Date.now() > expiry;
+
+  const [form, setForm]     = useState({ nombre:"", email:"", password:"" });
+  const [step, setStep]     = useState("form"); // "form" | "success"
+  const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+
+  const redeemWithSession = async (user) => {
+    setLoading(true);
+    setServerError("");
+    try {
+      const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
+      if (accErr) throw new Error("invitacion_invalida");
+      const assigned = acc?.[0] || { rol, club_id: clubId, club_name: clubName, sport, cats: cats.join(",") };
+
+      const nombreGoogle = user.user_metadata?.full_name || user.user_metadata?.name || "";
+      if (nombreGoogle) await supabase.from("profiles").update({ nombre: nombreGoogle }).eq("id", user.id);
+
+      setLoading(false);
+      setForm(f => ({ ...f, nombre: nombreGoogle || user.email }));
+      setStep("success");
+
+      setTimeout(() => {
+        onComplete({
+          id: user.id,
+          nombre: nombreGoogle || user.email,
+          email: user.email,
+          rol: assigned.rol,
+          club: assigned.club_name || clubName,
+          club_id: assigned.club_id,
+          sport: assigned.sport || sport,
+          cats: (assigned.cats || "").split(",").map(c=>c.trim()).filter(Boolean),
+          isReal: true,
+        });
+      }, 1400);
+    } catch (err) {
+      setLoading(false);
+      setCheckingSession(false);
+      setServerError(err.message === "invitacion_invalida"
+        ? "Este link de invitación ya no es válido (expiró o ya fue usado). Pide uno nuevo al administrador del club."
+        : "Error al procesar tu cuenta con Google. Intenta de nuevo.");
+    }
+  };
+
+  // Al volver de Google (redirectTo apunta al mismo link de invitación), ya
+  // hay sesión activa — saltamos el formulario y canjeamos el token directo.
+  useEffect(() => {
+    if (isExpired || !token) { setCheckingSession(false); return; }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) redeemWithSession(session.user);
+      else setCheckingSession(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleGoogle = async () => {
+    setServerError("");
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.href },
+    });
+    if (error) setServerError("Error al conectar con Google: " + error.message);
+  };
 
   // Link expirado (solo si viene con &exp= y ya pasó el tiempo)
-  const isExpired = expiry > 0 && Date.now() > expiry;
   if (isExpired) return (
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
       <AuroraBg/>
@@ -50,12 +114,6 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
       </motion.div>
     </div>
   );
-
-  const [form, setForm]     = useState({ nombre:"", email:"", password:"" });
-  const [step, setStep]     = useState("form"); // "form" | "success"
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [serverError, setServerError] = useState("");
 
   const validate = () => {
     const e = {};
@@ -83,22 +141,15 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
       const userId = authData.user?.id;
       if (!userId) throw new Error("No se obtuvo ID de usuario");
 
-      // 2. Actualizar perfil con rol, club e invitador (para heredar su membresía)
-      if (clubId) {
-        const profileData = { nombre: form.nombre.trim(), rol, club_id: clubId };
-        if (inviterId) profileData.invited_by = inviterId;
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .update(profileData)
-          .eq("id", userId);
-        if (profileError) console.warn("Profile update parcial:", profileError.message);
-      }
-
-      // 3. Si la invitación es para un jugador específico, vincular su cuenta
-      if (playerId) {
-        await supabase.from("players")
-          .update({ profile_id: userId })
-          .eq("id", playerId);
+      // 2. Canjear la invitación: el servidor valida el token contra la tabla
+      //    invitations y recién ahí asigna rol/club_id/vínculo de jugador.
+      //    El cliente ya no puede auto-asignarse un rol (ver accept_invitation
+      //    y la política "own profile update" en supabase/schema.sql).
+      let assigned = { rol, club_id: clubId, club_name: clubName, sport, cats: cats.join(","), player_id: playerId };
+      if (token) {
+        const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
+        if (accErr) throw new Error("invitacion_invalida");
+        if (acc?.[0]) assigned = acc[0];
       }
 
       setLoading(false);
@@ -110,11 +161,11 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
           id: userId,
           nombre: form.nombre.trim(),
           email: form.email.trim(),
-          rol,
-          club: clubName,
-          club_id: clubId,
-          sport,
-          cats,
+          rol: assigned.rol,
+          club: assigned.club_name || clubName,
+          club_id: assigned.club_id,
+          sport: assigned.sport || sport,
+          cats: (assigned.cats || "").split(",").map(c=>c.trim()).filter(Boolean),
           isReal: true,
         });
       }, 1400);
@@ -123,6 +174,8 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
       setLoading(false);
       if (err.message?.includes("already registered")) {
         setServerError("Este email ya tiene cuenta. Inicia sesión en su lugar.");
+      } else if (err.message === "invitacion_invalida") {
+        setServerError("Este link de invitación ya no es válido (expiró o ya fue usado). Pide uno nuevo al administrador del club.");
       } else {
         setServerError(err.message || "Error al crear la cuenta. Intenta de nuevo.");
       }
@@ -130,6 +183,13 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
   };
 
   const clubLabel = clubName.replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+
+  if (checkingSession) return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
+      <AuroraBg/>
+      <div style={{position:"relative",zIndex:1,fontSize:"13px",color:"var(--text-3)"}}>⏳ Verificando invitación...</div>
+    </div>
+  );
 
   if (step === "success") return (
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
@@ -221,6 +281,18 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
             onClick={handleSubmit} disabled={loading}
             style={{...ss.btn,background:loading?"rgba(255,255,255,0.06)":`linear-gradient(135deg,${info.color},${info.color}cc)`,color:loading?"var(--text-3)":"#fff",width:"100%",padding:"14px",fontSize:"14px",fontWeight:700,boxShadow:loading?"none":`0 8px 24px ${info.color}44`,cursor:loading?"not-allowed":"pointer",marginBottom:"14px"}}>
             {loading?"⏳ Creando cuenta...":`Unirme como ${info.label} ${info.icon}`}
+          </motion.button>
+
+          <div style={{display:"flex",alignItems:"center",gap:"10px",margin:"4px 0 14px"}}>
+            <div style={{flex:1,height:"1px",background:"var(--border-soft)"}}/>
+            <span style={{fontSize:"11px",color:"var(--text-4)"}}>o más rápido</span>
+            <div style={{flex:1,height:"1px",background:"var(--border-soft)"}}/>
+          </div>
+
+          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={handleGoogle} disabled={loading}
+            style={{width:"100%",padding:"11px",borderRadius:"var(--r-md)",border:"1px solid #e0e0e0",background:"#fff",color:"#1a1a1a",fontSize:"13px",fontWeight:600,cursor:loading?"not-allowed":"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:"10px",fontFamily:"inherit",boxShadow:"0 2px 8px rgba(0,0,0,0.12)",marginBottom:"14px"}}>
+            <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+            Unirme con Google
           </motion.button>
 
           <div style={{textAlign:"center",fontSize:"11px",color:"var(--text-3)",lineHeight:1.6}}>

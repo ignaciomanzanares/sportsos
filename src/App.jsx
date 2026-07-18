@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { SPORTS_CONFIG, COUNTRIES, CLUBS } from "./data/sports";
-import { PLAYERS_RUGBY } from "./data/players";
 import { COMMISSION_DATA, CLUB_LIST, COUNTRY_COUNTS, MOCK_PAYMENTS, MOCK_PARTIDOS } from "./data/mockData";
 import { usePlayers } from "./lib/usePlayers";
+import { useClub } from "./lib/useClub";
+import { usePayments } from "./lib/usePayments";
+import { useMatches } from "./lib/useMatches";
 import { supabase } from "./lib/supabase";
 
 import { fadeUp } from "./styles/motion";
@@ -75,8 +77,9 @@ export default function SportOS() {
   const [newExForm,setNewExForm]         = useState(false);
   const [newEx,setNewEx]                 = useState({name:"",sets:3,reps:8,pct:70,rest:120,notes:"",muscles:""});
   const [publishedPlan,setPublishedPlan] = useState(false);
-  const [payments,setPayments]           = useState(MOCK_PAYMENTS);
-  const [partidos,setPartidos]           = useState(MOCK_PARTIDOS);
+  // Vitrina de modo demo/preview (sin login real) — ver payments/partidos reales más abajo.
+  const [demoPayments,setDemoPayments]   = useState(MOCK_PAYMENTS);
+  const [demoPartidos,setDemoPartidos]   = useState(MOCK_PARTIDOS);
 
   // null = modo demo | { nombre, email, rol, club, cats[], club_id, plan } = usuario real
   const [currentUser,setCurrentUser]     = useState(null);
@@ -85,11 +88,27 @@ export default function SportOS() {
   const [searchOpen,setSearchOpen]       = useState(false);
   const [upgradeFor,setUpgradeFor]       = useState(null); // id de feature bloqueada
 
-  // Jugadores: datos reales de Supabase si hay club_id, mock si no
+  // Jugadores/club/pagos/partidos: datos reales de Supabase si hay club_id, vitrina demo si no
   const clubId = currentUser?.club_id ?? null;
-  const { players, addPlayer, updatePlayer, removePlayer } = usePlayers(clubId);
+  const { players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer } = usePlayers(clubId);
+  const { club: clubRow } = useClub(clubId);
+  const { payments: realPayments, addPayment, setPayments: setRealPayments } = usePayments(clubId);
+  const { partidos: realPartidos, setPartidos: setRealPartidos } = useMatches(clubId);
   const isDemo = currentUser === null;
   const userCats = isDemo ? [] : (currentUser.cats || []);
+
+  // Badge de "Clubes" en el sidebar: cuántas solicitudes de club nuevas hay sin revisar
+  const [clubRequestsUnseen, setClubRequestsUnseen] = useState(0);
+  useEffect(() => {
+    if (role !== "superadmin") return;
+    supabase.from("club_requests").select("id", { count: "exact", head: true }).eq("visto", false)
+      .then(({ count }) => setClubRequestsUnseen(count || 0));
+  }, [role, module]);
+
+  const payments = clubId ? realPayments : demoPayments;
+  const setPayments = clubId ? setRealPayments : setDemoPayments;
+  const partidos = clubId ? realPartidos : demoPartidos;
+  const setPartidos = clubId ? setRealPartidos : setDemoPartidos;
 
   // Plan del usuario: demo ve todo hasta Pro; usuarios reales usan su plan
   const userPlan = isDemo ? DEMO_PLAN : (currentUser?.plan || "free");
@@ -111,8 +130,22 @@ export default function SportOS() {
   };
 
   const sp           = SPORTS_CONFIG[sport];
-  const club         = CLUBS[sport];
+  // Club real (nombre/colores de Supabase) con próximo/último partido derivados
+  // de los partidos reales. Sin club_id (demo/preview) usa la vitrina CLUBS[sport].
+  const jugados    = partidos.filter(p=>p.estado==="jugado").sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  const programados = partidos.filter(p=>p.estado==="programado").sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  const ultimo     = jugados[0];
+  const proximo    = programados[0];
+  const club = clubRow ? {
+    name: clubRow.name,
+    country: clubRow.country,
+    cuota: 45000,
+    prev: ultimo ? { res: ultimo.resultado==="victoria"?"Victoria":ultimo.resultado==="derrota"?"Derrota":"Empate", score: `${ultimo.golesLocal}-${ultimo.golesVisita}`, rival: ultimo.rival } : { res:null, score:null, rival:null },
+    next: proximo ? { rival: proximo.rival, dia: new Date(proximo.fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long"}) } : { rival:null, dia:null },
+  } : CLUBS[sport];
   const countryData  = COUNTRIES[country];
+  // Jugador logueado: su propia ficha (por profile_id), no simplemente el primero del plantel.
+  const miJugador = (!isDemo && currentUser) ? (players.find(p=>p.profile_id===currentUser.id) || players[0]) : players[0];
   const sportColor   = sp.color;
   const currentCategory = sp.categories[category]||sp.categories[0];
   const sportModules = MODULE_MAP[role]||[];
@@ -432,6 +465,9 @@ export default function SportOS() {
                   }}>
                   <span style={{fontSize:"15px",width:"18px",flexShrink:0,textAlign:"center",filter:active?`drop-shadow(0 0 6px ${sportColor})`:"none"}}>{m.icon}</span>
                   <span style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,letterSpacing:"0.01em"}}>{m.label}</span>
+                  {m.id==="clubes" && clubRequestsUnseen>0 && (
+                    <span style={{fontSize:"10px",flexShrink:0,padding:"1px 7px",borderRadius:"99px",background:sportColor,color:"#fff",fontWeight:800}}>{clubRequestsUnseen}</span>
+                  )}
                   {locked && (()=>{ const req=requiredPlan(m.id); const p=PLANS[req]; return <span style={{fontSize:"9px",flexShrink:0,background:`${p.color}22`,color:p.color,border:`1px solid ${p.color}44`,borderRadius:"99px",padding:"2px 6px",fontWeight:700,whiteSpace:"nowrap"}}>{p.icon} {p.label}</span>; })()}
                 </motion.button>
               );
@@ -486,11 +522,11 @@ export default function SportOS() {
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} commData={COMMISSION_DATA} clubList={clubList} setClubList={setClubList} showToast={showToast} COUNTRY_COUNTS={COUNTRY_COUNTS}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
-              {module!=="home"&&module!=="miperfil"&&role==="admin"&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={setActiveClubs} countryData={countryData} players={players} addPlayer={addPlayer} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="admin"&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={setActiveClubs} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
               {module!=="home"&&module!=="miperfil"&&role==="entrenador"&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={players} postLikes={postLikes} setPostLikes={setPostLikes} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidos} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
-              {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={players}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}
-              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={players[0]} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} userCats={userCats} isDemo={isDemo} partidos={partidos} clubId={clubId}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} userCats={userCats} isDemo={isDemo} partidos={partidos} clubId={clubId}/>}
             </motion.div>
           </AnimatePresence>
         </div>
