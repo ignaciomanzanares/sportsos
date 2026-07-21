@@ -15,7 +15,7 @@ import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, clubId=null, currentUser=null, userPlan="free"}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free"}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -33,6 +33,32 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     const { error } = await supabase.from("clubs").update({ colors: { primary, secondary } }).eq("id", clubId);
     if (error) showToast("Error al guardar los colores: " + error.message, "error");
   };
+
+  // Datos de pago del club (transferencia manual)
+  const emptyPago = { banco:"", tipo_cuenta:"", numero_cuenta:"", rut_titular:"", nombre_titular:"", email_titular:"" };
+  const [pagoForm, setPagoForm] = useState(emptyPago);
+  const [pagoSaving, setPagoSaving] = useState(false);
+  const [pagoSaved, setPagoSaved] = useState(false);
+
+  useEffect(() => {
+    if (!clubId) return;
+    supabase.from("club_payment_settings").select("*").eq("club_id", clubId).single()
+      .then(({ data }) => { if (data) setPagoForm({ ...emptyPago, ...data }); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clubId]);
+
+  const guardarDatosPago = async () => {
+    if (!clubId) return;
+    setPagoSaving(true);
+    const { error } = await supabase.from("club_payment_settings")
+      .upsert({ club_id: clubId, ...pagoForm }, { onConflict: "club_id" });
+    setPagoSaving(false);
+    if (error) { showToast("Error al guardar datos de pago: " + error.message, "error"); return; }
+    setPagoSaved(true);
+    setTimeout(() => setPagoSaved(false), 2500);
+  };
+
+  const pagosPendientes = payments.filter(p => p.estado === "declarado");
 
   // Estado para gestión de jugadores
   const [playerForm, setPlayerForm] = useState(null); // null = cerrado | EMPTY_PLAYER = nuevo | {id,...} = editando
@@ -252,6 +278,78 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           <div style={{fontSize:"12px",color:"var(--text-3)"}}>Cargando código...</div>
         )}
       </motion.div>
+
+      {/* ── Datos de pago (transferencia manual) ── */}
+      <motion.div {...fadeUp} transition={{delay:0.23}} style={{...ss.card, marginTop:"20px", border:"1px solid rgba(31,160,74,0.25)", background:"linear-gradient(135deg,rgba(31,160,74,0.06),transparent)"}}>
+        <div style={{fontWeight:700,fontSize:"14px",marginBottom:"8px",display:"flex",alignItems:"center",gap:"8px"}}>
+          🏦 Datos de pago (transferencia)
+        </div>
+        <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
+          Los jugadores verán estos datos al pagar por transferencia. Solo tú (admin) puedes verlos y editarlos.
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"14px"}}>
+          <div>
+            <div style={ss.label}>Banco</div>
+            <input value={pagoForm.banco} onChange={e=>setPagoForm(f=>({...f,banco:e.target.value}))} placeholder="Ej: Banco Estado" style={ss.input}/>
+          </div>
+          <div>
+            <div style={ss.label}>Tipo de cuenta</div>
+            <input value={pagoForm.tipo_cuenta} onChange={e=>setPagoForm(f=>({...f,tipo_cuenta:e.target.value}))} placeholder="Ej: Cuenta Corriente" style={ss.input}/>
+          </div>
+          <div>
+            <div style={ss.label}>Número de cuenta</div>
+            <input value={pagoForm.numero_cuenta} onChange={e=>setPagoForm(f=>({...f,numero_cuenta:e.target.value}))} placeholder="Ej: 000123456789" style={ss.input}/>
+          </div>
+          <div>
+            <div style={ss.label}>RUT del titular</div>
+            <input value={pagoForm.rut_titular} onChange={e=>setPagoForm(f=>({...f,rut_titular:e.target.value}))} placeholder="Ej: 12.345.678-9" style={ss.input}/>
+          </div>
+          <div>
+            <div style={ss.label}>Nombre del titular</div>
+            <input value={pagoForm.nombre_titular} onChange={e=>setPagoForm(f=>({...f,nombre_titular:e.target.value}))} placeholder="Ej: Club Old Reds" style={ss.input}/>
+          </div>
+          <div>
+            <div style={ss.label}>Email del titular</div>
+            <input value={pagoForm.email_titular} onChange={e=>setPagoForm(f=>({...f,email_titular:e.target.value}))} placeholder="tesoreria@club.cl" style={ss.input}/>
+          </div>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
+          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={guardarDatosPago} disabled={pagoSaving}
+            style={{...ss.btn,background:"linear-gradient(135deg,#1FA04A,#16A34A)",color:"#fff",fontSize:"13px",fontWeight:700,padding:"10px 20px",opacity:pagoSaving?0.7:1}}>
+            {pagoSaving?"Guardando...":"Guardar datos de pago"}
+          </motion.button>
+          {pagoSaved && <span style={{fontSize:"12px",color:"#1FA04A",fontWeight:600}}>✅ Guardado</span>}
+        </div>
+      </motion.div>
+
+      {/* ── Confirmaciones de pago pendientes ── */}
+      {pagosPendientes.length > 0 && (
+        <motion.div {...fadeUp} transition={{delay:0.24}} style={{...ss.card, marginTop:"20px", border:"1px solid rgba(245,158,11,0.3)", background:"linear-gradient(135deg,rgba(245,158,11,0.06),transparent)"}}>
+          <div style={{fontWeight:700,fontSize:"14px",marginBottom:"12px",display:"flex",alignItems:"center",gap:"8px"}}>
+            ⏳ Confirmaciones de pago pendientes ({pagosPendientes.length})
+          </div>
+          {pagosPendientes.map(p => (
+            <div key={p.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid var(--border-soft)",fontSize:"13px"}}>
+              <div>
+                <div style={{fontWeight:600}}>{p.playerName}</div>
+                <div style={{fontSize:"11px",color:"var(--text-3)"}}>{p.method} · {countryData.symbol}{p.amount.toLocaleString()}</div>
+              </div>
+              <div style={{display:"flex",gap:"6px"}}>
+                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                  onClick={()=>confirmPayment && confirmPayment(p.id, p.playerId)}
+                  style={{...ss.btn,background:"rgba(34,197,94,0.15)",color:"#22C55E",border:"1px solid rgba(34,197,94,0.3)",fontSize:"12px",padding:"7px 14px",fontWeight:700}}>
+                  ✅ Confirmar
+                </motion.button>
+                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                  onClick={()=>rejectPayment && rejectPayment(p.id)}
+                  style={{...ss.btn,background:"rgba(239,68,68,0.1)",color:"#EF4444",border:"1px solid rgba(239,68,68,0.25)",fontSize:"12px",padding:"7px 14px"}}>
+                  ✕ Rechazar
+                </motion.button>
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      )}
 
       {/* ── Generador de invitaciones ── */}
       <motion.div {...fadeUp} transition={{delay:0.25}} style={{...ss.card, marginTop:"20px", border:"1px solid rgba(34,197,94,0.25)", background:"linear-gradient(135deg,rgba(34,197,94,0.06),transparent)"}}>

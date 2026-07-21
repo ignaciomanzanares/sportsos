@@ -7,6 +7,7 @@ import { GYM_PLAN } from "../data/gymPlan";
 import { MOCK_POSTS } from "../data/mockData";
 import { usePosts } from "../lib/usePosts";
 import { getNotifications } from "../lib/db";
+import { supabase } from "../lib/supabase";
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
 import Semaforo from "../components/Semaforo";
@@ -15,42 +16,49 @@ import ProgressBar from "../components/ProgressBar";
 import RankingView from "../components/RankingView";
 
 /* ── MiCuota ────────────────────────────────────────────────── */
-function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment}) {
-  const [selectedMethod, setSelectedMethod] = useState(countryData.payments[0]);
+function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment, declarePayment, clubId}) {
+  const [selectedMethod, setSelectedMethod] = useState("Transferencia");
   const [paying, setPaying] = useState(false);
   const [paid, setPaid] = useState(player.cuota_status ? player.cuota_status === "ok" : player.cuota === "ok");
+  const [bankInfo, setBankInfo] = useState(null);
+  const [copiedField, setCopiedField] = useState("");
 
   const myPayments = payments.filter(p => p.playerId === player.id);
+  const declarado = myPayments.some(p => p.estado === "declarado");
 
-  const handlePay = async () => {
+  // Métodos realmente implementados hoy — el resto es "Próximamente" hasta
+  // que exista integración real con esa pasarela.
+  const METODOS_LISTOS = ["Transferencia"];
+
+  useEffect(() => {
+    if (!clubId) return;
+    supabase.from("club_payment_info").select("*").eq("club_id", clubId).single()
+      .then(({ data }) => setBankInfo(data || null));
+  }, [clubId]);
+
+  const copy = (text, field) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(""), 2000);
+  };
+
+  const handleDeclarar = async () => {
     setPaying(true);
-    if (addPayment) {
-      try {
-        await addPayment({ playerId: player.id, amount: club.cuota, method: selectedMethod });
-        setPaid(true);
-        showToast(`✅ Cuota pagada con ${selectedMethod}`, "success");
-      } catch (e) {
-        showToast("Error al registrar el pago", "error");
-      } finally {
-        setPaying(false);
+    try {
+      if (declarePayment) {
+        await declarePayment({ playerId: player.id, amount: club.cuota, method: selectedMethod });
+        showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
+      } else {
+        const newPayment = { id: payments.length + 1, playerId: player.id, playerName: player.name, amount: club.cuota, method: selectedMethod, date: new Date().toISOString().split("T")[0], estado: "declarado" };
+        setPayments(prev => [newPayment, ...prev]);
+        showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
       }
-      return;
-    }
-    setTimeout(() => {
-      const newPayment = {
-        id: payments.length + 1,
-        playerId: player.id,
-        playerName: player.name,
-        amount: club.cuota,
-        method: selectedMethod,
-        date: new Date().toISOString().split("T")[0],
-        estado: "pagado",
-      };
-      setPayments(prev => [newPayment, ...prev]);
-      setPaid(true);
+    } catch (e) {
+      showToast("Error al notificar el pago", "error");
+    } finally {
       setPaying(false);
-      showToast(`✅ Cuota pagada con ${selectedMethod}`, "success");
-    }, 1800);
+    }
   };
 
   const methodIcons = { Khipu:"💚", Transbank:"💳", Transferencia:"🏦", "Mercado Pago":"🔵", Pix:"🟢" };
@@ -78,20 +86,68 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
         </div>
       </motion.div>
 
+      {/* Esperando confirmación del admin */}
+      {!paid && declarado && (
+        <motion.div {...fadeUp} style={{...ss.card, marginBottom:"16px", border:"2px solid rgba(245,158,11,0.4)", background:"linear-gradient(135deg,rgba(245,158,11,0.08),transparent)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
+            <span style={{fontSize:"24px"}}>⏳</span>
+            <div>
+              <div style={{fontWeight:700,fontSize:"14px",color:"#F59E0B"}}>Esperando confirmación</div>
+              <div style={{fontSize:"12px",color:"var(--text-3)",marginTop:"3px"}}>Le avisamos al admin que transferiste. Confirmará tu pago cuando lo reciba.</div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* Formulario de pago */}
-      {!paid && (
+      {!paid && !declarado && (
         <motion.div {...fadeUp} transition={{delay:0.1}} style={{...ss.card, marginBottom:"16px"}}>
           <div style={{fontWeight:600,fontSize:"14px",marginBottom:"14px"}}>💳 Pagar cuota mensual</div>
 
           <div style={ss.label}>Selecciona tu método de pago</div>
           <div style={{display:"flex",gap:"8px",flexWrap:"wrap",marginBottom:"20px"}}>
-            {countryData.payments.map(m => (
-              <motion.button key={m} whileHover={{scale:1.03}} whileTap={{scale:0.97}} onClick={()=>setSelectedMethod(m)}
-                style={{...ss.btn, background:selectedMethod===m?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)", color:selectedMethod===m?sportColor:"var(--text-2)", border:`1px solid ${selectedMethod===m?sportColor+"55":"var(--border-soft)"}`, padding:"10px 18px", fontSize:"13px", boxShadow:selectedMethod===m?`0 0 16px ${sportColor}33`:"none"}}>
-                {methodIcons[m]||"💳"} {m}
-              </motion.button>
-            ))}
+            {countryData.payments.map(m => {
+              const listo = METODOS_LISTOS.includes(m);
+              return (
+                <motion.button key={m} whileHover={listo?{scale:1.03}:{}} whileTap={listo?{scale:0.97}:{}}
+                  onClick={()=>listo && setSelectedMethod(m)} disabled={!listo}
+                  style={{...ss.btn, background:selectedMethod===m?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)", color:selectedMethod===m?sportColor:listo?"var(--text-2)":"var(--text-4)", border:`1px solid ${selectedMethod===m?sportColor+"55":"var(--border-soft)"}`, padding:"10px 18px", fontSize:"13px", boxShadow:selectedMethod===m?`0 0 16px ${sportColor}33`:"none", opacity:listo?1:0.55, cursor:listo?"pointer":"not-allowed", display:"flex", alignItems:"center", gap:"6px"}}>
+                  {methodIcons[m]||"💳"} {m}
+                  {!listo && <span style={{fontSize:"9px",padding:"2px 6px",borderRadius:"99px",background:"var(--bg-elev-3)",color:"var(--text-4)",fontWeight:700}}>Próximamente</span>}
+                </motion.button>
+              );
+            })}
           </div>
+
+          {selectedMethod === "Transferencia" && (
+            bankInfo ? (
+              <div style={{...ss.card, background:"var(--bg-elev-1)", marginBottom:"16px", padding:"14px"}}>
+                <div style={{fontWeight:700,fontSize:"12px",marginBottom:"10px",color:"var(--text-2)"}}>🏦 Datos para transferir</div>
+                {[
+                  ["Banco", bankInfo.banco],
+                  ["Tipo de cuenta", bankInfo.tipo_cuenta],
+                  ["Número de cuenta", bankInfo.numero_cuenta],
+                  ["RUT titular", bankInfo.rut_titular],
+                  ["Nombre titular", bankInfo.nombre_titular],
+                  ["Email titular", bankInfo.email_titular],
+                ].filter(([,v]) => v).map(([label, value]) => (
+                  <div key={label} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:"1px solid var(--border-soft)",fontSize:"12px"}}>
+                    <div>
+                      <div style={{color:"var(--text-3)",fontSize:"10px",textTransform:"uppercase",letterSpacing:"0.05em"}}>{label}</div>
+                      <div style={{fontWeight:600,marginTop:"2px"}}>{value}</div>
+                    </div>
+                    <button onClick={()=>copy(value,label)} style={{background:"none",border:"1px solid var(--border-soft)",borderRadius:"var(--r-sm)",padding:"4px 10px",fontSize:"11px",color:copiedField===label?"#22C55E":"var(--text-2)",cursor:"pointer"}}>
+                      {copiedField===label ? "✅ Copiado" : "📋 Copiar"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{...ss.card, background:"rgba(239,68,68,0.05)", border:"1px solid rgba(239,68,68,0.2)", marginBottom:"16px", padding:"14px", fontSize:"12px", color:"var(--text-3)"}}>
+                ⚠️ Tu club todavía no cargó sus datos de transferencia. Pídele al admin que los complete en Mi Club.
+              </div>
+            )
+          )}
 
           <div style={{...ss.card, background:"var(--bg-elev-1)", marginBottom:"16px", padding:"14px"}}>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:"8px",fontSize:"13px"}}>
@@ -108,9 +164,9 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
             </div>
           </div>
 
-          <motion.button whileHover={!paying?{scale:1.02,y:-2}:{}} whileTap={!paying?{scale:0.98}:{}} onClick={handlePay} disabled={paying}
-            style={{...ss.btn, background:paying?"rgba(255,255,255,0.06)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:paying?"var(--text-3)":"#fff", width:"100%", padding:"14px", fontSize:"14px", fontWeight:700, boxShadow:paying?"none":`0 8px 24px ${sportColor}44`, cursor:paying?"not-allowed":"pointer"}}>
-            {paying ? "⏳ Procesando pago..." : `💳 Pagar con ${selectedMethod}`}
+          <motion.button whileHover={!paying?{scale:1.02,y:-2}:{}} whileTap={!paying?{scale:0.98}:{}} onClick={handleDeclarar} disabled={paying || (selectedMethod==="Transferencia" && !bankInfo)}
+            style={{...ss.btn, background:paying?"rgba(255,255,255,0.06)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:paying?"var(--text-3)":"#fff", width:"100%", padding:"14px", fontSize:"14px", fontWeight:700, boxShadow:paying?"none":`0 8px 24px ${sportColor}44`, cursor:paying?"not-allowed":"pointer", opacity:(selectedMethod==="Transferencia" && !bankInfo)?0.5:1}}>
+            {paying ? "⏳ Enviando..." : "✅ Ya transferí, notificar al admin"}
           </motion.button>
         </motion.div>
       )}
@@ -231,7 +287,7 @@ function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, se
 }
 
 /* ── JugadorView ────────────────────────────────────────────── */
-export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, rankTab, setRankTab, payments, setPayments, addPayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
+export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
   const camiseta = player.num;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};
@@ -548,7 +604,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
     );
   }
 
-  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment}/>;
+  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId}/>;
 
   if(module==="migym") return <GymJugador player={player} sportColor={sportColor} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players}/>;
 

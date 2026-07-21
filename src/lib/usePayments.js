@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { getPayments, createPayment } from "./db";
 import { supabase } from "./supabase";
 
-// DB status ('pending'|'paid'|'failed') -> estado que leen los componentes ('pagado'|'pendiente'|'rechazado')
+// DB status ('pending'|'declarado'|'paid'|'failed') -> estado que leen los componentes
 function paymentToUI(p) {
   return {
     id: p.id,
@@ -11,7 +11,8 @@ function paymentToUI(p) {
     amount: Number(p.amount),
     method: p.method,
     date: p.paid_at || p.due_date,
-    estado: p.status === "paid" ? "pagado" : p.status === "failed" ? "rechazado" : "pendiente",
+    status: p.status,
+    estado: p.status === "paid" ? "pagado" : p.status === "declarado" ? "declarado" : p.status === "failed" ? "rechazado" : "pendiente",
   };
 }
 
@@ -45,5 +46,26 @@ export function usePayments(clubId) {
     await load();
   };
 
-  return { payments, loading, addPayment, reload: load, setPayments };
+  // El jugador declara que transfirió (transferencia manual) — queda
+  // "declarado" hasta que el admin lo confirme, no se marca pagado solo.
+  const declarePayment = async ({ playerId, amount, method }) => {
+    if (!clubId) return;
+    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0] });
+    await supabase.from("payments").update({ status: "declarado" }).eq("id", created.id);
+    await load();
+  };
+
+  // Acciones del admin sobre una declaración de pago
+  const confirmPayment = async (paymentId, playerId) => {
+    await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", paymentId);
+    if (playerId) await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId);
+    await load();
+  };
+
+  const rejectPayment = async (paymentId) => {
+    await supabase.from("payments").update({ status: "failed" }).eq("id", paymentId);
+    await load();
+  };
+
+  return { payments, loading, addPayment, declarePayment, confirmPayment, rejectPayment, reload: load, setPayments };
 }
