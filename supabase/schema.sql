@@ -39,13 +39,41 @@ create table if not exists profiles (
   created_at  timestamptz default now(),
   invited_by      uuid references profiles(id),
   onboarding_done boolean not null default false,
-  plan            text not null default 'free'
+  plan            text not null default 'free',
+  telefono                     text,
+  direccion                    text,
+  fecha_nacimiento             date,
+  altura_cm                    numeric(5,2),
+  peso_kg                      numeric(5,2),
+  posicion_1                   text,
+  posicion_2                   text,
+  seguro_salud                 text,
+  grupo_sanguineo              text,
+  contacto_emergencia_nombre   text,
+  contacto_emergencia_tel      text,
+  pie_hab                      text,
+  numero_camiseta              int
 );
 
 -- Si la tabla ya existía sin estas columnas
 alter table profiles add column if not exists invited_by      uuid references profiles(id);
 alter table profiles add column if not exists onboarding_done boolean not null default false;
 alter table profiles add column if not exists plan            text not null default 'free';
+-- Campos de "Mi Perfil" (PerfilView.jsx) — antes no existían y el guardado
+-- fallaba en silencio (el código no revisaba el error del update).
+alter table profiles add column if not exists telefono                   text;
+alter table profiles add column if not exists direccion                  text;
+alter table profiles add column if not exists fecha_nacimiento           date;
+alter table profiles add column if not exists altura_cm                  numeric(5,2);
+alter table profiles add column if not exists peso_kg                    numeric(5,2);
+alter table profiles add column if not exists posicion_1                 text;
+alter table profiles add column if not exists posicion_2                 text;
+alter table profiles add column if not exists seguro_salud               text;
+alter table profiles add column if not exists grupo_sanguineo            text;
+alter table profiles add column if not exists contacto_emergencia_nombre text;
+alter table profiles add column if not exists contacto_emergencia_tel    text;
+alter table profiles add column if not exists pie_hab                    text;
+alter table profiles add column if not exists numero_camiseta            int;
 
 -- Si se borra un club, los perfiles de sus miembros quedan sin club_id en
 -- vez de bloquear el delete (por defecto la FK no tenía ON DELETE, lo que
@@ -54,10 +82,15 @@ alter table profiles drop constraint if exists profiles_club_id_fkey;
 alter table profiles add constraint profiles_club_id_fkey foreign key (club_id) references clubs(id) on delete set null;
 
 -- Crear perfil automáticamente al registrarse
+-- set search_path = public es necesario: el servicio de Auth dispara este
+-- trigger en un contexto sin "public" en el search_path por defecto, así
+-- que "profiles" sin calificar no se encuentra ("relation does not exist").
 create or replace function handle_new_user()
-returns trigger language plpgsql security definer as $$
+returns trigger language plpgsql security definer
+set search_path = public
+as $$
 begin
-  insert into profiles (id, nombre, rol, club_id)
+  insert into public.profiles (id, nombre, rol, club_id)
   values (
     new.id,
     coalesce(new.raw_user_meta_data->>'nombre', new.email),
@@ -299,22 +332,25 @@ alter table club_requests enable row level security;
 
 -- Función auxiliar: obtener club_id del usuario actual
 create or replace function my_club_id()
-returns uuid language sql stable as $$
-  select club_id from profiles where id = auth.uid()
+returns uuid language sql stable
+set search_path = public as $$
+  select club_id from public.profiles where id = auth.uid()
 $$;
 
 -- Funciones auxiliares SECURITY DEFINER: se usan DENTRO de políticas de
 -- la propia tabla profiles, así que deben ser security definer para no
 -- volver a disparar las políticas de profiles y causar recursión.
 create or replace function is_superadmin()
-returns boolean language sql stable security definer as $$
-  select exists (select 1 from profiles where id = auth.uid() and rol = 'superadmin')
+returns boolean language sql stable security definer
+set search_path = public as $$
+  select exists (select 1 from public.profiles where id = auth.uid() and rol = 'superadmin')
 $$;
 
 create or replace function current_profile_snapshot()
 returns table(rol text, club_id uuid, plan text)
-language sql stable security definer as $$
-  select rol, club_id, plan from profiles where id = auth.uid()
+language sql stable security definer
+set search_path = public as $$
+  select rol, club_id, plan from public.profiles where id = auth.uid()
 $$;
 
 -- Eliminar políticas si ya existen (para poder re-ejecutar el script)
@@ -412,8 +448,9 @@ create policy "superadmin manages plan history" on plan_history for all using (
 -- (evita filtrar plan_notas, suspended, etc. a un visitante anónimo)
 create or replace function lookup_club_by_code(p_code text)
 returns table(id uuid, name text, sport text)
-language sql security definer stable as $$
-  select id, name, sport from clubs where join_code = upper(p_code);
+language sql security definer stable
+set search_path = public as $$
+  select id, name, sport from public.clubs where join_code = upper(p_code);
 $$;
 grant execute on function lookup_club_by_code(text) to anon, authenticated;
 
@@ -438,11 +475,12 @@ create policy "club admins see their invitations" on invitations for select usin
 -- en nada que venga del cliente) y solo entonces escribe en profiles/players.
 create or replace function accept_invitation(p_token text)
 returns table(rol text, club_id uuid, club_name text, sport text, cats text, player_id uuid)
-language plpgsql security definer as $$
+language plpgsql security definer
+set search_path = public as $$
 declare
   inv record;
 begin
-  select * into inv from invitations where token = p_token;
+  select * into inv from public.invitations where token = p_token;
 
   if inv.id is null then
     raise exception 'invitacion_no_encontrada';
@@ -454,19 +492,19 @@ begin
     raise exception 'invitacion_expirada';
   end if;
 
-  update profiles
+  update public.profiles
     set rol = inv.rol, club_id = inv.club_id, invited_by = inv.created_by
     where id = auth.uid();
 
   if inv.player_id is not null then
-    update players set profile_id = auth.uid() where id = inv.player_id;
+    update public.players set profile_id = auth.uid() where id = inv.player_id;
   end if;
 
-  update invitations set used_at = now() where id = inv.id;
+  update public.invitations set used_at = now() where id = inv.id;
 
   return query
     select inv.rol, inv.club_id, c.name, c.sport, inv.cats, inv.player_id
-    from clubs c where c.id = inv.club_id;
+    from public.clubs c where c.id = inv.club_id;
 end;
 $$;
 grant execute on function accept_invitation(text) to authenticated;
@@ -475,12 +513,13 @@ grant execute on function accept_invitation(text) to authenticated;
 -- ClubOnboarding.jsx). Solo funciona si el club todavía no tiene ningún admin,
 -- para que no sirva para tomar control de un club ya existente.
 create or replace function claim_new_club_admin(p_club_id uuid)
-returns void language plpgsql security definer as $$
+returns void language plpgsql security definer
+set search_path = public as $$
 begin
-  if exists (select 1 from profiles where club_id = p_club_id and rol = 'admin') then
+  if exists (select 1 from public.profiles where club_id = p_club_id and rol = 'admin') then
     raise exception 'club_ya_tiene_admin';
   end if;
-  update profiles set rol = 'admin', club_id = p_club_id where id = auth.uid();
+  update public.profiles set rol = 'admin', club_id = p_club_id where id = auth.uid();
 end;
 $$;
 grant execute on function claim_new_club_admin(uuid) to authenticated;

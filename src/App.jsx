@@ -139,6 +139,7 @@ export default function SportOS() {
   const club = clubRow ? {
     name: clubRow.name,
     country: clubRow.country,
+    colors: clubRow.colors,
     cuota: 45000,
     prev: ultimo ? { res: ultimo.resultado==="victoria"?"Victoria":ultimo.resultado==="derrota"?"Derrota":"Empate", score: `${ultimo.golesLocal}-${ultimo.golesVisita}`, rival: ultimo.rival } : { res:null, score:null, rival:null },
     next: proximo ? { rival: proximo.rival, dia: new Date(proximo.fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long"}) } : { rival:null, dia:null },

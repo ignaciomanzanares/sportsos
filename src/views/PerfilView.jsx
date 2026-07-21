@@ -44,6 +44,7 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [tab, setTab] = useState("personal");
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -133,8 +134,9 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
 
   const handleSave = async () => {
     setSaving(true);
+    setSaveError("");
     if (currentUser?.id) {
-      await supabase.from("profiles").update({
+      const { error } = await supabase.from("profiles").update({
         nombre: form.nombre, telefono: form.telefono, direccion: form.direccion,
         fecha_nacimiento: form.fecha_nacimiento || null,
         altura_cm: form.altura_cm ? Number(form.altura_cm) : null,
@@ -143,10 +145,13 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
         seguro_salud: form.seguro_salud, grupo_sanguineo: form.grupo_sanguineo,
         contacto_emergencia_nombre: form.contacto_emergencia_nombre,
         contacto_emergencia_tel: form.contacto_emergencia_tel,
-        pie_hab: form.pie_hab, numero_camiseta: form.numero_camiseta,
+        pie_hab: form.pie_hab, numero_camiseta: form.numero_camiseta ? Number(form.numero_camiseta) : null,
       }).eq("id", currentUser.id);
+      setSaving(false);
+      if (error) { setSaveError("Error al guardar: " + error.message); return; }
+    } else {
+      setSaving(false);
     }
-    setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
     if (onSaved) onSaved({ ...form, avatar_url: avatarUrl });
@@ -414,6 +419,9 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
             </motion.div>
           )}
         </AnimatePresence>
+        {saveError && (
+          <div style={{ fontSize:"12px", color:"#EF4444", marginTop:"4px" }}>⚠️ {saveError}</div>
+        )}
       </div>
     </motion.div>
   );

@@ -16,8 +16,23 @@ import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
 export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, clubId=null, currentUser=null, userPlan="free"}) {
-  const [primaryColor, setPrimaryColor] = useState("#1B4332");
-  const [secondaryColor, setSecondaryColor] = useState("#FFD700");
+  const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
+  const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
+
+  // Cargar los colores reales cuando el club llega desde Supabase (puede
+  // llegar después del primer render)
+  useEffect(() => {
+    if (club?.colors) {
+      setPrimaryColor(club.colors.primary || "#1B4332");
+      setSecondaryColor(club.colors.secondary || "#FFD700");
+    }
+  }, [club?.colors]);
+
+  const saveColors = async (primary, secondary) => {
+    if (!clubId) return;
+    const { error } = await supabase.from("clubs").update({ colors: { primary, secondary } }).eq("id", clubId);
+    if (error) showToast("Error al guardar los colores: " + error.message, "error");
+  };
 
   // Estado para gestión de jugadores
   const [playerForm, setPlayerForm] = useState(null); // null = cerrado | EMPTY_PLAYER = nuevo | {id,...} = editando
@@ -187,8 +202,8 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           <motion.div {...fadeUp} transition={{duration:0.4,delay:0.1}} style={{...ss.card,marginBottom:"12px"}}>
             <div style={{fontWeight:600,marginBottom:"12px",fontSize:"14px"}}>🎨 Paleta del club</div>
             <div style={{display:"flex",gap:"16px",alignItems:"center"}}>
-              <div><div style={ss.label}>Primario</div><input type="color" value={primaryColor} onChange={e=>setPrimaryColor(e.target.value)} style={{width:"56px",height:"36px",border:"none",borderRadius:"var(--r-sm)",cursor:"pointer",background:"transparent"}}/></div>
-              <div><div style={ss.label}>Secundario</div><input type="color" value={secondaryColor} onChange={e=>setSecondaryColor(e.target.value)} style={{width:"56px",height:"36px",border:"none",borderRadius:"var(--r-sm)",cursor:"pointer",background:"transparent"}}/></div>
+              <div><div style={ss.label}>Primario</div><input type="color" value={primaryColor} onChange={e=>{const v=e.target.value;setPrimaryColor(v);saveColors(v,secondaryColor);}} style={{width:"56px",height:"36px",border:"none",borderRadius:"var(--r-sm)",cursor:"pointer",background:"transparent"}}/></div>
+              <div><div style={ss.label}>Secundario</div><input type="color" value={secondaryColor} onChange={e=>{const v=e.target.value;setSecondaryColor(v);saveColors(primaryColor,v);}} style={{width:"56px",height:"36px",border:"none",borderRadius:"var(--r-sm)",cursor:"pointer",background:"transparent"}}/></div>
               <motion.div animate={{background:`linear-gradient(135deg,${primaryColor},${secondaryColor})`}} style={{flex:1,height:"44px",borderRadius:"var(--r-md)",border:"1px solid var(--border-soft)",boxShadow:"var(--shadow-sm)"}}/>
             </div>
           </motion.div>
