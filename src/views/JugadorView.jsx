@@ -27,8 +27,9 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
   const declarado = myPayments.some(p => p.estado === "declarado");
 
   // Métodos realmente implementados hoy — el resto es "Próximamente" hasta
-  // que exista integración real con esa pasarela.
-  const METODOS_LISTOS = ["Transferencia"];
+  // que exista integración real con esa pasarela. Mercado Pago se habilita
+  // solo si el club cargó sus credenciales.
+  const METODOS_LISTOS = ["Transferencia", ...(bankInfo?.mercadopago_enabled ? ["Mercado Pago"] : [])];
 
   useEffect(() => {
     if (!clubId) return;
@@ -43,7 +44,25 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
     setTimeout(() => setCopiedField(""), 2000);
   };
 
+  const handleMercadoPago = async () => {
+    setPaying(true);
+    try {
+      const resp = await fetch("/api/mercadopago-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ club_id: clubId, player_id: player.id, amount: club.cuota }),
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.init_point) throw new Error(data.error || "No se pudo iniciar el pago");
+      window.location.href = data.init_point;
+    } catch (e) {
+      showToast("Error al iniciar el pago: " + e.message, "error");
+      setPaying(false);
+    }
+  };
+
   const handleDeclarar = async () => {
+    if (selectedMethod === "Mercado Pago") return handleMercadoPago();
     setPaying(true);
     try {
       if (declarePayment) {
@@ -166,7 +185,9 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
 
           <motion.button whileHover={!paying?{scale:1.02,y:-2}:{}} whileTap={!paying?{scale:0.98}:{}} onClick={handleDeclarar} disabled={paying || (selectedMethod==="Transferencia" && !bankInfo)}
             style={{...ss.btn, background:paying?"rgba(255,255,255,0.06)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:paying?"var(--text-3)":"#fff", width:"100%", padding:"14px", fontSize:"14px", fontWeight:700, boxShadow:paying?"none":`0 8px 24px ${sportColor}44`, cursor:paying?"not-allowed":"pointer", opacity:(selectedMethod==="Transferencia" && !bankInfo)?0.5:1}}>
-            {paying ? "⏳ Enviando..." : "✅ Ya transferí, notificar al admin"}
+            {paying
+              ? (selectedMethod==="Mercado Pago" ? "⏳ Redirigiendo..." : "⏳ Enviando...")
+              : (selectedMethod==="Mercado Pago" ? "💳 Pagar con Mercado Pago" : "✅ Ya transferí, notificar al admin")}
           </motion.button>
         </motion.div>
       )}

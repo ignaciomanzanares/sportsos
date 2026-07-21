@@ -211,11 +211,14 @@ create table if not exists payments (
   amount      numeric(12,2) not null,
   currency    text default 'CLP',
   method      text,                   -- khipu | webpay | transferencia
-  status      text default 'pending', -- pending | paid | failed
+  status      text default 'pending', -- pending | declarado | paid | failed
   due_date    date,
   paid_at     timestamptz,
-  created_at  timestamptz default now()
+  created_at  timestamptz default now(),
+  mercadopago_payment_id text
 );
+
+alter table payments add column if not exists mercadopago_payment_id text;
 
 -- ─── POSTS (el Muro) ──────────────────────────────────────────
 create table if not exists posts (
@@ -562,7 +565,8 @@ create policy "superadmin manages all payment settings" on club_payment_settings
 -- es lo que la hace segura igual (cada uno solo ve su propio club).
 create or replace view club_payment_info as
 select club_id, banco, tipo_cuenta, numero_cuenta, rut_titular, nombre_titular,
-       email_titular, khipu_link, mercadopago_public_key
+       email_titular, khipu_link, mercadopago_public_key,
+       (mercadopago_access_token is not null and mercadopago_access_token <> '') as mercadopago_enabled
 from club_payment_settings
 where club_id = my_club_id();
 
