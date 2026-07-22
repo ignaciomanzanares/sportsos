@@ -54,17 +54,20 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
     // Paso final: crear club en Supabase
     setBusy(true);
     try {
-      let clubId = null;
-      try {
-        const prefixes = { rugby:"RUGBY", futbol:"FUTBOL", basketball:"BASKET", handball:"HAND", hockey:"HOCKEY" };
-        const prefix   = prefixes[sport] || "CLUB";
-        const join_code = `${prefix}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
-        const { data: clubData } = await supabase
-          .from("clubs")
-          .insert({ name: clubName.trim(), country, sport, join_code })
-          .select().single();
-        clubId = clubData?.id ?? null;
-      } catch (_) { /* continuar sin club_id */ }
+      // El id se genera acá mismo (no dejamos que la DB lo genere y lo leemos
+      // de vuelta con .select()): un usuario recién creado todavía no es
+      // "miembro" de ningún club, así que RLS le bloquea leer la fila que
+      // acaba de insertar — el insert en sí funciona bien, pero el .select()
+      // posterior fallaba con "violates row-level security policy", y ese
+      // error quedaba atrapado en silencio dejando clubId en null.
+      const clubId = crypto.randomUUID();
+      const prefixes = { rugby:"RUGBY", futbol:"FUTBOL", basketball:"BASKET", handball:"HAND", hockey:"HOCKEY" };
+      const prefix   = prefixes[sport] || "CLUB";
+      const join_code = `${prefix}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+      const { error: clubErr } = await supabase
+        .from("clubs")
+        .insert({ id: clubId, name: clubName.trim(), country, sport, join_code });
+      if (clubErr) throw new Error("No se pudo crear el club: " + clubErr.message);
 
       // Registro de auditoría (no bloquea el flujo si falla)
       try {
@@ -80,12 +83,9 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
 
       if (existingUser) {
         // Usuario ya autenticado (Google): reclamar admin del club recién creado
-        if (existingUser.id && clubId) {
-          try {
-            await supabase.from("profiles").update({ nombre: existingUser.nombre }).eq("id", existingUser.id);
-            await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
-          } catch (_) { /* no crítico */ }
-        }
+        await supabase.from("profiles").update({ nombre: existingUser.nombre }).eq("id", existingUser.id);
+        const { error: claimErr } = await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
+        if (claimErr) throw new Error("El club se creó, pero no pudimos asignarte como admin: " + claimErr.message);
         onComplete({ ...existingUser, rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });
       } else {
         // Usuario nuevo: crear cuenta Supabase
@@ -97,12 +97,10 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
         if (authErr) throw authErr;
 
         const userId = authData.user?.id;
-        if (userId && clubId) {
-          try {
-            await supabase.from("profiles").update({ nombre: nombre.trim() }).eq("id", userId);
-            await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
-          } catch (_) { /* no crítico */ }
-        }
+        if (!userId) throw new Error("No se obtuvo ID de usuario");
+        await supabase.from("profiles").update({ nombre: nombre.trim() }).eq("id", userId);
+        const { error: claimErr } = await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
+        if (claimErr) throw new Error("El club se creó, pero no pudimos asignarte como admin: " + claimErr.message);
         onComplete({ nombre: nombre.trim(), email: email.trim(), rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });
       }
     } catch (e) {

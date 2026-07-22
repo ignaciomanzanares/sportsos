@@ -427,8 +427,12 @@ export default function SportOS() {
             </div>
           </div>
 
-          {/* Selector de rol para superadmin/admin elite */}
-          {currentUser&&(
+          {/* Selector de rol — SOLO superadmin. Antes se mostraba a
+              cualquier usuario logueado (currentUser&&...), dejando que
+              cualquier admin normal se "cambiara" a Super Admin con un
+              click (solo visual/cliente, pero generaba confusión real:
+              esto es justamente lo que reportó jmsanchez). */}
+          {currentUser?.rol==="superadmin"&&(
             <div style={{padding:"10px 12px",borderBottom:"1px solid var(--border-soft)"}}>
               <div style={{...ss.label,marginBottom:"6px",paddingLeft:"2px"}}>Vista de rol</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:"4px"}}>
