@@ -101,7 +101,7 @@ function EstadoPlantelView({ sportColor, players }) {
   );
 }
 
-export default function PreparadorView({module, sp, showToast, sportColor, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay, userCats=[], isDemo=true, players=[]}) {
+export default function PreparadorView({module, sp, showToast, sportColor, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay, userCats=[], isDemo=true, players=[], clubId=null}) {
   const days = ["lunes","miercoles","viernes"];
   const dayLabels = {lunes:"Lunes",miercoles:"Miércoles",viernes:"Viernes"};
   const planSessions = gymPlanExercises || GYM_PLAN.sessions;
@@ -127,7 +127,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
     <div>
       <CatsBanner/>
       <SectionTitle title={`Microciclo — Semana ${GYM_PLAN.week}`} sub={`${GYM_PLAN.coach} · ${sp.name}`}
-        action={<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>{setPublishedPlan(true);showToast("Plan publicado. 15 jugadores notificados vía push y WhatsApp 📱","success");}} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)"}}>{publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>}
+        action={<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>{setPublishedPlan(true);showToast("Plan marcado como publicado ✅","success");}} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)"}}>{publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>}
       />
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"12px",marginBottom:"20px"}}>
         <Stat label="Plan activo" value="Semana 8" sub="Pretemporada 2025" color={sportColor} icon="📅" delay={0.05}/>
@@ -188,7 +188,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
     </div>
   );
 
-  if(module==="rankingfuerza") return <RankingView tab={rankTab} setTab={setRankTab} sportColor={sportColor} players={players}/>;
+  if(module==="rankingfuerza") return <RankingView tab={rankTab} setTab={setRankTab} sportColor={sportColor} players={players} clubId={clubId}/>;
 
   return null;
 }

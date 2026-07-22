@@ -786,10 +786,10 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                     </div>
                   </div>
                 </td>
-                <td style={{color:"var(--text-2)"}}>{p.cat||"—"}</td>
+                <td style={{color:"var(--text-2)"}}>{p.category||"—"}</td>
                 <td style={{color:"var(--text-2)",fontSize:"11px"}}>{p.position||"—"}</td>
-                <td><Semaforo status={p.med}/></td>
-                <td><Badge color={p.cuota==="ok"?"#22C55E":"#EF4444"}>{p.cuota==="ok"?"Al día":"Vencida"}</Badge></td>
+                <td><Semaforo status={p.med_status}/></td>
+                <td><Badge color={p.cuota_status==="ok"?"#22C55E":"#EF4444"}>{p.cuota_status==="ok"?"Al día":"Vencida"}</Badge></td>
                 <td style={{color:"var(--text-2)"}}>{p.age||"—"}</td>
                 <td style={{padding:"12px"}}>
                   <div style={{display:"flex",gap:"6px"}}>
@@ -802,12 +802,12 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                         const exp = Date.now() + 48*60*60*1000;
                         const token = Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,8).toUpperCase();
                         const { error: invErr } = await supabase.from("invitations").insert({
-                          token, club_id: clubId, rol: "jugador", cats: p.cat || "", player_id: p.id,
+                          token, club_id: clubId, rol: "jugador", cats: p.category || "", player_id: p.id,
                           created_by: currentUser?.id || null, expires_at: new Date(exp).toISOString(),
                         });
                         if (invErr) { showToast("Error al generar el link","warning"); return; }
                         const inviterParam = currentUser?.id ? `&inviter=${currentUser.id}` : "";
-                        const link = `${base}/?token=${token}&rol=jugador&club=${clubId||""}&name=${encodeURIComponent(club?.name||"")}&sport=${sport}&cats=${encodeURIComponent(p.cat||"")}&pid=${p.id}${inviterParam}&exp=${exp}`;
+                        const link = `${base}/?token=${token}&rol=jugador&club=${clubId||""}&name=${encodeURIComponent(club?.name||"")}&sport=${sport}&cats=${encodeURIComponent(p.category||"")}&pid=${p.id}${inviterParam}&exp=${exp}`;
                         navigator.clipboard.writeText(link);
                         showToast(`Link para ${p.name} copiado ✅`,"success");
                       }}

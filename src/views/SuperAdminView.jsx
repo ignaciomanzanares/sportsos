@@ -532,9 +532,9 @@ export default function SuperAdminView({ module, commData, clubList, setClubList
           </div>
           <div style={{ textAlign:"right" }}>
             <div style={{ fontSize:"22px", fontWeight:800, color:"#22C55E", letterSpacing:"-0.02em" }}>
-              {v.symbol}{((k.charCodeAt(0)*131)%2000+500).toLocaleString()}
+              ${clubs.filter(c=>c.country===k && !c.suspended).reduce((s,c)=>s+(PLAN_PRICES[c.plan]||0),0).toLocaleString()}
             </div>
-            <div style={ss.muted}>comisión este mes</div>
+            <div style={ss.muted}>MRR este país (USD)</div>
           </div>
         </motion.div>
       ))}

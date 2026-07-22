@@ -226,7 +226,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
 }
 
 /* ── GymJugador ─────────────────────────────────────────────── */
-function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, showToast, rankTab, setRankTab, players}) {
+function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, showToast, rankTab, setRankTab, players, clubId}) {
   const todayPlan = GYM_PLAN.sessions.lunes;
   const PREV_1RM = {Sentadilla:140,"Hip Thrust":120,"Press Banca":110,"Pull-up":90,"Power Clean":95};
 
@@ -303,7 +303,7 @@ function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, se
       {!completedSession&&allDone&&(
         <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} onClick={()=>{setCompletedSession(true);showToast("🎉 Sesión completada! Ranking actualizado","success");}} style={{...ss.btn,background:"linear-gradient(135deg,#22C55E,#16A34A)",color:"#fff",width:"100%",padding:"14px",fontSize:"14px",fontWeight:700,boxShadow:"0 8px 32px rgba(34,197,94,0.4)",marginBottom:"16px"}}>✅ Registrar sesión completada</motion.button>
       )}
-      <RankingView tab={rankTab} setTab={setRankTab} sportColor={sportColor} players={players} compact/>
+      <RankingView tab={rankTab} setTab={setRankTab} sportColor={sportColor} players={players} clubId={clubId} compact/>
     </div>
   );
 }
@@ -719,7 +719,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
 
   if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId}/>;
 
-  if(module==="migym") return <GymJugador player={player} sportColor={sportColor} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players}/>;
+  if(module==="migym") return <GymJugador player={player} sportColor={sportColor} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players} clubId={clubId}/>;
 
   if(module==="nominasclub") {
     const forms = FORMATIONS[sport];

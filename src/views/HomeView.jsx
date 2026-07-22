@@ -251,7 +251,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                         <div style={{width:"28px",height:"28px",borderRadius:"50%",background:bgColor,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:BEBAS,fontSize:"11px",color:"#fff",flexShrink:0}}>{initials}</div>
                         <div>
                           <div style={{fontSize:"13px",fontWeight:500,color:"#d4d2ce"}}>{p.name}</div>
-                          <div style={{fontSize:"10.5px",color:"#3e3b37"}}>{p.cat||"—"}</div>
+                          <div style={{fontSize:"10.5px",color:"#3e3b37"}}>{p.category||"—"}</div>
                         </div>
                       </div>
                     </td>

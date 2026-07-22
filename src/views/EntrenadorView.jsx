@@ -425,7 +425,7 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
   }, [clubId]);
 
   // En modo real filtra jugadores por las categorías asignadas al entrenador
-  const visiblePlayers = isDemo ? players : players.filter(p => userCats.includes(p.cat));
+  const visiblePlayers = isDemo || userCats.length === 0 ? players : players.filter(p => userCats.includes(p.category));
 
   const CatsBanner = () => !isDemo && userCats.length > 0 ? (
     <motion.div {...fadeUp} style={{...ss.card, marginBottom:"14px", padding:"10px 14px", background:"linear-gradient(135deg,rgba(59,130,246,0.08),transparent)", border:"1px solid rgba(59,130,246,0.25)", display:"flex", alignItems:"center", gap:"10px", flexWrap:"wrap"}}>
