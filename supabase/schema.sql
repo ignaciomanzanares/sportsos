@@ -173,8 +173,23 @@ create table if not exists matches (
   score_home  int,
   score_away  int,
   notes       text,
-  created_at  timestamptz default now()
+  created_at  timestamptz default now(),
+  hora        text,
+  estado      text default 'programado', -- programado | jugado
+  equipo      text default 'A',
+  cat         text,
+  destacados  jsonb default '[]',
+  autor       text
 );
+
+-- Si la tabla ya existe, agregar columnas si faltan (db.js saveMatch() las
+-- usa desde antes pero no existían — el insert fallaba en silencio)
+alter table matches add column if not exists hora       text;
+alter table matches add column if not exists estado     text default 'programado';
+alter table matches add column if not exists equipo     text default 'A';
+alter table matches add column if not exists cat        text;
+alter table matches add column if not exists destacados jsonb default '[]';
+alter table matches add column if not exists autor      text;
 
 -- ─── ATTENDANCE ───────────────────────────────────────────────
 create table if not exists attendance (
@@ -302,15 +317,24 @@ create table if not exists invitations (
 );
 
 -- ─── LINEUPS (nóminas) ────────────────────────────────────────
+-- team_id es TEXT a propósito (no uuid/FK a teams): la app identifica
+-- equipos con ids fijos en código ("primer","reserva","sub20", ver
+-- src/data/sports.js TEAMS), no con filas reales de la tabla teams.
 create table if not exists lineups (
   id          uuid primary key default uuid_generate_v4(),
   club_id     uuid not null references clubs(id) on delete cascade,
-  team_id     uuid references teams(id),
+  team_id     text,
   formation   text not null,
   slots       jsonb not null default '[]',  -- array de player_ids por posición
   bench       jsonb not null default '[]',  -- array de player_ids en el banco
-  updated_at  timestamptz default now()
+  updated_at  timestamptz default now(),
+  created_at  timestamptz default now()
 );
+
+-- Si la tabla ya existía con team_id uuid+FK (bloqueaba todo guardado real)
+alter table lineups drop constraint if exists lineups_team_id_fkey;
+alter table lineups alter column team_id type text using team_id::text;
+alter table lineups add column if not exists created_at timestamptz default now();
 
 -- ══════════════════════════════════════════════════════════════
 --  ROW LEVEL SECURITY (RLS)

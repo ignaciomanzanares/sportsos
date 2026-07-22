@@ -6,11 +6,12 @@ import { FORMATIONS, TEAMS } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
 import { MOCK_POSTS } from "../data/mockData";
 import { usePosts } from "../lib/usePosts";
-import { getNotifications } from "../lib/db";
+import { getNotifications, getLineups } from "../lib/db";
 import { supabase } from "../lib/supabase";
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
 import Semaforo from "../components/Semaforo";
+import EmptyState from "../components/EmptyState";
 import Cancha from "../components/Cancha";
 import ProgressBar from "../components/ProgressBar";
 import RankingView from "../components/RankingView";
@@ -307,9 +308,100 @@ function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, se
   );
 }
 
+/* ── NominasClub — muestra la nómina REAL publicada por el entrenador
+   (antes fabricaba una alineación al azar rotando el array de jugadores,
+   sin relación con lo que el entrenador realmente publicó) ──────────── */
+function NominasClub({ teamsToShow, forms, sport, sportColor, clubId, players, player, sp }) {
+  const [lineups, setLineups] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!clubId) { setLoading(false); return; }
+    setLoading(true);
+    Promise.all(teamsToShow.map(t => getLineups(clubId, t.id).then(l => [t.id, l]).catch(() => [t.id, null])))
+      .then(entries => { setLineups(Object.fromEntries(entries)); setLoading(false); });
+  }, [clubId, teamsToShow.map(t=>t.id).join(",")]);
+
+  if (loading) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando nóminas...</div>;
+
+  return (
+    <div>
+      <PlantelBanner/>
+      <SectionTitle title="Nóminas del Club" sub={`Alineaciones publicadas por el entrenador · ${sp.name}`}/>
+      {teamsToShow.map((t,ti)=>{
+        const saved = lineups[t.id];
+        const formation = forms.find(f=>f.key===saved?.formation) || forms[ti%forms.length];
+        const size = formation.positions.length;
+        const byId = id => players.find(p=>p.id===id) || null;
+        const lineup = saved ? Array.from({length:size},(_,i)=>byId(saved.slots?.[i])) : Array(size).fill(null);
+        const myIdx = lineup.findIndex(p=>p&&p.id===player.id);
+        return (
+          <motion.div key={t.id} {...fadeUp} transition={{duration:0.4,delay:ti*0.1}} style={{marginBottom:"20px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px",flexWrap:"wrap",gap:"8px"}}>
+              <div style={{fontWeight:700,fontSize:"14px"}}>{t.name}</div>
+              {saved && <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
+                <Badge color={sportColor}>{formation.label}</Badge>
+                {myIdx>=0?<Badge color="#F59E0B" glow>⭐ Titular #{myIdx+1}</Badge>:<Badge color="#6B7896">No convocado</Badge>}
+              </div>}
+            </div>
+            {saved
+              ? <Cancha type={sport} formation={formation} lineup={lineup} sportColor={sportColor} dragging={false} highlightId={player.id} onDrop={()=>{}} onSlotClick={()=>{}}/>
+              : <EmptyState icon="📋" title="Sin nómina publicada" desc="El entrenador todavía no publicó la alineación de este equipo." color={sportColor}/>}
+          </motion.div>
+        );
+      })}
+      <div style={{...ss.card,padding:"10px 14px",fontSize:"11px",color:"var(--text-2)"}}>⭐ Tu posición aparece resaltada en dorado cuando estás convocado en la nómina de un equipo.</div>
+    </div>
+  );
+}
+
+/* ── MiConvocatoria — antes decía "estás convocado" a TODOS los jugadores
+   sin importar si de verdad estaban en alguna nómina publicada. Ahora
+   revisa las nóminas reales guardadas por el entrenador. ─────────────── */
+function MiConvocatoria({ camiseta, club, sportColor, convocado, setConvocado, setWhatsappModal, showToast, clubId, playerId, PlantelBanner }) {
+  const [llamado, setLlamado] = useState(null); // null = cargando, true/false
+
+  useEffect(() => {
+    if (!clubId) { setLlamado(true); return; } // demo/preview: mantener comportamiento anterior
+    Promise.all(TEAMS.map(t => getLineups(clubId, t.id).catch(() => null)))
+      .then(results => {
+        const enAlguna = results.some(l => (l?.slots || []).includes(playerId));
+        setLlamado(enAlguna);
+      });
+  }, [clubId, playerId]);
+
+  if (llamado === null) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Revisando convocatoria...</div>;
+
+  if (!llamado) return (
+    <div>
+      <PlantelBanner/>
+      <SectionTitle title="Mi Convocatoria"/>
+      <EmptyState icon="📋" title="No estás convocado por ahora" desc="El entrenador todavía no te incluyó en ninguna nómina publicada. Te avisaremos apenas te convoque." color={sportColor}/>
+    </div>
+  );
+
+  return (
+    <div>
+      <PlantelBanner/>
+      <SectionTitle title="Mi Convocatoria"/>
+      <motion.div {...scaleIn} style={{...ss.card,textAlign:"center",marginBottom:"20px",border:`2px solid ${sportColor}55`,background:`linear-gradient(135deg,${sportColor}22,${sportColor}05)`,position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:0,left:0,right:0,height:"3px",background:`linear-gradient(90deg,transparent,${sportColor},transparent)`}}/>
+        <motion.div animate={{scale:[1,1.05,1]}} transition={{duration:2,repeat:Infinity,ease:"easeInOut"}} style={{fontSize:"72px",fontWeight:900,color:sportColor,margin:"20px 0",filter:`drop-shadow(0 0 24px ${sportColor}88)`,letterSpacing:"-0.04em"}}>{camiseta}</motion.div>
+        <div style={{fontSize:"16px",fontWeight:700,marginBottom:"4px"}}>Estás convocado #{camiseta}</div>
+        <div style={ss.muted}>vs {club.next.rival} · {club.next.dia}</div>
+      </motion.div>
+      <div style={{display:"flex",gap:"12px",marginBottom:"16px"}}>
+        <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("confirmed");showToast("✅ Presencia confirmada","success");}} style={{...ss.btn,flex:1,background:convocado==="confirmed"?"linear-gradient(135deg,#22C55E,#16A34A)":"rgba(34,197,94,0.15)",color:convocado==="confirmed"?"#fff":"#22C55E",border:"1px solid #22C55E55",padding:"14px",fontSize:"13px",boxShadow:convocado==="confirmed"?"0 8px 24px rgba(34,197,94,0.35)":"none"}}>{convocado==="confirmed"?"✅ Confirmado":"✓ Confirmar presencia"}</motion.button>
+        <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("rejected");showToast("Ausencia registrada","warning");}} style={{...ss.btn,flex:1,background:convocado==="rejected"?"linear-gradient(135deg,#EF4444,#DC2626)":"rgba(239,68,68,0.15)",color:convocado==="rejected"?"#fff":"#EF4444",border:"1px solid #EF444455",padding:"14px",fontSize:"13px",boxShadow:convocado==="rejected"?"0 8px 24px rgba(239,68,68,0.35)":"none"}}>{convocado==="rejected"?"✕ No asistirás":"✕ No puedo asistir"}</motion.button>
+      </div>
+      <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>setWhatsappModal(true)} style={{...ss.btn,background:"linear-gradient(135deg,#25D366,#128C7E)",color:"#fff",width:"100%",padding:"12px",fontSize:"13px",boxShadow:"0 8px 24px rgba(37,211,102,0.35)"}}>📱 Compartir convocatoria en WhatsApp</motion.button>
+    </div>
+  );
+}
+
 /* ── JugadorView ────────────────────────────────────────────── */
 export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
-  const camiseta = player.num;
+  const camiseta = player.number;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};
 
@@ -332,7 +424,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
   // El plantel del jugador es su primera categoría asignada (solo una)
   const miPlantel = isDemo ? null : (userCats[0] || null);
   // Filtra compañeros de su mismo plantel
-  const visiblePlayers = miPlantel ? players.filter(p=>p.cat===miPlantel) : players;
+  const visiblePlayers = miPlantel ? players.filter(p=>p.category===miPlantel) : players;
 
   const PlantelBanner = () => miPlantel ? (
     <motion.div {...fadeUp} style={{...ss.card, marginBottom:"14px", padding:"10px 14px", background:"linear-gradient(135deg,rgba(34,197,94,0.08),transparent)", border:"1px solid rgba(34,197,94,0.2)", display:"flex", alignItems:"center", gap:"8px"}}>
@@ -405,18 +497,18 @@ export default function JugadorView({module, sport, sp, club, player, players, s
 
         {/* ── Cabecera jugador ── */}
         <motion.div {...fadeUp} style={{...ss.card, marginBottom:"16px", border:`1px solid ${sportColor}33`, background:`linear-gradient(135deg,${sportColor}12,${sportColor}03)`, display:"flex", alignItems:"center", gap:"14px", padding:"14px 16px"}}>
-          <motion.div whileHover={{rotate:8,scale:1.05}} style={{width:"52px",height:"52px",borderRadius:"50%",background:`linear-gradient(135deg,${sportColor}44,${sportColor}11)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"22px",fontWeight:900,color:sportColor,border:`2.5px solid ${sportColor}77`,boxShadow:`0 0 20px ${sportColor}44`,flexShrink:0}}>{player.num}</motion.div>
+          <motion.div whileHover={{rotate:8,scale:1.05}} style={{width:"52px",height:"52px",borderRadius:"50%",background:`linear-gradient(135deg,${sportColor}44,${sportColor}11)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"22px",fontWeight:900,color:sportColor,border:`2.5px solid ${sportColor}77`,boxShadow:`0 0 20px ${sportColor}44`,flexShrink:0}}>{player.number}</motion.div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:"17px",fontWeight:800,letterSpacing:"-0.01em",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{player.name}</div>
-            <div style={{color:sportColor,fontSize:"12px",fontWeight:500,marginTop:"2px"}}>{player.pos} · {club.name}</div>
+            <div style={{color:sportColor,fontSize:"12px",fontWeight:500,marginTop:"2px"}}>{player.position} · {club.name}</div>
           </div>
           <div style={{display:"flex",gap:"8px",flexShrink:0}}>
             <div style={{textAlign:"center",padding:"6px 12px",borderRadius:"var(--r-sm)",background:"var(--bg-elev-1)",border:"1px solid var(--border-soft)"}}>
-              <Semaforo status={player.med}/>
+              <Semaforo status={player.med_status}/>
               <div style={{fontSize:"9px",color:"var(--text-3)",marginTop:"4px",textTransform:"uppercase",letterSpacing:"0.05em"}}>Salud</div>
             </div>
-            <div style={{textAlign:"center",padding:"6px 12px",borderRadius:"var(--r-sm)",background:player.cuota==="ok"?"rgba(34,197,94,0.1)":"rgba(239,68,68,0.1)",border:`1px solid ${player.cuota==="ok"?"rgba(34,197,94,0.3)":"rgba(239,68,68,0.3)"}`}}>
-              <div style={{fontSize:"16px",fontWeight:800,color:player.cuota==="ok"?"#22C55E":"#EF4444"}}>{player.cuota==="ok"?"✓":"!"}</div>
+            <div style={{textAlign:"center",padding:"6px 12px",borderRadius:"var(--r-sm)",background:player.cuota_status==="ok"?"rgba(34,197,94,0.1)":"rgba(239,68,68,0.1)",border:`1px solid ${player.cuota_status==="ok"?"rgba(34,197,94,0.3)":"rgba(239,68,68,0.3)"}`}}>
+              <div style={{fontSize:"16px",fontWeight:800,color:player.cuota_status==="ok"?"#22C55E":"#EF4444"}}>{player.cuota_status==="ok"?"✓":"!"}</div>
               <div style={{fontSize:"9px",color:"var(--text-3)",marginTop:"2px",textTransform:"uppercase",letterSpacing:"0.05em"}}>Cuota</div>
             </div>
           </div>
@@ -632,51 +724,12 @@ export default function JugadorView({module, sport, sp, club, player, players, s
   if(module==="nominasclub") {
     const forms = FORMATIONS[sport];
     const teamsToShow = miPlantel ? TEAMS.filter(t=>t.name===miPlantel) : TEAMS;
-    return (
-      <div>
-        <PlantelBanner/>
-        <SectionTitle title="Nóminas del Club" sub={miPlantel ? `Tu plantel: ${miPlantel} · ${sp.name}` : `Alineaciones publicadas de todos los equipos · ${sp.name}`}/>
-        {teamsToShow.map((t,ti)=>{
-          const formation = forms[ti%forms.length];
-          const size = formation.positions.length;
-          const rot = (ti*4)%visiblePlayers.length;
-          const avail = [...visiblePlayers.slice(rot),...visiblePlayers.slice(0,rot)].filter(p=>p.med!=="rojo"&&p.cuota!=="vencida");
-          const lineup = Array.from({length:size},(_,i)=>avail[i]||null);
-          const myIdx = lineup.findIndex(p=>p&&p.id===player.id);
-          return (
-            <motion.div key={t.id} {...fadeUp} transition={{duration:0.4,delay:ti*0.1}} style={{marginBottom:"20px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px",flexWrap:"wrap",gap:"8px"}}>
-                <div style={{fontWeight:700,fontSize:"14px"}}>{t.name}</div>
-                <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
-                  <Badge color={sportColor}>{formation.label}</Badge>
-                  {myIdx>=0?<Badge color="#F59E0B" glow>⭐ Titular #{myIdx+1}</Badge>:<Badge color="#6B7896">No convocado</Badge>}
-                </div>
-              </div>
-              <Cancha type={sport} formation={formation} lineup={lineup} sportColor={sportColor} dragging={false} highlightId={player.id} onDrop={()=>{}} onSlotClick={()=>{}}/>
-            </motion.div>
-          );
-        })}
-        <div style={{...ss.card,padding:"10px 14px",fontSize:"11px",color:"var(--text-2)"}}>⭐ Tu posición aparece resaltada en dorado cuando estás convocado en la nómina de un equipo.</div>
-      </div>
-    );
+    return <NominasClub teamsToShow={teamsToShow} forms={forms} sport={sport} sportColor={sportColor} clubId={clubId} players={players} player={player} sp={sp}/>;
   }
 
   if(module==="miconvocatoria") return (
-    <div>
-      <PlantelBanner/>
-      <SectionTitle title="Mi Convocatoria"/>
-      <motion.div {...scaleIn} style={{...ss.card,textAlign:"center",marginBottom:"20px",border:`2px solid ${sportColor}55`,background:`linear-gradient(135deg,${sportColor}22,${sportColor}05)`,position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:0,left:0,right:0,height:"3px",background:`linear-gradient(90deg,transparent,${sportColor},transparent)`}}/>
-        <motion.div animate={{scale:[1,1.05,1]}} transition={{duration:2,repeat:Infinity,ease:"easeInOut"}} style={{fontSize:"72px",fontWeight:900,color:sportColor,margin:"20px 0",filter:`drop-shadow(0 0 24px ${sportColor}88)`,letterSpacing:"-0.04em"}}>{camiseta}</motion.div>
-        <div style={{fontSize:"16px",fontWeight:700,marginBottom:"4px"}}>Estás convocado #{camiseta}</div>
-        <div style={ss.muted}>vs {club.next.rival} · {club.next.dia}</div>
-      </motion.div>
-      <div style={{display:"flex",gap:"12px",marginBottom:"16px"}}>
-        <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("confirmed");showToast("✅ Presencia confirmada","success");}} style={{...ss.btn,flex:1,background:convocado==="confirmed"?"linear-gradient(135deg,#22C55E,#16A34A)":"rgba(34,197,94,0.15)",color:convocado==="confirmed"?"#fff":"#22C55E",border:"1px solid #22C55E55",padding:"14px",fontSize:"13px",boxShadow:convocado==="confirmed"?"0 8px 24px rgba(34,197,94,0.35)":"none"}}>{convocado==="confirmed"?"✅ Confirmado":"✓ Confirmar presencia"}</motion.button>
-        <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("rejected");showToast("Ausencia registrada","warning");}} style={{...ss.btn,flex:1,background:convocado==="rejected"?"linear-gradient(135deg,#EF4444,#DC2626)":"rgba(239,68,68,0.15)",color:convocado==="rejected"?"#fff":"#EF4444",border:"1px solid #EF444455",padding:"14px",fontSize:"13px",boxShadow:convocado==="rejected"?"0 8px 24px rgba(239,68,68,0.35)":"none"}}>{convocado==="rejected"?"✕ No asistirás":"✕ No puedo asistir"}</motion.button>
-      </div>
-      <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>setWhatsappModal(true)} style={{...ss.btn,background:"linear-gradient(135deg,#25D366,#128C7E)",color:"#fff",width:"100%",padding:"12px",fontSize:"13px",boxShadow:"0 8px 24px rgba(37,211,102,0.35)"}}>📱 Compartir convocatoria en WhatsApp</motion.button>
-    </div>
+    <MiConvocatoria camiseta={camiseta} club={club} sportColor={sportColor} convocado={convocado} setConvocado={setConvocado}
+      setWhatsappModal={setWhatsappModal} showToast={showToast} clubId={clubId} playerId={player.id} PlantelBanner={PlantelBanner}/>
   );
 
   return null;

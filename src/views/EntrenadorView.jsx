@@ -54,8 +54,8 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
   const setBench  = (nb)=>setBenchStore(p=>({...p,[bk]:nb}));
 
   const blockReason = (p) => {
-    if(p.med==="rojo") return p.hiaReason?`no apto: ${p.hiaReason}`:"no apto médicamente";
-    if(p.cuota==="vencida") return "cuota vencida";
+    if(p.med_status==="rojo") return p.hia_reason?`no apto: ${p.hia_reason}`:"no apto médicamente";
+    if(p.cuota_status==="vencida") return "cuota vencida";
     return null;
   };
   const placeInSlot = (idx,p) => {
@@ -65,7 +65,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
     const nl = lineup.map(x=>x&&x.id===p.id?null:x);
     nl[idx]=p; setLineup(nl);
     setBench(bench.filter(x=>x.id!==p.id));
-    if(p.med==="amarillo") showToast(`⚠️ ${p.name} agregado con alerta médica`,"warning");
+    if(p.med_status==="amarillo") showToast(`⚠️ ${p.name} agregado con alerta médica`,"warning");
   };
   const addToBench = (p) => {
     const r = blockReason(p);
@@ -136,7 +136,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
             <div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>
               {bench.length===0&&<span style={{...ss.muted,fontSize:"11px"}}>Arrastra jugadores aquí o se agregan al llenar los titulares</span>}
               {bench.map(p=><motion.div key={p.id} initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}} whileHover={{scale:1.05}} onClick={()=>setBench(bench.filter(x=>x.id!==p.id))} style={{display:"flex",alignItems:"center",gap:"6px",background:"var(--bg-elev-2)",borderRadius:"99px",padding:"5px 10px",cursor:"pointer",fontSize:"11px",border:"1px solid var(--border-soft)"}}>
-                <Semaforo status={p.med}/>{p.name.split(" ").slice(-1)[0]} <span style={{color:"#EF4444",fontWeight:700}}>✕</span>
+                <Semaforo status={p.med_status}/>{p.name.split(" ").slice(-1)[0]} <span style={{color:"#EF4444",fontWeight:700}}>✕</span>
               </motion.div>)}
             </div>
           </motion.div>
@@ -151,11 +151,11 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
               whileHover={!blocked?{x:3}:{}}
               style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 10px",borderRadius:"var(--r-sm)",marginBottom:"3px",cursor:blocked?"not-allowed":"grab",opacity:blocked?0.4:1,background:inUse?`${sportColor}15`:"transparent",border:`1px solid ${inUse?sportColor+"44":"transparent"}`,transition:"all 0.15s"}}>
               <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
-                <Semaforo status={p.med}/>
+                <Semaforo status={p.med_status}/>
                 <span style={{fontSize:"12px",color:inUse?sportColor:"var(--text-1)",fontWeight:inUse?600:400}}>{p.name}</span>
               </div>
               <div style={{display:"flex",alignItems:"center",gap:"6px"}}>
-                {p.cuota==="vencida"&&<span style={{color:"#EF4444",fontSize:"10px",fontWeight:700}}>$</span>}
+                {p.cuota_status==="vencida"&&<span style={{color:"#EF4444",fontSize:"10px",fontWeight:700}}>$</span>}
                 {inUse?<span style={{color:sportColor,fontSize:"12px",fontWeight:700}}>✓</span>:<span style={{color:"var(--text-4)",fontSize:"12px"}}>⠿</span>}
               </div>
             </motion.div>;
@@ -396,7 +396,10 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
 /* ── EntrenadorView ─────────────────────────────────────────── */
 export default function EntrenadorView({module, sport, sp, club, players, postLikes, setPostLikes, showToast, sportColor, currentCategory, hiaModal, setHiaModal, userCats=[], isDemo=true, partidos=[], setPartidos=()=>{}, clubId=null, currentUserId=null}) {
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#3B82F6","advertencia":"#EF4444","insignia":"#F59E0B","reto":"#A855F7"};
-  const sv = (p,k)=>(p.stats&&p.stats[k]!=null)?p.stats[k]:((p.id*13+k.length*7)%18)+1;
+  // Sin tabla de estadísticas por jugador todavía — no inventar un número
+  // cuando no hay dato real (antes generaba uno "consistente" por fórmula,
+  // que además daba NaN con ids uuid reales).
+  const sv = (p,k)=>p.stats?.[k] ?? null;
   const [reactions, setReactions] = useState({});
   const handleReact = (postId, emoji) => {
     setReactions(prev=>{
@@ -487,7 +490,12 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
       // Guardar en Supabase si hay club real
       let partidoGuardado = nuevo;
       if (clubId) {
-        try { partidoGuardado = matchToPartido(await saveMatch(clubId, nuevo)); } catch {}
+        try {
+          partidoGuardado = matchToPartido(await saveMatch(clubId, nuevo));
+        } catch (e) {
+          showToast("Error al guardar el resultado: " + e.message, "error");
+          return;
+        }
       }
       setPartidos(prev=>[partidoGuardado,...prev]);
       setResForm({rival:"",golesLocal:"",golesVisita:"",lugar:"Local",resumen:"",destacados:""});
@@ -495,11 +503,9 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
       setShowResultForm(false);
       // Toast principal
       showToast(`Resultado publicado — ${resultado.toUpperCase()} ✅`, resultado==="victoria"?"success":"warning");
-      // Segundo toast: wellness trigger
-      setTimeout(() => showToast("📣 Cuestionario wellness programado — se enviará en 24h automáticamente","info"), 800);
-      // Tercero: suspensiones si hay
+      // Suspensiones si hay
       if (suspendidos.length > 0) {
-        setTimeout(() => showToast(`⚠️ ${suspendidos.length} jugador${suspendidos.length>1?"es":""} con tarjeta roja — se generó alerta de suspensión`,"warning"), 1600);
+        setTimeout(() => showToast(`⚠️ ${suspendidos.length} jugador${suspendidos.length>1?"es":""} con tarjeta roja — revisa las suspensiones`,"warning"), 1200);
       }
     };
 
@@ -682,11 +688,14 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
         destacados: p.destacados?p.destacados.split(",").map(d=>d.trim()).filter(Boolean):[],
         videoUrl:null, aiAnalysis:null, aiStatus:null,
       }));
-      let guardados = preparados;
+      let guardados;
       if (clubId) {
         try {
           guardados = await Promise.all(preparados.map(p => saveMatch(clubId, p).then(row => matchToPartido(row))));
-        } catch { showToast("Error al guardar en BD","error"); }
+        } catch (e) {
+          showToast("Error al guardar en BD: " + e.message, "error");
+          return;
+        }
       } else {
         guardados = preparados.map(p => ({ ...p, id: Date.now() + Math.random() }));
       }
@@ -914,12 +923,8 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
         </motion.div>
       </div>
       <motion.div {...fadeUp} style={ss.card}>
-        <div style={{fontWeight:600,marginBottom:"16px",fontSize:"14px"}}>📊 Stats de temporada</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"14px"}}>
-          <div style={{textAlign:"center"}}><div style={{fontSize:"28px",fontWeight:800,color:sportColor,filter:`drop-shadow(0 0 8px ${sportColor}88)`}}>{sport==="basketball"?"5":"3"} 🔥</div><div style={{...ss.muted,marginTop:"4px"}}>Racha victorias</div></div>
-          <div style={{textAlign:"center"}}><div style={{fontSize:"13px",fontWeight:700,marginTop:"6px"}}>{players[4].name}</div><div style={{...ss.muted,marginTop:"4px"}}>Goleador / Trymaker</div></div>
-          <div style={{textAlign:"center"}}><div style={{fontSize:"28px",fontWeight:800,color:"#22C55E"}}>78%</div><div style={{...ss.muted,marginTop:"4px"}}>Posesión promedio</div></div>
-        </div>
+        <div style={{fontWeight:600,marginBottom:"10px",fontSize:"14px"}}>📊 Stats de temporada</div>
+        <div style={{...ss.muted,fontSize:"12px"}}>Todavía no hay estadísticas de temporada (racha, goleador, posesión) cargadas para este plantel.</div>
       </motion.div>
     </div>
   );
@@ -931,8 +936,15 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
       <CatsBanner/>
       <SectionTitle title={`Estadísticas — ${sp.name} ${currentCategory}`}/>
       {sp.stats.map((stat,si)=>{
-        const sorted = [...visiblePlayers].sort((a,b)=>sv(b,stat.key)-sv(a,stat.key));
+        const conDato = visiblePlayers.filter(p=>sv(p,stat.key)!=null);
+        const sorted = [...conDato].sort((a,b)=>sv(b,stat.key)-sv(a,stat.key));
         const max = sv(sorted[0],stat.key)||1;
+        if (sorted.length===0) return (
+          <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
+            <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
+            <div style={{...ss.muted,fontSize:"12px"}}>Aún no hay datos de "{stat.label}" cargados para este plantel.</div>
+          </motion.div>
+        );
         return (
           <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
             <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
@@ -958,10 +970,11 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
       {hiaModal&&sp.hasHIA&&(
         <motion.div {...scaleIn} style={{...ss.card,marginBottom:"20px",border:"2px solid #EF444455",background:"linear-gradient(135deg,rgba(239,68,68,0.08),transparent)"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"14px"}}>
-            <h3 style={{margin:0,color:"#EF4444",fontSize:"15px",display:"flex",alignItems:"center",gap:"8px"}}>🚨 Protocolo HIA — Cristóbal Vega #15</h3>
+            <h3 style={{margin:0,color:"#EF4444",fontSize:"15px",display:"flex",alignItems:"center",gap:"8px"}}>🚨 Protocolo HIA</h3>
             <motion.button whileHover={{scale:1.1,rotate:90}} whileTap={{scale:0.9}} onClick={()=>setHiaModal(false)} style={{...ss.btn,background:"transparent",color:"var(--text-2)",padding:"2px 8px"}}>✕</motion.button>
           </div>
-          {[{step:1,label:"Evaluación inicial en cancha",status:"completado",color:"#22C55E"},{step:2,label:"Evaluación médica post-partido",status:"pendiente",color:"#F59E0B"},{step:3,label:"Clearance médico para volver",status:"pendiente",color:"#4A5568"}].map((s,i)=>(
+          <div style={{...ss.muted,fontSize:"11px",marginBottom:"10px"}}>Pasos a seguir cuando un jugador sale por sospecha de conmoción — todavía no hay seguimiento por jugador guardado en el sistema, es solo la referencia del protocolo.</div>
+          {[{step:1,label:"Evaluación inicial en cancha",status:"pendiente",color:"#4A5568"},{step:2,label:"Evaluación médica post-partido",status:"pendiente",color:"#4A5568"},{step:3,label:"Clearance médico para volver",status:"pendiente",color:"#4A5568"}].map((s,i)=>(
             <motion.div key={s.step} initial={{opacity:0,x:-20}} animate={{opacity:1,x:0}} transition={{duration:0.3,delay:i*0.1}} style={{display:"flex",gap:"12px",alignItems:"center",padding:"12px",borderRadius:"var(--r-sm)",marginBottom:"8px",background:"var(--bg-elev-2)"}}>
               <div style={{width:"30px",height:"30px",borderRadius:"50%",background:`linear-gradient(135deg,${s.color},${s.color}dd)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",fontWeight:800,color:"#fff",boxShadow:`0 0 12px ${s.color}88`}}>{s.step}</div>
               <div style={{flex:1,fontSize:"13px"}}>{s.label}</div>
@@ -975,16 +988,16 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
         {[["verde","Aptos","#22C55E"],["amarillo","Alerta","#F59E0B"],["rojo","No aptos","#EF4444"]].map(([k,l,c],i)=>(
           <div key={k} style={{...ss.card,cursor:"default"}}>
             <div style={ss.muted}>{l}</div>
-            <div style={{fontSize:"26px",fontWeight:800,color:c,letterSpacing:"-0.02em",lineHeight:1.1}}>{players.filter(p=>p.med===k).length}</div>
-            <div style={{...ss.muted,fontSize:"11px",marginTop:"4px"}}>{Math.round(players.filter(p=>p.med===k).length/players.length*100)}% del plantel</div>
+            <div style={{fontSize:"26px",fontWeight:800,color:c,letterSpacing:"-0.02em",lineHeight:1.1}}>{players.filter(p=>p.med_status===k).length}</div>
+            <div style={{...ss.muted,fontSize:"11px",marginTop:"4px"}}>{players.length?Math.round(players.filter(p=>p.med_status===k).length/players.length*100):0}% del plantel</div>
           </div>
         ))}
       </div>
-      {players.filter(p=>p.med!=="verde").map((p,i)=>(
-        <motion.div key={p.id} {...fadeUp} transition={{duration:0.3,delay:i*0.05}} style={{...ss.card,marginBottom:"10px",display:"flex",alignItems:"center",gap:"12px",border:`1px solid ${p.med==="rojo"?"rgba(239,68,68,0.3)":"rgba(245,158,11,0.3)"}`}}>
-          <Semaforo status={p.med}/>
-          <div style={{flex:1}}><div style={{fontSize:"13px",fontWeight:500}}>{p.name}</div><div style={{...ss.muted,fontSize:"11px"}}>{p.hiaReason||(p.med==="amarillo"?"Seguimiento preventivo":"No apto")}</div></div>
-          <Badge color={p.med==="rojo"?"#EF4444":"#F59E0B"}>{p.med==="rojo"?"Bloqueado":"Alerta"}</Badge>
+      {players.filter(p=>p.med_status && p.med_status!=="verde").map((p,i)=>(
+        <motion.div key={p.id} {...fadeUp} transition={{duration:0.3,delay:i*0.05}} style={{...ss.card,marginBottom:"10px",display:"flex",alignItems:"center",gap:"12px",border:`1px solid ${p.med_status==="rojo"?"rgba(239,68,68,0.3)":"rgba(245,158,11,0.3)"}`}}>
+          <Semaforo status={p.med_status}/>
+          <div style={{flex:1}}><div style={{fontSize:"13px",fontWeight:500}}>{p.name}</div><div style={{...ss.muted,fontSize:"11px"}}>{p.hia_reason||(p.med_status==="amarillo"?"Seguimiento preventivo":"No apto")}</div></div>
+          <Badge color={p.med_status==="rojo"?"#EF4444":"#F59E0B"}>{p.med_status==="rojo"?"Bloqueado":"Alerta"}</Badge>
         </motion.div>
       ))}
     </div>

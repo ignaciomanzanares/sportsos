@@ -119,14 +119,14 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   const activity = [
     { dot: sportColor,  text: `${players[0]?.name||"Jugador"} marcó hat-trick en entrenamiento`, time: "Hace 2h" },
     { dot: "#818cf8",   text: "Cuotas del mes procesadas correctamente", time: "Hace 5h" },
-    { dot: "#fbbf24",   text: `${players.filter(p=>p.cuota==="vencida").length} jugadores con cuota vencida`, time: "Ayer 14:30" },
-    { dot: "#f87171",   text: players.find(p=>p.med==="rojo") ? `${players.find(p=>p.med==="rojo").name} en protocolo médico` : "Sin alertas médicas", time: "Ayer 09:00" },
+    { dot: "#fbbf24",   text: `${players.filter(p=>p.cuota_status==="vencida").length} jugadores con cuota vencida`, time: "Ayer 14:30" },
+    { dot: "#f87171",   text: players.find(p=>p.med_status==="rojo") ? `${players.find(p=>p.med_status==="rojo").name} en protocolo médico` : "Sin alertas médicas", time: "Ayer 09:00" },
     { dot: "#5a5753",   text: "Convocatoria para próximo partido publicada", time: "Hace 2d" },
   ];
 
   // Tabla de jugadores con filtro de posición
-  const allFilters = ["TODOS", ...Array.from(new Set(players.map(p=>posAbbr(p.pos))))];
-  const filtered = posFilter === "TODOS" ? players : players.filter(p=>posAbbr(p.pos)===posFilter);
+  const allFilters = ["TODOS", ...Array.from(new Set(players.map(p=>posAbbr(p.position))))];
+  const filtered = posFilter === "TODOS" ? players : players.filter(p=>posAbbr(p.position)===posFilter);
 
   // Rating basado en gym.pct o stats
   const perf = (p) => {
@@ -237,15 +237,15 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                 const rating = perf(p);
                 const pc = perfColor(rating);
                 const initials = p.name.split(" ").map(n=>n[0]).join("").slice(0,2).toUpperCase();
-                const statusColor = p.med==="rojo"?"#f87171":p.med==="amarillo"?"#fbbf24":sportColor;
-                const statusLabel = p.med==="rojo"?"Lesionado":p.med==="amarillo"?"Alerta":"Disponible";
+                const statusColor = p.med_status==="rojo"?"#f87171":p.med_status==="amarillo"?"#fbbf24":sportColor;
+                const statusLabel = p.med_status==="rojo"?"Lesionado":p.med_status==="amarillo"?"Alerta":"Disponible";
                 const bgColor = avatarColors[i % avatarColors.length];
                 return (
                   <tr key={p.id} style={{cursor:"pointer"}}
                     onMouseEnter={e=>{Array.from(e.currentTarget.cells).forEach(c=>c.style.background="#161412");}}
                     onMouseLeave={e=>{Array.from(e.currentTarget.cells).forEach(c=>c.style.background="");}}
                   >
-                    <td style={{padding:"10px",fontFamily:DM_MONO,fontSize:"11.5px",color:"#3e3b37",borderBottom:"1px solid #1a1816"}}>{p.num}</td>
+                    <td style={{padding:"10px",fontFamily:DM_MONO,fontSize:"11.5px",color:"#3e3b37",borderBottom:"1px solid #1a1816"}}>{p.number}</td>
                     <td style={{padding:"10px",borderBottom:"1px solid #1a1816"}}>
                       <div style={{display:"flex",alignItems:"center",gap:"9px"}}>
                         <div style={{width:"28px",height:"28px",borderRadius:"50%",background:bgColor,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:BEBAS,fontSize:"11px",color:"#fff",flexShrink:0}}>{initials}</div>
@@ -255,7 +255,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                         </div>
                       </div>
                     </td>
-                    <td style={{padding:"10px",borderBottom:"1px solid #1a1816",fontFamily:DM_MONO,fontSize:"11.5px",fontWeight:500,color:"#a8a49f"}}>{posAbbr(p.pos)}</td>
+                    <td style={{padding:"10px",borderBottom:"1px solid #1a1816",fontFamily:DM_MONO,fontSize:"11.5px",fontWeight:500,color:"#a8a49f"}}>{posAbbr(p.position)}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{Math.round((p.stats?.minutos||0)/90)}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:BEBAS,fontSize:"15px",fontWeight:700,color:sportColor,borderBottom:"1px solid #1a1816"}}>{p.stats?.goles||0}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{p.stats?.asistencias||0}</td>
