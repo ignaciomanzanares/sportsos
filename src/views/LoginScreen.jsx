@@ -148,8 +148,19 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
     try {
       const { data, error: authError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       if (authError) throw authError;
-      const { data: profile } = await supabase
-        .from("profiles").select("*").eq("id", data.user.id).single();
+
+      // La consulta del perfil puede fallar por un hipo transitorio de red/
+      // sincronización (ej. "JWT issued at future") justo después de iniciar
+      // sesión — si no reintentamos, se pierde el rol/club real y la app
+      // trata a un admin real como si fuera una cuenta nueva sin club.
+      let profile = null, profileError = null;
+      for (let intento = 0; intento < 2; intento++) {
+        const r = await supabase.from("profiles").select("*").eq("id", data.user.id).single();
+        profile = r.data; profileError = r.error;
+        if (!profileError) break;
+        await new Promise(res => setTimeout(res, 600));
+      }
+      if (profileError) throw new Error("perfil_no_disponible");
 
       const rolPerfil = profile?.rol || "jugador";
       let planEfectivo = profile?.plan || "free";
@@ -184,7 +195,11 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
       setTimeout(() => onLogin(user), 1200);
     } catch (err) {
       setLoading(false);
-      setError("Email o contraseña incorrectos");
+      if (err.message === "perfil_no_disponible") {
+        setError("No pudimos cargar tu cuenta (problema de conexión). Intenta de nuevo en unos segundos.");
+      } else {
+        setError("Email o contraseña incorrectos");
+      }
     }
   };
 

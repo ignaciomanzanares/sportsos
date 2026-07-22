@@ -176,12 +176,15 @@ export default function SportOS() {
       }
       if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session?.user && !currentUser) {
         const u = session.user;
-        // Buscar perfil en tabla profiles
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", u.id)
-          .single();
+        // Buscar perfil en tabla profiles. Reintenta una vez: un hipo
+        // transitorio de red/sincronización acá (ej. "JWT issued at future")
+        // hacía que se tratara a un admin real como cuenta nueva sin club.
+        let profile = null;
+        for (let intento = 0; intento < 2; intento++) {
+          const r = await supabase.from("profiles").select("*").eq("id", u.id).single();
+          if (!r.error) { profile = r.data; break; }
+          await new Promise(res => setTimeout(res, 600));
+        }
 
         const esSuperAdmin = u.email === "admin@sportostest.com";
         const rolPerfil = esSuperAdmin ? "superadmin" : (profile?.rol || "admin");
