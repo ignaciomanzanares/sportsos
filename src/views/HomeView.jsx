@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
+import { getNotifications } from "../lib/db";
+import EmptyState from "../components/EmptyState";
 
 // ── Componentes base del Home ─────────────────────────────────────────────
 
@@ -106,7 +108,22 @@ function posAbbr(pos) {
   return "MED";
 }
 
-function HomeAdmin({ players, sportColor, club, sp, countryData, payments, partidos, onNavigate }) {
+function relTime(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "Recién";
+  if (mins < 60) return `Hace ${mins}m`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `Hace ${hrs}h`;
+  const days = Math.floor(hrs / 24);
+  if (days === 1) return "Ayer";
+  if (days < 7) return `Hace ${days}d`;
+  return new Date(iso).toLocaleDateString("es-CL");
+}
+
+const NOTIF_DOT = { nomina:"#818cf8", partido:"#22c55e", pago:"#fbbf24", plantel:"#38bdf8", general:"#5a5753" };
+
+function HomeAdmin({ players, sportColor, club, sp, countryData, payments, partidos, onNavigate, clubId }) {
   const [posFilter, setPosFilter] = useState("TODOS");
 
   const pagados    = payments.filter(p=>p.estado==="pagado").length;
@@ -118,14 +135,19 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   // Próximos partidos
   const proximos = partidos.filter(p=>p.estado==="programado").slice(0,4);
 
-  // Actividad reciente (mock basado en posts/datos reales)
-  const activity = [
-    { dot: sportColor,  text: `${players[0]?.name||"Jugador"} marcó hat-trick en entrenamiento`, time: "Hace 2h" },
-    { dot: "#818cf8",   text: "Cuotas del mes procesadas correctamente", time: "Hace 5h" },
-    { dot: "#fbbf24",   text: `${players.filter(p=>p.cuota_status==="vencida").length} jugadores con cuota vencida`, time: "Ayer 14:30" },
-    { dot: "#f87171",   text: players.find(p=>p.med_status==="rojo") ? `${players.find(p=>p.med_status==="rojo").name} en protocolo médico` : "Sin alertas médicas", time: "Ayer 09:00" },
-    { dot: "#5a5753",   text: "Convocatoria para próximo partido publicada", time: "Hace 2d" },
-  ];
+  // Actividad reciente — antes era un feed 100% inventado (hat-trick falso,
+  // "cuotas procesadas" que nunca corrió, etc). Ahora lee notifications real.
+  const [notifs, setNotifs] = useState([]);
+  useEffect(() => {
+    if (!clubId) return;
+    getNotifications(clubId, 6).then(setNotifs).catch(() => {});
+  }, [clubId]);
+
+  const activity = notifs.map(n => ({
+    dot: NOTIF_DOT[n.type] || sportColor,
+    text: n.body || n.title,
+    time: relTime(n.created_at),
+  }));
 
   // Tabla de jugadores con filtro de posición
   const allFilters = ["TODOS", ...Array.from(new Set(players.map(p=>posAbbr(p.position))))];
@@ -193,6 +215,9 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
         {/* Actividad */}
         <div style={CARD}>
           <div style={{fontFamily:BEBAS,fontSize:"14px",color:"#f0ede8",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:"14px"}}>Actividad</div>
+          {activity.length===0 && (
+            <EmptyState icon="🔔" title="Sin actividad todavía" desc="Acá vas a ver resultados publicados, pagos confirmados y cambios en el plantel." color={sportColor}/>
+          )}
           {activity.map((act,i)=>(
             <div key={i} style={{display:"flex",gap:"10px",padding:"9px 0",borderBottom:"1px solid #1a1816"}}>
               <div style={{width:"5px",height:"5px",borderRadius:"50%",background:act.dot,marginTop:"6px",flexShrink:0}}/>
@@ -580,7 +605,7 @@ export default function HomeView({ role, players, sportColor, club, sp, countryD
       </motion.div>
 
       {/* Contenido por rol */}
-      {role==="admin"      && <HomeAdmin      players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={onNavigate}/>}
+      {role==="admin"      && <HomeAdmin      players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="entrenador" && <HomeEntrenador players={players} sportColor={sportColor} club={club} sp={sp} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate}/>}
       {role==="jugador"    && <HomeJugador    player={players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}

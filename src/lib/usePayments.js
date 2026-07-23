@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { getPayments, createPayment } from "./db";
+import { getPayments, createPayment, saveNotification } from "./db";
 import { supabase } from "./supabase";
 
 // DB status ('pending'|'declarado'|'paid'|'failed') -> estado que leen los componentes
@@ -57,8 +57,13 @@ export function usePayments(clubId) {
 
   // Acciones del admin sobre una declaración de pago
   const confirmPayment = async (paymentId, playerId) => {
+    const pago = payments.find(p => p.id === paymentId);
     await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", paymentId);
     if (playerId) await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId);
+    if (clubId) {
+      saveNotification({ clubId, type:"pago", title:"Pago confirmado",
+        body:`Cuota de ${pago?.playerName || "un jugador"} confirmada${pago?.amount ? ` — $${pago.amount.toLocaleString()}` : ""}` }).catch(()=>{});
+    }
     await load();
   };
 

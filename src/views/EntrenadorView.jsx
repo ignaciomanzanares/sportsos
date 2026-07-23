@@ -492,6 +492,9 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
       if (clubId) {
         try {
           partidoGuardado = matchToPartido(await saveMatch(clubId, nuevo));
+          const resLabel = resultado==="victoria"?"Victoria":resultado==="derrota"?"Derrota":"Empate";
+          await saveNotification({ clubId, type:"partido", title:"Resultado publicado",
+            body:`${resLabel} ${local}-${visita} vs ${resForm.rival}` }).catch(()=>{});
         } catch (e) {
           showToast("Error al guardar el resultado: " + e.message, "error");
           return;

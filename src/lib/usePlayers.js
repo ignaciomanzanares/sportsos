@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "./supabase";
+import { saveNotification } from "./db";
 
 /**
  * Hook que carga jugadores desde Supabase.
@@ -80,6 +81,8 @@ export function usePlayers(clubId) {
     }
 
     await load();
+    saveNotification({ clubId, type:"plantel", title:"Plantel actualizado",
+      body:`${rows.length} jugador${rows.length>1?"es":""} importado${rows.length>1?"s":""}/actualizado${rows.length>1?"s":""} desde Excel` }).catch(()=>{});
     return { total: rows.length };
   };
 
