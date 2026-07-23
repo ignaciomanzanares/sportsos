@@ -241,7 +241,7 @@ function MuroInput({sportColor, onPublish, players=[]}) {
 }
 
 /* ── PostCard ─────────────────────────────────────────── */
-function PostCard({post, sportColor, onReact, reactions={}, postLikes, setPostLikes, clubId=null, currentUserId=null, authorName="Yo", showToast=()=>{}}) {
+function PostCard({post, sportColor, onReact, reactions={}, liked=false, onToggleLike=()=>{}, clubId=null, currentUserId=null, authorName="Yo", showToast=()=>{}}) {
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment]     = useState("");
   const { comments, addComment: saveComment } = useComments(post.id, clubId);
@@ -258,7 +258,7 @@ function PostCard({post, sportColor, onReact, reactions={}, postLikes, setPostLi
   };
 
   const myReactions = reactions[post.id] || {};
-  const totalLikes  = postLikes[post.id] || post.likes || 0;
+  const totalLikes  = post.likes || 0;
 
   // Detectar si es insignia o reto para render especial
   const isInsignia = post.type==="insignia";
@@ -324,9 +324,9 @@ function PostCard({post, sportColor, onReact, reactions={}, postLikes, setPostLi
           );
         })}
         <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.9}}
-          onClick={()=>setPostLikes(prev=>({...prev,[post.id]:(prev[post.id]||0)+1}))}
-          style={{...ss.btn,background:"transparent",color:"var(--text-2)",fontSize:"11px",padding:"4px 10px",border:"1px solid var(--border-soft)",marginLeft:"auto"}}>
-          ❤️ {totalLikes}
+          onClick={()=>onToggleLike(post.id)}
+          style={{...ss.btn,background:liked?"rgba(239,68,68,0.12)":"transparent",color:liked?"#EF4444":"var(--text-2)",fontSize:"11px",padding:"4px 10px",border:`1px solid ${liked?"rgba(239,68,68,0.35)":"var(--border-soft)"}`,marginLeft:"auto"}}>
+          {liked?"❤️":"🤍"} {totalLikes}
         </motion.button>
       </div>
 
@@ -394,7 +394,7 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
 }
 
 /* ── EntrenadorView ─────────────────────────────────────────── */
-export default function EntrenadorView({module, sport, sp, club, players, postLikes, setPostLikes, showToast, sportColor, currentCategory, hiaModal, setHiaModal, userCats=[], isDemo=true, partidos=[], setPartidos=()=>{}, clubId=null, currentUserId=null}) {
+export default function EntrenadorView({module, sport, sp, club, players, showToast, sportColor, currentCategory, hiaModal, setHiaModal, userCats=[], isDemo=true, partidos=[], setPartidos=()=>{}, clubId=null, currentUserId=null}) {
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#3B82F6","advertencia":"#EF4444","insignia":"#F59E0B","reto":"#A855F7"};
   // Sin tabla de estadísticas por jugador todavía — no inventar un número
   // cuando no hay dato real (antes generaba uno "consistente" por fórmula,
@@ -409,7 +409,7 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
   };
 
   // Datos reales desde Supabase (con fallback a mock)
-  const { posts, createPost } = usePosts(clubId);
+  const { posts, createPost, toggleLike, likedByMe } = usePosts(clubId, currentUserId);
   const today = new Date().toISOString().split("T")[0];
   const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, load: loadAttendance } = useAttendance(clubId, today);
 
@@ -613,14 +613,6 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
                 )}
               </div>
 
-              {/* Wellness automático */}
-              <div style={{padding:"10px 12px",borderRadius:"var(--r-md)",background:"rgba(192,57,43,0.06)",border:"1px solid rgba(192,57,43,0.2)",marginBottom:"14px",display:"flex",alignItems:"center",gap:"10px"}}>
-                <span style={{fontSize:"16px"}}>📣</span>
-                <div style={{fontSize:"11px",color:"var(--text-2)"}}>
-                  Al publicar se programará el <strong style={{color:"var(--text-1)"}}>cuestionario wellness automático</strong> a las 24h y 48h post partido para todos los jugadores.
-                </div>
-              </div>
-
               {/* Placeholder subida de video */}
               <div style={{padding:"12px 14px",borderRadius:"var(--r-md)",background:"rgba(168,85,247,0.06)",border:"1px dashed rgba(168,85,247,0.3)",marginBottom:"14px",display:"flex",alignItems:"center",gap:"10px"}}>
                 <span style={{fontSize:"20px"}}>🎬</span>
@@ -652,7 +644,7 @@ export default function EntrenadorView({module, sport, sp, club, players, postLi
         {posts.map((post,i)=>(
           <PostCard key={post.id} post={post} sportColor={sportColor}
             reactions={reactions} onReact={handleReact}
-            postLikes={postLikes} setPostLikes={setPostLikes}
+            liked={!!likedByMe[post.id]} onToggleLike={toggleLike}
             clubId={clubId} currentUserId={currentUserId} showToast={showToast}/>
         ))}
       </div>

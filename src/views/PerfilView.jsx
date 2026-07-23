@@ -61,7 +61,24 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
     if (!source) { setLoading(false); return; }
 
     if (readOnly && playerData) {
-      setForm({ ...emptyForm, ...playerData, nombre: playerData.name || playerData.nombre || "" });
+      // playerData es una fila de "players" (position/altura_m/número/etc),
+      // pero el form espera las columnas de "profiles" (posicion_1/altura_cm/
+      // numero_camiseta/etc) — sin este mapeo, Posición/Altura/Contacto de
+      // emergencia salían siempre vacíos aunque el dato existiera en players.
+      setForm({
+        ...emptyForm,
+        nombre: playerData.name || playerData.nombre || "",
+        email: playerData.email || "",
+        telefono: playerData.telefono || "",
+        fecha_nacimiento: playerData.fecha_nacimiento || "",
+        altura_cm: playerData.altura_m ? Math.round(Number(playerData.altura_m) * 100) : "",
+        peso_kg: playerData.peso_kg || "",
+        posicion_1: playerData.position || "",
+        seguro_salud: playerData.isapre || playerData.seguro || "",
+        contacto_emergencia_nombre: playerData.contacto_emergencia_nombre || "",
+        contacto_emergencia_tel: playerData.contacto_emergencia_telefono || "",
+        numero_camiseta: playerData.number || "",
+      });
       setLoading(false);
       return;
     }

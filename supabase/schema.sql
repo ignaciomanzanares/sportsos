@@ -179,7 +179,8 @@ create table if not exists matches (
   equipo      text default 'A',
   cat         text,
   destacados  jsonb default '[]',
-  autor       text
+  autor       text,
+  tarjetas    jsonb default '[]'
 );
 
 -- Si la tabla ya existe, agregar columnas si faltan (db.js saveMatch() las
@@ -190,6 +191,7 @@ alter table matches add column if not exists equipo     text default 'A';
 alter table matches add column if not exists cat        text;
 alter table matches add column if not exists destacados jsonb default '[]';
 alter table matches add column if not exists autor      text;
+alter table matches add column if not exists tarjetas   jsonb default '[]';
 
 -- ─── ATTENDANCE ───────────────────────────────────────────────
 create table if not exists attendance (
@@ -249,6 +251,16 @@ create table if not exists post_likes (
   post_id     uuid references posts(id) on delete cascade,
   user_id     uuid references profiles(id) on delete cascade,
   primary key (post_id, user_id)
+);
+
+create table if not exists post_comments (
+  id          uuid primary key default uuid_generate_v4(),
+  post_id     uuid not null references posts(id) on delete cascade,
+  club_id     uuid not null references clubs(id) on delete cascade,
+  author_id   uuid references profiles(id),
+  author_name text not null,
+  text        text not null,
+  created_at  timestamptz default now()
 );
 
 -- ─── JOIN REQUESTS (solicitudes de unión vía código de club) ──
@@ -351,6 +363,7 @@ alter table gym_logs   enable row level security;
 alter table payments   enable row level security;
 alter table posts         enable row level security;
 alter table post_likes    enable row level security;
+alter table post_comments enable row level security;
 alter table lineups       enable row level security;
 alter table join_requests enable row level security;
 alter table plan_history  enable row level security;
@@ -398,6 +411,7 @@ drop policy if exists "own gym logs"                  on gym_logs;
 drop policy if exists "club payments"                 on payments;
 drop policy if exists "club posts"                    on posts;
 drop policy if exists "club post likes"               on post_likes;
+drop policy if exists "club post comments"            on post_comments;
 drop policy if exists "club lineups"                  on lineups;
 drop policy if exists "anyone can request to join"    on join_requests;
 drop policy if exists "club admins see join requests" on join_requests;
@@ -453,6 +467,7 @@ create policy "own gym logs"                  on gym_logs   for all    using (pl
 create policy "club payments"                 on payments   for all    using (club_id = my_club_id());
 create policy "club posts"                    on posts      for all    using (club_id = my_club_id());
 create policy "club post likes"               on post_likes for all    using (post_id in (select id from posts where club_id = my_club_id()));
+create policy "club post comments"            on post_comments for all using (club_id = my_club_id());
 create policy "club lineups"                  on lineups    for all    using (club_id = my_club_id());
 
 -- Cualquiera (sin cuenta) puede enviar una solicitud de unión con un código válido

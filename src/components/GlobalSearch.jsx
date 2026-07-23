@@ -29,7 +29,7 @@ export default function GlobalSearch({ players=[], posts=[], sportColor="#A855F7
 
     // Jugadores
     players.filter(p => p.name?.toLowerCase().includes(q)).slice(0,4).forEach(p => {
-      res.push({ type:"jugador", icon:"👤", label:p.name, sub:`#${p.number||"?"} · ${p.cat||"Sin cat."}`, action:()=>onNavigate("jugadores") });
+      res.push({ type:"jugador", icon:"👤", label:p.name, sub:`#${p.number||"?"} · ${p.category||"Sin cat."}`, action:()=>onNavigate("jugadores") });
     });
 
     // Posts / El Muro

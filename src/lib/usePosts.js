@@ -6,8 +6,9 @@ import { MOCK_POSTS } from "../data/mockData";
  * Hook para El Muro — carga posts desde Supabase.
  * Sin club_id (demo/preview) usa la vitrina; con club_id, siempre lo real (aunque esté vacío).
  */
-export function usePosts(clubId) {
+export function usePosts(clubId, userId=null) {
   const [posts,   setPosts]   = useState(clubId ? [] : MOCK_POSTS);
+  const [likedByMe, setLikedByMe] = useState({}); // { [postId]: true }
   const [loading, setLoading] = useState(false);
   const isReal = !!clubId;
 
@@ -22,6 +23,18 @@ export function usePosts(clubId) {
         .order("created_at", { ascending: false })
         .limit(20);
       if (error) throw error;
+
+      const ids = data.map(p => p.id);
+      let likeCounts = {}, mine = {};
+      if (ids.length > 0) {
+        const { data: likes } = await supabase.from("post_likes").select("post_id, user_id").in("post_id", ids);
+        (likes || []).forEach(l => {
+          likeCounts[l.post_id] = (likeCounts[l.post_id] || 0) + 1;
+          if (userId && l.user_id === userId) mine[l.post_id] = true;
+        });
+      }
+      setLikedByMe(mine);
+
       // Normalizar al mismo formato que los mock posts
       const normalized = data.map(p => ({
         id:     p.id,
@@ -29,7 +42,7 @@ export function usePosts(clubId) {
         author: p.profiles?.nombre || "Usuario",
         time:   timeAgo(p.created_at),
         text:   p.text,
-        likes:  0,
+        likes:  likeCounts[p.id] || 0,
       }));
       setPosts(normalized);
     } catch {
@@ -37,7 +50,21 @@ export function usePosts(clubId) {
     } finally {
       setLoading(false);
     }
-  }, [clubId, isReal]);
+  }, [clubId, isReal, userId]);
+
+  const toggleLike = async (postId) => {
+    if (!isReal || !userId) return;
+    const already = likedByMe[postId];
+    if (already) {
+      await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", userId);
+      setLikedByMe(prev => { const n = { ...prev }; delete n[postId]; return n; });
+      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: Math.max(0, p.likes - 1) } : p));
+    } else {
+      await supabase.from("post_likes").insert({ post_id: postId, user_id: userId });
+      setLikedByMe(prev => ({ ...prev, [postId]: true }));
+      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
+    }
+  };
 
   useEffect(() => { load(); }, [load]);
 
@@ -75,7 +102,7 @@ export function usePosts(clubId) {
     return data;
   };
 
-  return { posts, loading, createPost, reload: load };
+  return { posts, loading, createPost, toggleLike, likedByMe, reload: load };
 }
 
 function timeAgo(dateStr) {

@@ -208,6 +208,7 @@ export async function saveMatch(clubId, partido) {
       cat:        partido.cat        || null,
       destacados: partido.destacados || [],
       autor:      partido.autor      || null,
+      tarjetas:   partido.tarjetas   || [],
     })
     .select()
     .single();
@@ -232,6 +233,7 @@ export function matchToPartido(m) {
     autor:       m.autor       || "Entrenador",
     resumen:     m.notes       || "",
     destacados:  m.destacados  || [],
+    tarjetas:    m.tarjetas    || [],
     videoUrl: null, aiAnalysis: null, aiStatus: null,
   };
 }
