@@ -94,8 +94,11 @@ const BEBAS = "'Bebas Neue', sans-serif";
 const DM_MONO = "'DM Mono', monospace";
 
 // Mapea posición larga a abreviatura de 3 letras
-function posAbbr(pos="") {
-  const p = pos.toLowerCase();
+function posAbbr(pos) {
+  // pos="" como default solo cubre undefined, no null — y position es
+  // null de verdad para jugadores reales sin posición cargada (crasheaba
+  // toda la pantalla con "Cannot read properties of null").
+  const p = (pos || "").toLowerCase();
   if (p.includes("portero") || p.includes("arquero") || p.includes("goalkeeper")) return "POR";
   if (p.includes("delantero") || p.includes("ala") || p.includes("forward") || p.includes("fullback") || p.includes("tries")) return "DEL";
   if (p.includes("medio") || p.includes("apertura") || p.includes("scrum") || p.includes("centro") || p.includes("half")) return "MED";
