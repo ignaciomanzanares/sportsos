@@ -32,10 +32,11 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
   const myPayments = payments.filter(p => p.playerId === player.id);
   const declarado = myPayments.some(p => p.estado === "declarado");
 
-  // Métodos realmente implementados hoy — el resto es "Próximamente" hasta
-  // que exista integración real con esa pasarela. Mercado Pago se habilita
-  // solo si el club cargó sus credenciales.
-  const METODOS_LISTOS = ["Transferencia", ...(bankInfo?.mercadopago_enabled ? ["Mercado Pago"] : [])];
+  // Métodos realmente implementados hoy — el resto es "Próximamente".
+  // Mercado Pago todavía no se verificó de punta a punta con credenciales
+  // reales, así que se muestra como no disponible aunque el club ya haya
+  // cargado sus credenciales en Mi Club.
+  const METODOS_LISTOS = ["Transferencia"];
 
   useEffect(() => {
     if (!clubId) return;

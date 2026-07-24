@@ -320,10 +320,10 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         </div>
         <div style={{borderTop:"1px solid var(--border-soft)",paddingTop:"14px",marginTop:"4px",marginBottom:"14px"}}>
           <div style={{fontWeight:700,fontSize:"13px",marginBottom:"4px",display:"flex",alignItems:"center",gap:"6px"}}>
-            🔵 Mercado Pago <span style={{fontSize:"9px",padding:"2px 7px",borderRadius:"99px",background:"var(--bg-elev-3)",color:"var(--text-4)",fontWeight:700}}>opcional</span>
+            🔵 Mercado Pago <span style={{fontSize:"9px",padding:"2px 7px",borderRadius:"99px",background:"rgba(239,68,68,0.12)",color:"#EF4444",fontWeight:700,border:"1px solid rgba(239,68,68,0.3)"}}>no disponible aún</span>
           </div>
           <div style={{fontSize:"11px",color:"var(--text-3)",marginBottom:"10px"}}>
-            Configúralo para que los jugadores puedan pagar con tarjeta al instante. Sacas estas credenciales desde tu cuenta de Mercado Pago → Tus integraciones.
+            Esta integración todavía está en verificación y no está habilitada para los jugadores. Puedes cargar tus credenciales ahora para dejarlas listas, pero por ahora los jugadores solo verán "Transferencia" como método de pago.
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
             <div>
