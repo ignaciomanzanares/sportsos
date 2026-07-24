@@ -29,9 +29,14 @@ export function useAttendance(clubId, date) {
     if (!isReal) return;
     setSaving(s => ({ ...s, [playerId]: true }));
     try {
-      await supabase.from("attendance").upsert({
+      // onConflict explícito: la tabla tiene unique(player_id,date), no la
+      // PK (id) — sin esto, cada toggle insertaba una fila nueva y la
+      // segunda marcación del mismo día violaba la restricción unique en
+      // silencio (el error nunca se revisaba).
+      const { error } = await supabase.from("attendance").upsert({
         club_id: clubId, player_id: playerId, date, present: next,
-      });
+      }, { onConflict: "player_id,date" });
+      if (error) throw error;
     } catch {
       // revertir si falla
       setPresent(p => ({ ...p, [playerId]: !next }));

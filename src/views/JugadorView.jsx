@@ -17,12 +17,17 @@ import ProgressBar from "../components/ProgressBar";
 import RankingView from "../components/RankingView";
 
 /* ── MiCuota ────────────────────────────────────────────────── */
-function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment, declarePayment, clubId}) {
+function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment, declarePayment, clubId, isDemo=false}) {
   const [selectedMethod, setSelectedMethod] = useState("Transferencia");
   const [paying, setPaying] = useState(false);
   const [paid, setPaid] = useState(player.cuota_status ? player.cuota_status === "ok" : player.cuota === "ok");
   const [bankInfo, setBankInfo] = useState(null);
   const [copiedField, setCopiedField] = useState("");
+
+  // En demo (sin club real) mostramos el monto de vitrina; con club real,
+  // el único monto válido es el que el admin configuró en Mi Club.
+  const cuota = isDemo ? club.cuota : bankInfo?.cuota_mensual;
+  const cuotaConfigurada = !!cuota;
 
   const myPayments = payments.filter(p => p.playerId === player.id);
   const declarado = myPayments.some(p => p.estado === "declarado");
@@ -51,7 +56,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
       const resp = await fetch("/api/mercadopago-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ club_id: clubId, player_id: player.id, amount: club.cuota }),
+        body: JSON.stringify({ club_id: clubId, player_id: player.id }),
       });
       const data = await resp.json();
       if (!resp.ok || !data.init_point) throw new Error(data.error || "No se pudo iniciar el pago");
@@ -67,10 +72,10 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
     setPaying(true);
     try {
       if (declarePayment) {
-        await declarePayment({ playerId: player.id, amount: club.cuota, method: selectedMethod });
+        await declarePayment({ playerId: player.id, amount: cuota, method: selectedMethod });
         showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
       } else {
-        const newPayment = { id: payments.length + 1, playerId: player.id, playerName: player.name, amount: club.cuota, method: selectedMethod, date: new Date().toISOString().split("T")[0], estado: "declarado" };
+        const newPayment = { id: payments.length + 1, playerId: player.id, playerName: player.name, amount: cuota, method: selectedMethod, date: new Date().toISOString().split("T")[0], estado: "declarado" };
         setPayments(prev => [newPayment, ...prev]);
         showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
       }
@@ -100,7 +105,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
             </div>
           </div>
           <div style={{textAlign:"right"}}>
-            <div style={{fontSize:"28px",fontWeight:800,color:paid?"#22C55E":"#EF4444",letterSpacing:"-0.02em"}}>{countryData.symbol}{club.cuota.toLocaleString()}</div>
+            <div style={{fontSize:"28px",fontWeight:800,color:paid?"#22C55E":"#EF4444",letterSpacing:"-0.02em"}}>{cuotaConfigurada ? `${countryData.symbol}${cuota.toLocaleString()}` : "—"}</div>
             <div style={ss.muted}>{countryData.currency}</div>
           </div>
         </div>
@@ -139,6 +144,12 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
             })}
           </div>
 
+          {!cuotaConfigurada && (
+            <div style={{...ss.card, background:"rgba(239,68,68,0.05)", border:"1px solid rgba(239,68,68,0.2)", marginBottom:"16px", padding:"14px", fontSize:"12px", color:"var(--text-3)"}}>
+              ⚠️ Tu club todavía no configuró el monto de la cuota. Pídele al admin que lo complete en Mi Club.
+            </div>
+          )}
+
           {selectedMethod === "Transferencia" && (
             bankInfo ? (
               <div style={{...ss.card, background:"var(--bg-elev-1)", marginBottom:"16px", padding:"14px"}}>
@@ -172,7 +183,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
           <div style={{...ss.card, background:"var(--bg-elev-1)", marginBottom:"16px", padding:"14px"}}>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:"8px",fontSize:"13px"}}>
               <span style={{color:"var(--text-2)"}}>Cuota mensual</span>
-              <span>{countryData.symbol}{club.cuota.toLocaleString()}</span>
+              <span>{cuotaConfigurada ? `${countryData.symbol}${cuota.toLocaleString()}` : "—"}</span>
             </div>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:"8px",fontSize:"13px"}}>
               <span style={{color:"var(--text-2)"}}>Comisión plataforma</span>
@@ -180,12 +191,12 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
             </div>
             <div style={{borderTop:"1px solid var(--border-soft)",paddingTop:"8px",display:"flex",justifyContent:"space-between",fontWeight:700,fontSize:"15px"}}>
               <span>Total</span>
-              <span style={{color:sportColor}}>{countryData.symbol}{club.cuota.toLocaleString()} {countryData.currency}</span>
+              <span style={{color:sportColor}}>{cuotaConfigurada ? `${countryData.symbol}${cuota.toLocaleString()} ${countryData.currency}` : "—"}</span>
             </div>
           </div>
 
-          <motion.button whileHover={!paying?{scale:1.02,y:-2}:{}} whileTap={!paying?{scale:0.98}:{}} onClick={handleDeclarar} disabled={paying || (selectedMethod==="Transferencia" && !bankInfo)}
-            style={{...ss.btn, background:paying?"rgba(255,255,255,0.06)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:paying?"var(--text-3)":"#fff", width:"100%", padding:"14px", fontSize:"14px", fontWeight:700, boxShadow:paying?"none":`0 8px 24px ${sportColor}44`, cursor:paying?"not-allowed":"pointer", opacity:(selectedMethod==="Transferencia" && !bankInfo)?0.5:1}}>
+          <motion.button whileHover={!paying?{scale:1.02,y:-2}:{}} whileTap={!paying?{scale:0.98}:{}} onClick={handleDeclarar} disabled={paying || !cuotaConfigurada || (selectedMethod==="Transferencia" && !bankInfo)}
+            style={{...ss.btn, background:paying?"rgba(255,255,255,0.06)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:paying?"var(--text-3)":"#fff", width:"100%", padding:"14px", fontSize:"14px", fontWeight:700, boxShadow:paying?"none":`0 8px 24px ${sportColor}44`, cursor:paying?"not-allowed":"pointer", opacity:(!cuotaConfigurada || (selectedMethod==="Transferencia" && !bankInfo))?0.5:1}}>
             {paying
               ? (selectedMethod==="Mercado Pago" ? "⏳ Redirigiendo..." : "⏳ Enviando...")
               : (selectedMethod==="Mercado Pago" ? "💳 Pagar con Mercado Pago" : "✅ Ya transferí, notificar al admin")}
@@ -358,17 +369,26 @@ function NominasClub({ teamsToShow, forms, sport, sportColor, clubId, players, p
 /* ── MiConvocatoria — antes decía "estás convocado" a TODOS los jugadores
    sin importar si de verdad estaban en alguna nómina publicada. Ahora
    revisa las nóminas reales guardadas por el entrenador. ─────────────── */
-function MiConvocatoria({ camiseta, club, sportColor, convocado, setConvocado, setWhatsappModal, showToast, clubId, playerId, PlantelBanner }) {
+function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado, setConvocado, setWhatsappModal, showToast, clubId, playerId, PlantelBanner }) {
   const [llamado, setLlamado] = useState(null); // null = cargando, true/false
+  const [misNomina, setMisNomina] = useState(null); // { team, starters, bench } de la nómina real donde aparezco
 
   useEffect(() => {
     if (!clubId) { setLlamado(true); return; } // demo/preview: mantener comportamiento anterior
-    Promise.all(TEAMS.map(t => getLineups(clubId, t.id).catch(() => null)))
+    Promise.all(TEAMS.map(t => getLineups(clubId, t.id).then(l => ({ team: t, lineup: l })).catch(() => null)))
       .then(results => {
-        const enAlguna = results.some(l => (l?.slots || []).includes(playerId));
-        setLlamado(enAlguna);
+        const match = results.find(r => (r?.lineup?.slots || []).includes(playerId));
+        setLlamado(!!match);
+        if (match) {
+          const forms = FORMATIONS[sport] || [];
+          const formacion = forms.find(f => f.key === match.lineup.formation) || forms[0];
+          const nombreDe = id => players.find(p => p.id === id)?.name || "Jugador";
+          const starters = (match.lineup.slots || []).map((id, i) => id ? { name: nombreDe(id), pos: formacion?.positions?.[i] || "" } : null).filter(Boolean);
+          const bench = (match.lineup.bench || []).map(id => ({ name: nombreDe(id) }));
+          setMisNomina({ team: match.team, starters, bench });
+        }
       });
-  }, [clubId, playerId]);
+  }, [clubId, playerId, sport, players]);
 
   if (llamado === null) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Revisando convocatoria...</div>;
 
@@ -394,7 +414,9 @@ function MiConvocatoria({ camiseta, club, sportColor, convocado, setConvocado, s
         <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("confirmed");showToast("✅ Presencia confirmada","success");}} style={{...ss.btn,flex:1,background:convocado==="confirmed"?"linear-gradient(135deg,#22C55E,#16A34A)":"rgba(34,197,94,0.15)",color:convocado==="confirmed"?"#fff":"#22C55E",border:"1px solid #22C55E55",padding:"14px",fontSize:"13px",boxShadow:convocado==="confirmed"?"0 8px 24px rgba(34,197,94,0.35)":"none"}}>{convocado==="confirmed"?"✅ Confirmado":"✓ Confirmar presencia"}</motion.button>
         <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("rejected");showToast("Ausencia registrada","warning");}} style={{...ss.btn,flex:1,background:convocado==="rejected"?"linear-gradient(135deg,#EF4444,#DC2626)":"rgba(239,68,68,0.15)",color:convocado==="rejected"?"#fff":"#EF4444",border:"1px solid #EF444455",padding:"14px",fontSize:"13px",boxShadow:convocado==="rejected"?"0 8px 24px rgba(239,68,68,0.35)":"none"}}>{convocado==="rejected"?"✕ No asistirás":"✕ No puedo asistir"}</motion.button>
       </div>
-      <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>setWhatsappModal(true)} style={{...ss.btn,background:"linear-gradient(135deg,#25D366,#128C7E)",color:"#fff",width:"100%",padding:"12px",fontSize:"13px",boxShadow:"0 8px 24px rgba(37,211,102,0.35)"}}>📱 Compartir convocatoria en WhatsApp</motion.button>
+      <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}}
+        onClick={()=>setWhatsappModal({ team:`${club.name}${misNomina?.team?` · ${misNomina.team.name}`:""}`, rival:club.next.rival, date:club.next.dia, hora:club.next.hora, lugar:club.next.lugar, starters:misNomina?.starters||[], bench:misNomina?.bench||[] })}
+        style={{...ss.btn,background:"linear-gradient(135deg,#25D366,#128C7E)",color:"#fff",width:"100%",padding:"12px",fontSize:"13px",boxShadow:"0 8px 24px rgba(37,211,102,0.35)"}}>📱 Compartir convocatoria en WhatsApp</motion.button>
     </div>
   );
 }
@@ -717,7 +739,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
     );
   }
 
-  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId}/>;
+  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId} isDemo={isDemo}/>;
 
   if(module==="migym") return <GymJugador player={player} sportColor={sportColor} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players} clubId={clubId}/>;
 
@@ -728,7 +750,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
   }
 
   if(module==="miconvocatoria") return (
-    <MiConvocatoria camiseta={camiseta} club={club} sportColor={sportColor} convocado={convocado} setConvocado={setConvocado}
+    <MiConvocatoria camiseta={camiseta} club={club} sport={sport} players={players} sportColor={sportColor} convocado={convocado} setConvocado={setConvocado}
       setWhatsappModal={setWhatsappModal} showToast={showToast} clubId={clubId} playerId={player.id} PlantelBanner={PlantelBanner}/>
   );
 

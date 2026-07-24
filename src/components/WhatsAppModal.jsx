@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 
-export default function WhatsAppModal({onClose, team, rival, date, starters, bench}) {
-  const msg = `✅ ${team} — Nómina vs ${rival}\n📅 ${date} ⏰ 15:00 📍 Estadio Municipal\n\nTITULARES:\n${starters.map((p,i)=>`${i+1}. ${p.name} (${p.pos})`).join("\n")}\n\nBANCO:\n${bench.map((p,i)=>`${starters.length+i+1}. ${p.name}`).join("\n")}\n\n_Confirma tu presencia en SportOS_`;
+export default function WhatsAppModal({onClose, team, rival, date, hora, lugar, starters, bench}) {
+  const cuando = [date, hora ? `⏰ ${hora}` : null, lugar ? `📍 ${lugar}` : null].filter(Boolean).join(" ");
+  const msg = `✅ ${team} — Nómina vs ${rival}\n📅 ${cuando}\n\nTITULARES:\n${starters.map((p,i)=>`${i+1}. ${p.name} (${p.pos})`).join("\n")}\n\nBANCO:\n${bench.map((p,i)=>`${starters.length+i+1}. ${p.name}`).join("\n")}\n\n_Confirma tu presencia en SportOS_`;
   const [copied, setCopied] = useState(false);
   return (
     <AnimatePresence>

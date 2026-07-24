@@ -584,6 +584,7 @@ create table if not exists club_payment_settings (
   khipu_link               text,
   mercadopago_public_key   text,
   mercadopago_access_token text,
+  cuota_mensual            numeric,
   updated_at               timestamptz default now()
 );
 
@@ -604,7 +605,7 @@ create policy "superadmin manages all payment settings" on club_payment_settings
 -- es lo que la hace segura igual (cada uno solo ve su propio club).
 create or replace view club_payment_info as
 select club_id, banco, tipo_cuenta, numero_cuenta, rut_titular, nombre_titular,
-       email_titular, khipu_link, mercadopago_public_key,
+       email_titular, khipu_link, mercadopago_public_key, cuota_mensual,
        (mercadopago_access_token is not null and mercadopago_access_token <> '') as mercadopago_enabled
 from club_payment_settings
 where club_id = my_club_id();
@@ -614,6 +615,59 @@ grant select on club_payment_info to authenticated;
 -- Nuevo estado intermedio en payments: el jugador "declara" que transfirió,
 -- pero queda pendiente de que el admin lo confirme manualmente.
 comment on column payments.status is 'pending | declarado | paid | failed';
+
+-- ══════════════════════════════════════════════════════════════
+--  FINANZAS DEL CLUB (movimientos, sueldos, gastos fijos)
+-- ══════════════════════════════════════════════════════════════
+
+create table if not exists finanzas_movimientos (
+  id          uuid primary key default uuid_generate_v4(),
+  club_id     uuid not null references clubs(id) on delete cascade,
+  tipo        text not null, -- 'ingreso' | 'egreso'
+  cat         text not null,
+  descripcion text not null,
+  monto       numeric not null,
+  fecha       date not null,
+  created_at  timestamptz default now()
+);
+
+create table if not exists finanzas_sueldos (
+  id          uuid primary key default uuid_generate_v4(),
+  club_id     uuid not null references clubs(id) on delete cascade,
+  nombre      text not null,
+  cargo       text,
+  monto       numeric not null,
+  activo      boolean default true,
+  created_at  timestamptz default now()
+);
+
+create table if not exists finanzas_gastos_admin (
+  id          uuid primary key default uuid_generate_v4(),
+  club_id     uuid not null references clubs(id) on delete cascade,
+  cat         text not null,
+  descripcion text not null,
+  monto       numeric not null,
+  activo      boolean default true,
+  created_at  timestamptz default now()
+);
+
+alter table finanzas_movimientos  enable row level security;
+alter table finanzas_sueldos      enable row level security;
+alter table finanzas_gastos_admin enable row level security;
+
+drop policy if exists "club finanzas movimientos" on finanzas_movimientos;
+drop policy if exists "superadmin finanzas movimientos" on finanzas_movimientos;
+drop policy if exists "club finanzas sueldos" on finanzas_sueldos;
+drop policy if exists "superadmin finanzas sueldos" on finanzas_sueldos;
+drop policy if exists "club finanzas gastos admin" on finanzas_gastos_admin;
+drop policy if exists "superadmin finanzas gastos admin" on finanzas_gastos_admin;
+
+create policy "club finanzas movimientos" on finanzas_movimientos for all using (club_id = my_club_id());
+create policy "superadmin finanzas movimientos" on finanzas_movimientos for all using (is_superadmin());
+create policy "club finanzas sueldos" on finanzas_sueldos for all using (club_id = my_club_id());
+create policy "superadmin finanzas sueldos" on finanzas_sueldos for all using (is_superadmin());
+create policy "club finanzas gastos admin" on finanzas_gastos_admin for all using (club_id = my_club_id());
+create policy "superadmin finanzas gastos admin" on finanzas_gastos_admin for all using (is_superadmin());
 
 -- ══════════════════════════════════════════════════════════════
 --  DATOS DE PRUEBA (opcional — borra si no los necesitas)

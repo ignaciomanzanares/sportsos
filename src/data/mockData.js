@@ -5,22 +5,6 @@ export const MOCK_POSTS = [
   {id:4,type:"advertencia",author:"Preparador Díaz",time:"Hace 2d",text:"Sesión de fuerza viernes 7:00 AM obligatoria para plantel principal. Planilla de asistencia activa.",likes:7},
 ];
 
-export const COMMISSION_DATA = [
-  {month:"Dic",val:8200},{month:"Ene",val:9100},{month:"Feb",val:8700},
-  {month:"Mar",val:10400},{month:"Abr",val:11200},{month:"May",val:12800}
-];
-
-export const CLUB_LIST = [
-  {id:1,sport:"rugby",country:"CL",name:"Toros RC",plan:"Pro",players:45,mrr:450000,status:"active"},
-  {id:2,sport:"futbol",country:"CL",name:"Andes FC",plan:"Enterprise",players:72,mrr:880000,status:"active"},
-  {id:3,sport:"handball",country:"CL",name:"Club Atlético",plan:"Starter",players:28,mrr:180000,status:"active"},
-  {id:4,sport:"basketball",country:"CL",name:"Halcones BC",plan:"Pro",players:36,mrr:320000,status:"active"},
-  {id:5,sport:"hockey",country:"CL",name:"Las Leonas",plan:"Enterprise",players:52,mrr:900000,status:"past_due"},
-  {id:6,sport:"futbol",country:"CL",name:"Cóndores FC",plan:"Pro",players:88,mrr:640000,status:"active"},
-];
-
-export const COUNTRY_COUNTS = { CL: 65 };
-
 // Modelo unificado de partidos: programados + jugados en la misma estructura.
 // estado: "programado" | "jugado"
 // equipo: "A" | "B" | "C" (dentro de cada categoría un plantel puede tener varios equipos)

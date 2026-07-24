@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { SPORTS_CONFIG, COUNTRIES, CLUBS } from "./data/sports";
-import { COMMISSION_DATA, CLUB_LIST, COUNTRY_COUNTS, MOCK_PAYMENTS, MOCK_PARTIDOS } from "./data/mockData";
+import { MOCK_PAYMENTS, MOCK_PARTIDOS } from "./data/mockData";
 import { usePlayers } from "./lib/usePlayers";
 import { useClub } from "./lib/useClub";
 import { usePayments } from "./lib/usePayments";
@@ -62,8 +62,7 @@ export default function SportOS() {
   const [category,setCategory]           = useState(0);
   const [toast,setToast]                 = useState(null);
   const [activeClubs,setActiveClubs]     = useState({rugby:true,futbol:true,basketball:true,handball:false,hockey:false});
-  const [clubList,setClubList]           = useState(CLUB_LIST);
-  const [whatsappModal,setWhatsappModal] = useState(false);
+  const [whatsappModal,setWhatsappModal] = useState(null); // null | { team, rival, date, starters, bench }
   const [convocado,setConvocado]         = useState(null);
   const [rankTab,setRankTab]             = useState("volumen");
   const [gymLog,setGymLog]               = useState({});
@@ -139,9 +138,8 @@ export default function SportOS() {
     name: clubRow.name,
     country: clubRow.country,
     colors: clubRow.colors,
-    cuota: 45000,
     prev: ultimo ? { res: ultimo.resultado==="victoria"?"Victoria":ultimo.resultado==="derrota"?"Derrota":"Empate", score: `${ultimo.golesLocal}-${ultimo.golesVisita}`, rival: ultimo.rival } : { res:null, score:null, rival:null },
-    next: proximo ? { rival: proximo.rival, dia: new Date(proximo.fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long"}) } : { rival:null, dia:null },
+    next: proximo ? { rival: proximo.rival, dia: new Date(proximo.fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long"}), hora: proximo.hora||null, lugar: proximo.lugar||null } : { rival:null, dia:null, hora:null, lugar:null },
   } : CLUBS[sport];
   const countryData  = COUNTRIES[country];
   // Jugador logueado: su propia ficha (por profile_id), no simplemente el primero del plantel.
@@ -321,9 +319,8 @@ export default function SportOS() {
         userId={currentUser?.id || null}
         onNavigate={(moduleId)=>navigateTo(moduleId)}
       />}
-      {whatsappModal&&<WhatsAppModal onClose={()=>setWhatsappModal(false)} team={club.name} rival={club.next.rival} date={club.next.dia}
-        starters={SPORTS_CONFIG[sport].positions.slice(0,sp.teamSize).map((pos,i)=>({name:players[i]?players[i].name:"Jugador "+(i+1),pos}))}
-        bench={[]}/>}
+      {whatsappModal&&<WhatsAppModal onClose={()=>setWhatsappModal(null)} team={whatsappModal.team} rival={whatsappModal.rival} date={whatsappModal.date} hora={whatsappModal.hora} lugar={whatsappModal.lugar}
+        starters={whatsappModal.starters} bench={whatsappModal.bench}/>}
 
       {/* ── Banner usuario ── */}
       {(
@@ -526,7 +523,7 @@ export default function SportOS() {
           <AnimatePresence mode="wait">
             <motion.div key={role+module} {...fadeUp} transition={{duration:0.4}}>
               {module==="home"&&<HomeView role={role} players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId}/>}
-              {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} commData={COMMISSION_DATA} clubList={clubList} setClubList={setClubList} showToast={showToast} COUNTRY_COUNTS={COUNTRY_COUNTS}
+              {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
               {module!=="home"&&module!=="miperfil"&&role==="admin"&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={setActiveClubs} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}

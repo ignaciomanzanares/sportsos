@@ -35,7 +35,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   };
 
   // Datos de pago del club (transferencia manual)
-  const emptyPago = { banco:"", tipo_cuenta:"", numero_cuenta:"", rut_titular:"", nombre_titular:"", email_titular:"", mercadopago_public_key:"", mercadopago_access_token:"" };
+  const emptyPago = { cuota_mensual:"", banco:"", tipo_cuenta:"", numero_cuenta:"", rut_titular:"", nombre_titular:"", email_titular:"", mercadopago_public_key:"", mercadopago_access_token:"" };
   const [pagoForm, setPagoForm] = useState(emptyPago);
   const [pagoSaving, setPagoSaving] = useState(false);
   const [pagoSaved, setPagoSaved] = useState(false);
@@ -51,7 +51,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     if (!clubId) return;
     setPagoSaving(true);
     const { error } = await supabase.from("club_payment_settings")
-      .upsert({ club_id: clubId, ...pagoForm }, { onConflict: "club_id" });
+      .upsert({ club_id: clubId, ...pagoForm, cuota_mensual: pagoForm.cuota_mensual === "" ? null : Number(pagoForm.cuota_mensual) }, { onConflict: "club_id" });
     setPagoSaving(false);
     if (error) { showToast("Error al guardar datos de pago: " + error.message, "error"); return; }
     setPagoSaved(true);
@@ -286,6 +286,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         </div>
         <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
           Los jugadores verán estos datos al pagar por transferencia. Solo tú (admin) puedes verlos y editarlos.
+        </div>
+        <div style={{marginBottom:"14px"}}>
+          <div style={ss.label}>Cuota mensual ({countryData?.currency||"CLP"})</div>
+          <input type="number" min="0" value={pagoForm.cuota_mensual} onChange={e=>setPagoForm(f=>({...f,cuota_mensual:e.target.value}))} placeholder="Ej: 45000" style={{...ss.input,maxWidth:"220px"}}/>
+          <div style={{fontSize:"10px",color:"var(--text-4)",marginTop:"4px"}}>Monto que cada jugador debe pagar al mes. Sin esto, los jugadores no podrán pagar.</div>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px",marginBottom:"14px"}}>
           <div>

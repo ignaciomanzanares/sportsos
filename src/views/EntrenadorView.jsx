@@ -163,7 +163,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
           <div style={{...ss.muted,fontSize:"10px",marginTop:"10px",lineHeight:1.5}}>💡 Arrastra a una posición de la cancha, o toca para autoubicar.</div>
         </motion.div>
       </div>
-      {wa&&<WhatsAppModal onClose={()=>setWa(false)} team={`${club.name} · ${TEAMS.find(t=>t.id===teamId).name}`} rival={club.next.rival} date={club.next.dia} starters={starters} bench={bench}/>}
+      {wa&&<WhatsAppModal onClose={()=>setWa(false)} team={`${club.name} · ${TEAMS.find(t=>t.id===teamId).name}`} rival={club.next.rival} date={club.next.dia} hora={club.next.hora} lugar={club.next.lugar} starters={starters} bench={bench}/>}
     </div>
   );
 }

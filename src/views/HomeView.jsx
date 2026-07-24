@@ -153,13 +153,6 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   const allFilters = ["TODOS", ...Array.from(new Set(players.map(p=>posAbbr(p.position))))];
   const filtered = posFilter === "TODOS" ? players : players.filter(p=>posAbbr(p.position)===posFilter);
 
-  // Rating basado en gym.pct o stats
-  const perf = (p) => {
-    const pct = p.gym?.pct ?? 70;
-    return ((pct / 100) * 5 + 5).toFixed(1); // escala 5–10
-  };
-  const perfColor = (v) => parseFloat(v) >= 8 ? sportColor : "#fbbf24";
-
   const avatarColors = ["#4f46e5","#0284c7","#b45309","#be185d","#047857","#7c3aed","#c2410c","#0f766e"];
 
   const CARD = { background:"#121110", border:"1px solid #1e1c19", borderRadius:"8px", padding:"18px" };
@@ -255,15 +248,13 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
           <table style={{width:"100%",borderCollapse:"collapse",minWidth:"500px"}}>
             <thead>
               <tr style={{borderBottom:"1px solid #1e1c19"}}>
-                {["#","Jugador","Pos","PJ","Goles","Asist.","Estado","Rating"].map((h,i)=>(
+                {["#","Jugador","Pos","PJ","Goles","Asist.","Estado"].map((h,i)=>(
                   <th key={h} style={{textAlign:i>3?"right":i===6?"center":"left",padding:"6px 10px",fontSize:"10px",fontWeight:500,color:"#3e3b37",textTransform:"uppercase",letterSpacing:"0.08em"}}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.map((p,i)=>{
-                const rating = perf(p);
-                const pc = perfColor(rating);
                 const initials = p.name.split(" ").map(n=>n[0]).join("").slice(0,2).toUpperCase();
                 const statusColor = p.med_status==="rojo"?"#f87171":p.med_status==="amarillo"?"#fbbf24":sportColor;
                 const statusLabel = p.med_status==="rojo"?"Lesionado":p.med_status==="amarillo"?"Alerta":"Disponible";
@@ -289,14 +280,6 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{p.stats?.asistencias||0}</td>
                     <td style={{padding:"10px",textAlign:"center",borderBottom:"1px solid #1a1816"}}>
                       <span style={{fontSize:"10.5px",fontWeight:500,color:statusColor}}>{statusLabel}</span>
-                    </td>
-                    <td style={{padding:"10px",textAlign:"right",borderBottom:"1px solid #1a1816"}}>
-                      <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:"7px"}}>
-                        <div style={{width:"48px",height:"3px",borderRadius:"2px",background:"#1e1c19",overflow:"hidden"}}>
-                          <div style={{height:"100%",borderRadius:"2px",width:`${parseFloat(rating)*10}%`,background:pc}}/>
-                        </div>
-                        <span style={{fontFamily:DM_MONO,fontSize:"12px",fontWeight:500,color:pc,width:"28px",textAlign:"right"}}>{rating}</span>
-                      </div>
                     </td>
                   </tr>
                 );

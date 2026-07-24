@@ -250,8 +250,28 @@ function VistaRoles({ rolePreviewProps, showToast }) {
   );
 }
 
+const MESES = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+// Registros reales de usuarios agrupados por mes (últimos 6 meses)
+function registrosPorMes(users) {
+  const meses = [];
+  const hoy = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
+    meses.push({ key: `${d.getFullYear()}-${d.getMonth()}`, month: MESES[d.getMonth()], val: 0 });
+  }
+  users.forEach(u => {
+    if (!u.created_at) return;
+    const d = new Date(u.created_at);
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    const m = meses.find(m => m.key === key);
+    if (m) m.val++;
+  });
+  return meses;
+}
+
 // ── Vista principal ───────────────────────────────────────────────────────
-export default function SuperAdminView({ module, commData, clubList, setClubList, showToast, COUNTRY_COUNTS, rolePreviewProps={} }) {
+export default function SuperAdminView({ module, showToast, rolePreviewProps={} }) {
   const { clubs, users, loading, clubRequests, cambiarPlan, suspenderClub, marcarClubRequestsVistos } = useAdminData();
 
   useEffect(() => {
@@ -259,7 +279,8 @@ export default function SuperAdminView({ module, commData, clubList, setClubList
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [module]);
 
-  const totalClubes  = clubs.length || clubList.length;
+  const totalClubes  = clubs.length;
+  const commData = registrosPorMes(users);
   const totalUsuarios = users.length;
   const porPlan = {
     free:  users.filter(u=>!u.plan||u.plan==="free").length,
@@ -281,13 +302,6 @@ export default function SuperAdminView({ module, commData, clubList, setClubList
     { name:"Pro",   value: porPlan.pro   || 0, color:"#C0392B" },
     { name:"Elite", value: porPlan.elite || 0, color:"#C98408" },
   ];
-
-  const toggle = (id) => {
-    const club = clubList.find(c=>c.id===id);
-    if (!club) return;
-    setClubList(prev=>prev.map(c=>c.id===id?{...c,status:c.status==="active"?"suspended":"active"}:c));
-    showToast(club.status==="active"?`${club.name} suspendido`:`${club.name} reactivado`, club.status==="active"?"warning":"success");
-  };
 
   if (module==="dashboard") return (
     <div>
@@ -400,7 +414,7 @@ export default function SuperAdminView({ module, commData, clubList, setClubList
 
   if (module==="clubes") return (
     <div>
-      <SectionTitle title="Gestión de Clubes" sub={`${clubs.length || clubList.length} clubes registrados`}/>
+      <SectionTitle title="Gestión de Clubes" sub={`${clubs.length} clubes registrados`}/>
 
       {/* Clubes reales de Supabase */}
       {clubs.length > 0 && (
@@ -472,46 +486,11 @@ export default function SuperAdminView({ module, commData, clubList, setClubList
         </motion.div>
       )}
 
-      {/* Clubes mock (demo data) */}
-      <motion.div {...fadeUp} transition={{ delay:0.1 }} style={{ ...ss.card, padding:0, overflow:"hidden" }}>
-        <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--border-soft)", fontWeight:600, fontSize:"13px", color:"var(--text-3)" }}>
-          Datos de referencia (mock)
+      {clubs.length === 0 && clubRequests.length === 0 && !loading && (
+        <div style={{ padding:"40px", textAlign:"center", color:"var(--text-3)", fontSize:"13px" }}>
+          Sin clubes aún. Aparecerán aquí cuando los admins completen el onboarding.
         </div>
-        <table style={{ width:"100%", fontSize:"12px", borderCollapse:"collapse" }}>
-          <thead><tr>
-            {["","Club","Plan","Jugadores","MRR","Estado","Acciones"].map(h => (
-              <th key={h} style={{ textAlign:"left", color:"var(--text-3)", padding:"12px", borderBottom:"1px solid var(--border-soft)", textTransform:"uppercase", letterSpacing:"0.05em", fontSize:"10px" }}>{h}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {clubList.map((c,i) => {
-              const cd = COUNTRIES[c.country] || { flag:"🌎", symbol:"$", currency:"USD" };
-              const sp2 = SPORTS_CONFIG[c.sport] || SPORTS_CONFIG.rugby;
-              return (
-                <motion.tr key={c.id} initial={{opacity:0,x:-16}} animate={{opacity:1,x:0}} transition={{delay:i*0.04}}
-                  whileHover={{ background:"var(--bg-elev-2)" }} style={{ borderBottom:"1px solid var(--border-soft)" }}>
-                  <td style={{ padding:"12px" }}>{cd.flag} {sp2.icon}</td>
-                  <td style={{ fontWeight:600, padding:"12px" }}>{c.name}</td>
-                  <td style={{ padding:"12px" }}><Badge color="#A855F7">{c.plan}</Badge></td>
-                  <td style={{ padding:"12px" }}>{c.players}</td>
-                  <td style={{ padding:"12px" }}>{cd.symbol}{c.mrr?.toLocaleString()}</td>
-                  <td style={{ padding:"12px" }}>
-                    <Badge color={c.status==="active"?"#22C55E":c.status==="past_due"?"#F59E0B":"#EF4444"}>{c.status}</Badge>
-                  </td>
-                  <td style={{ padding:"12px" }}>
-                    <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>toggle(c.id)}
-                      style={{ ...ss.btn, background:c.status==="active"?"rgba(239,68,68,0.15)":"rgba(34,197,94,0.15)",
-                        color:c.status==="active"?"#EF4444":"#22C55E", fontSize:"11px",
-                        border:`1px solid ${c.status==="active"?"#EF444455":"#22C55E55"}` }}>
-                      {c.status==="active"?"Suspender":"Reactivar"}
-                    </motion.button>
-                  </td>
-                </motion.tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </motion.div>
+      )}
     </div>
   );
 
