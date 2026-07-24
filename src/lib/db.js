@@ -60,13 +60,23 @@ export async function getGymLogs(playerId, weekStart) {
     .from("gym_logs")
     .select("*")
     .eq("player_id", playerId)
-    .gte("logged_at", weekStart)
-    .order("logged_at", { ascending: false });
+    .eq("week_start", weekStart);
+  if (error) throw error;
+  return data;
+}
+
+export async function getGymHistory(playerId) {
+  const { data, error } = await supabase
+    .from("gym_logs")
+    .select("exercise, set_index, weight_kg, reps, rpe, one_rm_kg, volume_kg, week_start")
+    .eq("player_id", playerId);
   if (error) throw error;
   return data;
 }
 
 export async function saveGymSet({ playerId, exercise, setIndex, weight, reps, rpe, weekStart }) {
+  // one_rm_kg y volume_kg son columnas generadas por Postgres — no se envían,
+  // se calculan solas a partir de weight_kg/reps.
   const { data, error } = await supabase
     .from("gym_logs")
     .upsert({
@@ -76,15 +86,65 @@ export async function saveGymSet({ playerId, exercise, setIndex, weight, reps, r
       weight_kg: weight,
       reps,
       rpe,
-      one_rm_kg: weight * (1 + reps / 30),
-      volume_kg: weight * reps,
       week_start: weekStart,
       logged_at: new Date().toISOString(),
-    })
+    }, { onConflict: "player_id,exercise,set_index,week_start" })
     .select()
     .single();
   if (error) throw error;
   return data;
+}
+
+// ─── PLAN DE GIMNASIO (microciclo) ──────────────────────────────────────────
+
+export async function getGymPlan(clubId) {
+  const { data, error } = await supabase
+    .from("gym_plans")
+    .select("*")
+    .eq("club_id", clubId)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+export async function saveGymPlan({ clubId, weekLabel, coachName, sessions, published }) {
+  const { data, error } = await supabase
+    .from("gym_plans")
+    .upsert({
+      club_id: clubId,
+      week_label: weekLabel,
+      coach_name: coachName,
+      sessions,
+      published,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "club_id" })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+// Lunes de la semana ISO que contiene `d` (por defecto, hoy), en formato YYYY-MM-DD.
+export function getWeekStart(d = new Date()) {
+  const date = new Date(d);
+  const day = date.getDay(); // 0=domingo..6=sábado
+  const diff = (day === 0 ? -6 : 1) - day;
+  date.setDate(date.getDate() + diff);
+  date.setHours(0, 0, 0, 0);
+  return date.toISOString().split("T")[0];
+}
+
+const MESES_ES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+// Formatea un lunes (YYYY-MM-DD) como "13–19 Mayo" (o "29 Jun – 5 Jul" si cruza de mes).
+export function formatWeekLabel(weekStartStr) {
+  const start = new Date(weekStartStr + "T12:00:00");
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  if (start.getMonth() === end.getMonth()) {
+    return `${start.getDate()}–${end.getDate()} ${MESES_ES[start.getMonth()]}`;
+  }
+  return `${start.getDate()} ${MESES_ES[start.getMonth()].slice(0,3)} – ${end.getDate()} ${MESES_ES[end.getMonth()].slice(0,3)}`;
 }
 
 // ─── CUOTAS / PAGOS ───────────────────────────────────────────────────────────

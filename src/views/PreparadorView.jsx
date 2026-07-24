@@ -1,8 +1,10 @@
-import { useState as useLocalState } from "react";
+import { useState as useLocalState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { GYM_PLAN } from "../data/gymPlan";
+import { supabase } from "../lib/supabase";
+import { getGymPlan, saveGymPlan, getWeekStart, formatWeekLabel } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
 import Stat from "../components/Stat";
 import Badge from "../components/Badge";
@@ -101,10 +103,59 @@ function EstadoPlantelView({ sportColor, players }) {
   );
 }
 
-export default function PreparadorView({module, sp, showToast, sportColor, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay, userCats=[], isDemo=true, players=[], clubId=null}) {
+export default function PreparadorView({module, sp, showToast, sportColor, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay, userCats=[], isDemo=true, players=[], clubId=null, currentUser=null}) {
   const days = ["lunes","miercoles","viernes"];
   const dayLabels = {lunes:"Lunes",miercoles:"Miércoles",viernes:"Viernes"};
   const planSessions = gymPlanExercises || GYM_PLAN.sessions;
+
+  // ── Plan real (Supabase) ──────────────────────────────────────────────
+  const [planLoading, setPlanLoading] = useLocalState(!!clubId);
+  const [saving, setSaving]           = useLocalState(false);
+  const [kpis, setKpis] = useLocalState({ cumplimiento:0, activos:0, volumen:0 });
+  const weekStart = getWeekStart();
+  const weekLabel = clubId ? formatWeekLabel(weekStart) : GYM_PLAN.week;
+  const coachName = clubId ? (currentUser?.nombre || "Preparador Físico") : GYM_PLAN.coach;
+
+  useEffect(() => {
+    if (!clubId) { setPlanLoading(false); return; }
+    setPlanLoading(true);
+    getGymPlan(clubId).then(p => {
+      setGymPlanExercises(p?.sessions && Object.keys(p.sessions).length ? p.sessions : GYM_PLAN.sessions);
+      setPublishedPlan(!!p?.published);
+      setPlanLoading(false);
+    }).catch(() => setPlanLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clubId]);
+
+  useEffect(() => {
+    if (!clubId || players.length === 0) { setKpis({ cumplimiento:0, activos:0, volumen:0 }); return; }
+    supabase.from("gym_logs").select("player_id, exercise, weight_kg, reps, volume_kg")
+      .in("player_id", players.map(p=>p.id)).eq("week_start", weekStart)
+      .then(({ data }) => {
+        const logs = data || [];
+        const done = logs.filter(l => l.weight_kg && l.reps);
+        const totalEjercicios = Object.values(planSessions).reduce((s,d)=>s+d.exercises.length,0);
+        const totalPosible = players.length * (totalEjercicios || 1);
+        const combos = new Set(done.map(l => `${l.player_id}_${l.exercise}`));
+        const activos = new Set(logs.map(l => l.player_id)).size;
+        const volumen = logs.reduce((s,l)=>s+(Number(l.volume_kg)||0),0);
+        setKpis({ cumplimiento: Math.round(100*combos.size/totalPosible), activos, volumen: Math.round(volumen) });
+      });
+  }, [clubId, players, weekStart, planSessions]);
+
+  const publicarPlan = async () => {
+    if (!clubId) { setPublishedPlan(true); showToast("Plan marcado como publicado ✅","success"); return; }
+    setSaving(true);
+    try {
+      await saveGymPlan({ clubId, weekLabel, coachName, sessions: planSessions, published: true });
+      setPublishedPlan(true);
+      showToast("Plan publicado ✅","success");
+    } catch (e) {
+      showToast("Error al publicar el plan: " + e.message, "error");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const addExercise = () => {
     if(!newEx.name){showToast("Escribe el nombre del ejercicio","warning");return;}
@@ -126,15 +177,20 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
   if(module==="microciclo") return (
     <div>
       <CatsBanner/>
-      <SectionTitle title={`Microciclo — Semana ${GYM_PLAN.week}`} sub={`${GYM_PLAN.coach} · ${sp.name}`}
-        action={<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>{setPublishedPlan(true);showToast("Plan marcado como publicado ✅","success");}} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)"}}>{publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>}
+      <SectionTitle title={`Microciclo — Semana ${weekLabel}`} sub={`${coachName} · ${sp.name}`}
+        action={<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} disabled={saving} onClick={publicarPlan} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)",opacity:saving?0.6:1}}>{saving?"Publicando...":publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>}
       />
+      {planLoading ? (
+        <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>
+      ) : (
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"12px",marginBottom:"20px"}}>
-        <Stat label="Plan activo" value="Semana 8" sub="Pretemporada 2025" color={sportColor} icon="📅" delay={0.05}/>
-        <Stat label="Cumplimiento" value="78%" sub="Promedio plantel" color="#22C55E" icon="✅" delay={0.1}/>
-        <Stat label="Récords" value="4" sub="Esta semana" color="#F59E0B" icon="🏆" delay={0.15}/>
-        <Stat label="Volumen total" value="184.300 kg" sub="Todo el plantel" color="#A855F7" icon="💪" delay={0.2}/>
+        <Stat label="Plan activo" value={weekLabel} sub={clubId ? (publishedPlan?"Publicado":"Sin publicar") : "Pretemporada 2025"} color={sportColor} icon="📅" delay={0.05}/>
+        <Stat label="Cumplimiento" value={clubId?`${kpis.cumplimiento}%`:"78%"} sub="Ejercicios completados" color="#22C55E" icon="✅" delay={0.1}/>
+        <Stat label="Jugadores activos" value={clubId?kpis.activos:4} sub="Entrenaron esta semana" color="#F59E0B" icon="🏋️" delay={0.15}/>
+        <Stat label="Volumen total" value={clubId?`${kpis.volumen.toLocaleString()} kg`:"184.300 kg"} sub="Todo el plantel" color="#A855F7" icon="💪" delay={0.2}/>
       </div>
+      )}
+      {!planLoading && <>
       <div style={{display:"flex",gap:"8px",marginBottom:"16px",flexWrap:"wrap"}}>
         {days.map(d=>(
           <motion.button key={d} whileHover={{y:-2}} whileTap={{scale:0.97}} onClick={()=>setExpandedDay(d)} style={{...ss.btn,background:expandedDay===d?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)",color:expandedDay===d?sportColor:"var(--text-2)",border:`1px solid ${expandedDay===d?sportColor+"55":"var(--border-soft)"}`,fontSize:"12px",padding:"10px 16px",textAlign:"left",boxShadow:expandedDay===d?`0 0 16px ${sportColor}33`:"none",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:"2px"}}>
@@ -178,6 +234,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
           }
         </div>
       </motion.div>
+      </>}
     </div>
   );
 

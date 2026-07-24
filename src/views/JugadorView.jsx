@@ -6,7 +6,7 @@ import { FORMATIONS, TEAMS } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
 import { MOCK_POSTS } from "../data/mockData";
 import { usePosts } from "../lib/usePosts";
-import { getNotifications, getLineups } from "../lib/db";
+import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
 import { supabase } from "../lib/supabase";
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
@@ -236,10 +236,57 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
   );
 }
 
-/* ── GymJugador ─────────────────────────────────────────────── */
-function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, showToast, rankTab, setRankTab, players, clubId}) {
-  const todayPlan = GYM_PLAN.sessions.lunes;
-  const PREV_1RM = {Sentadilla:140,"Hip Thrust":120,"Press Banca":110,"Pull-up":90,"Power Clean":95};
+/* ── GymJugador — antes el plan era 100% fabricado (misma semana y sesión
+   "Lunes — Fuerza inferior · Prof. Marcos Díaz" siempre) y las series que el
+   jugador registraba nunca se guardaban en Supabase (solo vivían en un
+   estado de React que se perdía al recargar) — por eso el Ranking de Fuerza
+   aparecía siempre vacío para clubes reales. Ahora carga el plan real
+   publicado por el preparador y persiste cada serie en gym_logs. ────────── */
+function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players, clubId}) {
+  const dayLabels = {lunes:"Lunes",miercoles:"Miércoles",viernes:"Viernes"};
+  const defaultDay = () => { const d = new Date().getDay(); return d<=1?"lunes":d<=3?"miercoles":"viernes"; };
+
+  const [plan, setPlan]           = useState(null);
+  const [planLoading, setPlanLoading] = useState(!!clubId);
+  const [selectedDay, setSelectedDay] = useState(defaultDay());
+  const [gymLog, setGymLog]       = useState({});
+  const [prevBest, setPrevBest]   = useState({}); // 1RM máximo histórico por ejercicio (antes de esta semana)
+  const [lastWeekVol, setLastWeekVol] = useState(0);
+  const [expandedEx, setExpandedEx] = useState(null);
+  const [completedSession, setCompletedSession] = useState(false);
+
+  const weekStart = getWeekStart();
+  const PREV_1RM_DEMO = {Sentadilla:140,"Hip Thrust":120,"Press Banca":110,"Pull-up":90,"Power Clean":95};
+
+  useEffect(() => {
+    if (!clubId) { setPlanLoading(false); return; }
+    setPlanLoading(true);
+    getGymPlan(clubId).then(setPlan).finally(()=>setPlanLoading(false));
+  }, [clubId]);
+
+  useEffect(() => {
+    if (!clubId || !player?.id) return;
+    getGymHistory(player.id).then(logs => {
+      const prevWeekStart = getWeekStart(new Date(new Date(weekStart+"T12:00:00").getTime() - 7*24*3600*1000));
+      const best = {};
+      (logs||[]).filter(l => l.week_start !== weekStart).forEach(l => {
+        const rm = Number(l.one_rm_kg)||0;
+        if (rm > (best[l.exercise]||0)) best[l.exercise] = rm;
+      });
+      setPrevBest(best);
+      setLastWeekVol((logs||[]).filter(l=>l.week_start===prevWeekStart).reduce((s,l)=>s+(Number(l.volume_kg)||0),0));
+      const buffer = {};
+      (logs||[]).filter(l => l.week_start === weekStart).forEach(l => {
+        buffer[`${l.exercise}_${l.set_index}`] = { weight: l.weight_kg??"", reps: l.reps??"", rpe: l.rpe??"" };
+      });
+      setGymLog(buffer);
+    }).catch(()=>{});
+  }, [clubId, player?.id]);
+
+  const sessions  = plan?.sessions && Object.keys(plan.sessions).length ? plan.sessions : GYM_PLAN.sessions;
+  const weekLabel = clubId ? (plan?.week_label || formatWeekLabel(weekStart)) : GYM_PLAN.week;
+  const coachName = clubId ? (plan?.coach_name || "Preparador Físico") : GYM_PLAN.coach;
+  const todayPlan = sessions[selectedDay] || sessions.lunes;
 
   const logSet   = (exName,setIdx,field,val)=>setGymLog(prev=>{const key=`${exName}_${setIdx}`;return {...prev,[key]:{...(prev[key]||{}),[field]:val}};});
   const getLog   = (exName,setIdx,field)=>{const key=`${exName}_${setIdx}`;return gymLog[key]?gymLog[key][field]:"";};
@@ -250,34 +297,79 @@ function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, se
   const totalVol = todayPlan.exercises.reduce((s,ex)=>s+calcVol(ex.name,ex.sets),0);
   const rpeColor = (v)=>v<=3?"#22C55E":v<=6?"#F59E0B":"#EF4444";
 
+  const persistSet = async (exName, setIdx, overrides={}) => {
+    if (!clubId) return;
+    const key = `${exName}_${setIdx}`;
+    const entry = { ...(gymLog[key]||{}), ...overrides };
+    try {
+      await saveGymSet({
+        playerId: player.id, exercise: exName, setIndex: setIdx,
+        weight: entry.weight ? Number(entry.weight) : null,
+        reps: entry.reps ? Number(entry.reps) : null,
+        rpe: entry.rpe ? Number(entry.rpe) : null,
+        weekStart,
+      });
+    } catch (e) {
+      showToast("Error al guardar la serie: " + e.message, "error");
+    }
+  };
+
+  // Récords reales: 1RM estimado hoy supera el máximo histórico previo (solo si ya existía un máximo previo)
+  const records = todayPlan.exercises.map(ex => {
+    const maxWeight = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
+    const maxReps   = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
+    const est1RM = calc1RM(maxWeight,maxReps);
+    const prev = clubId ? (prevBest[ex.name]||0) : (PREV_1RM_DEMO[ex.name]||0);
+    return prev>0 && est1RM>prev ? {exercise:ex.name, value:est1RM} : null;
+  }).filter(Boolean);
+
+  if (planLoading) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>;
+
+  if (clubId && !plan?.published) return (
+    <EmptyState icon="🏋️" title="Sin plan de gimnasio publicado" desc="Tu preparador físico todavía no publicó el plan de esta semana." color={sportColor}/>
+  );
+
   return (
     <div>
+      <div style={{display:"flex",gap:"8px",marginBottom:"14px",flexWrap:"wrap"}}>
+        {Object.keys(sessions).map(d=>(
+          <motion.button key={d} whileHover={{y:-2}} whileTap={{scale:0.97}} onClick={()=>setSelectedDay(d)}
+            style={{...ss.btn,background:selectedDay===d?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)",color:selectedDay===d?sportColor:"var(--text-2)",border:`1px solid ${selectedDay===d?sportColor+"55":"var(--border-soft)"}`,fontSize:"12px",padding:"8px 14px"}}>
+            {dayLabels[d]||d}
+          </motion.button>
+        ))}
+      </div>
       {!completedSession&&(
         <motion.div {...fadeUp} style={{...ss.card,marginBottom:"16px",background:"linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.02))",border:"1px solid rgba(245,158,11,0.4)",display:"flex",alignItems:"center",gap:"12px",padding:"14px 16px"}}>
           <motion.span animate={{rotate:[0,10,-10,0]}} transition={{duration:2,repeat:Infinity}} style={{fontSize:"22px"}}>💪</motion.span>
-          <div><div style={{fontSize:"13px",fontWeight:700,color:"#F59E0B"}}>Plan activo: {GYM_PLAN.week}</div><div style={{...ss.muted,fontSize:"11px"}}>Lunes — Fuerza inferior · Prof. Marcos Díaz</div></div>
+          <div><div style={{fontSize:"13px",fontWeight:700,color:"#F59E0B"}}>Plan activo: {weekLabel}</div><div style={{...ss.muted,fontSize:"11px"}}>{dayLabels[selectedDay]||selectedDay} — {todayPlan.label} · {coachName}</div></div>
         </motion.div>
       )}
       {completedSession&&(
         <motion.div {...scaleIn} style={{...ss.card,marginBottom:"20px",background:"linear-gradient(135deg,rgba(34,197,94,0.12),rgba(34,197,94,0.02))",border:"2px solid rgba(34,197,94,0.5)",boxShadow:"0 0 32px rgba(34,197,94,0.25)"}}>
-          <div style={{color:"#22C55E",fontWeight:700,fontSize:"15px",marginBottom:"10px",display:"flex",alignItems:"center",gap:"8px"}}>🎉 ¡Sesión completada! — Lunes 13 Mayo</div>
+          <div style={{color:"#22C55E",fontWeight:700,fontSize:"15px",marginBottom:"10px",display:"flex",alignItems:"center",gap:"8px"}}>🎉 ¡Sesión completada! — {dayLabels[selectedDay]||selectedDay}</div>
           <div style={{display:"flex",gap:"20px",marginBottom:"12px"}}>
             <div><div style={{fontSize:"26px",fontWeight:800,letterSpacing:"-0.02em"}}>{totalVol.toLocaleString()} kg</div><div style={ss.muted}>Volumen total</div></div>
-            <div><div style={{fontSize:"18px",fontWeight:700,color:"#22C55E"}}>↑ +340 kg</div><div style={ss.muted}>vs lunes pasado</div></div>
+            {clubId && lastWeekVol>0 && (
+              <div><div style={{fontSize:"18px",fontWeight:700,color:totalVol>=lastWeekVol?"#22C55E":"#EF4444"}}>{totalVol>=lastWeekVol?"↑":"↓"} {Math.abs(totalVol-lastWeekVol).toLocaleString()} kg</div><div style={ss.muted}>vs semana pasada</div></div>
+            )}
           </div>
-          {newRecord&&<motion.div initial={{scale:0.9,opacity:0}} animate={{scale:1,opacity:1}} style={{display:"flex",alignItems:"center",gap:"8px",background:"linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.05))",border:"1px solid rgba(245,158,11,0.5)",borderRadius:"var(--r-md)",padding:"10px 14px",marginBottom:"8px",boxShadow:"0 0 16px rgba(245,158,11,0.3)"}}><span style={{fontSize:"22px"}}>🏆</span><span style={{color:"#F59E0B",fontWeight:700,fontSize:"13px"}}>NUEVO RÉCORD PERSONAL en Sentadilla — 148 kg</span></motion.div>}
-          <div style={{color:"var(--text-2)",fontSize:"12px"}}>🥇 Subiste al puesto #1 del ranking de fuerza</div>
+          {records.map(r=>(
+            <motion.div key={r.exercise} initial={{scale:0.9,opacity:0}} animate={{scale:1,opacity:1}} style={{display:"flex",alignItems:"center",gap:"8px",background:"linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.05))",border:"1px solid rgba(245,158,11,0.5)",borderRadius:"var(--r-md)",padding:"10px 14px",marginBottom:"8px",boxShadow:"0 0 16px rgba(245,158,11,0.3)"}}>
+              <span style={{fontSize:"22px"}}>🏆</span><span style={{color:"#F59E0B",fontWeight:700,fontSize:"13px"}}>NUEVO RÉCORD PERSONAL en {r.exercise} — {r.value} kg</span>
+            </motion.div>
+          ))}
         </motion.div>
       )}
       {todayPlan.exercises.map((ex,ei)=>{
-        const prev1RM  = PREV_1RM[ex.name]||100;
-        const suggested = ex.pct?Math.round(prev1RM*(ex.pct/100)):null;
+        const prev1RM  = clubId ? (prevBest[ex.name]||0) : (PREV_1RM_DEMO[ex.name]||100);
+        const suggested = ex.pct && prev1RM ?Math.round(prev1RM*(ex.pct/100)):null;
         const vol  = calcVol(ex.name,ex.sets);
         const done = exCompleted(ex);
         const maxWeight = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
         const maxReps   = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
         const est1RM = calc1RM(maxWeight,maxReps);
-        const isRecord = est1RM>prev1RM&&maxWeight>0;
+        const isRecord = prev1RM>0 && est1RM>prev1RM && maxWeight>0;
         return (
           <motion.div key={ei} {...fadeUp} transition={{duration:0.4,delay:ei*0.05}} style={{...ss.card,marginBottom:"14px",border:done?"2px solid #22C55E55":isRecord?"2px solid rgba(245,158,11,0.6)":"1px solid var(--border-soft)",boxShadow:isRecord?"0 0 20px rgba(245,158,11,0.25)":"none",transition:"all 0.3s",position:"relative"}}>
             {isRecord&&<motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:"spring",stiffness:300}} style={{position:"absolute",top:"-10px",right:"12px",background:"linear-gradient(135deg,#F59E0B,#D97706)",color:"#fff",fontSize:"11px",fontWeight:800,padding:"4px 12px",borderRadius:"99px",boxShadow:"0 4px 16px rgba(245,158,11,0.5)",zIndex:2}}>🏆 NUEVO RÉCORD</motion.div>}
@@ -295,11 +387,11 @@ function GymJugador({player, sportColor, gymLog, setGymLog, completedSession, se
                     <div key={si} style={{display:"grid",gridTemplateColumns:"50px 70px 70px 60px 1fr",gap:"8px",marginBottom:"8px",alignItems:"center"}}>
                       <span style={{fontSize:"11px",fontWeight:700,color:sportColor}}>S{si+1}</span>
                       <span style={{...ss.muted,fontSize:"11px"}}>{suggested||"—"}</span>
-                      <input type="number" placeholder={suggested||"kg"} value={getLog(ex.name,si,"weight")} onChange={e=>{logSet(ex.name,si,"weight",e.target.value);if(ex.name==="Sentadilla"&&e.target.value>140)setNewRecord(true);}} style={{...ss.input,padding:"5px 8px",fontSize:"12px"}}/>
-                      <input type="number" placeholder="reps" value={getLog(ex.name,si,"reps")} onChange={e=>logSet(ex.name,si,"reps",e.target.value)} style={{...ss.input,padding:"5px 8px",fontSize:"12px"}}/>
+                      <input type="number" placeholder={suggested||"kg"} value={getLog(ex.name,si,"weight")} onChange={e=>logSet(ex.name,si,"weight",e.target.value)} onBlur={()=>persistSet(ex.name,si)} style={{...ss.input,padding:"5px 8px",fontSize:"12px"}}/>
+                      <input type="number" placeholder="reps" value={getLog(ex.name,si,"reps")} onChange={e=>logSet(ex.name,si,"reps",e.target.value)} onBlur={()=>persistSet(ex.name,si)} style={{...ss.input,padding:"5px 8px",fontSize:"12px"}}/>
                       <div style={{display:"flex",gap:"2px"}}>
                         {[1,2,3,4,5,6,7,8,9,10].map(n=>(
-                          <motion.div key={n} whileHover={{scale:1.2}} whileTap={{scale:0.9}} onClick={()=>logSet(ex.name,si,"rpe",n)} style={{width:"18px",height:"18px",borderRadius:"4px",background:parseInt(getLog(ex.name,si,"rpe"))===n?rpeColor(n):"var(--bg-elev-2)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"9px",fontWeight:700,color:parseInt(getLog(ex.name,si,"rpe"))===n?"#fff":"var(--text-3)",border:`1px solid ${parseInt(getLog(ex.name,si,"rpe"))===n?rpeColor(n):"var(--border-soft)"}`}}>{n}</motion.div>
+                          <motion.div key={n} whileHover={{scale:1.2}} whileTap={{scale:0.9}} onClick={()=>{logSet(ex.name,si,"rpe",n);persistSet(ex.name,si,{rpe:n});}} style={{width:"18px",height:"18px",borderRadius:"4px",background:parseInt(getLog(ex.name,si,"rpe"))===n?rpeColor(n):"var(--bg-elev-2)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"9px",fontWeight:700,color:parseInt(getLog(ex.name,si,"rpe"))===n?"#fff":"var(--text-3)",border:`1px solid ${parseInt(getLog(ex.name,si,"rpe"))===n?rpeColor(n):"var(--border-soft)"}`}}>{n}</motion.div>
                         ))}
                       </div>
                     </div>
@@ -422,7 +514,7 @@ function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado,
 }
 
 /* ── JugadorView ────────────────────────────────────────────── */
-export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, gymLog, setGymLog, completedSession, setCompletedSession, newRecord, setNewRecord, expandedEx, setExpandedEx, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
+export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
   const camiseta = player.number;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};
@@ -741,7 +833,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
 
   if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId} isDemo={isDemo}/>;
 
-  if(module==="migym") return <GymJugador player={player} sportColor={sportColor} gymLog={gymLog} setGymLog={setGymLog} completedSession={completedSession} setCompletedSession={setCompletedSession} newRecord={newRecord} setNewRecord={setNewRecord} expandedEx={expandedEx} setExpandedEx={setExpandedEx} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players} clubId={clubId}/>;
+  if(module==="migym") return <GymJugador player={player} sportColor={sportColor} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players} clubId={clubId}/>;
 
   if(module==="nominasclub") {
     const forms = FORMATIONS[sport];

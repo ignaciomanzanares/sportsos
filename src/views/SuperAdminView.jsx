@@ -244,7 +244,7 @@ function VistaRoles({ rolePreviewProps, showToast }) {
         {modActivo!=="miperfil" && rolActivo==="jugador" && modActivo==="home" &&
           <HomeView role="jugador" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
         {modActivo!=="miperfil" && rolActivo==="jugador" && modActivo!=="home" &&
-          <JugadorView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} player={(rp.players||[])[0]} players={rp.players||[]} sportColor={rp.sportColor} countryData={rp.countryData} convocado={null} setConvocado={()=>{}} setWhatsappModal={()=>{}} showToast={showToast} gymLog={{}} setGymLog={()=>{}} completedSession={false} setCompletedSession={()=>{}} newRecord={false} setNewRecord={()=>{}} expandedEx={null} setExpandedEx={()=>{}} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||((v)=>{})} payments={rp.payments||[]} setPayments={()=>{}} userCats={[]} isDemo={true} partidos={rp.partidos||[]} clubId={null}/>}
+          <JugadorView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} player={(rp.players||[])[0]} players={rp.players||[]} sportColor={rp.sportColor} countryData={rp.countryData} convocado={null} setConvocado={()=>{}} setWhatsappModal={()=>{}} showToast={showToast} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||((v)=>{})} payments={rp.payments||[]} setPayments={()=>{}} userCats={[]} isDemo={true} partidos={rp.partidos||[]} clubId={null}/>}
       </div>
     </div>
   );
