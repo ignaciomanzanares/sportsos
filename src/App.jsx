@@ -425,7 +425,7 @@ export default function SportOS() {
               click (solo visual/cliente, pero generaba confusión real:
               esto es justamente lo que reportó jmsanchez). */}
           {currentUser?.rol==="superadmin"&&(
-            <div style={{padding:"10px 12px",borderBottom:"1px solid var(--border-soft)"}}>
+            <div className="sidebar-roles" style={{padding:"10px 12px",borderBottom:"1px solid var(--border-soft)"}}>
               <div style={{...ss.label,marginBottom:"6px",paddingLeft:"2px"}}>Vista de rol</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:"4px"}}>
                 {ROLES.map(r=>(

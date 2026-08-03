@@ -381,6 +381,8 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
             <AnimatePresence>
               {expandedEx===ei&&(
                 <motion.div initial={{opacity:0,height:0}} animate={{opacity:1,height:"auto"}} exit={{opacity:0,height:0}} transition={{duration:0.3,ease:[0.16,1,0.3,1]}} style={{overflow:"hidden"}}>
+                  <div style={{overflowX:"auto",WebkitOverflowScrolling:"touch"}}>
+                  <div style={{minWidth:"420px"}}>
                   <div style={{display:"grid",gridTemplateColumns:"50px 70px 70px 60px 1fr",gap:"8px",marginBottom:"8px",paddingTop:"8px",borderTop:"1px solid var(--border-soft)"}}>
                     {["Serie","Sug.","Peso","Reps","RPE"].map(h=><div key={h} style={{...ss.label,fontSize:"10px",marginBottom:0}}>{h}</div>)}
                   </div>
@@ -397,6 +399,8 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
                       </div>
                     </div>
                   ))}
+                  </div>
+                  </div>
                   {vol>0&&<motion.div initial={{opacity:0}} animate={{opacity:1}} style={{marginTop:"10px",padding:"10px 14px",background:"var(--bg-elev-2)",borderRadius:"var(--r-md)",fontSize:"12px",color:"var(--text-2)"}}>Volumen serie: <strong style={{color:"var(--text-1)"}}>{vol.toLocaleString()} kg</strong>{est1RM>0&&<> · 1RM estimado: <strong style={{color:isRecord?"#F59E0B":"#3B82F6"}}>{est1RM} kg</strong></>}</motion.div>}
                 </motion.div>
               )}

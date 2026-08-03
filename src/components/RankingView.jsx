@@ -83,7 +83,7 @@ export default function RankingView({tab, setTab, sportColor, players, compact, 
       <div style={{fontWeight:700,fontSize:"14px",marginBottom:"12px",display:"flex",alignItems:"center",gap:"6px"}}>🏋️ Ranking de Fuerza</div>
       <Tabs/>
       {!compact&&(
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"10px",marginBottom:"16px"}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"10px",marginBottom:"16px"}}>
           {top3.map((p,i)=>(
             <motion.div key={p.id} initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.4,delay:i*0.1}} whileHover={{y:-4}} style={{...ss.card,textAlign:"center",border:`1px solid ${medalColors[i]}55`,background:`linear-gradient(135deg,${medalColors[i]}11,transparent)`,boxShadow:`0 0 20px ${medalColors[i]}22`}}>
               <div style={{fontSize:"28px",marginBottom:"4px",filter:`drop-shadow(0 0 12px ${medalColors[i]}66)`}}>{["🥇","🥈","🥉"][i]}</div>

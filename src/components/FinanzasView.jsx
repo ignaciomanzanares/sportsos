@@ -286,7 +286,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
       </div>
 
       {/* Stats resumen */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"12px", marginBottom:"20px" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))", gap:"12px", marginBottom:"20px" }}>
         <StatBox icon="💰" label="Total ingresos" value={fmt(totalIngresosReal,sym)} sub="Este período" color="#1FA04A"/>
         <StatBox icon="📤" label="Total egresos"  value={fmt(totalEgresosReal,sym)} sub="Incluye sueldos y admin" color="#C0392B"/>
         <StatBox icon="👤" label="Sueldos"        value={fmt(totalSueldos,sym)}     sub={`${sueldos.filter(s=>s.activo).length} personas`} color="#C98408"/>

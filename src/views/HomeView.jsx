@@ -168,7 +168,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
     <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
 
       {/* KPI CARDS */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"10px"}}>
         {kpi.map((card,i)=>(
           <motion.div key={i} whileHover={{background:"#161412"}} onClick={card.onClick}
             style={{...CARD, cursor:"pointer", transition:"background 0.15s"}}>
@@ -180,7 +180,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
       </div>
 
       {/* PARTIDOS + ACTIVIDAD */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 300px",gap:"10px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"10px"}}>
 
         {/* Próximos partidos */}
         <div style={CARD}>
@@ -363,7 +363,7 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
       <NextMatchCard club={club} sp={sp} sportColor={sportColor} onNavigate={onNavigate}/>
 
       {/* Stats */}
-      <div className="stats-hero-4" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px"}}>
         <HeroStat icon="✅" value={`${presentes}/${players.length}`} label="Asistencia hoy"
           sub="Presentes en entrenamiento" color="#1FA04A" onClick={()=>onNavigate("asistencia")}/>
         <HeroStat icon="🏆" value={partidos.filter(p=>p.resultado==="victoria").length}
@@ -446,7 +446,7 @@ function HomePreparador({ players, sportColor, sp, onNavigate }) {
             Ver detalle →
           </motion.button>
         </div>
-        <div style={{padding:"18px",display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px"}}>
+        <div style={{padding:"18px",display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(90px,1fr))",gap:"12px"}}>
           {WELLNESS_RESUMEN.map(w=>(
             <div key={w.level} style={{textAlign:"center",padding:"14px 8px",borderRadius:"var(--r-md)",
               background:`${w.color}08`,border:`1px solid ${w.color}22`}}>
@@ -540,7 +540,7 @@ function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavig
       </motion.div>
 
       {/* Stats personales */}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px"}}>
         <HeroStat icon="💳" value={cuotaOk?"Al día":"Pendiente"} label="Mi cuota"
           sub={cuotaOk?"Gracias por pagar":"Vence pronto"}
           color={cuotaOk?"#1FA04A":"#C98408"} onClick={()=>onNavigate("micuota")}/>
@@ -593,7 +593,7 @@ export default function HomeView({ role, players, sportColor, club, sp, countryD
       {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate}/>}
       {role==="jugador"    && <HomeJugador    player={players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}
       {role==="superadmin" && (
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"12px"}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"12px"}}>
           <HeroStat icon="🏢" value="24" label="Clubes activos" sub="En SportOS" color={sportColor} onClick={()=>onNavigate("clubes")}/>
           <HeroStat icon="💰" value="$1.840" label="Comisiones" sub="Este mes (USD)" color="#1FA04A" onClick={()=>onNavigate("comisiones")}/>
           <HeroStat icon="👥" value="387" label="Usuarios" sub="En la plataforma" color="#3B82F6" onClick={()=>onNavigate("dashboard")}/>

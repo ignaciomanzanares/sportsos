@@ -72,7 +72,7 @@ function EstadoPlantelView({ sportColor, players }) {
         })}
       </div>
 
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"10px",marginBottom:"24px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(120px,1fr))",gap:"10px",marginBottom:"24px"}}>
         <Stat label="Plantel"     value={filtered.length}  sub="Jugadores"      color={sportColor} icon="👥" delay={0}/>
         <Stat label="Lesionados"  value={rojos.length}     sub="No entrenan"    color="#C0392B" icon="🚑" delay={0.05}/>
         <Stat label="En alerta"   value={amarillos.length} sub="Monitorear"     color="#C98408" icon="⚠️" delay={0.1}/>
@@ -183,7 +183,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
       {planLoading ? (
         <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>
       ) : (
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"12px",marginBottom:"20px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:"12px",marginBottom:"20px"}}>
         <Stat label="Plan activo" value={weekLabel} sub={clubId ? (publishedPlan?"Publicado":"Sin publicar") : "Pretemporada 2025"} color={sportColor} icon="📅" delay={0.05}/>
         <Stat label="Cumplimiento" value={clubId?`${kpis.cumplimiento}%`:"78%"} sub="Ejercicios completados" color="#22C55E" icon="✅" delay={0.1}/>
         <Stat label="Jugadores activos" value={clubId?kpis.activos:4} sub="Entrenaron esta semana" color="#F59E0B" icon="🏋️" delay={0.15}/>

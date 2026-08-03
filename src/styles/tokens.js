@@ -25,7 +25,7 @@ export const ss = {
     position: "relative", zIndex: 10,
   },
   main: {
-    flex: 1, overflowY: "auto", padding: "28px 32px",
+    flex: 1, minWidth: 0, overflowY: "auto", overflowX: "hidden", padding: "28px 32px",
     scrollbarWidth: "thin", scrollbarColor: "var(--border-mid) transparent",
     position: "relative", zIndex: 1,
   },

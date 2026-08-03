@@ -314,14 +314,14 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
       )}
 
       {/* Stats principales */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"14px", marginBottom:"20px" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:"14px", marginBottom:"20px" }}>
         <StatCard icon="🏢" value={totalClubes} label="Clubes activos" sub={`+${clubesNuevos} esta semana`} color="#3B82F6" delay={0}/>
         <StatCard icon="👥" value={totalUsuarios} label="Usuarios totales" sub={`+${nuevosEstaSemana} esta semana`} color="#1FA04A" delay={0.05}/>
         <StatCard icon="💰" value={`$${mrrEstimado}`} label="MRR estimado (USD)" sub={`${porPlan.pro} Pro · ${porPlan.elite} Elite`} color="#C98408" delay={0.1}/>
         <StatCard icon="🆓" value={porPlan.free} label="Usuarios Free" sub="Sin plan de pago aún" color="#6B7896" delay={0.15}/>
       </div>
 
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 280px", gap:"16px", marginBottom:"20px" }}>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:"16px", marginBottom:"20px" }}>
         {/* Gráfico de registros mock semanal */}
         <motion.div {...fadeUp} style={{ ...ss.card }}>
           <div style={{ fontWeight:600, marginBottom:"16px", fontSize:"14px" }}>📈 Registros — últimos 6 meses</div>
@@ -570,7 +570,7 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
         <SectionTitle title="Membresías y Pagos" sub="Control de planes, estados y facturación de todos los clubes"/>
 
         {/* KPIs */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"14px", marginBottom:"24px" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:"14px", marginBottom:"24px" }}>
           <StatCard icon="🏢" value={activosReales.length} label="Clubes activos" color="#3B82F6"/>
           <StatCard icon="💰" value={`$${mrr}`} label="MRR (USD/mes)" sub="Suma de planes activos" color="#1FA04A"/>
           <StatCard icon="⚡" value={clubs.filter(c=>c.plan==="elite"&&!c.suspended).length} label="Plan Elite" color="#C98408"/>

@@ -122,7 +122,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
           </div>
         </div>}
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) 280px",gap:"16px",alignItems:"start"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"16px",alignItems:"start"}}>
         <div>
           <Cancha type={sport} formation={formation} lineup={lineup} sportColor={sportColor} dragging={!!dragged} onDrop={(i)=>{if(dragged)placeInSlot(i,dragged);}} onSlotClick={(i)=>{if(lineup[i])clearSlot(i);}}/>
           <motion.div {...fadeUp}
@@ -722,7 +722,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
         />
 
         {/* Stats rápidos */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px",marginBottom:"20px"}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"12px",marginBottom:"20px"}}>
           <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:sportColor}}>{proximosCount}</div><div style={ss.muted}>Próximos</div></div>
           <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:"var(--text-1)"}}>{jugadosCount}</div><div style={ss.muted}>Jugados</div></div>
           <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:"#22C55E"}}>{victorias}</div><div style={ss.muted}>Victorias</div></div>
@@ -739,7 +739,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
             {nuevos.map((p,i)=>(
               <motion.div key={p._key} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{delay:i*0.04}}
                 style={{borderTop:i>0?"1px solid var(--border-soft)":"none", paddingTop:i>0?"14px":"0", marginBottom:"14px"}}>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 80px 90px 90px 90px auto",gap:"8px",alignItems:"end",flexWrap:"wrap"}}>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"8px",alignItems:"end"}}>
                   {/* Rival */}
                   <div>
                     {i===0&&<div style={ss.label}>Rival</div>}
@@ -979,7 +979,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
           <div style={{...ss.muted,fontSize:"11px",marginTop:"10px"}}>🔒 Jugador bloqueado de nóminas hasta completar paso 3</div>
         </motion.div>
       )}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px",marginBottom:"20px"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px",marginBottom:"20px"}}>
         {[["verde","Aptos","#22C55E"],["amarillo","Alerta","#F59E0B"],["rojo","No aptos","#EF4444"]].map(([k,l,c],i)=>(
           <div key={k} style={{...ss.card,cursor:"default"}}>
             <div style={ss.muted}>{l}</div>

@@ -10,7 +10,7 @@ export default function WhatsAppModal({onClose, team, rival, date, hora, lugar, 
   return (
     <AnimatePresence>
       <motion.div {...fadeIn} onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"20px"}}>
-        <motion.div {...scaleIn} onClick={e=>e.stopPropagation()} style={{...ss.card,width:"420px",maxHeight:"80vh",overflow:"auto",boxShadow:"var(--shadow-lg)"}}>
+        <motion.div {...scaleIn} onClick={e=>e.stopPropagation()} style={{...ss.card,width:"100%",maxWidth:"420px",maxHeight:"80vh",overflow:"auto",boxShadow:"var(--shadow-lg)"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"16px"}}>
             <h3 style={{margin:0,fontSize:"15px",display:"flex",alignItems:"center",gap:"8px"}}>📱 Mensaje WhatsApp</h3>
             <motion.button whileHover={{scale:1.1,rotate:90}} whileTap={{scale:0.9}} onClick={onClose} style={{...ss.btn,background:"transparent",color:"var(--text-2)",padding:"4px 8px",fontSize:"16px"}}>✕</motion.button>
