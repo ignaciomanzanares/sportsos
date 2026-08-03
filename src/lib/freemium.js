@@ -10,30 +10,33 @@ export const PLANS = {
 
 // Qué módulos / features requieren qué plan mínimo
 // "free" = todos pueden usarlo
+//
+// TEMPORALMENTE TODO EN "free": se liberaron todas las funciones para todos
+// los planes a pedido explícito (los límites por plan se van a volver a
+// separar más adelante). La estructura de tiers (pro/elite) se deja intacta
+// abajo, comentada, para cuando se reactive la segmentación.
 export const FEATURE_PLAN = {
-  // Módulos por id
-  muro:           "free",
-  asistencia:     "free",
-  calendario:     "free",
-  jugadores:      "free",   // hasta 15 — el gate de 15 se aplica por separado
-  matchcenter:    "pro",
-  estadoplantel:  "pro",
-  microciclo:     "pro",
-  rankingfuerza:  "pro",
-  nomina:         "pro",
-  estadisticas:   "pro",
-  salud:          "pro",
-  finanzas:       "elite",
-  miclub:         "free",
-  miconvocatoria: "free",
-  midashboard:    "free",
-  noticias:       "free",
-  micuota:        "pro",
-  migym:          "pro",
-  nominasclub:    "pro",
-  // Features especiales (no módulos)
-  plantel_ilimitado: "pro",
-  importar_partido:  "elite",
+  muro:              "free",
+  asistencia:        "free",
+  calendario:        "free",
+  jugadores:         "free",
+  matchcenter:       "free", // antes: pro
+  estadoplantel:     "free", // antes: pro
+  microciclo:        "free", // antes: pro
+  rankingfuerza:     "free", // antes: pro
+  nomina:            "free", // antes: pro
+  estadisticas:      "free", // antes: pro
+  salud:             "free", // antes: pro
+  finanzas:          "free", // antes: elite
+  miclub:            "free",
+  miconvocatoria:    "free",
+  midashboard:       "free",
+  noticias:          "free",
+  micuota:           "free", // antes: pro
+  migym:             "free", // antes: pro
+  nominasclub:       "free", // antes: pro
+  plantel_ilimitado: "free", // antes: pro
+  importar_partido:  "free", // antes: elite
 };
 
 const PLAN_ORDER = ["free","pro","elite"];

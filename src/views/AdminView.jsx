@@ -566,7 +566,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             <div>
               <div style={{fontWeight:700,fontSize:"14px",marginBottom:"3px"}}>{plan.icon} Plan {plan.label} activo</div>
               <div style={{fontSize:"11px",color:"var(--text-3)"}}>
-                {userPlan==="free" ? "Upgrade a Pro para desbloquear Match Center, Wellness, Microciclo y más." : userPlan==="pro" ? "Upgrade a Elite para desbloquear Finanzas y SportOS Cam." : "Tienes acceso completo a todas las funciones."}
+                Por ahora todas las funciones están disponibles en cualquier plan.
               </div>
             </div>
             {userPlan !== "elite" && (
