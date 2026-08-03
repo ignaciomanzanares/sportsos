@@ -20,7 +20,7 @@
   /* Text — blanco cálido */
   --text-1:  #F2EEEE;
   --text-2:  #A09090;
-  --text-3:  #5E4E4E;
+  --text-3:  #948484;
   --text-4:  #3C2C2C;
 
   /* Sport palette — vibrante, saturado */
@@ -384,7 +384,7 @@ select option {
     height: 52px !important;
     gap: 6px !important;
   }
-  .sportos-topbar .hide-mobile { display: none !important; }
+  .hide-mobile { display: none !important; }
 
   .sportos-sidebar {
     width: 100% !important;
@@ -427,6 +427,12 @@ select option {
     height: 52px !important;
     border-radius: var(--r-sm) !important;
     white-space: nowrap !important;
+    border-left: none !important;
+    border-bottom: 3px solid transparent !important;
+    box-shadow: none !important;
+  }
+  .sportos-sidebar .sidebar-modules button.active {
+    border-bottom-color: var(--sport-current, #18C44E) !important;
   }
 
   .sportos-body {

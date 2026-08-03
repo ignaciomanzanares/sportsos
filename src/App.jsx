@@ -446,6 +446,7 @@ export default function SportOS() {
               const active = module===m.id;
               return (
                 <motion.button key={m.id} whileHover={{x:locked?0:4}} whileTap={{scale:0.97}}
+                  className={active?"sidebar-module-btn active":"sidebar-module-btn"}
                   onClick={()=>{ if(m.id!==module) navigateTo(m.id); }}
                   style={{
                     display:"flex",alignItems:"center",gap:"9px",
