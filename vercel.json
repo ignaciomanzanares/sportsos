@@ -1,0 +1,5 @@
+{
+  "crons": [
+    { "path": "/api/cron/sync-arusa", "schedule": "0 10 * * *" }
+  ]
+}

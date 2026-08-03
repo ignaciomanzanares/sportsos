@@ -60,6 +60,48 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
 
   const pagosPendientes = payments.filter(p => p.estado === "declarado");
 
+  // Integración con ARUSA (importa partidos automáticamente)
+  const [arusaClubId, setArusaClubId] = useState("");
+  const [arusaLastSync, setArusaLastSync] = useState(null);
+  const [arusaSaving, setArusaSaving] = useState(false);
+  const [arusaSyncing, setArusaSyncing] = useState(false);
+
+  useEffect(() => {
+    if (!clubId) return;
+    supabase.from("clubs").select("arusa_club_id, arusa_last_sync").eq("id", clubId).single()
+      .then(({ data }) => { if (data) { setArusaClubId(data.arusa_club_id || ""); setArusaLastSync(data.arusa_last_sync); } });
+  }, [clubId]);
+
+  const guardarArusaClubId = async () => {
+    if (!clubId) return;
+    setArusaSaving(true);
+    const { error } = await supabase.from("clubs").update({ arusa_club_id: arusaClubId || null }).eq("id", clubId);
+    setArusaSaving(false);
+    if (error) { showToast("Error al guardar: " + error.message, "error"); return; }
+    showToast("ID de ARUSA guardado ✅", "success");
+  };
+
+  const sincronizarArusa = async () => {
+    if (!clubId) return;
+    setArusaSyncing(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const resp = await fetch("/api/sync-arusa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ club_id: clubId }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || "Error desconocido");
+      setArusaLastSync(new Date().toISOString());
+      showToast(`Sincronizado ✅ — ${data.creados} nuevos, ${data.actualizados} actualizados`, "success");
+    } catch (e) {
+      showToast("Error al sincronizar: " + e.message, "error");
+    } finally {
+      setArusaSyncing(false);
+    }
+  };
+
   // Estado para gestión de jugadores
   const [playerForm, setPlayerForm] = useState(null); // null = cerrado | EMPTY_PLAYER = nuevo | {id,...} = editando
   const [playerSaving, setPlayerSaving] = useState(false);
@@ -277,6 +319,30 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         ) : (
           <div style={{fontSize:"12px",color:"var(--text-3)"}}>Cargando código...</div>
         )}
+      </motion.div>
+
+      {/* ── Integración con ARUSA (importa partidos automáticamente) ── */}
+      <motion.div {...fadeUp} transition={{delay:0.225}} style={{...ss.card, marginTop:"20px", border:"1px solid rgba(192,57,43,0.25)", background:"linear-gradient(135deg,rgba(192,57,43,0.06),transparent)"}}>
+        <div style={{fontWeight:700,fontSize:"14px",marginBottom:"8px",display:"flex",alignItems:"center",gap:"8px"}}>
+          🏉 Integración con ARUSA
+        </div>
+        <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
+          Carga el ID del club en arusa.cl (se ve en la URL de la página del club, ej: arusa.cl/es/club/<strong>8077049</strong>) para importar los partidos automáticamente todos los días. También puedes sincronizar manualmente cuando quieras.
+        </div>
+        <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap",marginBottom:"12px"}}>
+          <input value={arusaClubId} onChange={e=>setArusaClubId(e.target.value)} placeholder="Ej: 8077049" style={{...ss.input,maxWidth:"220px"}}/>
+          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={guardarArusaClubId} disabled={arusaSaving}
+            style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",border:"1px solid var(--border-soft)",fontSize:"12px",opacity:arusaSaving?0.6:1}}>
+            {arusaSaving?"Guardando...":"Guardar ID"}
+          </motion.button>
+          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={sincronizarArusa} disabled={arusaSyncing || !arusaClubId}
+            style={{...ss.btn,background:"linear-gradient(135deg,#C0392B,#9B2335)",color:"#fff",fontSize:"12px",fontWeight:700,opacity:(arusaSyncing||!arusaClubId)?0.6:1}}>
+            {arusaSyncing?"Sincronizando...":"🔄 Sincronizar ahora"}
+          </motion.button>
+        </div>
+        <div style={{fontSize:"11px",color:"var(--text-3)"}}>
+          {arusaLastSync ? `Última sincronización: ${new Date(arusaLastSync).toLocaleString("es-CL")}` : "Todavía no se ha sincronizado"}
+        </div>
       </motion.div>
 
       {/* ── Datos de pago (transferencia manual) ── */}

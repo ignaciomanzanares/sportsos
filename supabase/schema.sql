@@ -28,6 +28,8 @@ alter table clubs add column if not exists plan_vence      date;
 alter table clubs add column if not exists plan_notas      text;
 alter table clubs add column if not exists suspended       boolean not null default false;
 alter table clubs add column if not exists plan_updated_at timestamptz;
+alter table clubs add column if not exists arusa_club_id   text;
+alter table clubs add column if not exists arusa_last_sync timestamptz;
 
 -- ─── PROFILES (extiende auth.users) ──────────────────────────
 create table if not exists profiles (
@@ -192,6 +194,13 @@ alter table matches add column if not exists cat        text;
 alter table matches add column if not exists destacados jsonb default '[]';
 alter table matches add column if not exists autor      text;
 alter table matches add column if not exists tarjetas   jsonb default '[]';
+
+-- Partidos importados automáticamente desde una fuente externa (ARUSA, etc.)
+alter table matches add column if not exists external_source text;
+alter table matches add column if not exists external_id     text;
+create unique index if not exists matches_external_unique
+  on matches (club_id, external_source, external_id)
+  where external_source is not null;
 
 -- ─── ATTENDANCE ───────────────────────────────────────────────
 create table if not exists attendance (
