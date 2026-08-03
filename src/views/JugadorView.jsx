@@ -419,7 +419,7 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
 /* ── NominasClub — muestra la nómina REAL publicada por el entrenador
    (antes fabricaba una alineación al azar rotando el array de jugadores,
    sin relación con lo que el entrenador realmente publicó) ──────────── */
-function NominasClub({ teamsToShow, forms, sport, sportColor, clubId, players, player, sp }) {
+function NominasClub({ teamsToShow, forms, sport, sportColor, clubId, players, player, sp, PlantelBanner }) {
   const [lineups, setLineups] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -514,6 +514,107 @@ function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado,
       <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}}
         onClick={()=>setWhatsappModal({ team:`${club.name}${misNomina?.team?` · ${misNomina.team.name}`:""}`, rival:club.next.rival, date:club.next.dia, hora:club.next.hora, lugar:club.next.lugar, starters:misNomina?.starters||[], bench:misNomina?.bench||[] })}
         style={{...ss.btn,background:"linear-gradient(135deg,#25D366,#128C7E)",color:"#fff",width:"100%",padding:"12px",fontSize:"13px",boxShadow:"0 8px 24px rgba(37,211,102,0.35)"}}>📱 Compartir convocatoria en WhatsApp</motion.button>
+    </div>
+  );
+}
+
+/* ── Noticias — antes tenía un useState() llamado condicionalmente dentro
+   de un if(module==="noticias"){...} en el cuerpo de JugadorView, violando
+   las Rules of Hooks: React llama los hooks en orden en cada render, y acá
+   solo se invocaba cuando module==="noticias" — al navegar entre módulos
+   React detectaba un número distinto de hooks entre renders y tiraba abajo
+   el árbol de React (pantalla congelada/en blanco). Ahora vive en su propio
+   componente, como el resto de los módulos de esta vista. ──────────────── */
+function Noticias({ partidos, club, sportColor }) {
+  const [catFiltro, setCatFiltro] = useState("todos");
+  const resultados = partidos.filter(p=>p.estado==="jugado");
+  const cats = ["todos", ...new Set(resultados.map(r=>r.cat))];
+  const feed = catFiltro==="todos" ? resultados : resultados.filter(r=>r.cat===catFiltro);
+  const resColors = {victoria:"#22C55E", empate:"#F59E0B", derrota:"#EF4444"};
+  const resIcons  = {victoria:"🏆", empate:"🤝", derrota:"💪"};
+
+  return (
+    <div>
+      <SectionTitle title="Noticias & Resultados" sub={`${club.name} · Todos los equipos`}/>
+
+      {/* Filtro por categoría */}
+      <div style={{display:"flex",gap:"6px",flexWrap:"wrap",marginBottom:"20px"}}>
+        {cats.map(c=>(
+          <motion.button key={c} whileTap={{scale:0.96}} onClick={()=>setCatFiltro(c)}
+            style={{...ss.btn, fontSize:"11px", padding:"6px 14px", background:catFiltro===c?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)", color:catFiltro===c?sportColor:"var(--text-2)", border:`1px solid ${catFiltro===c?sportColor+"55":"var(--border-soft)"}`, boxShadow:catFiltro===c?`0 0 12px ${sportColor}22`:"none", fontWeight:catFiltro===c?700:400}}>
+            {c==="todos" ? "📋 Todos" : c}
+          </motion.button>
+        ))}
+      </div>
+
+      {feed.length===0 && (
+        <div style={{...ss.card, textAlign:"center", padding:"40px", color:"var(--text-3)"}}>
+          Sin resultados para esta categoría aún.
+        </div>
+      )}
+
+      {feed.map((r,i)=>(
+        <motion.div key={r.id} {...fadeUp} transition={{delay:i*0.06}} style={{...ss.card, marginBottom:"14px", border:`1px solid ${resColors[r.resultado]}33`, background:`linear-gradient(135deg,${resColors[r.resultado]}06,transparent)`}}>
+          {/* Header */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",flexWrap:"wrap",gap:"8px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
+              <div style={{width:"38px",height:"38px",borderRadius:"50%",background:`${resColors[r.resultado]}18`,border:`1.5px solid ${resColors[r.resultado]}44`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px"}}>
+                {resIcons[r.resultado]}
+              </div>
+              <div>
+                <div style={{fontWeight:700,fontSize:"14px"}}>{club.name} vs {r.rival}</div>
+                <div style={{...ss.muted,fontSize:"11px",marginTop:"2px"}}>{r.fecha} · {r.lugar}</div>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
+              <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:`${sportColor}18`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600}}>{r.cat}</span>
+              <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:`${resColors[r.resultado]}18`,color:resColors[r.resultado],border:`1px solid ${resColors[r.resultado]}44`,fontWeight:700,textTransform:"uppercase"}}>{r.resultado}</span>
+            </div>
+          </div>
+
+          {/* Marcador */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"16px",padding:"14px",borderRadius:"var(--r-md)",background:"var(--bg-elev-1)",marginBottom:"12px",border:"1px solid var(--border-soft)"}}>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:"11px",color:"var(--text-3)",marginBottom:"4px",fontWeight:600}}>LOCAL</div>
+              <div style={{fontSize:"32px",fontWeight:900,color:r.lugar==="Local"?sportColor:"var(--text-1)",letterSpacing:"-0.03em"}}>{r.golesLocal}</div>
+              <div style={{fontSize:"11px",fontWeight:600,marginTop:"2px",color:"var(--text-2)"}}>{r.lugar==="Local"?club.name:r.rival}</div>
+            </div>
+            <div style={{fontSize:"22px",color:"var(--text-3)",fontWeight:300}}>—</div>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:"11px",color:"var(--text-3)",marginBottom:"4px",fontWeight:600}}>VISITA</div>
+              <div style={{fontSize:"32px",fontWeight:900,color:r.lugar==="Visita"?sportColor:"var(--text-1)",letterSpacing:"-0.03em"}}>{r.golesVisita}</div>
+              <div style={{fontSize:"11px",fontWeight:600,marginTop:"2px",color:"var(--text-2)"}}>{r.lugar==="Visita"?club.name:r.rival}</div>
+            </div>
+          </div>
+
+          {/* Resumen del entrenador */}
+          <div style={{fontSize:"13px",color:"var(--text-2)",lineHeight:1.6,marginBottom:"10px"}}>"{r.resumen}"</div>
+          <div style={{...ss.muted,fontSize:"11px",marginBottom:"10px"}}>— {r.autor} ({r.autorRol})</div>
+
+          {/* Destacados */}
+          {r.destacados?.length > 0 && (
+            <div style={{display:"flex",gap:"6px",alignItems:"center",flexWrap:"wrap"}}>
+              <span style={{fontSize:"10px",color:"var(--text-3)"}}>⭐ Destacados:</span>
+              {r.destacados.map(d=>(
+                <span key={d} style={{fontSize:"11px",padding:"2px 9px",borderRadius:"99px",background:"rgba(245,158,11,0.12)",color:"#F59E0B",border:"1px solid rgba(245,158,11,0.3)",fontWeight:600}}>{d}</span>
+              ))}
+            </div>
+          )}
+
+          {/* Placeholder análisis IA — se activará cuando el coach suba el video */}
+          {r.aiStatus === "procesando" && (
+            <div style={{marginTop:"12px",padding:"10px 14px",borderRadius:"var(--r-sm)",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.25)",fontSize:"11px",color:"#C084FC",display:"flex",alignItems:"center",gap:"8px"}}>
+              <span style={{animation:"spin 1s linear infinite",display:"inline-block"}}>⏳</span> Agente IA analizando el video del partido...
+            </div>
+          )}
+          {r.aiStatus === "listo" && r.aiAnalysis && (
+            <div style={{marginTop:"12px",padding:"10px 14px",borderRadius:"var(--r-sm)",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.3)"}}>
+              <div style={{fontSize:"11px",color:"#C084FC",fontWeight:700,marginBottom:"6px"}}>⚡ Análisis IA</div>
+              <div style={{fontSize:"12px",color:"var(--text-2)"}}>{r.aiAnalysis}</div>
+            </div>
+          )}
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -742,99 +843,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
     );
   }
 
-  if(module==="noticias") {
-    const [catFiltro, setCatFiltro] = useState("todos");
-    const resultados = partidos.filter(p=>p.estado==="jugado");
-    const cats = ["todos", ...new Set(resultados.map(r=>r.cat))];
-    const feed = catFiltro==="todos" ? resultados : resultados.filter(r=>r.cat===catFiltro);
-    const resColors = {victoria:"#22C55E", empate:"#F59E0B", derrota:"#EF4444"};
-    const resIcons  = {victoria:"🏆", empate:"🤝", derrota:"💪"};
-
-    return (
-      <div>
-        <SectionTitle title="Noticias & Resultados" sub={`${club.name} · Todos los equipos`}/>
-
-        {/* Filtro por categoría */}
-        <div style={{display:"flex",gap:"6px",flexWrap:"wrap",marginBottom:"20px"}}>
-          {cats.map(c=>(
-            <motion.button key={c} whileTap={{scale:0.96}} onClick={()=>setCatFiltro(c)}
-              style={{...ss.btn, fontSize:"11px", padding:"6px 14px", background:catFiltro===c?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)", color:catFiltro===c?sportColor:"var(--text-2)", border:`1px solid ${catFiltro===c?sportColor+"55":"var(--border-soft)"}`, boxShadow:catFiltro===c?`0 0 12px ${sportColor}22`:"none", textTransform:c==="todos"?"none":"none", fontWeight:catFiltro===c?700:400}}>
-              {c==="todos" ? "📋 Todos" : c}
-            </motion.button>
-          ))}
-        </div>
-
-        {feed.length===0 && (
-          <div style={{...ss.card, textAlign:"center", padding:"40px", color:"var(--text-3)"}}>
-            Sin resultados para esta categoría aún.
-          </div>
-        )}
-
-        {feed.map((r,i)=>(
-          <motion.div key={r.id} {...fadeUp} transition={{delay:i*0.06}} style={{...ss.card, marginBottom:"14px", border:`1px solid ${resColors[r.resultado]}33`, background:`linear-gradient(135deg,${resColors[r.resultado]}06,transparent)`}}>
-            {/* Header */}
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px",flexWrap:"wrap",gap:"8px"}}>
-              <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
-                <div style={{width:"38px",height:"38px",borderRadius:"50%",background:`${resColors[r.resultado]}18`,border:`1.5px solid ${resColors[r.resultado]}44`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px"}}>
-                  {resIcons[r.resultado]}
-                </div>
-                <div>
-                  <div style={{fontWeight:700,fontSize:"14px"}}>{club.name} vs {r.rival}</div>
-                  <div style={{...ss.muted,fontSize:"11px",marginTop:"2px"}}>{r.fecha} · {r.lugar}</div>
-                </div>
-              </div>
-              <div style={{display:"flex",gap:"6px",alignItems:"center"}}>
-                <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:`${sportColor}18`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600}}>{r.cat}</span>
-                <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:`${resColors[r.resultado]}18`,color:resColors[r.resultado],border:`1px solid ${resColors[r.resultado]}44`,fontWeight:700,textTransform:"uppercase"}}>{r.resultado}</span>
-              </div>
-            </div>
-
-            {/* Marcador */}
-            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:"16px",padding:"14px",borderRadius:"var(--r-md)",background:"var(--bg-elev-1)",marginBottom:"12px",border:"1px solid var(--border-soft)"}}>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:"11px",color:"var(--text-3)",marginBottom:"4px",fontWeight:600}}>LOCAL</div>
-                <div style={{fontSize:"32px",fontWeight:900,color:r.lugar==="Local"?sportColor:"var(--text-1)",letterSpacing:"-0.03em"}}>{r.golesLocal}</div>
-                <div style={{fontSize:"11px",fontWeight:600,marginTop:"2px",color:"var(--text-2)"}}>{r.lugar==="Local"?club.name:r.rival}</div>
-              </div>
-              <div style={{fontSize:"22px",color:"var(--text-3)",fontWeight:300}}>—</div>
-              <div style={{textAlign:"center"}}>
-                <div style={{fontSize:"11px",color:"var(--text-3)",marginBottom:"4px",fontWeight:600}}>VISITA</div>
-                <div style={{fontSize:"32px",fontWeight:900,color:r.lugar==="Visita"?sportColor:"var(--text-1)",letterSpacing:"-0.03em"}}>{r.golesVisita}</div>
-                <div style={{fontSize:"11px",fontWeight:600,marginTop:"2px",color:"var(--text-2)"}}>{r.lugar==="Visita"?club.name:r.rival}</div>
-              </div>
-            </div>
-
-            {/* Resumen del entrenador */}
-            <div style={{fontSize:"13px",color:"var(--text-2)",lineHeight:1.6,marginBottom:"10px"}}>"{r.resumen}"</div>
-            <div style={{...ss.muted,fontSize:"11px",marginBottom:"10px"}}>— {r.autor} ({r.autorRol})</div>
-
-            {/* Destacados */}
-            {r.destacados?.length > 0 && (
-              <div style={{display:"flex",gap:"6px",alignItems:"center",flexWrap:"wrap"}}>
-                <span style={{fontSize:"10px",color:"var(--text-3)"}}>⭐ Destacados:</span>
-                {r.destacados.map(d=>(
-                  <span key={d} style={{fontSize:"11px",padding:"2px 9px",borderRadius:"99px",background:"rgba(245,158,11,0.12)",color:"#F59E0B",border:"1px solid rgba(245,158,11,0.3)",fontWeight:600}}>{d}</span>
-                ))}
-              </div>
-            )}
-
-            {/* Placeholder análisis IA — se activará cuando el coach suba el video */}
-            {r.aiStatus === "procesando" && (
-              <div style={{marginTop:"12px",padding:"10px 14px",borderRadius:"var(--r-sm)",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.25)",fontSize:"11px",color:"#C084FC",display:"flex",alignItems:"center",gap:"8px"}}>
-                <span style={{animation:"spin 1s linear infinite",display:"inline-block"}}>⏳</span> Agente IA analizando el video del partido...
-              </div>
-            )}
-            {r.aiStatus === "listo" && r.aiAnalysis && (
-              <div style={{marginTop:"12px",padding:"10px 14px",borderRadius:"var(--r-sm)",background:"rgba(168,85,247,0.08)",border:"1px solid rgba(168,85,247,0.3)"}}>
-                <div style={{fontSize:"11px",color:"#C084FC",fontWeight:700,marginBottom:"6px"}}>⚡ Análisis IA</div>
-                <div style={{fontSize:"12px",color:"var(--text-2)"}}>{r.aiAnalysis}</div>
-              </div>
-            )}
-          </motion.div>
-        ))}
-      </div>
-    );
-  }
+  if(module==="noticias") return <Noticias partidos={partidos} club={club} sportColor={sportColor}/>;
 
   if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId} isDemo={isDemo}/>;
 
@@ -843,7 +852,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
   if(module==="nominasclub") {
     const forms = FORMATIONS[sport];
     const teamsToShow = miPlantel ? TEAMS.filter(t=>t.name===miPlantel) : TEAMS;
-    return <NominasClub teamsToShow={teamsToShow} forms={forms} sport={sport} sportColor={sportColor} clubId={clubId} players={players} player={player} sp={sp}/>;
+    return <NominasClub teamsToShow={teamsToShow} forms={forms} sport={sport} sportColor={sportColor} clubId={clubId} players={players} player={player} sp={sp} PlantelBanner={PlantelBanner}/>;
   }
 
   if(module==="miconvocatoria") return (

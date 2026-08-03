@@ -1,13 +1,29 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "./supabase";
 import { saveNotification } from "./db";
+import { PLAYERS_RUGBY } from "../data/players";
+
+// PLAYERS_RUGBY usa nombres de campo viejos (pos/num/med/cuota/cat) que no
+// coinciden con las columnas reales de Supabase (position/number/med_status/
+// cuota_status/category) — normalizado acá para que el modo demo use
+// exactamente los mismos nombres que los datos reales, y así el resto de
+// la app (que espera esos nombres) no se rompa en preview.
+const DEMO_PLAYERS = PLAYERS_RUGBY.map(({ pos, num, med, cuota, cat, hiaReason, gym, ...rest }) => ({
+  ...rest,
+  position: pos,
+  number: num,
+  med_status: med,
+  cuota_status: cuota,
+  category: cat,
+  hia_reason: hiaReason || null,
+}));
 
 /**
  * Hook que carga jugadores desde Supabase.
- * Sin club_id (modo preview de rol) trabaja en memoria, sin persistir.
+ * Sin club_id (modo preview de rol) usa datos de demo en memoria, sin persistir.
  */
 export function usePlayers(clubId) {
-  const [players, setPlayers]   = useState([]);
+  const [players, setPlayers]   = useState(clubId ? [] : DEMO_PLAYERS);
   const [loading, setLoading]   = useState(false);
   const [error,   setError]     = useState(null);
   const isReal = !!clubId;

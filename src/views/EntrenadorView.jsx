@@ -393,6 +393,472 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
   );
 }
 
+/* ── MuroModule — antes vivía como un bloque if(module==="muro"){...} con
+   4 useState() llamados condicionalmente dentro del cuerpo de
+   EntrenadorView, violando las Rules of Hooks: al navegar entre módulos
+   (ej. Muro → Calendario → Muro) React contaba un número distinto de hooks
+   entre renders y tiraba abajo el árbol de React (pantalla en blanco o
+   congelada). Ahora es su propio componente, como el resto de los módulos
+   de esta vista. ─────────────────────────────────────────────────────── */
+function MuroModule({ sp, currentCategory, CatsBanner, sportColor, sportCards, players, visiblePlayers, isDemo, userCats, clubId, setPartidos, showToast, posts, createPost, reactions, handleReact, likedByMe, toggleLike, currentUserId }) {
+  const [showResultForm, setShowResultForm] = useState(false);
+  const [resForm, setResForm] = useState({rival:"", golesLocal:"", golesVisita:"", lugar:"Local", resumen:"", destacados:""});
+  const [tarjetas, setTarjetas] = useState([]);          // [{playerId, playerName, tipo, suspende}]
+  const [tarjetaForm, setTarjetaForm] = useState({playerId:"", tipo: sportCards[0]?.id||"amarilla"});
+  const myCats = isDemo ? sp.categories : userCats;
+
+  const addTarjeta = () => {
+    if (!tarjetaForm.playerId) return;
+    const player = players.find(p => String(p.id||p.number) === tarjetaForm.playerId);
+    const card   = sportCards.find(c => c.id === tarjetaForm.tipo);
+    if (!player || !card) return;
+    setTarjetas(prev => [...prev, { playerId: tarjetaForm.playerId, playerName: player.name, tipo: card.id, label: card.label, color: card.color, suspende: card.suspende, desc: card.desc }]);
+    setTarjetaForm(p => ({ ...p, playerId: "" }));
+  };
+
+  const removeTarjeta = (i) => setTarjetas(prev => prev.filter((_,j) => j !== i));
+
+  const publishResultado = async () => {
+    if(!resForm.rival || resForm.golesLocal==="" || resForm.golesVisita==="") {
+      showToast("Completa rival y marcador antes de publicar","warning"); return;
+    }
+    const local = Number(resForm.golesLocal), visita = Number(resForm.golesVisita);
+    const resultado = local > visita ? "victoria" : local < visita ? "derrota" : "empate";
+    const suspendidos = tarjetas.filter(t => t.suspende > 0);
+    const nuevo = {
+      id: Date.now(),
+      cat: myCats[0] || currentCategory,
+      equipo: "A",
+      rival: resForm.rival,
+      fecha: new Date().toISOString().split("T")[0],
+      hora: "00:00",
+      lugar: resForm.lugar,
+      estado: "jugado",
+      golesLocal: local,
+      golesVisita: visita,
+      resultado,
+      autor: "Entrenador",
+      resumen: resForm.resumen || "Resultado registrado por el cuerpo técnico.",
+      destacados: resForm.destacados ? resForm.destacados.split(",").map(d=>d.trim()).filter(Boolean) : [],
+      tarjetas,
+      videoUrl: null, aiAnalysis: null, aiStatus: null,
+    };
+    // Guardar en Supabase si hay club real
+    let partidoGuardado = nuevo;
+    if (clubId) {
+      try {
+        partidoGuardado = matchToPartido(await saveMatch(clubId, nuevo));
+        const resLabel = resultado==="victoria"?"Victoria":resultado==="derrota"?"Derrota":"Empate";
+        await saveNotification({ clubId, type:"partido", title:"Resultado publicado",
+          body:`${resLabel} ${local}-${visita} vs ${resForm.rival}` }).catch(()=>{});
+      } catch (e) {
+        showToast("Error al guardar el resultado: " + e.message, "error");
+        return;
+      }
+    }
+    setPartidos(prev=>[partidoGuardado,...prev]);
+    setResForm({rival:"",golesLocal:"",golesVisita:"",lugar:"Local",resumen:"",destacados:""});
+    setTarjetas([]);
+    setShowResultForm(false);
+    // Toast principal
+    showToast(`Resultado publicado — ${resultado.toUpperCase()} ✅`, resultado==="victoria"?"success":"warning");
+    // Suspensiones si hay
+    if (suspendidos.length > 0) {
+      setTimeout(() => showToast(`⚠️ ${suspendidos.length} jugador${suspendidos.length>1?"es":""} con tarjeta roja — revisa las suspensiones`,"warning"), 1200);
+    }
+  };
+
+  return (
+    <div>
+      <SectionTitle title={`El Muro — ${sp.name} ${currentCategory}`}/>
+      <CatsBanner/>
+
+      {/* Publicar resultado de partido */}
+      <motion.div {...fadeUp} style={{...ss.card, marginBottom:"16px", border:`1px solid ${sportColor}33`, background:`linear-gradient(135deg,${sportColor}08,transparent)`}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom: showResultForm?"14px":"0"}}>
+          <div style={{fontWeight:600,fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>🏆 Cargar resultado de partido</div>
+          <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setShowResultForm(p=>!p)}
+            style={{...ss.btn, background:showResultForm?"rgba(239,68,68,0.12)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:showResultForm?"#EF4444":"#fff", fontSize:"12px", padding:"7px 16px", boxShadow:showResultForm?"none":`0 4px 14px ${sportColor}44`}}>
+            {showResultForm ? "✕ Cancelar" : "+ Nuevo resultado"}
+          </motion.button>
+        </div>
+
+        <AnimatePresence>
+        {showResultForm && (
+          <motion.div initial={{opacity:0,y:-8}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-8}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
+              <div>
+                <div style={ss.label}>Rival</div>
+                <input value={resForm.rival} onChange={e=>setResForm(p=>({...p,rival:e.target.value}))} placeholder="Ej: Universitario RC" style={ss.input}/>
+              </div>
+              <div>
+                <div style={ss.label}>Lugar</div>
+                <select value={resForm.lugar} onChange={e=>setResForm(p=>({...p,lugar:e.target.value}))} style={{...ss.input,cursor:"pointer"}}>
+                  <option>Local</option><option>Visita</option>
+                </select>
+              </div>
+              <div>
+                <div style={ss.label}>Goles / Puntos — Nosotros</div>
+                <input type="number" min="0" value={resForm.golesLocal} onChange={e=>setResForm(p=>({...p,golesLocal:e.target.value}))} placeholder="0" style={ss.input}/>
+              </div>
+              <div>
+                <div style={ss.label}>Goles / Puntos — {resForm.rival||"Rival"}</div>
+                <input type="number" min="0" value={resForm.golesVisita} onChange={e=>setResForm(p=>({...p,golesVisita:e.target.value}))} placeholder="0" style={ss.input}/>
+              </div>
+            </div>
+            <div style={{marginBottom:"10px"}}>
+              <div style={ss.label}>Resumen del partido</div>
+              <input value={resForm.resumen} onChange={e=>setResForm(p=>({...p,resumen:e.target.value}))} placeholder="Breve comentario del partido..." style={ss.input}/>
+            </div>
+            <div style={{marginBottom:"14px"}}>
+              <div style={ss.label}>Jugadores destacados <span style={{color:"var(--text-3)",fontWeight:400}}>(separados por coma)</span></div>
+              <input value={resForm.destacados} onChange={e=>setResForm(p=>({...p,destacados:e.target.value}))} placeholder="Ej: Andrés Castro, Felipe Morales" style={ss.input}/>
+            </div>
+
+            {/* ── Tarjetas del partido ── */}
+            <div style={{borderTop:"1px solid var(--border-soft)",paddingTop:"14px",marginBottom:"14px"}}>
+              <div style={{fontWeight:700,fontSize:"12px",color:"var(--text-2)",marginBottom:"10px",display:"flex",alignItems:"center",gap:"6px"}}>
+                🃏 Tarjetas del partido
+                {tarjetas.length > 0 && <span style={{fontSize:"10px",padding:"1px 7px",borderRadius:"99px",background:"rgba(192,57,43,0.15)",color:"#C0392B",fontWeight:800}}>{tarjetas.length}</span>}
+              </div>
+
+              {/* Agregar tarjeta */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr auto",gap:"8px",marginBottom:"10px",alignItems:"flex-end"}}>
+                <div>
+                  <div style={ss.label}>Jugador</div>
+                  <select value={tarjetaForm.playerId} onChange={e=>setTarjetaForm(p=>({...p,playerId:e.target.value}))}
+                    style={{...ss.input,cursor:"pointer"}}>
+                    <option value="">— seleccionar —</option>
+                    {players.map(p=><option key={p.id||p.number} value={String(p.id||p.number)}>#{p.number} {p.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <div style={ss.label}>Tipo</div>
+                  <select value={tarjetaForm.tipo} onChange={e=>setTarjetaForm(p=>({...p,tipo:e.target.value}))}
+                    style={{...ss.input,cursor:"pointer"}}>
+                    {sportCards.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}
+                  </select>
+                </div>
+                <motion.button whileHover={{scale:1.06}} whileTap={{scale:0.94}} onClick={addTarjeta}
+                  style={{...ss.btn,background:"var(--bg-elev-3)",color:"var(--text-1)",border:"1px solid var(--border-mid)",padding:"9px 14px",fontSize:"13px",height:"38px",alignSelf:"flex-end"}}>
+                  + Agregar
+                </motion.button>
+              </div>
+
+              {/* Info de la tarjeta seleccionada */}
+              {tarjetaForm.tipo && (()=>{const c=sportCards.find(x=>x.id===tarjetaForm.tipo);return c?(<div style={{fontSize:"10px",color:c.color,marginBottom:"10px",padding:"4px 10px",borderRadius:"var(--r-sm)",background:`${c.color}10`,border:`1px solid ${c.color}22`,display:"inline-block"}}>{c.desc} · {c.suspende>0?`${c.suspende} partido${c.suspende>1?"s":""} suspendido${c.suspende>1?"s":""}`:c.suspende===0?"Sin suspensión automática":""}</div>):null;})()}
+
+              {/* Lista de tarjetas agregadas */}
+              {tarjetas.length > 0 && (
+                <div style={{display:"flex",flexDirection:"column",gap:"6px"}}>
+                  {tarjetas.map((t,i)=>(
+                    <div key={i} style={{display:"flex",alignItems:"center",gap:"8px",padding:"8px 10px",borderRadius:"var(--r-sm)",background:`${t.color}0A`,border:`1px solid ${t.color}33`}}>
+                      <span style={{fontSize:"14px"}}>{t.label.split(" ")[1]}</span>
+                      <div style={{flex:1}}>
+                        <span style={{fontWeight:700,fontSize:"12px",color:t.color}}>{t.label.split(" ")[0]}</span>
+                        <span style={{fontSize:"12px",color:"var(--text-2)"}}> — {t.playerName}</span>
+                        {t.suspende > 0 && <span style={{fontSize:"10px",color:t.color,fontWeight:700,marginLeft:"6px"}}>⚠️ {t.suspende} partido{t.suspende>1?"s":""} suspendido{t.suspende>1?"s":""}</span>}
+                      </div>
+                      <button onClick={()=>removeTarjeta(i)} style={{background:"transparent",border:"none",cursor:"pointer",color:"var(--text-4)",fontSize:"14px",padding:"0 4px",lineHeight:1}}>✕</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {tarjetas.length === 0 && (
+                <div style={{fontSize:"11px",color:"var(--text-4)",textAlign:"center",padding:"8px 0"}}>Sin tarjetas registradas</div>
+              )}
+            </div>
+
+            {/* Placeholder subida de video */}
+            <div style={{padding:"12px 14px",borderRadius:"var(--r-md)",background:"rgba(168,85,247,0.06)",border:"1px dashed rgba(168,85,247,0.3)",marginBottom:"14px",display:"flex",alignItems:"center",gap:"10px"}}>
+              <span style={{fontSize:"20px"}}>🎬</span>
+              <div>
+                <div style={{fontSize:"12px",fontWeight:600,color:"#C084FC"}}>Video del partido — próximamente</div>
+                <div style={{fontSize:"11px",color:"var(--text-3)",marginTop:"2px"}}>Podrás subir el video y un agente de IA extraerá estadísticas automáticamente.</div>
+              </div>
+            </div>
+
+            <motion.button whileHover={{scale:1.02,y:-1}} whileTap={{scale:0.98}} onClick={publishResultado}
+              style={{...ss.btn, background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:"#fff", width:"100%", padding:"13px", fontSize:"13px", fontWeight:700, boxShadow:`0 6px 20px ${sportColor}44`}}>
+              🏆 Publicar resultado {tarjetas.length>0?`· ${tarjetas.length} tarjeta${tarjetas.length>1?"s":""}`:""} {tarjetas.filter(t=>t.suspende>0).length>0?`· ⚠️ ${tarjetas.filter(t=>t.suspende>0).length} suspensión${tarjetas.filter(t=>t.suspende>0).length>1?"es":""}` : ""}
+            </motion.button>
+          </motion.div>
+        )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Feed de posts */}
+      <MuroInput sportColor={sportColor} players={visiblePlayers} onPublish={async (text, type="general") => {
+        try {
+          await createPost({ authorId: currentUserId, text, type });
+          showToast("Post publicado", "success");
+        } catch { showToast("Error al publicar","error"); }
+      }}/>
+      {posts.length===0 && (
+        <EmptyState icon="💬" title="El Muro está vacío" desc="Sé el primero en publicar. Comparte un resultado, da una insignia o lanza un reto al equipo." color={sportColor}/>
+      )}
+      {posts.map((post,i)=>(
+        <PostCard key={post.id} post={post} sportColor={sportColor}
+          reactions={reactions} onReact={handleReact}
+          liked={!!likedByMe[post.id]} onToggleLike={toggleLike}
+          clubId={clubId} currentUserId={currentUserId} showToast={showToast}/>
+      ))}
+    </div>
+  );
+}
+
+/* ── CalendarioModule — mismo problema que MuroModule: useState() llamados
+   condicionalmente dentro de if(module==="calendario"){...}. Extraído a su
+   propio componente por la misma razón (Rules of Hooks). ──────────────── */
+function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setPartidos, showToast, partidos }) {
+  const hoy = new Date().toISOString().split("T")[0];
+  const myCats = isDemo ? sp.categories : userCats;
+  const equiposOpts = ["A","B","C"];
+  const resColors = {victoria:"#22C55E", empate:"#F59E0B", derrota:"#EF4444"};
+
+  // filtros
+  const [filtroCat,  setFiltroCat]  = useState("todos");
+  const [filtroEq,   setFiltroEq]   = useState("todos");
+  const [filtroEst,  setFiltroEst]  = useState("todos"); // todos | programado | jugado
+
+  // nuevo partido (fila vacía)
+  const partidoVacio = () => ({_key:Date.now(), cat:myCats[0]||"Primer Equipo", equipo:"A", rival:"", fecha:"", hora:"", lugar:"Local", estado:"programado", golesLocal:"", golesVisita:"", resumen:"", destacados:""});
+  const [nuevos, setNuevos] = useState([]);
+
+  const addFila = () => setNuevos(prev=>[...prev, partidoVacio()]);
+  const updateFila = (key, field, val) => setNuevos(prev=>prev.map(p=>p._key===key?{...p,[field]:val}:p));
+  const removeFila = (key) => setNuevos(prev=>prev.filter(p=>p._key!==key));
+
+  const guardarTodos = async () => {
+    const validos = nuevos.filter(p=>p.rival.trim() && p.fecha);
+    if(!validos.length){ showToast("Completa al menos rival y fecha","warning"); return; }
+    const preparados = validos.map(p=>({
+      cat: p.cat, equipo: p.equipo, rival: p.rival.trim(),
+      fecha: p.fecha, hora: p.hora||"00:00", lugar: p.lugar, estado: p.estado,
+      golesLocal: p.estado==="jugado"&&p.golesLocal!==""?Number(p.golesLocal):null,
+      golesVisita: p.estado==="jugado"&&p.golesVisita!==""?Number(p.golesVisita):null,
+      resultado: p.estado==="jugado"?(Number(p.golesLocal)>Number(p.golesVisita)?"victoria":Number(p.golesLocal)<Number(p.golesVisita)?"derrota":"empate"):null,
+      autor:"Entrenador", resumen:p.resumen||null,
+      destacados: p.destacados?p.destacados.split(",").map(d=>d.trim()).filter(Boolean):[],
+      videoUrl:null, aiAnalysis:null, aiStatus:null,
+    }));
+    let guardados;
+    if (clubId) {
+      try {
+        guardados = await Promise.all(preparados.map(p => saveMatch(clubId, p).then(row => matchToPartido(row))));
+      } catch (e) {
+        showToast("Error al guardar en BD: " + e.message, "error");
+        return;
+      }
+    } else {
+      guardados = preparados.map(p => ({ ...p, id: Date.now() + Math.random() }));
+    }
+    setPartidos(prev=>[...guardados,...prev]);
+    setNuevos([]);
+    showToast(`${guardados.length} partido${guardados.length>1?"s":""} guardado${guardados.length>1?"s":""} ✅`,"success");
+  };
+
+  const partidosFiltrados = partidos
+    .filter(p=> myCats.includes(p.cat) || isDemo)
+    .filter(p=> filtroCat==="todos" || p.cat===filtroCat)
+    .filter(p=> filtroEq==="todos"  || p.equipo===filtroEq)
+    .filter(p=> filtroEst==="todos" || p.estado===filtroEst)
+    .sort((a,b)=>a.fecha.localeCompare(b.fecha));
+
+  const proximosCount = partidosFiltrados.filter(p=>p.estado==="programado"&&p.fecha>=hoy).length;
+  const jugadosCount  = partidosFiltrados.filter(p=>p.estado==="jugado").length;
+  const victorias     = partidosFiltrados.filter(p=>p.resultado==="victoria").length;
+
+  return (
+    <div>
+      <SectionTitle title="Calendario de Temporada" sub={`${club.name} · ${sp.name}`}
+        action={
+          <motion.button whileHover={{scale:1.05,y:-1}} whileTap={{scale:0.95}} onClick={addFila}
+            style={{...ss.btn, background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:"#fff", fontSize:"12px", padding:"8px 18px", boxShadow:`0 4px 14px ${sportColor}44`, fontWeight:700}}>
+            + Agregar partido
+          </motion.button>
+        }
+      />
+
+      {/* Stats rápidos */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"12px",marginBottom:"20px"}}>
+        <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:sportColor}}>{proximosCount}</div><div style={ss.muted}>Próximos</div></div>
+        <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:"var(--text-1)"}}>{jugadosCount}</div><div style={ss.muted}>Jugados</div></div>
+        <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:"#22C55E"}}>{victorias}</div><div style={ss.muted}>Victorias</div></div>
+      </div>
+
+      {/* Formulario carga múltiple */}
+      <AnimatePresence>
+      {nuevos.length>0 && (
+        <motion.div initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} style={{...ss.card, marginBottom:"20px", border:`1px solid ${sportColor}33`, background:`linear-gradient(135deg,${sportColor}08,transparent)`}}>
+          <div style={{fontWeight:700,fontSize:"14px",marginBottom:"14px",display:"flex",justify:"space-between",alignItems:"center",gap:"8px"}}>
+            📅 Nuevos partidos <span style={{fontSize:"11px",color:"var(--text-3)",fontWeight:400}}>— completa y guarda todos juntos</span>
+          </div>
+
+          {nuevos.map((p,i)=>(
+            <motion.div key={p._key} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{delay:i*0.04}}
+              style={{borderTop:i>0?"1px solid var(--border-soft)":"none", paddingTop:i>0?"14px":"0", marginBottom:"14px"}}>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"8px",alignItems:"end"}}>
+                {/* Rival */}
+                <div>
+                  {i===0&&<div style={ss.label}>Rival</div>}
+                  <input value={p.rival} onChange={e=>updateFila(p._key,"rival",e.target.value)} placeholder="Nombre rival" style={ss.input}/>
+                </div>
+                {/* Fecha */}
+                <div>
+                  {i===0&&<div style={ss.label}>Fecha</div>}
+                  <input type="date" value={p.fecha} onChange={e=>updateFila(p._key,"fecha",e.target.value)} style={ss.input}/>
+                </div>
+                {/* Hora */}
+                <div>
+                  {i===0&&<div style={ss.label}>Hora</div>}
+                  <input type="time" value={p.hora} onChange={e=>updateFila(p._key,"hora",e.target.value)} style={ss.input}/>
+                </div>
+                {/* Categoría */}
+                <div>
+                  {i===0&&<div style={ss.label}>Categoría</div>}
+                  <select value={p.cat} onChange={e=>updateFila(p._key,"cat",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
+                    {myCats.map(c=><option key={c}>{c}</option>)}
+                  </select>
+                </div>
+                {/* Equipo */}
+                <div>
+                  {i===0&&<div style={ss.label}>Equipo</div>}
+                  <select value={p.equipo} onChange={e=>updateFila(p._key,"equipo",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
+                    {equiposOpts.map(eq=><option key={eq}>Equipo {eq}</option>)}
+                  </select>
+                </div>
+                {/* Lugar */}
+                <div>
+                  {i===0&&<div style={ss.label}>Lugar</div>}
+                  <select value={p.lugar} onChange={e=>updateFila(p._key,"lugar",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
+                    <option>Local</option><option>Visita</option>
+                  </select>
+                </div>
+                {/* Eliminar fila */}
+                <div style={{paddingTop:i===0?"18px":"0"}}>
+                  <motion.button whileTap={{scale:0.9}} onClick={()=>removeFila(p._key)}
+                    style={{...ss.btn,background:"rgba(239,68,68,0.1)",color:"#EF4444",border:"1px solid rgba(239,68,68,0.25)",padding:"8px 10px",fontSize:"12px"}}>✕</motion.button>
+                </div>
+              </div>
+              {/* Resultado inline si ya se jugó */}
+              <div style={{display:"flex",alignItems:"center",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
+                <label style={{display:"flex",alignItems:"center",gap:"6px",cursor:"pointer",fontSize:"12px",color:"var(--text-2)"}}>
+                  <input type="checkbox" checked={p.estado==="jugado"} onChange={e=>updateFila(p._key,"estado",e.target.checked?"jugado":"programado")} style={{accentColor:sportColor}}/>
+                  Ya se jugó
+                </label>
+                {p.estado==="jugado" && <>
+                  <input type="number" min="0" value={p.golesLocal} onChange={e=>updateFila(p._key,"golesLocal",e.target.value)} placeholder="Nos." style={{...ss.input,width:"60px",textAlign:"center"}}/>
+                  <span style={{color:"var(--text-3)"}}>:</span>
+                  <input type="number" min="0" value={p.golesVisita} onChange={e=>updateFila(p._key,"golesVisita",e.target.value)} placeholder="Rival" style={{...ss.input,width:"60px",textAlign:"center"}}/>
+                  <input value={p.resumen} onChange={e=>updateFila(p._key,"resumen",e.target.value)} placeholder="Resumen breve..." style={{...ss.input,flex:1,minWidth:"140px"}}/>
+                </>}
+              </div>
+            </motion.div>
+          ))}
+
+          <div style={{display:"flex",gap:"8px",borderTop:"1px solid var(--border-soft)",paddingTop:"14px",flexWrap:"wrap"}}>
+            <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={addFila}
+              style={{...ss.btn,background:"transparent",color:sportColor,border:`1px dashed ${sportColor}55`,fontSize:"12px",padding:"9px 16px"}}>
+              + Otro partido
+            </motion.button>
+            <motion.button whileHover={{scale:1.02,y:-1}} whileTap={{scale:0.97}} onClick={guardarTodos}
+              style={{...ss.btn,background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`,color:"#fff",fontSize:"13px",padding:"9px 22px",fontWeight:700,boxShadow:`0 6px 18px ${sportColor}44`}}>
+              💾 Guardar {nuevos.length} partido{nuevos.length!==1?"s":""}
+            </motion.button>
+            <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={()=>setNuevos([])}
+              style={{...ss.btn,background:"transparent",color:"var(--text-3)",border:"1px solid var(--border-soft)",fontSize:"12px",padding:"9px 14px"}}>
+              Cancelar
+            </motion.button>
+          </div>
+        </motion.div>
+      )}
+      </AnimatePresence>
+
+      {/* Filtros */}
+      <div style={{display:"flex",gap:"8px",flexWrap:"wrap",marginBottom:"16px",alignItems:"center"}}>
+        <div style={{display:"flex",gap:"4px"}}>
+          {["todos","programado","jugado"].map(e=>(
+            <motion.button key={e} whileTap={{scale:0.96}} onClick={()=>setFiltroEst(e)}
+              style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroEst===e?`${sportColor}22`:"var(--bg-elev-2)",color:filtroEst===e?sportColor:"var(--text-2)",border:`1px solid ${filtroEst===e?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroEst===e?700:400}}>
+              {e==="todos"?"Todos":e==="programado"?"📅 Próximos":"✅ Jugados"}
+            </motion.button>
+          ))}
+        </div>
+        <div style={{display:"flex",gap:"4px"}}>
+          {["todos",...myCats].map(c=>(
+            <motion.button key={c} whileTap={{scale:0.96}} onClick={()=>setFiltroCat(c)}
+              style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroCat===c?`${sportColor}22`:"var(--bg-elev-2)",color:filtroCat===c?sportColor:"var(--text-2)",border:`1px solid ${filtroCat===c?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroCat===c?700:400}}>
+              {c==="todos"?"Todas":c}
+            </motion.button>
+          ))}
+        </div>
+        <div style={{display:"flex",gap:"4px"}}>
+          {["todos","A","B","C"].map(eq=>(
+            <motion.button key={eq} whileTap={{scale:0.96}} onClick={()=>setFiltroEq(eq)}
+              style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroEq===eq?`${sportColor}22`:"var(--bg-elev-2)",color:filtroEq===eq?sportColor:"var(--text-2)",border:`1px solid ${filtroEq===eq?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroEq===eq?700:400}}>
+              {eq==="todos"?"Equipos":`Eq. ${eq}`}
+            </motion.button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabla de partidos */}
+      <motion.div {...fadeUp} style={{...ss.card,padding:0,overflow:"hidden"}}>
+        {partidosFiltrados.length===0 && (
+          <EmptyState
+            icon="📅"
+            title={partidos.length===0 ? "Sin partidos este año" : "Sin partidos para este filtro"}
+            desc={partidos.length===0 ? "Agrega el primer partido para llevar el historial de la temporada." : "Prueba cambiando los filtros de arriba."}
+            color={sportColor}
+            action={partidos.length===0 ? addFila : null}
+            actionLabel="+ Agregar primer partido"
+          />
+        )}
+        {partidosFiltrados.map((p,i)=>{
+          const esHoy = p.fecha===hoy;
+          const esPasado = p.fecha<hoy;
+          return (
+            <motion.div key={p.id} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} transition={{delay:i*0.03}}
+              style={{display:"flex",alignItems:"center",gap:"12px",padding:"12px 16px",borderBottom:i<partidosFiltrados.length-1?"1px solid var(--border-soft)":"none",background:esHoy?`${sportColor}08`:"transparent",flexWrap:"wrap"}}>
+
+              {/* Fecha y hora */}
+              <div style={{minWidth:"72px",flexShrink:0}}>
+                <div style={{fontSize:"12px",fontWeight:700,color:esHoy?sportColor:"var(--text-1)"}}>{p.fecha.slice(5).replace("-","/")}</div>
+                <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"1px"}}>{p.hora}</div>
+              </div>
+
+              {/* Cat + Equipo */}
+              <div style={{display:"flex",gap:"4px",flexShrink:0}}>
+                <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:`${sportColor}15`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600}}>{p.cat}</span>
+                <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)",fontWeight:600}}>Eq.{p.equipo}</span>
+              </div>
+
+              {/* Rival */}
+              <div style={{flex:1,minWidth:"120px"}}>
+                <div style={{fontSize:"13px",fontWeight:600}}>vs {p.rival}</div>
+                <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"1px"}}>{p.lugar}{esHoy?" · HOY":""}</div>
+              </div>
+
+              {/* Resultado o estado */}
+              {p.estado==="jugado" && p.resultado ? (
+                <div style={{display:"flex",alignItems:"center",gap:"8px",flexShrink:0}}>
+                  <span style={{fontSize:"17px",fontWeight:900,letterSpacing:"-0.02em",color:resColors[p.resultado]}}>{p.golesLocal}:{p.golesVisita}</span>
+                  <span style={{fontSize:"10px",padding:"2px 8px",borderRadius:"99px",background:`${resColors[p.resultado]}18`,color:resColors[p.resultado],border:`1px solid ${resColors[p.resultado]}44`,fontWeight:700,textTransform:"uppercase"}}>{p.resultado.slice(0,3)}</span>
+                </div>
+              ) : (
+                <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:esPasado?"rgba(239,68,68,0.1)":"rgba(59,130,246,0.1)",color:esPasado?"#EF4444":"#60A5FA",border:`1px solid ${esPasado?"rgba(239,68,68,0.25)":"rgba(59,130,246,0.25)"}`,fontWeight:600,flexShrink:0}}>
+                  {esPasado?"Sin resultado":"Programado"}
+                </span>
+              )}
+            </motion.div>
+          );
+        })}
+      </motion.div>
+    </div>
+  );
+}
+
 /* ── EntrenadorView ─────────────────────────────────────────── */
 export default function EntrenadorView({module, sport, sp, club, players, showToast, sportColor, currentCategory, hiaModal, setHiaModal, userCats=[], isDemo=true, partidos=[], setPartidos=()=>{}, clubId=null, currentUserId=null}) {
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#3B82F6","advertencia":"#EF4444","insignia":"#F59E0B","reto":"#A855F7"};
@@ -444,461 +910,16 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   };
   const sportCards = CARD_TYPES[sport] || CARD_TYPES.rugby;
 
-  if(module==="muro") {
-    const [showResultForm, setShowResultForm] = useState(false);
-    const [resForm, setResForm] = useState({rival:"", golesLocal:"", golesVisita:"", lugar:"Local", resumen:"", destacados:""});
-    const [tarjetas, setTarjetas] = useState([]);          // [{playerId, playerName, tipo, suspende}]
-    const [tarjetaForm, setTarjetaForm] = useState({playerId:"", tipo: sportCards[0]?.id||"amarilla"});
-    const myCats = isDemo ? sp.categories : userCats;
+  if(module==="muro") return <MuroModule sp={sp} currentCategory={currentCategory} CatsBanner={CatsBanner}
+    sportColor={sportColor} sportCards={sportCards} players={players} visiblePlayers={visiblePlayers}
+    isDemo={isDemo} userCats={userCats} clubId={clubId} setPartidos={setPartidos} showToast={showToast}
+    posts={posts} createPost={createPost} reactions={reactions} handleReact={handleReact}
+    likedByMe={likedByMe} toggleLike={toggleLike} currentUserId={currentUserId}/>;
 
-    const addTarjeta = () => {
-      if (!tarjetaForm.playerId) return;
-      const player = players.find(p => String(p.id||p.number) === tarjetaForm.playerId);
-      const card   = sportCards.find(c => c.id === tarjetaForm.tipo);
-      if (!player || !card) return;
-      setTarjetas(prev => [...prev, { playerId: tarjetaForm.playerId, playerName: player.name, tipo: card.id, label: card.label, color: card.color, suspende: card.suspende, desc: card.desc }]);
-      setTarjetaForm(p => ({ ...p, playerId: "" }));
-    };
 
-    const removeTarjeta = (i) => setTarjetas(prev => prev.filter((_,j) => j !== i));
+  if(module==="calendario") return <CalendarioModule sp={sp} isDemo={isDemo} userCats={userCats} club={club}
+    sportColor={sportColor} clubId={clubId} setPartidos={setPartidos} showToast={showToast} partidos={partidos}/>;
 
-    const publishResultado = async () => {
-      if(!resForm.rival || resForm.golesLocal==="" || resForm.golesVisita==="") {
-        showToast("Completa rival y marcador antes de publicar","warning"); return;
-      }
-      const local = Number(resForm.golesLocal), visita = Number(resForm.golesVisita);
-      const resultado = local > visita ? "victoria" : local < visita ? "derrota" : "empate";
-      const suspendidos = tarjetas.filter(t => t.suspende > 0);
-      const nuevo = {
-        id: Date.now(),
-        cat: myCats[0] || currentCategory,
-        equipo: "A",
-        rival: resForm.rival,
-        fecha: new Date().toISOString().split("T")[0],
-        hora: "00:00",
-        lugar: resForm.lugar,
-        estado: "jugado",
-        golesLocal: local,
-        golesVisita: visita,
-        resultado,
-        autor: "Entrenador",
-        resumen: resForm.resumen || "Resultado registrado por el cuerpo técnico.",
-        destacados: resForm.destacados ? resForm.destacados.split(",").map(d=>d.trim()).filter(Boolean) : [],
-        tarjetas,
-        videoUrl: null, aiAnalysis: null, aiStatus: null,
-      };
-      // Guardar en Supabase si hay club real
-      let partidoGuardado = nuevo;
-      if (clubId) {
-        try {
-          partidoGuardado = matchToPartido(await saveMatch(clubId, nuevo));
-          const resLabel = resultado==="victoria"?"Victoria":resultado==="derrota"?"Derrota":"Empate";
-          await saveNotification({ clubId, type:"partido", title:"Resultado publicado",
-            body:`${resLabel} ${local}-${visita} vs ${resForm.rival}` }).catch(()=>{});
-        } catch (e) {
-          showToast("Error al guardar el resultado: " + e.message, "error");
-          return;
-        }
-      }
-      setPartidos(prev=>[partidoGuardado,...prev]);
-      setResForm({rival:"",golesLocal:"",golesVisita:"",lugar:"Local",resumen:"",destacados:""});
-      setTarjetas([]);
-      setShowResultForm(false);
-      // Toast principal
-      showToast(`Resultado publicado — ${resultado.toUpperCase()} ✅`, resultado==="victoria"?"success":"warning");
-      // Suspensiones si hay
-      if (suspendidos.length > 0) {
-        setTimeout(() => showToast(`⚠️ ${suspendidos.length} jugador${suspendidos.length>1?"es":""} con tarjeta roja — revisa las suspensiones`,"warning"), 1200);
-      }
-    };
-
-    return (
-      <div>
-        <SectionTitle title={`El Muro — ${sp.name} ${currentCategory}`}/>
-        <CatsBanner/>
-
-        {/* Publicar resultado de partido */}
-        <motion.div {...fadeUp} style={{...ss.card, marginBottom:"16px", border:`1px solid ${sportColor}33`, background:`linear-gradient(135deg,${sportColor}08,transparent)`}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom: showResultForm?"14px":"0"}}>
-            <div style={{fontWeight:600,fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>🏆 Cargar resultado de partido</div>
-            <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setShowResultForm(p=>!p)}
-              style={{...ss.btn, background:showResultForm?"rgba(239,68,68,0.12)":`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:showResultForm?"#EF4444":"#fff", fontSize:"12px", padding:"7px 16px", boxShadow:showResultForm?"none":`0 4px 14px ${sportColor}44`}}>
-              {showResultForm ? "✕ Cancelar" : "+ Nuevo resultado"}
-            </motion.button>
-          </div>
-
-          <AnimatePresence>
-          {showResultForm && (
-            <motion.div initial={{opacity:0,y:-8}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-8}}>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginBottom:"10px"}}>
-                <div>
-                  <div style={ss.label}>Rival</div>
-                  <input value={resForm.rival} onChange={e=>setResForm(p=>({...p,rival:e.target.value}))} placeholder="Ej: Universitario RC" style={ss.input}/>
-                </div>
-                <div>
-                  <div style={ss.label}>Lugar</div>
-                  <select value={resForm.lugar} onChange={e=>setResForm(p=>({...p,lugar:e.target.value}))} style={{...ss.input,cursor:"pointer"}}>
-                    <option>Local</option><option>Visita</option>
-                  </select>
-                </div>
-                <div>
-                  <div style={ss.label}>Goles / Puntos — Nosotros</div>
-                  <input type="number" min="0" value={resForm.golesLocal} onChange={e=>setResForm(p=>({...p,golesLocal:e.target.value}))} placeholder="0" style={ss.input}/>
-                </div>
-                <div>
-                  <div style={ss.label}>Goles / Puntos — {resForm.rival||"Rival"}</div>
-                  <input type="number" min="0" value={resForm.golesVisita} onChange={e=>setResForm(p=>({...p,golesVisita:e.target.value}))} placeholder="0" style={ss.input}/>
-                </div>
-              </div>
-              <div style={{marginBottom:"10px"}}>
-                <div style={ss.label}>Resumen del partido</div>
-                <input value={resForm.resumen} onChange={e=>setResForm(p=>({...p,resumen:e.target.value}))} placeholder="Breve comentario del partido..." style={ss.input}/>
-              </div>
-              <div style={{marginBottom:"14px"}}>
-                <div style={ss.label}>Jugadores destacados <span style={{color:"var(--text-3)",fontWeight:400}}>(separados por coma)</span></div>
-                <input value={resForm.destacados} onChange={e=>setResForm(p=>({...p,destacados:e.target.value}))} placeholder="Ej: Andrés Castro, Felipe Morales" style={ss.input}/>
-              </div>
-
-              {/* ── Tarjetas del partido ── */}
-              <div style={{borderTop:"1px solid var(--border-soft)",paddingTop:"14px",marginBottom:"14px"}}>
-                <div style={{fontWeight:700,fontSize:"12px",color:"var(--text-2)",marginBottom:"10px",display:"flex",alignItems:"center",gap:"6px"}}>
-                  🃏 Tarjetas del partido
-                  {tarjetas.length > 0 && <span style={{fontSize:"10px",padding:"1px 7px",borderRadius:"99px",background:"rgba(192,57,43,0.15)",color:"#C0392B",fontWeight:800}}>{tarjetas.length}</span>}
-                </div>
-
-                {/* Agregar tarjeta */}
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr auto",gap:"8px",marginBottom:"10px",alignItems:"flex-end"}}>
-                  <div>
-                    <div style={ss.label}>Jugador</div>
-                    <select value={tarjetaForm.playerId} onChange={e=>setTarjetaForm(p=>({...p,playerId:e.target.value}))}
-                      style={{...ss.input,cursor:"pointer"}}>
-                      <option value="">— seleccionar —</option>
-                      {players.map(p=><option key={p.id||p.number} value={String(p.id||p.number)}>#{p.number} {p.name}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <div style={ss.label}>Tipo</div>
-                    <select value={tarjetaForm.tipo} onChange={e=>setTarjetaForm(p=>({...p,tipo:e.target.value}))}
-                      style={{...ss.input,cursor:"pointer"}}>
-                      {sportCards.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}
-                    </select>
-                  </div>
-                  <motion.button whileHover={{scale:1.06}} whileTap={{scale:0.94}} onClick={addTarjeta}
-                    style={{...ss.btn,background:"var(--bg-elev-3)",color:"var(--text-1)",border:"1px solid var(--border-mid)",padding:"9px 14px",fontSize:"13px",height:"38px",alignSelf:"flex-end"}}>
-                    + Agregar
-                  </motion.button>
-                </div>
-
-                {/* Info de la tarjeta seleccionada */}
-                {tarjetaForm.tipo && (()=>{const c=sportCards.find(x=>x.id===tarjetaForm.tipo);return c?(<div style={{fontSize:"10px",color:c.color,marginBottom:"10px",padding:"4px 10px",borderRadius:"var(--r-sm)",background:`${c.color}10`,border:`1px solid ${c.color}22`,display:"inline-block"}}>{c.desc} · {c.suspende>0?`${c.suspende} partido${c.suspende>1?"s":""} suspendido${c.suspende>1?"s":""}`:c.suspende===0?"Sin suspensión automática":""}</div>):null;})()}
-
-                {/* Lista de tarjetas agregadas */}
-                {tarjetas.length > 0 && (
-                  <div style={{display:"flex",flexDirection:"column",gap:"6px"}}>
-                    {tarjetas.map((t,i)=>(
-                      <div key={i} style={{display:"flex",alignItems:"center",gap:"8px",padding:"8px 10px",borderRadius:"var(--r-sm)",background:`${t.color}0A`,border:`1px solid ${t.color}33`}}>
-                        <span style={{fontSize:"14px"}}>{t.label.split(" ")[1]}</span>
-                        <div style={{flex:1}}>
-                          <span style={{fontWeight:700,fontSize:"12px",color:t.color}}>{t.label.split(" ")[0]}</span>
-                          <span style={{fontSize:"12px",color:"var(--text-2)"}}> — {t.playerName}</span>
-                          {t.suspende > 0 && <span style={{fontSize:"10px",color:t.color,fontWeight:700,marginLeft:"6px"}}>⚠️ {t.suspende} partido{t.suspende>1?"s":""} suspendido{t.suspende>1?"s":""}</span>}
-                        </div>
-                        <button onClick={()=>removeTarjeta(i)} style={{background:"transparent",border:"none",cursor:"pointer",color:"var(--text-4)",fontSize:"14px",padding:"0 4px",lineHeight:1}}>✕</button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {tarjetas.length === 0 && (
-                  <div style={{fontSize:"11px",color:"var(--text-4)",textAlign:"center",padding:"8px 0"}}>Sin tarjetas registradas</div>
-                )}
-              </div>
-
-              {/* Placeholder subida de video */}
-              <div style={{padding:"12px 14px",borderRadius:"var(--r-md)",background:"rgba(168,85,247,0.06)",border:"1px dashed rgba(168,85,247,0.3)",marginBottom:"14px",display:"flex",alignItems:"center",gap:"10px"}}>
-                <span style={{fontSize:"20px"}}>🎬</span>
-                <div>
-                  <div style={{fontSize:"12px",fontWeight:600,color:"#C084FC"}}>Video del partido — próximamente</div>
-                  <div style={{fontSize:"11px",color:"var(--text-3)",marginTop:"2px"}}>Podrás subir el video y un agente de IA extraerá estadísticas automáticamente.</div>
-                </div>
-              </div>
-
-              <motion.button whileHover={{scale:1.02,y:-1}} whileTap={{scale:0.98}} onClick={publishResultado}
-                style={{...ss.btn, background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:"#fff", width:"100%", padding:"13px", fontSize:"13px", fontWeight:700, boxShadow:`0 6px 20px ${sportColor}44`}}>
-                🏆 Publicar resultado {tarjetas.length>0?`· ${tarjetas.length} tarjeta${tarjetas.length>1?"s":""}`:""} {tarjetas.filter(t=>t.suspende>0).length>0?`· ⚠️ ${tarjetas.filter(t=>t.suspende>0).length} suspensión${tarjetas.filter(t=>t.suspende>0).length>1?"es":""}` : ""}
-              </motion.button>
-            </motion.div>
-          )}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Feed de posts */}
-        <MuroInput sportColor={sportColor} players={visiblePlayers} onPublish={async (text, type="general") => {
-          try {
-            await createPost({ authorId: currentUserId, text, type });
-            showToast("Post publicado", "success");
-          } catch { showToast("Error al publicar","error"); }
-        }}/>
-        {posts.length===0 && (
-          <EmptyState icon="💬" title="El Muro está vacío" desc="Sé el primero en publicar. Comparte un resultado, da una insignia o lanza un reto al equipo." color={sportColor}/>
-        )}
-        {posts.map((post,i)=>(
-          <PostCard key={post.id} post={post} sportColor={sportColor}
-            reactions={reactions} onReact={handleReact}
-            liked={!!likedByMe[post.id]} onToggleLike={toggleLike}
-            clubId={clubId} currentUserId={currentUserId} showToast={showToast}/>
-        ))}
-      </div>
-    );
-  }
-
-  if(module==="calendario") {
-    const hoy = new Date().toISOString().split("T")[0];
-    const myCats = isDemo ? sp.categories : userCats;
-    const equiposOpts = ["A","B","C"];
-    const resColors = {victoria:"#22C55E", empate:"#F59E0B", derrota:"#EF4444"};
-
-    // filtros
-    const [filtroCat,  setFiltroCat]  = useState("todos");
-    const [filtroEq,   setFiltroEq]   = useState("todos");
-    const [filtroEst,  setFiltroEst]  = useState("todos"); // todos | programado | jugado
-
-    // nuevo partido (fila vacía)
-    const partidoVacio = () => ({_key:Date.now(), cat:myCats[0]||"Primer Equipo", equipo:"A", rival:"", fecha:"", hora:"", lugar:"Local", estado:"programado", golesLocal:"", golesVisita:"", resumen:"", destacados:""});
-    const [nuevos, setNuevos] = useState([]);
-
-    const addFila = () => setNuevos(prev=>[...prev, partidoVacio()]);
-    const updateFila = (key, field, val) => setNuevos(prev=>prev.map(p=>p._key===key?{...p,[field]:val}:p));
-    const removeFila = (key) => setNuevos(prev=>prev.filter(p=>p._key!==key));
-
-    const guardarTodos = async () => {
-      const validos = nuevos.filter(p=>p.rival.trim() && p.fecha);
-      if(!validos.length){ showToast("Completa al menos rival y fecha","warning"); return; }
-      const preparados = validos.map(p=>({
-        cat: p.cat, equipo: p.equipo, rival: p.rival.trim(),
-        fecha: p.fecha, hora: p.hora||"00:00", lugar: p.lugar, estado: p.estado,
-        golesLocal: p.estado==="jugado"&&p.golesLocal!==""?Number(p.golesLocal):null,
-        golesVisita: p.estado==="jugado"&&p.golesVisita!==""?Number(p.golesVisita):null,
-        resultado: p.estado==="jugado"?(Number(p.golesLocal)>Number(p.golesVisita)?"victoria":Number(p.golesLocal)<Number(p.golesVisita)?"derrota":"empate"):null,
-        autor:"Entrenador", resumen:p.resumen||null,
-        destacados: p.destacados?p.destacados.split(",").map(d=>d.trim()).filter(Boolean):[],
-        videoUrl:null, aiAnalysis:null, aiStatus:null,
-      }));
-      let guardados;
-      if (clubId) {
-        try {
-          guardados = await Promise.all(preparados.map(p => saveMatch(clubId, p).then(row => matchToPartido(row))));
-        } catch (e) {
-          showToast("Error al guardar en BD: " + e.message, "error");
-          return;
-        }
-      } else {
-        guardados = preparados.map(p => ({ ...p, id: Date.now() + Math.random() }));
-      }
-      setPartidos(prev=>[...guardados,...prev]);
-      setNuevos([]);
-      showToast(`${guardados.length} partido${guardados.length>1?"s":""} guardado${guardados.length>1?"s":""} ✅`,"success");
-    };
-
-    const partidosFiltrados = partidos
-      .filter(p=> myCats.includes(p.cat) || isDemo)
-      .filter(p=> filtroCat==="todos" || p.cat===filtroCat)
-      .filter(p=> filtroEq==="todos"  || p.equipo===filtroEq)
-      .filter(p=> filtroEst==="todos" || p.estado===filtroEst)
-      .sort((a,b)=>a.fecha.localeCompare(b.fecha));
-
-    const proximosCount = partidosFiltrados.filter(p=>p.estado==="programado"&&p.fecha>=hoy).length;
-    const jugadosCount  = partidosFiltrados.filter(p=>p.estado==="jugado").length;
-    const victorias     = partidosFiltrados.filter(p=>p.resultado==="victoria").length;
-
-    return (
-      <div>
-        <SectionTitle title="Calendario de Temporada" sub={`${club.name} · ${sp.name}`}
-          action={
-            <motion.button whileHover={{scale:1.05,y:-1}} whileTap={{scale:0.95}} onClick={addFila}
-              style={{...ss.btn, background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`, color:"#fff", fontSize:"12px", padding:"8px 18px", boxShadow:`0 4px 14px ${sportColor}44`, fontWeight:700}}>
-              + Agregar partido
-            </motion.button>
-          }
-        />
-
-        {/* Stats rápidos */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"12px",marginBottom:"20px"}}>
-          <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:sportColor}}>{proximosCount}</div><div style={ss.muted}>Próximos</div></div>
-          <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:"var(--text-1)"}}>{jugadosCount}</div><div style={ss.muted}>Jugados</div></div>
-          <div style={{...ss.card,textAlign:"center"}}><div style={{fontSize:"26px",fontWeight:800,color:"#22C55E"}}>{victorias}</div><div style={ss.muted}>Victorias</div></div>
-        </div>
-
-        {/* Formulario carga múltiple */}
-        <AnimatePresence>
-        {nuevos.length>0 && (
-          <motion.div initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}} style={{...ss.card, marginBottom:"20px", border:`1px solid ${sportColor}33`, background:`linear-gradient(135deg,${sportColor}08,transparent)`}}>
-            <div style={{fontWeight:700,fontSize:"14px",marginBottom:"14px",display:"flex",justify:"space-between",alignItems:"center",gap:"8px"}}>
-              📅 Nuevos partidos <span style={{fontSize:"11px",color:"var(--text-3)",fontWeight:400}}>— completa y guarda todos juntos</span>
-            </div>
-
-            {nuevos.map((p,i)=>(
-              <motion.div key={p._key} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{delay:i*0.04}}
-                style={{borderTop:i>0?"1px solid var(--border-soft)":"none", paddingTop:i>0?"14px":"0", marginBottom:"14px"}}>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"8px",alignItems:"end"}}>
-                  {/* Rival */}
-                  <div>
-                    {i===0&&<div style={ss.label}>Rival</div>}
-                    <input value={p.rival} onChange={e=>updateFila(p._key,"rival",e.target.value)} placeholder="Nombre rival" style={ss.input}/>
-                  </div>
-                  {/* Fecha */}
-                  <div>
-                    {i===0&&<div style={ss.label}>Fecha</div>}
-                    <input type="date" value={p.fecha} onChange={e=>updateFila(p._key,"fecha",e.target.value)} style={ss.input}/>
-                  </div>
-                  {/* Hora */}
-                  <div>
-                    {i===0&&<div style={ss.label}>Hora</div>}
-                    <input type="time" value={p.hora} onChange={e=>updateFila(p._key,"hora",e.target.value)} style={ss.input}/>
-                  </div>
-                  {/* Categoría */}
-                  <div>
-                    {i===0&&<div style={ss.label}>Categoría</div>}
-                    <select value={p.cat} onChange={e=>updateFila(p._key,"cat",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
-                      {myCats.map(c=><option key={c}>{c}</option>)}
-                    </select>
-                  </div>
-                  {/* Equipo */}
-                  <div>
-                    {i===0&&<div style={ss.label}>Equipo</div>}
-                    <select value={p.equipo} onChange={e=>updateFila(p._key,"equipo",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
-                      {equiposOpts.map(eq=><option key={eq}>Equipo {eq}</option>)}
-                    </select>
-                  </div>
-                  {/* Lugar */}
-                  <div>
-                    {i===0&&<div style={ss.label}>Lugar</div>}
-                    <select value={p.lugar} onChange={e=>updateFila(p._key,"lugar",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
-                      <option>Local</option><option>Visita</option>
-                    </select>
-                  </div>
-                  {/* Eliminar fila */}
-                  <div style={{paddingTop:i===0?"18px":"0"}}>
-                    <motion.button whileTap={{scale:0.9}} onClick={()=>removeFila(p._key)}
-                      style={{...ss.btn,background:"rgba(239,68,68,0.1)",color:"#EF4444",border:"1px solid rgba(239,68,68,0.25)",padding:"8px 10px",fontSize:"12px"}}>✕</motion.button>
-                  </div>
-                </div>
-                {/* Resultado inline si ya se jugó */}
-                <div style={{display:"flex",alignItems:"center",gap:"8px",marginTop:"8px",flexWrap:"wrap"}}>
-                  <label style={{display:"flex",alignItems:"center",gap:"6px",cursor:"pointer",fontSize:"12px",color:"var(--text-2)"}}>
-                    <input type="checkbox" checked={p.estado==="jugado"} onChange={e=>updateFila(p._key,"estado",e.target.checked?"jugado":"programado")} style={{accentColor:sportColor}}/>
-                    Ya se jugó
-                  </label>
-                  {p.estado==="jugado" && <>
-                    <input type="number" min="0" value={p.golesLocal} onChange={e=>updateFila(p._key,"golesLocal",e.target.value)} placeholder="Nos." style={{...ss.input,width:"60px",textAlign:"center"}}/>
-                    <span style={{color:"var(--text-3)"}}>:</span>
-                    <input type="number" min="0" value={p.golesVisita} onChange={e=>updateFila(p._key,"golesVisita",e.target.value)} placeholder="Rival" style={{...ss.input,width:"60px",textAlign:"center"}}/>
-                    <input value={p.resumen} onChange={e=>updateFila(p._key,"resumen",e.target.value)} placeholder="Resumen breve..." style={{...ss.input,flex:1,minWidth:"140px"}}/>
-                  </>}
-                </div>
-              </motion.div>
-            ))}
-
-            <div style={{display:"flex",gap:"8px",borderTop:"1px solid var(--border-soft)",paddingTop:"14px",flexWrap:"wrap"}}>
-              <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={addFila}
-                style={{...ss.btn,background:"transparent",color:sportColor,border:`1px dashed ${sportColor}55`,fontSize:"12px",padding:"9px 16px"}}>
-                + Otro partido
-              </motion.button>
-              <motion.button whileHover={{scale:1.02,y:-1}} whileTap={{scale:0.97}} onClick={guardarTodos}
-                style={{...ss.btn,background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`,color:"#fff",fontSize:"13px",padding:"9px 22px",fontWeight:700,boxShadow:`0 6px 18px ${sportColor}44`}}>
-                💾 Guardar {nuevos.length} partido{nuevos.length!==1?"s":""}
-              </motion.button>
-              <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={()=>setNuevos([])}
-                style={{...ss.btn,background:"transparent",color:"var(--text-3)",border:"1px solid var(--border-soft)",fontSize:"12px",padding:"9px 14px"}}>
-                Cancelar
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
-        </AnimatePresence>
-
-        {/* Filtros */}
-        <div style={{display:"flex",gap:"8px",flexWrap:"wrap",marginBottom:"16px",alignItems:"center"}}>
-          <div style={{display:"flex",gap:"4px"}}>
-            {["todos","programado","jugado"].map(e=>(
-              <motion.button key={e} whileTap={{scale:0.96}} onClick={()=>setFiltroEst(e)}
-                style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroEst===e?`${sportColor}22`:"var(--bg-elev-2)",color:filtroEst===e?sportColor:"var(--text-2)",border:`1px solid ${filtroEst===e?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroEst===e?700:400}}>
-                {e==="todos"?"Todos":e==="programado"?"📅 Próximos":"✅ Jugados"}
-              </motion.button>
-            ))}
-          </div>
-          <div style={{display:"flex",gap:"4px"}}>
-            {["todos",...myCats].map(c=>(
-              <motion.button key={c} whileTap={{scale:0.96}} onClick={()=>setFiltroCat(c)}
-                style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroCat===c?`${sportColor}22`:"var(--bg-elev-2)",color:filtroCat===c?sportColor:"var(--text-2)",border:`1px solid ${filtroCat===c?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroCat===c?700:400}}>
-                {c==="todos"?"Todas":c}
-              </motion.button>
-            ))}
-          </div>
-          <div style={{display:"flex",gap:"4px"}}>
-            {["todos","A","B","C"].map(eq=>(
-              <motion.button key={eq} whileTap={{scale:0.96}} onClick={()=>setFiltroEq(eq)}
-                style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroEq===eq?`${sportColor}22`:"var(--bg-elev-2)",color:filtroEq===eq?sportColor:"var(--text-2)",border:`1px solid ${filtroEq===eq?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroEq===eq?700:400}}>
-                {eq==="todos"?"Equipos":`Eq. ${eq}`}
-              </motion.button>
-            ))}
-          </div>
-        </div>
-
-        {/* Tabla de partidos */}
-        <motion.div {...fadeUp} style={{...ss.card,padding:0,overflow:"hidden"}}>
-          {partidosFiltrados.length===0 && (
-            <EmptyState
-              icon="📅"
-              title={partidos.length===0 ? "Sin partidos este año" : "Sin partidos para este filtro"}
-              desc={partidos.length===0 ? "Agrega el primer partido para llevar el historial de la temporada." : "Prueba cambiando los filtros de arriba."}
-              color={sportColor}
-              action={partidos.length===0 ? addFila : null}
-              actionLabel="+ Agregar primer partido"
-            />
-          )}
-          {partidosFiltrados.map((p,i)=>{
-            const esHoy = p.fecha===hoy;
-            const esPasado = p.fecha<hoy;
-            return (
-              <motion.div key={p.id} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} transition={{delay:i*0.03}}
-                style={{display:"flex",alignItems:"center",gap:"12px",padding:"12px 16px",borderBottom:i<partidosFiltrados.length-1?"1px solid var(--border-soft)":"none",background:esHoy?`${sportColor}08`:"transparent",flexWrap:"wrap"}}>
-
-                {/* Fecha y hora */}
-                <div style={{minWidth:"72px",flexShrink:0}}>
-                  <div style={{fontSize:"12px",fontWeight:700,color:esHoy?sportColor:"var(--text-1)"}}>{p.fecha.slice(5).replace("-","/")}</div>
-                  <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"1px"}}>{p.hora}</div>
-                </div>
-
-                {/* Cat + Equipo */}
-                <div style={{display:"flex",gap:"4px",flexShrink:0}}>
-                  <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:`${sportColor}15`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600}}>{p.cat}</span>
-                  <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)",fontWeight:600}}>Eq.{p.equipo}</span>
-                </div>
-
-                {/* Rival */}
-                <div style={{flex:1,minWidth:"120px"}}>
-                  <div style={{fontSize:"13px",fontWeight:600}}>vs {p.rival}</div>
-                  <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"1px"}}>{p.lugar}{esHoy?" · HOY":""}</div>
-                </div>
-
-                {/* Resultado o estado */}
-                {p.estado==="jugado" && p.resultado ? (
-                  <div style={{display:"flex",alignItems:"center",gap:"8px",flexShrink:0}}>
-                    <span style={{fontSize:"17px",fontWeight:900,letterSpacing:"-0.02em",color:resColors[p.resultado]}}>{p.golesLocal}:{p.golesVisita}</span>
-                    <span style={{fontSize:"10px",padding:"2px 8px",borderRadius:"99px",background:`${resColors[p.resultado]}18`,color:resColors[p.resultado],border:`1px solid ${resColors[p.resultado]}44`,fontWeight:700,textTransform:"uppercase"}}>{p.resultado.slice(0,3)}</span>
-                  </div>
-                ) : (
-                  <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:esPasado?"rgba(239,68,68,0.1)":"rgba(59,130,246,0.1)",color:esPasado?"#EF4444":"#60A5FA",border:`1px solid ${esPasado?"rgba(239,68,68,0.25)":"rgba(59,130,246,0.25)"}`,fontWeight:600,flexShrink:0}}>
-                    {esPasado?"Sin resultado":"Programado"}
-                  </span>
-                )}
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
-    );
-  }
 
   if(module==="matchcenter") return (
     <div>
