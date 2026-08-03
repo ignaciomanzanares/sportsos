@@ -933,13 +933,13 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
       {sp.stats.map((stat,si)=>{
         const conDato = visiblePlayers.filter(p=>sv(p,stat.key)!=null);
         const sorted = [...conDato].sort((a,b)=>sv(b,stat.key)-sv(a,stat.key));
-        const max = sv(sorted[0],stat.key)||1;
         if (sorted.length===0) return (
           <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
             <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
             <div style={{...ss.muted,fontSize:"12px"}}>Aún no hay datos de "{stat.label}" cargados para este plantel.</div>
           </motion.div>
         );
+        const max = sv(sorted[0],stat.key)||1;
         return (
           <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
             <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
