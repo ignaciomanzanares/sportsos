@@ -34,6 +34,20 @@
 --  Para deshacerlo: fix_permisos_por_rol_revertir.sql
 -- ══════════════════════════════════════════════════════════════
 
+--  ⚠️  CÓMO CORRERLO EN EL EDITOR SQL DE SUPABASE
+--  El editor parte el script por su cuenta y se pierde con los
+--  cuerpos de las funciones (tienen ";" adentro). Da un
+--  "syntax error at or near drop" que NO es culpa del SQL.
+--  Córrelo en tres pegadas, en este orden:
+--    1) la sección 3 (funciones ayudantes)
+--    2) las secciones 1 y 2 (vista, invitaciones, accept_invitation)
+--    3) las secciones 4 a 9 (las políticas)
+--  Por eso las funciones usan la etiqueta $function$ en vez de $$.
+--
+--  Con `node scripts/run-sql.mjs` (o psql) va de una sola vez.
+--
+--  APLICADO EN PRODUCCIÓN EL 2026-08-04 — los tres bloques OK.
+
 begin;
 
 -- ─── 1. La vista de datos bancarios: solo lectura ─────────────
@@ -71,7 +85,7 @@ alter table invitations add column if not exists used_by uuid references profile
 create or replace function accept_invitation(p_token text)
 returns table(rol text, club_id uuid, club_name text, sport text, cats text, player_id uuid)
 language plpgsql security definer
-set search_path = public as $$
+set search_path = public as $function$
 declare
   inv record;
 begin
@@ -97,36 +111,36 @@ begin
     select inv.rol, inv.club_id, c.name, c.sport, inv.cats, inv.player_id
     from public.clubs c where c.id = inv.club_id;
 end;
-$$;
+$function$;
 
 
 -- ─── 3. Ayudantes de rol ──────────────────────────────────────
 -- Van junto a is_superadmin() y my_club_id(), que ya existían.
 create or replace function my_rol()
 returns text language sql stable security definer
-set search_path = public as $$
+set search_path = public as $function$
   select rol from profiles where id = auth.uid()
-$$;
+$function$;
 
 -- Cuerpo técnico: admin, entrenador o preparador
 create or replace function soy_staff()
 returns boolean language sql stable security definer
-set search_path = public as $$
+set search_path = public as $function$
   select coalesce(my_rol() in ('admin','entrenador','preparador'), false) or is_superadmin()
-$$;
+$function$;
 
 create or replace function soy_admin()
 returns boolean language sql stable security definer
-set search_path = public as $$
+set search_path = public as $function$
   select coalesce(my_rol() = 'admin', false) or is_superadmin()
-$$;
+$function$;
 
 -- ¿Este player_id es mío?
 create or replace function es_mi_ficha(p_player_id uuid)
 returns boolean language sql stable security definer
-set search_path = public as $$
+set search_path = public as $function$
   select exists (select 1 from players where id = p_player_id and profile_id = auth.uid())
-$$;
+$function$;
 
 grant execute on function my_rol()          to authenticated;
 grant execute on function soy_staff()       to authenticated;
