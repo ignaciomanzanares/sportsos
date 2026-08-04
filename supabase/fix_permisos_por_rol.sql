@@ -47,18 +47,57 @@ revoke insert, update, delete on club_payment_info from anon;
 -- Un solo constraint. No requiere ningún cambio en el código:
 -- AdminView ya solo ofrece estos tres roles.
 --
--- ⚠️  ANTES DE CORRER ESTE ARCHIVO, revisa que no haya filas viejas
---     que rompan el constraint (si las hay, todo el script se
---     revierte y no se aplica nada):
---
---       select rol, count(*) from invitations group by rol;
---
---     Si aparece 'admin' o 'superadmin', avísame antes de seguir:
---     puede ser una invitación legítima pendiente, o alguien que ya
---     usó esta ruta.
+-- Va como `not valid` A PROPÓSITO: existe una fila histórica con
+-- rol='admin' (Old Reds, creada y usada el 2026-08-03 con 2 minutos
+-- de diferencia, insertada desde el editor SQL — sin created_by).
+-- Todo indica que fue un ascenso manual hecho por el equipo, ya que
+-- la interfaz no ofrece el rol admin. `not valid` deja esa fila
+-- quieta como rastro histórico pero SÍ revisa todas las nuevas, que
+-- es lo que importa.
 alter table invitations drop constraint if exists invitations_rol_permitido;
 alter table invitations add constraint invitations_rol_permitido
-  check (rol in ('entrenador','preparador','jugador'));
+  check (rol in ('entrenador','preparador','jugador')) not valid;
+
+-- Poder saber QUIÉN canjeó cada invitación. Hoy solo se guarda
+-- `used_at` (cuándo), no quién — así que ante una invitación
+-- sospechosa no hay forma de responder lo único que importa.
+alter table invitations add column if not exists used_by uuid references profiles(id);
+
+-- accept_invitation() con dos cambios mínimos sobre la versión que ya
+-- existe (el resto es idéntico, a propósito):
+--   1. guarda used_by = quién la canjeó
+--   2. `for update` traba la fila mientras se revisa, para que dos
+--      personas no puedan usar el mismo link al mismo tiempo
+create or replace function accept_invitation(p_token text)
+returns table(rol text, club_id uuid, club_name text, sport text, cats text, player_id uuid)
+language plpgsql security definer
+set search_path = public as $$
+declare
+  inv record;
+begin
+  select * into inv from public.invitations where token = p_token for update;
+
+  if inv.id is null              then raise exception 'invitacion_no_encontrada'; end if;
+  if inv.used_at is not null     then raise exception 'invitacion_ya_usada';      end if;
+  if inv.expires_at < now()      then raise exception 'invitacion_expirada';      end if;
+
+  update public.profiles
+     set rol = inv.rol, club_id = inv.club_id, invited_by = inv.created_by
+   where id = auth.uid();
+
+  if inv.player_id is not null then
+    update public.players set profile_id = auth.uid() where id = inv.player_id;
+  end if;
+
+  update public.invitations
+     set used_at = now(), used_by = auth.uid()
+   where id = inv.id;
+
+  return query
+    select inv.rol, inv.club_id, c.name, c.sport, inv.cats, inv.player_id
+    from public.clubs c where c.id = inv.club_id;
+end;
+$$;
 
 
 -- ─── 3. Ayudantes de rol ──────────────────────────────────────
