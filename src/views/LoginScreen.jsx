@@ -187,6 +187,9 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
         plan: planEfectivo,
         onboarding_done: profile?.onboarding_done || false,
         avatar_url: profile?.avatar_url || null,
+        // Club que quedó pendiente de crear porque el registro exigía
+        // confirmar el correo. Vive en el user_metadata del signUp.
+        club_pendiente: data.user.user_metadata?.club_pendiente || null,
         cats: [],
         isReal: true,
       };

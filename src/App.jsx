@@ -211,9 +211,12 @@ export default function SportOS() {
         setRole(usuario.rol);
         if (usuario.sport) setSport(usuario.sport);
 
-        // Admin recién creado (ej. Google OAuth) sin club: mandar a configurar su club
-        if (rolPerfil === "admin" && !esSuperAdmin && !profile?.club_id) {
-          setPendingUser({ id: u.id, nombre: usuario.nombre, email: u.email });
+        // Sin club: a configurarlo. Vale para el admin recién creado por Google
+        // y para quien acaba de confirmar el correo — ese todavía figura como
+        // "jugador" en profiles, pero trae el club elegido en el user_metadata.
+        const clubPendiente = u.user_metadata?.club_pendiente || null;
+        if (!esSuperAdmin && !profile?.club_id && (rolPerfil === "admin" || clubPendiente)) {
+          setPendingUser({ id: u.id, nombre: usuario.nombre, email: u.email, club_pendiente: clubPendiente });
           setScreen("club-onboarding");
         } else {
           setCurrentUser(usuario);
@@ -289,10 +292,12 @@ export default function SportOS() {
         setCurrentUser({id:user.id, nombre:user.nombre, email:user.email, rol:rolFinal, club:user.club, club_id:user.club_id||null, cats:user.cats, plan:planFinal, avatar_url:user.avatar_url||null, isReal:true});
         setRole(rolFinal);
         setSport(user.sport||"rugby");
-        // Admin sin club (ej. el club nunca llegó a crearse): a configurarlo, no
-        // a la app — ahí vería la vitrina de demo como si fueran sus datos.
-        if (rolFinal==="admin" && !user.club_id) {
-          setPendingUser({ id:user.id, nombre:user.nombre, email:user.email });
+        // Sin club: a configurarlo, no a la app — ahí vería la vitrina de demo
+        // como si fueran sus datos. Cubre al admin cuyo club nunca se creó y a
+        // quien viene de confirmar el correo (su perfil todavía dice "jugador",
+        // el club que eligió está en club_pendiente).
+        if (!user.club_id && (rolFinal==="admin" || user.club_pendiente)) {
+          setPendingUser({ id:user.id, nombre:user.nombre, email:user.email, club_pendiente:user.club_pendiente||null });
           setScreen("club-onboarding");
         } else {
           setScreen("app");
