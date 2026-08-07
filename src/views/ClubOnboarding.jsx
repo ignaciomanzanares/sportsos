@@ -4,7 +4,7 @@ import { SPORTS_CONFIG, COUNTRIES } from "../data/sports";
 import AuroraBg from "../components/AuroraBg";
 import { ss } from "../styles/tokens";
 import BackButton from "../components/BackButton";
-import { supabase } from "../lib/supabase";
+import { supabase, supabaseConfigured } from "../lib/supabase";
 
 const STEPS_NUEVO    = ["Tu cuenta", "Tu club", "Tu deporte"];
 const STEPS_EXISTENTE = ["Tu club", "Tu deporte"];
@@ -53,7 +53,30 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
 
     // Paso final: crear club en Supabase
     setBusy(true);
+    let nuevoUserId = null;
     try {
+      // La cuenta se crea ANTES que el club. Al revés (como estaba) el club
+      // se insertaba primero y después, si el signUp no dejaba sesión activa,
+      // claim_new_club_admin() corría sin auth.uid() y no asignaba a nadie:
+      // quedaba un club huérfano y un perfil sin club_id — el usuario entraba
+      // a la app "sin club" y veía la vitrina de demo. Así se veían las filas
+      // "Test Club Owner"/"Test Reload Owner" (jugador, club_id null).
+      if (!existingUser) {
+        const { data: authData, error: authErr } = await supabase.auth.signUp({
+          email: email.trim(),
+          password: pass,
+          options: { data: { nombre: nombre.trim() } },
+        });
+        if (authErr) throw authErr;
+        if (!authData.session) {
+          // Supabase tiene activada la confirmación por correo: no hay sesión,
+          // así que no podemos reclamar el club todavía. No creamos nada.
+          throw new Error("confirmar_email");
+        }
+        nuevoUserId = authData.user?.id;
+        if (!nuevoUserId) throw new Error("No se obtuvo ID de usuario");
+      }
+
       // El id se genera acá mismo (no dejamos que la DB lo genere y lo leemos
       // de vuelta con .select()): un usuario recién creado todavía no es
       // "miembro" de ningún club, así que RLS le bloquea leer la fila que
@@ -88,23 +111,17 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
         if (claimErr) throw new Error("El club se creó, pero no pudimos asignarte como admin: " + claimErr.message);
         onComplete({ ...existingUser, rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });
       } else {
-        // Usuario nuevo: crear cuenta Supabase
-        const { data: authData, error: authErr } = await supabase.auth.signUp({
-          email: email.trim(),
-          password: pass,
-          options: { data: { nombre: nombre.trim() } },
-        });
-        if (authErr) throw authErr;
-
-        const userId = authData.user?.id;
-        if (!userId) throw new Error("No se obtuvo ID de usuario");
-        await supabase.from("profiles").update({ nombre: nombre.trim() }).eq("id", userId);
+        // Usuario nuevo: la cuenta ya quedó creada y con sesión más arriba
+        await supabase.from("profiles").update({ nombre: nombre.trim() }).eq("id", nuevoUserId);
         const { error: claimErr } = await supabase.rpc("claim_new_club_admin", { p_club_id: clubId });
         if (claimErr) throw new Error("El club se creó, pero no pudimos asignarte como admin: " + claimErr.message);
-        onComplete({ nombre: nombre.trim(), email: email.trim(), rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });
+        onComplete({ id: nuevoUserId, nombre: nombre.trim(), email: email.trim(), rol: "admin", club: clubName.trim(), club_id: clubId, sport, cats: [] });
       }
     } catch (e) {
-      if (!existingUser && (e.message?.includes("fetch") || e.message?.includes("URL") || e.message?.includes("Failed"))) {
+      if (e.message === "confirmar_email") {
+        setError("Te mandamos un correo para confirmar tu cuenta. Confírmalo, inicia sesión y ahí terminas de crear tu club.");
+      } else if (!supabaseConfigured) {
+        // Solo en dev sin .env: no hay backend, se sigue en modo local.
         onComplete({ nombre: nombre.trim(), email: email.trim(), rol: "admin", club: clubName.trim(), club_id: null, sport, cats: [] });
       } else {
         setError(e.message);

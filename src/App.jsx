@@ -34,6 +34,7 @@ import JugadorView from "./views/JugadorView";
 import HomeView from "./views/HomeView";
 import PerfilView from "./views/PerfilView";
 import NewPasswordScreen from "./views/NewPasswordScreen";
+import SinClubScreen from "./views/SinClubScreen";
 
 const ROLES = [
   {id:"superadmin",label:"Super Admin",icon:"⚡"},
@@ -283,10 +284,19 @@ export default function SportOS() {
       onLogin={(user)=>{
         const rolFinal = user.email==="admin@sportostest.com" ? "superadmin" : user.rol;
         const planFinal = user.email==="admin@sportostest.com" ? "elite" : (user.plan||"free");
-        setCurrentUser({nombre:user.nombre, email:user.email, rol:rolFinal, club:user.club, club_id:user.club_id||null, cats:user.cats, plan:planFinal, avatar_url:user.avatar_url||null, isReal:true});
+        // el id va incluido: sin él, la ficha del jugador logueado y las
+        // escrituras que guardan autor se quedaban sin a quién apuntar.
+        setCurrentUser({id:user.id, nombre:user.nombre, email:user.email, rol:rolFinal, club:user.club, club_id:user.club_id||null, cats:user.cats, plan:planFinal, avatar_url:user.avatar_url||null, isReal:true});
         setRole(rolFinal);
         setSport(user.sport||"rugby");
-        setScreen("app");
+        // Admin sin club (ej. el club nunca llegó a crearse): a configurarlo, no
+        // a la app — ahí vería la vitrina de demo como si fueran sus datos.
+        if (rolFinal==="admin" && !user.club_id) {
+          setPendingUser({ id:user.id, nombre:user.nombre, email:user.email });
+          setScreen("club-onboarding");
+        } else {
+          setScreen("app");
+        }
       }}
       onDemo={()=>setScreen("onboarding")}
       onRegister={()=>setScreen("club-onboarding")}
@@ -295,6 +305,28 @@ export default function SportOS() {
 
   // Sin sesión activa y pantalla app → redirigir a login
   if(screen==="app" && !currentUser) { setScreen("login"); return null; }
+
+  // Sesión real sin club → nunca la vitrina de demo. Sin club_id, usePlayers/
+  // useClub/usePayments caen a los datos de mentira (TOROS RC y su plantel
+  // inventado) y el usuario cree que son suyos; además todo lo que escribe
+  // falla, porque el club_id que manda a Supabase es null.
+  // El superadmin es la excepción legítima: administra la plataforma, no un club.
+  if(screen==="app" && currentUser && !clubId && role!=="superadmin") return (
+    <SinClubScreen
+      usuario={currentUser}
+      esAdmin={role==="admin"}
+      onCrearClub={()=>{
+        setPendingUser({ id:currentUser.id, nombre:currentUser.nombre, email:currentUser.email });
+        setScreen("club-onboarding");
+      }}
+      onUnirme={()=>setScreen("join-request")}
+      onSalir={async()=>{
+        await supabase.auth.signOut();
+        setCurrentUser(null);
+        setScreen("login");
+      }}
+    />
+  );
 
   const rolActual = ROLES.find(r=>r.id===role);
 
