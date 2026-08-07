@@ -16,12 +16,12 @@ const ROL_INFO = {
 
 export default function InvitationScreen({ params, onComplete, onBack }) {
   const rol       = params.get("rol")     || "jugador";
-  const clubId    = params.get("club")    || null;
   const clubName  = params.get("name")    || "Tu Club";
   const sport     = params.get("sport")   || "rugby";
   const catsRaw   = params.get("cats")    || "";
   const cats      = catsRaw ? decodeURIComponent(catsRaw).split(",").map(c=>c.trim()).filter(Boolean) : [];
-  const playerId  = params.get("pid")     || null;
+  // Ojo: club/pid ya no se leen de la URL. El servidor los resuelve desde el
+  // token en accept_invitation(); lo que venga en el link es solo decorativo.
   const token     = params.get("token")   || null;
   const expiry    = parseInt(params.get("exp") || "0", 10);
   const info      = ROL_INFO[rol] || ROL_INFO.jugador;
@@ -40,7 +40,10 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
     try {
       const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
       if (accErr) throw new Error("invitacion_invalida");
-      const assigned = acc?.[0] || { rol, club_id: clubId, club_name: clubName, sport, cats: cats.join(",") };
+      // Sin respuesta del servidor no inventamos la asignación: el rol y el
+      // club de la URL los escribe quien manda el link, no la base.
+      if (!acc?.[0]) throw new Error("invitacion_invalida");
+      const assigned = acc[0];
 
       const nombreGoogle = user.user_metadata?.full_name || user.user_metadata?.name || "";
       if (nombreGoogle) await supabase.from("profiles").update({ nombre: nombreGoogle }).eq("id", user.id);
@@ -130,27 +133,40 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
     setServerError("");
 
     try {
+      // Sin token no hay invitación que canjear. Antes se aceptaba igual y se
+      // usaba el rol de la URL: bastaba con editar ?rol=admin a mano.
+      if (!token) throw new Error("invitacion_invalida");
+
       // 1. Crear cuenta en Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: form.email.trim(),
         password: form.password,
-        options: { data: { nombre: form.nombre.trim() } },
+        // El token viaja en el metadata: si hay que confirmar el correo, la
+        // sesión llega recién en el próximo login y la invitación se canjea
+        // ahí, no acá.
+        options: { data: { nombre: form.nombre.trim(), invitacion_token: token } },
       });
       if (authError) throw authError;
 
       const userId = authData.user?.id;
       if (!userId) throw new Error("No se obtuvo ID de usuario");
 
+      if (!authData.session) {
+        // Confirmación por correo activada: accept_invitation necesita
+        // auth.uid() y ahora mismo no hay sesión. Canjear acá dejaría la
+        // invitación quemada sin haber asignado nada.
+        setLoading(false);
+        setStep("confirmar");
+        return;
+      }
+
       // 2. Canjear la invitación: el servidor valida el token contra la tabla
       //    invitations y recién ahí asigna rol/club_id/vínculo de jugador.
       //    El cliente ya no puede auto-asignarse un rol (ver accept_invitation
       //    y la política "own profile update" en supabase/schema.sql).
-      let assigned = { rol, club_id: clubId, club_name: clubName, sport, cats: cats.join(","), player_id: playerId };
-      if (token) {
-        const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
-        if (accErr) throw new Error("invitacion_invalida");
-        if (acc?.[0]) assigned = acc[0];
-      }
+      const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
+      if (accErr || !acc?.[0]) throw new Error("invitacion_invalida");
+      const assigned = acc[0];
 
       setLoading(false);
       setStep("success");
@@ -188,6 +204,25 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
     <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
       <AuroraBg/>
       <div style={{position:"relative",zIndex:1,fontSize:"13px",color:"var(--text-3)"}}>⏳ Verificando invitación...</div>
+    </div>
+  );
+
+  // Cuenta creada, falta confirmar el correo. La invitación NO se canjeó
+  // todavía: queda guardada y se canjea sola al iniciar sesión.
+  if (step === "confirmar") return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
+      <AuroraBg/>
+      <motion.div {...scaleIn} style={{...ss.card,maxWidth:"420px",width:"90%",textAlign:"center",padding:"40px 32px",position:"relative",zIndex:1}}>
+        <div style={{fontSize:"48px",marginBottom:"16px"}}>📬</div>
+        <div style={{fontSize:"22px",fontWeight:800,marginBottom:"8px"}}>Confirma tu correo</div>
+        <div style={{color:"var(--text-2)",fontSize:"13px",lineHeight:1.6,marginBottom:"20px"}}>
+          Te mandamos un link a <strong>{form.email.trim()}</strong>. Haz clic y
+          después inicia sesión: ahí quedas como{" "}
+          <strong style={{color:info.color}}>{info.label}</strong> en{" "}
+          <strong>{clubLabel}</strong>. Tu invitación sigue guardada.
+        </div>
+        <div style={{fontSize:"11px",color:"var(--text-3)"}}>Si no te llega, revisa el spam.</div>
+      </motion.div>
     </div>
   );
 

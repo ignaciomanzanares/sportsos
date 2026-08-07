@@ -4,6 +4,7 @@ import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import AuroraBg from "../components/AuroraBg";
 import { supabase } from "../lib/supabase";
+import { redeemPendingInvitation } from "../lib/pendingInvitation";
 import BackButton from "../components/BackButton";
 
 const ROL_INFO = {
@@ -161,6 +162,16 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
         await new Promise(res => setTimeout(res, 600));
       }
       if (profileError) throw new Error("perfil_no_disponible");
+
+      // Invitación pendiente de canjear (el registro exigía confirmar el
+      // correo, así que no había sesión en ese momento). Ahora sí la hay.
+      if (!profile?.club_id && data.user.user_metadata?.invitacion_token) {
+        const asignado = await redeemPendingInvitation(data.user);
+        if (asignado) {
+          const r = await supabase.from("profiles").select("*").eq("id", data.user.id).single();
+          if (!r.error) profile = r.data;
+        }
+      }
 
       const rolPerfil = profile?.rol || "jugador";
       let planEfectivo = profile?.plan || "free";

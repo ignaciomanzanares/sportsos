@@ -35,6 +35,7 @@ import HomeView from "./views/HomeView";
 import PerfilView from "./views/PerfilView";
 import NewPasswordScreen from "./views/NewPasswordScreen";
 import SinClubScreen from "./views/SinClubScreen";
+import { redeemPendingInvitation } from "./lib/pendingInvitation";
 
 const ROLES = [
   {id:"superadmin",label:"Super Admin",icon:"⚡"},
@@ -178,6 +179,17 @@ export default function SportOS() {
           const r = await supabase.from("profiles").select("*").eq("id", u.id).single();
           if (!r.error) { profile = r.data; break; }
           await new Promise(res => setTimeout(res, 600));
+        }
+
+        // Invitación que no se pudo canjear al registrarse porque faltaba
+        // confirmar el correo. Ahora sí hay sesión: se canjea y el perfil
+        // vuelve a leerse con el rol y el club ya asignados.
+        if (!profile?.club_id && u.user_metadata?.invitacion_token) {
+          const asignado = await redeemPendingInvitation(u);
+          if (asignado) {
+            const r = await supabase.from("profiles").select("*").eq("id", u.id).single();
+            if (!r.error) profile = r.data;
+          }
         }
 
         const esSuperAdmin = u.email === "admin@sportostest.com";
