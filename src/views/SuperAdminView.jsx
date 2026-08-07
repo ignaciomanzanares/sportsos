@@ -75,7 +75,9 @@ function ComparisonTable() {
 
 const PLAN_LABELS    = { free:"Free", starter:"Starter", pro:"Pro", elite:"Elite" };
 const PLAN_PRICES    = { free:0, starter:0, pro:29, elite:59 };
-const SUPERADMIN_ID  = "fe1c22a4-c990-49cb-a28b-c8ab0175ad3c";
+// El id del superadmin ya no se escribe acá: cambiar_plan/suspender_club lo
+// toman de la sesión real (auth.uid()), que es lo único que no se puede
+// falsear desde el navegador.
 
 // ── Hook: carga datos reales de Supabase ──────────────────────────────────
 function useAdminData() {
@@ -93,39 +95,28 @@ function useAdminData() {
 
   useEffect(() => { load(); }, []);
 
+  // El cambio de plan ocurre entero dentro de la base (función cambiar_plan):
+  // verifica que quien llama sea superadmin de verdad, actualiza el club y a
+  // sus miembros, y deja el registro en plan_history en una sola operación.
+  // Hacerlo desde el navegador exigía que `plan` fuera escribible por
+  // cualquiera — que es justo el agujero que cierra la migración 002.
   const cambiarPlan = async (clubId, nuevoPlan, vence, notas) => {
-    const clubActual = data.clubs.find(c=>c.id===clubId);
-    await supabase.from("clubs").update({
-      plan: nuevoPlan,
-      plan_vence: vence || null,
-      plan_notas: notas || null,
-      plan_updated_at: new Date().toISOString(),
-    }).eq("id", clubId);
-    await supabase.from("profiles").update({ plan: nuevoPlan })
-      .eq("club_id", clubId).neq("rol","superadmin");
-    await supabase.from("plan_history").insert({
-      club_id: clubId,
-      plan_antes: clubActual?.plan || "free",
-      plan_nuevo: nuevoPlan,
-      notas: notas || null,
-      cambiado_por: SUPERADMIN_ID,
+    const { error } = await supabase.rpc("cambiar_plan", {
+      p_club_id: clubId,
+      p_plan:    nuevoPlan,
+      p_vence:   vence || null,
+      p_notas:   notas || null,
     });
+    if (error) throw error;
     await load();
   };
 
   const suspenderClub = async (clubId, suspender) => {
-    await supabase.from("clubs").update({
-      suspended: suspender,
-      plan_updated_at: new Date().toISOString(),
-    }).eq("id", clubId);
-    const clubActual = data.clubs.find(c=>c.id===clubId);
-    await supabase.from("plan_history").insert({
-      club_id: clubId,
-      plan_antes: clubActual?.plan || "free",
-      plan_nuevo: suspender ? "suspended" : (clubActual?.plan || "free"),
-      notas: suspender ? "Club suspendido por superadmin" : "Club reactivado por superadmin",
-      cambiado_por: SUPERADMIN_ID,
+    const { error } = await supabase.rpc("suspender_club", {
+      p_club_id:   clubId,
+      p_suspender: suspender,
     });
+    if (error) throw error;
     await load();
   };
 
@@ -301,16 +292,28 @@ function MembresiasModule({ clubs, users, loading, history, cambiarPlan, suspend
     const f = form[clubId];
     if (!f) return;
     setGuardando(true);
-    await cambiarPlan(clubId, f.plan, f.vence || null, f.notas || null);
-    setEditando(null);
-    setGuardando(false);
-    showToast(`Plan actualizado a ${PLAN_LABELS[f.plan]||f.plan} ✅`, "success");
+    // Ahora esto puede fallar de verdad: la base rechaza el cambio si quien
+    // llama no es superadmin. Antes eran updates sueltos sin revisar el error,
+    // así que un rechazo pasaba en silencio y el toast mentía.
+    try {
+      await cambiarPlan(clubId, f.plan, f.vence || null, f.notas || null);
+      setEditando(null);
+      showToast(`Plan actualizado a ${PLAN_LABELS[f.plan]||f.plan} ✅`, "success");
+    } catch (e) {
+      showToast("No se pudo cambiar el plan: " + e.message, "error");
+    } finally {
+      setGuardando(false);
+    }
   };
 
   const toggleSuspender = async (club) => {
     const suspender = !club.suspended;
-    await suspenderClub(club.id, suspender);
-    showToast(suspender ? `${club.name} suspendido` : `${club.name} reactivado ✅`, suspender?"warning":"success");
+    try {
+      await suspenderClub(club.id, suspender);
+      showToast(suspender ? `${club.name} suspendido` : `${club.name} reactivado ✅`, suspender?"warning":"success");
+    } catch (e) {
+      showToast("No se pudo cambiar el estado del club: " + e.message, "error");
+    }
   };
 
   const PLANES = [
