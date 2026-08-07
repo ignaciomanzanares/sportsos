@@ -6,10 +6,10 @@
 -- Si aparecen cuentas con email SIN CONFIRMAR, es la confirmación por correo:
 -- signUp no deja sesión, claim_new_club_admin() corre sin auth.uid() y el
 -- perfil queda sin club.
-select u.email,
+select u.email                                           as correo,
        u.created_at                                      as cuenta_creada,
        case when u.email_confirmed_at is null
-            then 'SIN CONFIRMAR' else 'confirmada' end   as email,
+            then 'SIN CONFIRMAR' else 'confirmada' end   as estado_email,
        coalesce(p.nombre, '❌ SIN PERFIL')                as perfil,
        coalesce(p.rol, '-')                              as rol,
        coalesce(p.club_id::text, 'sin club')             as club
