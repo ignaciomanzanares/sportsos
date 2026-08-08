@@ -8,20 +8,26 @@ import { supabase } from "./supabase";
 export function useClub(clubId) {
   const [club, setClub]     = useState(null);
   const [loading, setLoading] = useState(false);
+  // Si la consulta falla y no lo contamos, el club queda en null y App.jsx cae
+  // a CLUBS[sport]: al usuario le mostramos TOROS RC y su plantel inventado
+  // como si fueran suyos. Con club_id hay club; que no cargue es un error que
+  // hay que decir, no algo que se disimula con datos de demo.
+  const [error, setError]   = useState(null);
 
   const load = useCallback(async () => {
-    if (!clubId) { setClub(null); return; }
+    if (!clubId) { setClub(null); setError(null); return; }
     setLoading(true);
-    const { data, error } = await supabase
+    const { data, error: err } = await supabase
       .from("clubs")
       .select("*")
       .eq("id", clubId)
       .single();
-    if (!error) setClub(data);
+    if (err) { setError(err); }
+    else     { setClub(data); setError(null); }
     setLoading(false);
   }, [clubId]);
 
   useEffect(() => { load(); }, [load]);
 
-  return { club, loading, reload: load };
+  return { club, loading, error, reload: load };
 }

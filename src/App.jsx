@@ -87,7 +87,7 @@ export default function SportOS() {
   // Jugadores/club/pagos/partidos: datos reales de Supabase si hay club_id, vitrina demo si no
   const clubId = currentUser?.club_id ?? null;
   const { players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer } = usePlayers(clubId);
-  const { club: clubRow } = useClub(clubId);
+  const { club: clubRow, error: clubError, reload: reloadClub } = useClub(clubId);
   const { payments: realPayments, addPayment, declarePayment, confirmPayment, rejectPayment, setPayments: setRealPayments } = usePayments(clubId);
   const { partidos: realPartidos, setPartidos: setRealPartidos } = useMatches(clubId);
   const isDemo = currentUser === null;
@@ -343,6 +343,38 @@ export default function SportOS() {
         setScreen("login");
       }}
     />
+  );
+
+  // Tiene club_id pero la fila no se pudo leer (RLS, red, club borrado). Antes
+  // esto caía en CLUBS[sport] y el usuario veía TOROS RC creyendo que era su
+  // club: la misma mentira que SinClubScreen vino a sacar, por otra puerta.
+  if (screen==="app" && clubId && clubError) return (
+    <div style={{ position:"relative", minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", padding:"24px 16px" }}>
+      <AuroraBg/>
+      <div style={{ position:"relative", maxWidth:"420px", textAlign:"center", background:"var(--bg-elev-1)", border:"1px solid var(--border-soft)", borderRadius:"16px", padding:"32px 24px" }}>
+        <div style={{ fontSize:"40px", marginBottom:"12px" }}>⚠️</div>
+        <div style={{ fontWeight:700, fontSize:"18px", marginBottom:"8px" }}>No pudimos cargar tu club</div>
+        <div style={{ fontSize:"14px", color:"var(--text-3)", marginBottom:"20px", lineHeight:1.5 }}>
+          Tu cuenta sí tiene un club asociado, pero no conseguimos leerlo. No te
+          mostramos datos de ejemplo para no confundirte con información que no
+          es tuya.
+        </div>
+        <div style={{ fontSize:"12px", color:"var(--text-4)", marginBottom:"20px", fontFamily:"monospace", wordBreak:"break-word" }}>
+          {clubError.message}
+        </div>
+        <button onClick={reloadClub}
+          style={{ ...ss.btn, width:"100%", padding:"14px", fontWeight:700, fontSize:"14px",
+            background:"linear-gradient(135deg,#3B82F6,#2563EB)", color:"#fff",
+            boxShadow:"0 6px 20px rgba(59,130,246,0.4)", marginBottom:"14px" }}>
+          Reintentar
+        </button>
+        <button
+          onClick={async()=>{ await supabase.auth.signOut(); setCurrentUser(null); setScreen("login"); }}
+          style={{ background:"none", border:"none", color:"var(--text-4)", fontSize:"12px",
+            cursor:"pointer", textDecoration:"underline" }}
+        >Cerrar sesión</button>
+      </div>
+    </div>
   );
 
   const rolActual = ROLES.find(r=>r.id===role);
