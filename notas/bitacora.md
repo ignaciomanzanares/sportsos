@@ -70,3 +70,36 @@
 - App.jsx actualizado: usa usePlayers() en lugar de PLAYERS_RUGBY hardcodeado
 - Login tiene modo dual: Supabase real + fallback mock usuarios demo
 - Variables de entorno configuradas en Vercel (no en git)
+
+## 2026-08-08 (cuentas sin club + seguridad)
+Causa raíz: Supabase tiene "Confirm email" activado, así que `signUp` devuelve
+usuario pero **sin sesión**. Sin sesión no hay `auth.uid()`, y las funciones que
+asignan club (`claim_new_club_admin`, `accept_invitation`) no asignaban nada.
+Resultado: clubes huérfanos, perfiles con `club_id` nulo y ninguna invitación
+funcionando en producción.
+
+Cambios en el código:
+- `src/views/SinClubScreen.jsx` (nuevo) — un usuario real sin club ya no ve la
+  vitrina de demo (TOROS RC) creyendo que es suya; ve "Crear mi club" o
+  "Unirme con un código".
+- `src/views/ClubOnboarding.jsx` — primero la cuenta, después el club. Si no
+  hay sesión, guarda la intención en `user_metadata.club_pendiente` y muestra
+  "Confirma tu correo". Al volver logueado, retoma y crea el club.
+- `src/lib/pendingInvitation.js` (nuevo) — canjea el token guardado en
+  `user_metadata.invitacion_token` en el primer login con sesión real.
+- `src/views/InvitationScreen.jsx` — el link ya no lleva `clubId`, `playerId`
+  ni `rol` en la URL. Sin token no hay registro; el rol lo decide el servidor.
+- `src/views/SuperAdminView.jsx` — sin ID de superadmin hardcodeado; los planes
+  se cambian con `cambiar_plan()` / `suspender_club()` y los errores se muestran.
+
+Cambios en la base de datos (aplicados en producción):
+- Crear clubes dejó de estar abierto a `anon`: la policy ahora es
+  `to authenticated`.
+- Migración `002_proteger_rol_y_plan.sql` — se quitó el UPDATE sobre toda la
+  tabla `profiles` y se dieron GRANT por columna (16 columnas inofensivas).
+  Antes, cualquiera desde la consola del navegador podía hacer
+  `update profiles set rol='admin', plan='elite'`.
+- Se borró 1 club huérfano (RUGBY-TEST2).
+
+Verificado: `update_tabla_entera = 0`, `update_por_columna = 16`,
+`clubes_huerfanos = 0`, policy de clubs = `{authenticated}`.
