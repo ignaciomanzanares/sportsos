@@ -52,6 +52,13 @@ export function nombreCanonico(nombre) {
   return NOMBRE_CANONICO[nombre] ?? nombre;
 }
 
+/** Razón por la que no corresponde salir a arusa, o null si se puede. */
+async function motivoParaNoRaspar() {
+  if (!RASPADO_HABILITADO) return "raspado desactivado: SportOS lee del caché que llena rugby-chile";
+  const hasta = await bloqueoActivo();
+  return hasta ? `arusa nos tiene frenados hasta ${hasta}` : null;
+}
+
 export function resolverDivision(raw) {
   const d = typeof raw === "string" ? raw.toUpperCase() : "PRIMERA";
   return d in DIVISION_A_GRUPO ? d : "PRIMERA";
@@ -97,6 +104,38 @@ const CABECERAS_NAVEGADOR = {
   "Upgrade-Insecure-Requests": "1",
   Connection: "keep-alive",
 };
+
+// ── Freno ante el 429 ────────────────────────────────────────────────────
+// arusa es nginx + un throttle de Laravel por IP, y su Retry-After puede
+// llegar a días: insistir mientras estás castigado alarga la condena. Al ver
+// un 429 nos callamos hasta que pase el tiempo pedido.
+//
+// El estado va en el caché de Postgres, no en memoria: las funciones de Vercel
+// se apagan entre invocaciones, así que un contador local no recordaría el
+// bloqueo y volveríamos a golpear en la siguiente petición.
+const CLAVE_BLOQUEO = "arusa:bloqueo";
+const BLOQUEO_TOPE_MS = 60 * 60 * 1000;      // nunca esperamos más de una hora
+const BLOQUEO_POR_DEFECTO_MS = 15 * 60 * 1000; // si no manda Retry-After
+
+async function bloqueoActivo() {
+  const hasta = await leerCache(CLAVE_BLOQUEO);
+  return hasta && Date.parse(hasta) > Date.now() ? hasta : null;
+}
+
+async function anotarBloqueo(res) {
+  const ra = Number(res.headers.get("retry-after"));
+  const pedido = Number.isFinite(ra) && ra > 0 ? ra * 1000 : BLOQUEO_POR_DEFECTO_MS;
+  const hasta = new Date(Date.now() + Math.min(pedido, BLOQUEO_TOPE_MS)).toISOString();
+  await escribirCache(CLAVE_BLOQUEO, hasta);
+  return hasta;
+}
+
+// SportOS no debería raspar arusa: hay un solo raspador y es el de rugby-chile,
+// que ya tiene ritmo, cooldown y robots. Acá se lee del caché que ese proceso
+// llena. La variable existe para poder probar el cliente a mano, no para
+// dejarla prendida en producción — dos raspadores gastan el mismo presupuesto
+// de peticiones por IP y el castigo lo pagan los dos.
+const RASPADO_HABILITADO = process.env.ARUSA_SCRAPE_ENABLED === "1";
 
 async function pedir(url, headersExtra = {}) {
   const ctrl = new AbortController();
@@ -147,8 +186,11 @@ function parsearPosiciones(html) {
 export async function obtenerPosiciones(division) {
   const div = resolverDivision(division);
   const key = `standings:${div}`;
+  const excusa = await motivoParaNoRaspar();
+  if (excusa) return { filas: (await leerCache(key)) ?? [], desdeCache: true, motivo: excusa };
   try {
     const res = await pedir(`${ARUSA_BASE}/ranking/${DIVISION_A_GRUPO[div]}`);
+    if (res.status === 429) throw new Error(`arusa nos frenó hasta ${await anotarBloqueo(res)}`);
     if (!res.ok) throw new Error(`arusa respondió ${res.status}`);
     const filas = parsearPosiciones(await res.text());
     if (filas.length === 0) throw new Error("posiciones vacías");
@@ -208,6 +250,7 @@ async function pedirPagina(grupoId, pagina) {
     input: String(pagina), type: "11", id: grupoId, rows: "50", actual: "1", column: "jugador.asc",
   });
   const res = await pedir(`${ARUSA_AJAX_EN}/table-page?${qs}`, { "X-Requested-With": "XMLHttpRequest" });
+  if (res.status === 429) { await anotarBloqueo(res); return []; }
   if (!res.ok) return [];
   const json = await res.json();
   if (json.code !== 0 || !json.content) return [];
@@ -221,6 +264,8 @@ async function pedirPagina(grupoId, pagina) {
 export async function obtenerEstadisticas(division) {
   const div = resolverDivision(division);
   const key = `players:${div}`;
+  const excusa = await motivoParaNoRaspar();
+  if (excusa) return { filas: (await leerCache(key)) ?? [], desdeCache: true, motivo: excusa };
   try {
     // Se recorren todas las páginas: quedarse con la primera dejaría fuera a
     // todos los jugadores desde la letra F en adelante.
