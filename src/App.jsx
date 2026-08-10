@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { SPORTS_CONFIG, COUNTRIES, CLUBS } from "./data/sports";
@@ -153,13 +153,59 @@ export default function SportOS() {
   useEffect(()=>{
     const handler = (e) => {
       if ((e.metaKey||e.ctrlKey) && e.key==="k") { e.preventDefault(); setSearchOpen(p=>!p); }
-      if (e.key==="Escape") setSearchOpen(false);
+      if (e.key==="Escape") {
+        // Antes Escape solo cerraba la búsqueda: cualquier otro modal quedaba
+        // abierto y había que buscarle la ✕ con el mouse.
+        setSearchOpen(false); setUpgradeFor(null); setWhatsappModal(null); setHiaModal(false);
+      }
     };
     window.addEventListener("keydown", handler);
     return ()=>window.removeEventListener("keydown", handler);
   },[]);
 
-  useEffect(()=>{setModule("home");setModuleHistory([]);},[role]);
+  // ── La navegación vive en la URL ───────────────────────────────
+  // Todo el estado de navegación estaba solo en memoria: el navegador no tenía
+  // historial que recorrer (el gesto de atrás/adelante no hacía nada) y al
+  // recargar se perdía el módulo y volvías al inicio.
+  // Se usa el hash y no la query porque los links de invitación ya ocupan la
+  // query (?token=...) y no queremos pisarlos.
+  const moduloDeUrl = () => {
+    const h = window.location.hash.replace(/^#\/?/, "").split("?")[0];
+    return /^[a-z]+$/.test(h) ? h : null;
+  };
+  // El módulo que pedía la URL al cargar. Se guarda en una ref porque el efecto
+  // de [role] corre después (el rol llega con la sesión) y pondría "home".
+  const moduloPendiente = useRef(moduloDeUrl());
+
+  useEffect(()=>{
+    const pedido = moduloPendiente.current;
+    const permitido = (MODULE_MAP[role]||[]).some(m=>m.id===pedido);
+    setModule(permitido ? pedido : "home");
+    setModuleHistory([]);
+    moduloPendiente.current = null;
+  },[role]);
+
+  // Cada cambio de módulo deja una entrada en el historial del navegador.
+  useEffect(()=>{
+    if (screen!=="app") return;
+    const destino = `#/${module}`;
+    if (window.location.hash === destino) return;
+    // La primera vez se reemplaza: si no, quedaría una entrada de más y el
+    // primer "atrás" no haría nada visible.
+    if (!window.location.hash) window.history.replaceState({module}, "", destino);
+    else                       window.history.pushState({module}, "", destino);
+  },[module,screen]);
+
+  useEffect(()=>{
+    const onPop = () => {
+      const m = moduloDeUrl();
+      // Sin restricción de plan: si el usuario estuvo ahí, puede volver.
+      if (m) setModule(m);
+    };
+    window.addEventListener("popstate", onPop);
+    return ()=>window.removeEventListener("popstate", onPop);
+  },[]);
+
   useEffect(()=>{setCategory(0);},[sport]);
 
   // Detecta sesión de Supabase al cargar (OAuth redirect o sesión guardada)
@@ -465,7 +511,12 @@ export default function SportOS() {
           <span className="hide-mobile" style={{fontSize:"10px",padding:"1px 6px",borderRadius:"4px",background:"var(--bg-elev-3)",color:"var(--text-4)"}}>⌘K</span>
         </motion.button>
         <div className="hide-mobile" style={{fontSize:"11px",color:"var(--text-2)",display:"flex",alignItems:"center",gap:"4px",padding:"5px 10px",background:"var(--bg-elev-2)",borderRadius:"99px",whiteSpace:"nowrap"}}>🇨🇱 CLP</div>
-        <motion.div whileHover={{scale:1.1,rotate:5}} style={{width:"34px",height:"34px",borderRadius:"50%",background:`linear-gradient(135deg,${sportColor}44,${sportColor}11)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",fontWeight:800,color:sportColor,border:`2px solid ${sportColor}55`,flexShrink:0,boxShadow:`0 0 12px ${sportColor}44`,cursor:"pointer",overflow:"hidden"}}>
+        {/* Tenía cursor:pointer y animación de hover pero ningún onClick: se
+            veía como botón y no hacía nada. Lo natural es Mi Perfil. */}
+        <motion.div whileHover={{scale:1.1,rotate:5}} whileTap={{scale:0.95}}
+          onClick={()=>{ if(!isDemo) navigateTo("miperfil"); }}
+          title={isDemo ? "" : "Mi Perfil"}
+          style={{width:"34px",height:"34px",borderRadius:"50%",background:`linear-gradient(135deg,${sportColor}44,${sportColor}11)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",fontWeight:800,color:sportColor,border:`2px solid ${sportColor}55`,flexShrink:0,boxShadow:`0 0 12px ${sportColor}44`,cursor:isDemo?"default":"pointer",overflow:"hidden"}}>
           {!isDemo && currentUser?.avatar_url
             ? <img src={currentUser.avatar_url} alt="foto" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
             : isDemo ? "AC" : currentUser.nombre.split(" ").map(n=>n[0]).join("").slice(0,2).toUpperCase()}
