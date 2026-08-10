@@ -63,6 +63,8 @@ export default function SportOS() {
   const [module,setModule]               = useState("muro");
   const [category,setCategory]           = useState(0);
   const [toast,setToast]                 = useState(null);
+  // Arrancaba fijo en rugby+futbol+basketball para todos los clubes. Se
+  // reemplaza con lo que diga clubs.sports apenas llega el club real.
   const [activeClubs,setActiveClubs]     = useState({rugby:true,futbol:true,basketball:true,handball:false,hockey:false});
   const [whatsappModal,setWhatsappModal] = useState(null); // null | { team, rival, date, starters, bench }
   const [convocado,setConvocado]         = useState(null);
@@ -118,6 +120,28 @@ export default function SportOS() {
     setModule(moduleId);
   };
 
+  // Deportes que el club practica de verdad. Antes esto era estado local: los
+  // interruptores de Mi Club parecían una configuración pero no se guardaban
+  // en ningún lado y al recargar volvían a rugby+futbol+basketball.
+  useEffect(() => {
+    if (!clubRow) return;
+    const lista = Array.isArray(clubRow.sports) && clubRow.sports.length
+      ? clubRow.sports : [clubRow.sport];
+    setActiveClubs({ rugby:false, futbol:false, basketball:false, handball:false, hockey:false,
+      ...Object.fromEntries(lista.filter(Boolean).map(d => [d, true])) });
+  }, [clubRow]);
+
+  const cambiarDeportes = (actualizador) => {
+    setActiveClubs(prev => {
+      const siguiente = typeof actualizador === "function" ? actualizador(prev) : actualizador;
+      if (clubId) {
+        const lista = Object.entries(siguiente).filter(([,v]) => v).map(([k]) => k);
+        supabase.from("clubs").update({ sports: lista }).eq("id", clubId);
+      }
+      return siguiente;
+    });
+  };
+
   const goBack = () => {
     if (moduleHistory.length === 0) {
       // Antes esto mandaba a la landing. Para alguien con sesion iniciada eso
@@ -133,6 +157,8 @@ export default function SportOS() {
     setModule(prev);
   };
 
+  const deportesActivos = Object.entries(activeClubs).filter(([,v])=>v).map(([k])=>k);
+  const categoriasEnUso = new Set(players.map(p=>p.category).filter(Boolean));
   const sp           = SPORTS_CONFIG[sport];
   // Club real (nombre/colores de Supabase) con próximo/último partido derivados
   // de los partidos reales. Sin club_id (demo/preview) usa la vitrina CLUBS[sport].
@@ -493,12 +519,17 @@ export default function SportOS() {
           style={{background:"var(--bg-elev-2)",border:"1px solid var(--border-mid)",color:"var(--text-2)",borderRadius:"var(--r-sm)",padding:"5px 11px",cursor:"pointer",fontSize:"15px",lineHeight:1,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700}}>
           ←
         </motion.button>
+        {/* El logo es lo primero que uno aprieta para volver al principio. */}
         <motion.div initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{duration:0.4}}
-          style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",color:sportColor,marginRight:"8px",whiteSpace:"nowrap",letterSpacing:"0.08em",display:"flex",alignItems:"center",gap:"6px",filter:`drop-shadow(0 0 14px ${sportColor}88)`}}>
+          whileHover={{scale:1.04}} whileTap={{scale:0.97}}
+          onClick={()=>navigateTo("home")} title="Ir al inicio"
+          style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"22px",color:sportColor,marginRight:"8px",whiteSpace:"nowrap",letterSpacing:"0.08em",display:"flex",alignItems:"center",gap:"6px",cursor:"pointer",filter:`drop-shadow(0 0 14px ${sportColor}88)`}}>
           ⚡ SportOS
         </motion.div>
         {/* Selector de deporte y categoría: oculto para jugador real */}
+        {/* Con un solo deporte activo el selector no ofrece nada que elegir. */}
         {(isDemo || role !== "jugador") && <>
+        {deportesActivos.length > 1 && 
           <div className="hide-mobile" style={{display:"flex",gap:"2px",background:"var(--bg-elev-2)",borderRadius:"var(--r-md)",padding:"3px",overflowX:"auto"}}>
             {Object.entries(SPORTS_CONFIG).map(([k,v])=>{
               const isActive2 = role==="admin"?activeClubs[k]:k===sport;
@@ -509,9 +540,12 @@ export default function SportOS() {
                 </motion.button>
               );
             })}
-          </div>
+          </div>}
           <select className="hide-mobile" value={category} onChange={e=>setCategory(Number(e.target.value))} style={{...ss.input,width:"100px",fontSize:"12px",padding:"6px 10px",cursor:"pointer"}}>
-            {sp.categories.map((c,i)=><option key={i} value={i}>{c}</option>)}
+            {/* Solo las categorías que el plantel realmente usa: ofrecer las
+                ocho cuando el club juega en dos es ruido. */}
+            {sp.categories.map((c,i)=>categoriasEnUso.has(c)||categoriasEnUso.size===0
+              ? <option key={i} value={i}>{c}</option> : null)}
           </select>
         </>}
         <div style={{flex:1}}/>
@@ -666,7 +700,7 @@ export default function SportOS() {
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
-              {module!=="home"&&module!=="miperfil"&&role==="admin"&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={setActiveClubs} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="admin"&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
               {module!=="home"&&module!=="miperfil"&&role==="entrenador"&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={players} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidos} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
               {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={players} clubId={clubId} currentUser={currentUser}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}
