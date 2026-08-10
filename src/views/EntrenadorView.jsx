@@ -11,6 +11,7 @@ import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
 import EmptyState from "../components/EmptyState";
 import PanelLesiones from "../components/PanelLesiones";
+import TorneoARUSA from "../components/TorneoARUSA";
 import Semaforo from "../components/Semaforo";
 import ProgressBar from "../components/ProgressBar";
 import MedalBadge from "../components/MedalBadge";
@@ -947,7 +948,12 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
       </div>
       <motion.div {...fadeUp} style={ss.card}>
         <div style={{fontWeight:600,marginBottom:"10px",fontSize:"14px"}}>📊 Stats de temporada</div>
-        <div style={{...ss.muted,fontSize:"12px"}}>Todavía no hay estadísticas de temporada (racha, goleador, posesión) cargadas para este plantel.</div>
+        {/* La posición en el torneo es un dato real y ya lo tenemos; el resto
+            (racha, posesión) no lo carga nadie todavía y no se inventa. */}
+        <div style={{...ss.muted,fontSize:"12px"}}>
+          Racha y posesión todavía no se cargan en el sistema. La posición en el
+          torneo está en Estadísticas.
+        </div>
       </motion.div>
     </div>
   );
@@ -958,6 +964,10 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     <div>
       <CatsBanner/>
       <SectionTitle title={`Estadísticas — ${sp.name} ${currentCategory}`}/>
+      {/* Datos oficiales del torneo. Van arriba porque hoy son los únicos que
+          existen: las estadísticas por jugador del club no se cargan en ningún
+          lado todavía, así que los bloques de abajo salen vacíos. */}
+      {sport==="rugby" && clubId && <TorneoARUSA clubName={club?.name} sportColor={sportColor}/>}
       {sp.stats.map((stat,si)=>{
         const conDato = visiblePlayers.filter(p=>sv(p,stat.key)!=null);
         const sorted = [...conDato].sort((a,b)=>sv(b,stat.key)-sv(a,stat.key));
