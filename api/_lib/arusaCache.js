@@ -1,96 +1,68 @@
-// Caché durable de lo que viene de arusa.cl (posiciones, estadísticas).
+// Caché durable de lo que viene de arusa.cl (posiciones, estadísticas, fixture).
 //
-// arusa.cl solo responde a ratos: se cae, o bloquea por rate limit. Si SportOS
-// dependiera de que esté arriba justo cuando un entrenador abre la tabla, la
-// tabla estaría vacía la mitad de las veces. Así que cada lectura exitosa se
-// guarda acá, y cuando la lectura falla se devuelve la última buena.
+// arusa.cl solo responde a ratos y bloquea por IP, así que SportOS no rasca:
+// lee de acá. Las funciones de Vercel se apagan entre invocaciones, o sea que
+// un Map en memoria no sirve — esto tiene que estar en la base.
 //
-// La diferencia con un caché en memoria: las funciones de Vercel se apagan
-// entre invocaciones. Un Map se pierde; esto no.
+// Se lee por PostgREST con la anon key, no por conexión directa con
+// SUPABASE_DB_URL. Dos razones: esa variable quedó apuntando a un proyecto
+// Supabase viejo que ya no existe (por eso el endpoint devolvía vacío aunque
+// las filas estuvieran guardadas), y la tabla es de lectura pública, así que
+// la anon key alcanza y no hace falta abrir una conexión de Postgres por
+// petición.
 //
-// La tabla se crea sola, así que no hace falta correr una migración a mano
-// antes de que esto funcione.
-import pg from "pg";
+// Escribir es otra cosa: lo hace rugby-chile llamando a guardar_arusa_cache,
+// que exige un secreto propio. SportOS no escribe acá.
+const URL = process.env.VITE_SUPABASE_URL;
+const ANON = process.env.VITE_SUPABASE_ANON_KEY;
 
-let tablaLista = null;
-
-async function conectar() {
-  const client = new pg.Client({
-    connectionString: process.env.SUPABASE_DB_URL,
-    ssl: { rejectUnauthorized: false },
+async function consultar(key, campos) {
+  if (!URL || !ANON) return null;
+  const qs = `arusa_cache?key=eq.${encodeURIComponent(key)}&select=${campos}`;
+  const res = await fetch(`${URL}/rest/v1/${qs}`, {
+    headers: { apikey: ANON, Authorization: `Bearer ${ANON}` },
   });
-  await client.connect();
-  return client;
+  if (!res.ok) throw new Error(`arusa_cache ${res.status}`);
+  const filas = await res.json();
+  return filas[0] ?? null;
 }
 
-async function asegurarTabla(client) {
-  if (tablaLista) return tablaLista;
-  tablaLista = client
-    .query(`
-      create table if not exists arusa_cache (
-        key        text primary key,
-        data       jsonb not null,
-        updated_at timestamptz not null default now()
-      )
-    `)
-    .then(() => true)
-    .catch((err) => {
-      console.error("[arusaCache] no se pudo crear la tabla:", err.message);
-      tablaLista = null; // que el próximo intento lo vuelva a probar
-      throw err;
-    });
-  return tablaLista;
-}
-
-/** Última copia buena, o null si nunca se guardó uno. */
+/** Última copia buena, o null si nunca se guardó una. */
 export async function leerCache(key) {
-  let client;
   try {
-    client = await conectar();
-    await asegurarTabla(client);
-    const { rows } = await client.query("select data from arusa_cache where key = $1", [key]);
-    return rows[0]?.data ?? null;
+    return (await consultar(key, "data"))?.data ?? null;
   } catch (err) {
     console.error(`[arusaCache] leerCache(${key}) falló:`, err.message);
     return null;
-  } finally {
-    await client?.end().catch(() => {});
+  }
+}
+
+/** Cuándo se guardó, para poder decir "datos de hace X" en vez de aparentar frescura. */
+export async function edadCache(key) {
+  try {
+    return (await consultar(key, "updated_at"))?.updated_at ?? null;
+  } catch {
+    return null;
   }
 }
 
 /**
- * Guarda una copia buena. No lanza: que falle el caché nunca debe tumbar la
- * petición que sí consiguió los datos.
+ * Guarda una copia buena. Solo funciona con el secreto del escritor, que
+ * SportOS no tiene en producción a propósito — está acá para poder sembrar el
+ * caché a mano cuando haga falta. Nunca lanza: que falle el caché no puede
+ * tumbar la petición que sí consiguió los datos.
  */
 export async function escribirCache(key, data) {
-  let client;
+  const secreto = process.env.ARUSA_WRITER_SECRET;
+  if (!URL || !ANON || !secreto) return;
   try {
-    client = await conectar();
-    await asegurarTabla(client);
-    await client.query(
-      `insert into arusa_cache (key, data, updated_at)
-       values ($1, $2::jsonb, now())
-       on conflict (key) do update set data = excluded.data, updated_at = now()`,
-      [key, JSON.stringify(data)],
-    );
+    const res = await fetch(`${URL}/rest/v1/rpc/guardar_arusa_cache`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: ANON, Authorization: `Bearer ${ANON}` },
+      body: JSON.stringify({ p_clave: key, p_datos: data, p_secreto: secreto }),
+    });
+    if (!res.ok) console.error(`[arusaCache] escribirCache(${key}):`, res.status, (await res.text()).slice(0, 160));
   } catch (err) {
     console.error(`[arusaCache] escribirCache(${key}) falló:`, err.message);
-  } finally {
-    await client?.end().catch(() => {});
-  }
-}
-
-/** Cuándo se guardó por última vez (para poder decirle al usuario qué tan viejo es el dato). */
-export async function edadCache(key) {
-  let client;
-  try {
-    client = await conectar();
-    await asegurarTabla(client);
-    const { rows } = await client.query("select updated_at from arusa_cache where key = $1", [key]);
-    return rows[0]?.updated_at ?? null;
-  } catch {
-    return null;
-  } finally {
-    await client?.end().catch(() => {});
   }
 }
