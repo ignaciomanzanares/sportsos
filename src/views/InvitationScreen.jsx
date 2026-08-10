@@ -171,15 +171,31 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
       //    invitations y recién ahí asigna rol/club_id/vínculo de jugador.
       //    El cliente ya no puede auto-asignarse un rol (ver accept_invitation
       //    y la política "own profile update" en supabase/schema.sql).
+      const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
+
       // Los motivos que la función distingue se muestran tal cual: aplastarlos
       // todos en "link inválido" escondía la causa real y dejaba al usuario (y
       // a quien depura) sin nada con qué trabajar.
-      if (accErr) {
-        console.error("accept_invitation falló:", accErr);
-        throw new Error(accErr.message || "invitacion_invalida");
+      //
+      // Salvo un caso: App.jsx también canjea el token guardado en el
+      // user_metadata al detectar la sesión nueva, así que los dos canjes
+      // corren a la vez y el que llega segundo recibe 'invitacion_ya_usada'.
+      // La asignación se hizo igual — antes de dar error hay que mirar el
+      // perfil, no el resultado de esta llamada.
+      let assigned = acc?.[0] || null;
+      if (!assigned) {
+        if (accErr) console.error("accept_invitation falló:", accErr);
+        const { data: perfil } = await supabase
+          .from("profiles").select("rol, club_id").eq("id", userId).single();
+        if (perfil?.club_id) {
+          const { data: c } = await supabase
+            .from("clubs").select("name, sport").eq("id", perfil.club_id).single();
+          assigned = { rol: perfil.rol, club_id: perfil.club_id,
+                       club_name: c?.name, sport: c?.sport, cats: "", player_id: null };
+        } else {
+          throw new Error(accErr?.message || "invitacion_invalida");
+        }
       }
-      if (!acc?.[0]) throw new Error("invitacion_invalida");
-      const assigned = acc[0];
 
       setLoading(false);
       setStep("success");
