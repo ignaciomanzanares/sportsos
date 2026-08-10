@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { FORMATIONS, TEAMS } from "../data/sports";
+import { FORMATIONS, TEAMS, equiposDeCategoria } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
 import { useAttendance } from "../lib/useAttendance";
 import { useComments } from "../lib/useComments";
@@ -21,7 +21,13 @@ import WhatsAppModal from "../components/WhatsAppModal";
 function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
   const forms = FORMATIONS[sport];
   const [fKey, setFKey] = useState(forms[0].key);
-  const [teamId, setTeamId] = useState(TEAMS[0].id);
+  // Los equipos dependen de la categoría elegida arriba: en rugby, Adulta
+  // presenta Primera, Intermedia y Pre-Intermedia. "Primer Equipo / Reserva /
+  // Sub-20" era un listado inventado que no existe en ningún club chileno.
+  const equipos = equiposDeCategoria(sp, currentCategory);
+  const [teamId, setTeamId] = useState(equipos[0].id);
+  useEffect(() => { setTeamId(equipos[0].id); }, [currentCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+  const equipoActual = equipos.find(t => t.id === teamId) || equipos[0];
   const [store, setStore] = useState({});
   const [benchStore, setBenchStore] = useState({});
   const [dragged, setDragged] = useState(null);
@@ -87,7 +93,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
 
   return (
     <div onDragEnd={()=>setDragged(null)}>
-      <SectionTitle title={`Nómina — ${sp.name}`} sub={`${TEAMS.find(t=>t.id===teamId).name} · arrastra o toca jugadores`}
+      <SectionTitle title={`Nómina — ${sp.name}`} sub={`${equipoActual.name} · arrastra o toca jugadores`}
         action={<div style={{display:"flex",gap:"8px"}}>
           <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
             disabled={saving}
@@ -113,7 +119,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
         <div>
           <div style={ss.label}>Equipo del club</div>
           <select value={teamId} onChange={e=>setTeamId(e.target.value)} style={{...ss.input,width:"180px",cursor:"pointer"}}>
-            {TEAMS.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}
+            {equipos.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
         </div>
         {forms.length>1&&<div style={{flex:1}}>
@@ -164,7 +170,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
           <div style={{...ss.muted,fontSize:"10px",marginTop:"10px",lineHeight:1.5}}>💡 Arrastra a una posición de la cancha, o toca para autoubicar.</div>
         </motion.div>
       </div>
-      {wa&&<WhatsAppModal onClose={()=>setWa(false)} team={`${club.name} · ${TEAMS.find(t=>t.id===teamId).name}`} rival={club.next.rival} date={club.next.dia} hora={club.next.hora} lugar={club.next.lugar} starters={starters} bench={bench}/>}
+      {wa&&<WhatsAppModal onClose={()=>setWa(false)} team={`${club.name} · ${equipoActual.name}`} rival={club.next.rival} date={club.next.dia} hora={club.next.hora} lugar={club.next.lugar} starters={starters} bench={bench}/>}
     </div>
   );
 }
@@ -936,7 +942,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
           <div style={{...ss.muted,fontSize:"11px",marginBottom:"8px",textTransform:"uppercase",letterSpacing:"0.08em"}}>Próximo partido</div>
           <div style={{fontSize:"18px",fontWeight:700,marginBottom:"8px",letterSpacing:"-0.01em"}}>vs {club.next.rival}</div>
           <div style={{fontSize:"32px",fontWeight:800,color:"#3B82F6",letterSpacing:"-0.02em",marginBottom:"6px",filter:"drop-shadow(0 0 12px rgba(59,130,246,0.4))"}}>{club.next.dia}</div>
-          <div style={ss.muted}>Temporada 2025</div>
+          <div style={ss.muted}>Temporada {new Date().getFullYear()}</div>
         </motion.div>
       </div>
       <motion.div {...fadeUp} style={ss.card}>
@@ -983,7 +989,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
 
   if(module==="salud") return (
     <div>
-      <SectionTitle title="Panel de Salud" sub={`${sp.name} · Temporada 2025`} action={sp.hasHIA&&<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setHiaModal(true)} style={{...ss.btn,background:"rgba(239,68,68,0.15)",color:"#EF4444",border:"1px solid #EF444455",fontSize:"12px",boxShadow:"0 0 16px rgba(239,68,68,0.25)"}}>⚠️ Protocolo HIA</motion.button>}/>
+      <SectionTitle title="Panel de Salud" sub={`${sp.name} · Temporada ${new Date().getFullYear()}`} action={sp.hasHIA&&<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setHiaModal(true)} style={{...ss.btn,background:"rgba(239,68,68,0.15)",color:"#EF4444",border:"1px solid #EF444455",fontSize:"12px",boxShadow:"0 0 16px rgba(239,68,68,0.25)"}}>⚠️ Protocolo HIA</motion.button>}/>
       {hiaModal&&sp.hasHIA&&(
         <motion.div {...scaleIn} style={{...ss.card,marginBottom:"20px",border:"2px solid #EF444455",background:"linear-gradient(135deg,rgba(239,68,68,0.08),transparent)"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"14px"}}>
