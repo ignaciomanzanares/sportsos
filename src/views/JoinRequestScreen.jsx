@@ -157,7 +157,7 @@ export default function JoinRequestScreen({ onBack }) {
                 onChange={e => setForm(p => ({ ...p, posicion:e.target.value }))}
                 style={{ ...ss.input, cursor:"pointer" }}>
                 <option value="">Sin especificar</option>
-                {sp.positions.map(pos => <option key={pos} value={pos}>{pos}</option>)}
+                {[...new Set(sp.positions)].map(pos => <option key={pos} value={pos}>{pos}</option>)}
               </select>
             </div>
           )}

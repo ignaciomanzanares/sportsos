@@ -30,6 +30,9 @@ function ReadRow({ label, value, icon }) {
 export default function PerfilView({ currentUser, sport, sportColor, readOnly=false, playerData=null, onSaved }) {
   const sp = SPORTS_CONFIG[sport] || SPORTS_CONFIG.rugby;
   const positions = sp.positions || [];
+  // En rugby hay dos Lock y dos Centro de verdad, pero como opciones de un
+  // desplegable repetirlas no aporta nada y ademas rompia las keys de React.
+  const posicionesUnicas = [...new Set(positions)];
 
   const emptyForm = {
     nombre:"", email:"", telefono:"", direccion:"",
@@ -344,13 +347,13 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
               <Field label="Posición principal">
                 <select value={form.posicion_1} onChange={e=>set("posicion_1",e.target.value)} style={{ ...ss.input, cursor:"pointer" }}>
                   <option value="">Seleccionar</option>
-                  {positions.map(p => <option key={p} value={p}>{p}</option>)}
+                  {posicionesUnicas.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
               </Field>
               <Field label="Posición secundaria">
                 <select value={form.posicion_2} onChange={e=>set("posicion_2",e.target.value)} style={{ ...ss.input, cursor:"pointer" }}>
                   <option value="">Seleccionar</option>
-                  {positions.map(p => <option key={p} value={p}>{p}</option>)}
+                  {posicionesUnicas.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
               </Field>
             </div>

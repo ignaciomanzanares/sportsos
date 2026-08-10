@@ -119,7 +119,15 @@ export default function SportOS() {
   };
 
   const goBack = () => {
-    if (moduleHistory.length === 0) { setScreen("landing"); return; }
+    if (moduleHistory.length === 0) {
+      // Antes esto mandaba a la landing. Para alguien con sesion iniciada eso
+      // se ve como que la app lo echo: la landing muestra "Ingresar / Crear
+      // club" y parece que se cerro la sesion, aunque siga abierta. Solo el
+      // modo demo (sin usuario) vuelve a la vitrina.
+      if (currentUser) { setModule("home"); return; }
+      setScreen("landing");
+      return;
+    }
     const prev = moduleHistory[moduleHistory.length - 1];
     setModuleHistory(h => h.slice(0, -1));
     setModule(prev);
@@ -326,7 +334,10 @@ export default function SportOS() {
   // Onboarding nuevo club
   if(screen==="club-onboarding") return (
     <ClubOnboarding
-      onBack={()=>{ setPendingUser(null); setScreen("login"); }}
+      // Mandaba siempre al login. A quien ya tiene sesion y club eso se le ve
+      // como que el boton no hace nada: sale del onboarding y la pantalla de
+      // login lo devuelve a la app de inmediato. Ahora vuelve a donde estaba.
+      onBack={()=>{ setPendingUser(null); setScreen(currentUser?.club_id ? "app" : "login"); }}
       existingUser={pendingUser}
       onComplete={(usuario)=>{
         if(!usuario) { setPendingUser(null); setScreen("login"); return; }
