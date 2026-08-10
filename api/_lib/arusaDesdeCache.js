@@ -58,12 +58,16 @@ export function partidosDelClub(todos, clubName) {
       score_home: jugado ? m.homeScore : null,
       score_away: jugado ? m.awayScore : null,
       result: resultado,
-      // La división del torneo es el equipo adulto que jugó: Primera,
-      // Intermedia o Pre-Intermedia. Coincide con las categorías del club.
-      cat: m.division ? m.division.replace("PRE_INTERMEDIA", "Pre-Intermedia")
-                                   .replace("INTERMEDIA", "Intermedia")
-                                   .replace("PRIMERA", "Primera") : null,
-      notes: m.round ? `Fecha ${m.round}` : null,
+      // En adulta la categoría es el equipo que jugó (Primera / Intermedia /
+      // Pre-Intermedia); en formativas, la edad (M13, M16…). El fixture de
+      // Leverade ya la trae resuelta; el formato viejo del caché traía
+      // `division` y se traduce.
+      cat: m.categoria || (m.division
+        ? m.division.replace("PRE_INTERMEDIA", "Pre-Intermedia")
+                    .replace("INTERMEDIA", "Intermedia")
+                    .replace("PRIMERA", "Primera")
+        : null),
+      notes: [m.torneo, m.round ? `Fecha ${m.round}` : null].filter(Boolean).join(" · ") || null,
     });
   }
   return filas;
@@ -74,8 +78,10 @@ export function partidosDelClub(todos, clubName) {
  * Devuelve además cuándo se actualizó el caché, para que la vista pueda decir
  * "datos de hace X" en vez de aparentar que acaba de hablar con arusa.
  */
-export async function sincronizarDesdeCache(supabase, { clubId, clubName }) {
-  const todos = await leerCache(CLAVE_PARTIDOS);
+export async function sincronizarDesdeCache(supabase, { clubId, clubName, todos: recibidos = null }) {
+  // Con el fixture ya traído de Leverade se usa ese; el caché queda como
+  // respaldo para cuando Leverade no responda.
+  const todos = recibidos?.length ? recibidos : await leerCache(CLAVE_PARTIDOS);
   if (!todos || todos.length === 0) {
     return { total: 0, creados: 0, actualizados: 0, cacheVacio: true, cacheActualizado: null };
   }

@@ -13,6 +13,7 @@
 // Supabase viejo.
 import { createClient } from "@supabase/supabase-js";
 import { sincronizarDesdeCache } from "./_lib/arusaDesdeCache.js";
+import { obtenerFixtureTemporada } from "./_lib/leveradeFixture.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
@@ -44,7 +45,20 @@ export default async function handler(req, res) {
     const { data: club } = await supabase.from("clubs").select("name").eq("id", club_id).single();
     if (!club) return res.status(404).json({ error: "club_no_encontrado" });
 
-    const resumen = await sincronizarDesdeCache(supabase, { clubId: club_id, clubName: club.name });
+    // El fixture se pide a api.leverade.com, no a arusa.cl: Leverade responde
+    // desde cualquier lado y trae TODAS las categorías, incluidas M13–M18, que
+    // viven en torneos aparte. Si falla, se cae al caché, que solo tiene
+    // adulta.
+    let todos = null, fallidos = [];
+    try {
+      const fx = await obtenerFixtureTemporada();
+      todos = fx.partidos; fallidos = fx.fallidos;
+    } catch (e) {
+      console.error("[sync-arusa] Leverade falló, se usa el caché:", e.message);
+    }
+
+    const resumen = await sincronizarDesdeCache(supabase, { clubId: club_id, clubName: club.name, todos });
+    if (fallidos.length) resumen.torneosSinDatos = fallidos;
     if (resumen.cacheVacio) {
       return res.status(503).json({
         error: "Todavía no hay fixture del torneo sincronizado. Reintenta en unos minutos.",
