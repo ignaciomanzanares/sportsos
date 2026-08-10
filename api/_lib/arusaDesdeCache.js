@@ -74,32 +74,32 @@ export function partidosDelClub(todos, clubName) {
  * Devuelve además cuándo se actualizó el caché, para que la vista pueda decir
  * "datos de hace X" en vez de aparentar que acaba de hablar con arusa.
  */
-export async function sincronizarDesdeCache(client, { clubId, clubName }) {
+export async function sincronizarDesdeCache(supabase, { clubId, clubName }) {
   const todos = await leerCache(CLAVE_PARTIDOS);
   if (!todos || todos.length === 0) {
     return { total: 0, creados: 0, actualizados: 0, cacheVacio: true, cacheActualizado: null };
   }
 
   const partidos = partidosDelClub(todos, clubName);
-  let creados = 0, actualizados = 0;
-
-  for (const p of partidos) {
-    const { rows } = await client.query(
-      `insert into matches (club_id, rival, match_date, hora, location, result, score_home, score_away, estado, cat, notes, external_source, external_id)
-       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'arusa',$12)
-       on conflict (club_id, external_source, external_id) where external_source is not null
-       do update set rival=excluded.rival, match_date=excluded.match_date, hora=excluded.hora,
-         location=excluded.location, result=excluded.result, score_home=excluded.score_home,
-         score_away=excluded.score_away, estado=excluded.estado, cat=excluded.cat, notes=excluded.notes
-       returning (xmax = 0) as inserted`,
-      [clubId, p.rival, p.match_date, p.hora, p.location, p.result, p.score_home, p.score_away, p.estado, p.cat, p.notes, p.external_id],
-    );
-    if (rows[0]?.inserted) creados++; else actualizados++;
+  if (partidos.length === 0) {
+    // El club no aparece en el torneo. Se dice, no se devuelve un éxito con
+    // cero: "sincronizado, 0 partidos" haría pensar que no hay fecha próxima.
+    return { total: 0, creados: 0, actualizados: 0, cacheVacio: false, sinPartidos: true,
+             cacheActualizado: await edadCache(CLAVE_PARTIDOS) };
   }
 
-  await client.query("update clubs set arusa_last_sync = now() where id = $1", [clubId]);
+  const filas = partidos.map(p => ({ ...p, club_id: clubId, external_source: "arusa" }));
+  const { data, error } = await supabase
+    .from("matches")
+    .upsert(filas, { onConflict: "club_id,external_source,external_id" })
+    .select("id");
+  if (error) throw new Error(`no se pudieron guardar los partidos: ${error.message}`);
+
+  await supabase.from("clubs").update({ arusa_last_sync: new Date().toISOString() }).eq("id", clubId);
+
   return {
-    total: partidos.length, creados, actualizados,
+    total: partidos.length,
+    guardados: data?.length ?? 0,
     cacheVacio: false,
     cacheActualizado: await edadCache(CLAVE_PARTIDOS),
   };
