@@ -608,7 +608,26 @@ export default function SportOS() {
               {module!=="home"&&module!=="miperfil"&&role==="entrenador"&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={players} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidos} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
               {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={players} clubId={clubId} currentUser={currentUser}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}
-              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidos} clubId={clubId}/>}
+              {/* Sin ficha en el plantel, JugadorView revienta en su primera
+                  línea (player.number) y React desmonta la app entera: pantalla
+                  negra, sin mensaje. Le pasaba a cualquiera que entrara a un
+                  club donde todavía no lo habían agregado al plantel — por
+                  ejemplo, hasta hace poco, a quien se unía por invitación.
+                  La guardia va acá y no dentro de la vista porque ahí quedaría
+                  antes de sus hooks, y saltarse un hook rompe React de otra
+                  forma cuando la ficha aparece. */}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&!miJugador&&(
+                <div style={{padding:"48px 16px",textAlign:"center",maxWidth:"420px",margin:"0 auto"}}>
+                  <div style={{fontSize:"40px",marginBottom:"12px"}}>🎽</div>
+                  <div style={{fontWeight:700,fontSize:"16px",marginBottom:"8px"}}>Todavía no tienes ficha en el plantel</div>
+                  <div style={{fontSize:"13px",color:"var(--text-3)",lineHeight:1.6}}>
+                    Ya eres parte del club, pero el administrador aún no te agregó
+                    al plantel. Cuando lo haga vas a ver acá tu cuota, tu gym y
+                    tus convocatorias.
+                  </div>
+                </div>
+              )}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidos} clubId={clubId}/>}
             </motion.div>
           </AnimatePresence>
         </div>
