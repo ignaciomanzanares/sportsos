@@ -4,7 +4,6 @@ import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
-import { MOCK_POSTS } from "../data/mockData";
 import { usePosts } from "../lib/usePosts";
 import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
 import { supabase } from "../lib/supabase";
@@ -284,18 +283,27 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
     }).catch(()=>{});
   }, [clubId, player?.id]);
 
-  const sessions  = plan?.sessions && Object.keys(plan.sessions).length ? plan.sessions : GYM_PLAN.sessions;
+  // Con club real, si el preparador no publicó plan no hay plan. Antes caía al
+  // de demo aunque hubiera clubId (a diferencia de las dos líneas de abajo, que
+  // sí lo preguntan): el jugador veía una semana de entrenamiento inventada,
+  // con ejercicios y kilos que nadie le mandó.
+  const planPropio = plan?.sessions && Object.keys(plan.sessions).length ? plan.sessions : null;
+  const sessions  = planPropio || (clubId ? null : GYM_PLAN.sessions);
   const weekLabel = clubId ? (plan?.week_label || formatWeekLabel(weekStart)) : GYM_PLAN.week;
   const coachName = clubId ? (plan?.coach_name || "Preparador Físico") : GYM_PLAN.coach;
-  const todayPlan = sessions[selectedDay] || sessions.lunes;
+  const todayPlan = sessions ? (sessions[selectedDay] || sessions.lunes) : null;
 
   const logSet   = (exName,setIdx,field,val)=>setGymLog(prev=>{const key=`${exName}_${setIdx}`;return {...prev,[key]:{...(prev[key]||{}),[field]:val}};});
   const getLog   = (exName,setIdx,field)=>{const key=`${exName}_${setIdx}`;return gymLog[key]?gymLog[key][field]:"";};
   const calcVol  = (exName,sets)=>{let t=0;for(let i=0;i<sets;i++){const w=parseFloat(getLog(exName,i,"weight")||0);const r=parseFloat(getLog(exName,i,"reps")||0);t+=w*r;}return Math.round(t);};
   const calc1RM  = (w,r)=>r?Math.round(w*(1+r/30)):0;
   const exCompleted = (ex)=>{for(let i=0;i<ex.sets;i++){if(!getLog(ex.name,i,"weight")||!getLog(ex.name,i,"reps"))return false;}return true;};
-  const allDone  = todayPlan.exercises.every(ex=>exCompleted(ex));
-  const totalVol = todayPlan.exercises.reduce((s,ex)=>s+calcVol(ex.name,ex.sets),0);
+  // todayPlan puede ser null si el plan está publicado pero sin sesiones. Estas
+  // tres líneas corren antes del guard de más abajo, así que tienen que
+  // aguantarlo sin reventar.
+  const ejercicios = todayPlan?.exercises ?? [];
+  const allDone  = ejercicios.length > 0 && ejercicios.every(ex=>exCompleted(ex));
+  const totalVol = ejercicios.reduce((s,ex)=>s+calcVol(ex.name,ex.sets),0);
   const rpeColor = (v)=>v<=3?"#22C55E":v<=6?"#F59E0B":"#EF4444";
 
   const persistSet = async (exName, setIdx, overrides={}) => {
@@ -316,7 +324,7 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   };
 
   // Récords reales: 1RM estimado hoy supera el máximo histórico previo (solo si ya existía un máximo previo)
-  const records = todayPlan.exercises.map(ex => {
+  const records = ejercicios.map(ex => {
     const maxWeight = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
     const maxReps   = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
     const est1RM = calc1RM(maxWeight,maxReps);
@@ -326,7 +334,7 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
 
   if (planLoading) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>;
 
-  if (clubId && !plan?.published) return (
+  if (clubId && (!plan?.published || !sessions || !todayPlan)) return (
     <EmptyState icon="🏋️" title="Sin plan de gimnasio publicado" desc="Tu preparador físico todavía no publicó el plan de esta semana." color={sportColor}/>
   );
 
