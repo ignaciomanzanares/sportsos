@@ -103,3 +103,24 @@ Cambios en la base de datos (aplicados en producción):
 
 Verificado: `update_tabla_entera = 0`, `update_por_columna = 16`,
 `clubes_huerfanos = 0`, policy de clubs = `{authenticated}`.
+
+## 2026-08-10 (infraestructura, invitaciones y lesiones)
+- Se descubrió que producción es `sportos-v02.vercel.app` (no `sportsos-iota`,
+  que apunta a un Supabase borrado y ya no lo usa nadie). El proyecto de Vercel
+  no tiene Git conectado: cada deploy es manual con `npx vercel --prod`.
+- Registro de club probado de punta a punta: funciona.
+- Invitaciones: funcionan, pero aparecieron tres problemas y se arreglaron.
+  1. Aceptar una invitación degradaba de rol a quien ya estaba en el club (un
+     admin quedó como jugador de su propio club).
+  2. El link genérico de "Jugador" no creaba la ficha en `players`, así que el
+     invitado entraba al club pero el Plantel seguía en 0.
+  3. El token se canjeaba dos veces (InvitationScreen y App.jsx a la vez) y el
+     segundo mostraba "link inválido" aunque la asignación había funcionado.
+- Nuevo módulo **Salud** para admin, con historial de lesiones
+  (`injury_reports`): reportes por jugador y sesión, alerta cuando alguien
+  acumula 2+ sesiones seguidas fuera de verde, y el semáforo de la ficha se
+  sincroniza solo con el último reporte. La idea venía de la rama
+  `demo/usuarios` (archivada en el tag `archivo/demo-usuarios`), donde estaba
+  resuelta con datos falsos; acá quedó persistida y con RLS.
+- Ramas: `version-0.2` renombrada a `callejas`; `demo/usuarios` borrada pero
+  archivada en el tag `archivo/demo-usuarios` (tenía 13 commits propios).

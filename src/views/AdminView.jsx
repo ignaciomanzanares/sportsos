@@ -8,6 +8,7 @@ import { SPORTS_CONFIG } from "../data/sports";
 import SectionTitle from "../components/SectionTitle";
 import Stat from "../components/Stat";
 import Badge from "../components/Badge";
+import PanelLesiones from "../components/PanelLesiones";
 import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
 import FinanzasView from "../components/FinanzasView";
@@ -247,6 +248,25 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     setJoinRequests(prev => prev.filter(r => r.id !== req.id));
     showToast(`Solicitud de ${req.nombre} rechazada`, "warning");
   };
+
+  // En la mayoría de estos clubes el admin es también quien dirige: si Salud
+  // viviera solo en el menú del entrenador, el historial de lesiones quedaría
+  // fuera del alcance de la persona que administra el plantel.
+  if(module==="salud") return (
+    <div>
+      <SectionTitle title="Panel de Salud" sub="Estado del plantel e historial de lesiones"/>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px"}}>
+        {[["verde","Aptos","#22C55E"],["amarillo","Alerta","#F59E0B"],["rojo","No aptos","#EF4444"]].map(([k,l,c])=>(
+          <div key={k} style={{...ss.card,cursor:"default"}}>
+            <div style={ss.muted}>{l}</div>
+            <div style={{fontSize:"26px",fontWeight:800,color:c,letterSpacing:"-0.02em",lineHeight:1.1}}>{players.filter(p=>p.med_status===k).length}</div>
+            <div style={{...ss.muted,fontSize:"11px",marginTop:"4px"}}>{players.length?Math.round(players.filter(p=>p.med_status===k).length/players.length*100):0}% del plantel</div>
+          </div>
+        ))}
+      </div>
+      <PanelLesiones clubId={clubId} players={players} currentUserId={currentUser?.id||null} showToast={showToast}/>
+    </div>
+  );
 
   if(module==="miclub") return (
     <div>

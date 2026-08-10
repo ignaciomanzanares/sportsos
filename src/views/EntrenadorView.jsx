@@ -10,6 +10,7 @@ import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, ge
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
 import EmptyState from "../components/EmptyState";
+import PanelLesiones from "../components/PanelLesiones";
 import Semaforo from "../components/Semaforo";
 import ProgressBar from "../components/ProgressBar";
 import MedalBadge from "../components/MedalBadge";
@@ -1016,6 +1017,9 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
           <Badge color={p.med_status==="rojo"?"#EF4444":"#F59E0B"}>{p.med_status==="rojo"?"Bloqueado":"Alerta"}</Badge>
         </motion.div>
       ))}
+      {/* El conteo de arriba dice cómo está el plantel hoy; el historial dice
+          cómo llegó hasta acá, que es lo que anticipa una lesión. */}
+      <PanelLesiones clubId={clubId} players={players} currentUserId={currentUserId} showToast={showToast}/>
     </div>
   );
 
