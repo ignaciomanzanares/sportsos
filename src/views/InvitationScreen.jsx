@@ -39,7 +39,11 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
     setServerError("");
     try {
       const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
-      if (accErr) throw new Error("invitacion_invalida");
+      // El servidor rechaza los canjes que bajarían de rol a quien ya está en
+      // el club: hay que distinguirlo de un link vencido, porque el link sigue
+      // sirviendo — para otra persona.
+      if (accErr) throw new Error(accErr.message?.includes("invitacion_te_degrada")
+        ? "invitacion_te_degrada" : "invitacion_invalida");
       // Sin respuesta del servidor no inventamos la asignación: el rol y el
       // club de la URL los escribe quien manda el link, no la base.
       if (!acc?.[0]) throw new Error("invitacion_invalida");
@@ -68,9 +72,12 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
     } catch (err) {
       setLoading(false);
       setCheckingSession(false);
-      setServerError(err.message === "invitacion_invalida"
-        ? "Este link de invitación ya no es válido (expiró o ya fue usado). Pide uno nuevo al administrador del club."
-        : "Error al procesar tu cuenta con Google. Intenta de nuevo.");
+      setServerError(
+        err.message === "invitacion_te_degrada"
+          ? "Ya perteneces a este club con un rol superior, así que no aplicamos la invitación. El link sigue válido: pásaselo a la persona que quieres invitar."
+        : err.message === "invitacion_invalida"
+          ? "Este link de invitación ya no es válido (expiró o ya fue usado). Pide uno nuevo al administrador del club."
+          : "Error al procesar tu cuenta con Google. Intenta de nuevo.");
     }
   };
 
