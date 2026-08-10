@@ -81,13 +81,31 @@ function detallarError(err) {
   return partes.filter(Boolean).join(" · ");
 }
 
+// arusa (nginx + Laravel) corta la conexión de golpe ante peticiones que no
+// parecen un navegador — desde una IP de datacenter con un User-Agent de bot
+// responde "other side closed" antes de mandar nada. Estas cabeceras son las
+// que envía un navegador normal; no saltan ningún control de acceso, solo
+// evitan que el filtro anti-bot nos corte.
+const CABECERAS_NAVEGADOR = {
+  "User-Agent": USER_AGENT,
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
+  "Accept-Encoding": "gzip, deflate, br",
+  "Sec-Fetch-Dest": "document",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Upgrade-Insecure-Requests": "1",
+  Connection: "keep-alive",
+};
+
 async function pedir(url, headersExtra = {}) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
     return await fetch(url, {
       signal: ctrl.signal,
-      headers: { "Accept-Language": "en", "User-Agent": USER_AGENT, ...headersExtra },
+      redirect: "follow",
+      headers: { ...CABECERAS_NAVEGADOR, ...headersExtra },
     });
   } finally {
     clearTimeout(t);
