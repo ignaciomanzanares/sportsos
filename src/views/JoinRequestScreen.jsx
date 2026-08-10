@@ -165,18 +165,30 @@ export default function JoinRequestScreen({ onBack }) {
           {sp?.categories?.length > 0 && (
             <div style={{ marginBottom:"20px" }}>
               <div style={ss.label}>Categoría <span style={{ color:"var(--text-4)", fontWeight:400 }}>(opcional)</span></div>
-              <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", marginTop:"6px" }}>
-                {sp.categories.map(cat => (
-                  <motion.button key={cat} whileTap={{ scale:0.96 }}
-                    onClick={() => setForm(p => ({ ...p, categoria: p.categoria === cat ? "" : cat }))}
-                    style={{ ...ss.btn, fontSize:"12px", padding:"7px 14px",
-                      background: form.categoria === cat ? `${accentColor}22` : "var(--bg-elev-2)",
-                      color:      form.categoria === cat ? accentColor : "var(--text-2)",
-                      border:`1px solid ${form.categoria === cat ? accentColor+"55" : "var(--border-soft)"}` }}>
-                    {form.categoria === cat ? "✅ " : ""}{cat}
-                  </motion.button>
-                ))}
-              </div>
+              {/* Agrupadas cuando el deporte lo define: en rugby, Pre-Intermedia,
+                  Intermedia y Primera no son edades distintas — son los tres
+                  equipos que el club tiene en adulta. Sueltas entre las
+                  formativas se leen como si fueran categorías de edad. */}
+              {(sp.categoryGroups || [{ label:null, cats:sp.categories }]).map(grupo => (
+                <div key={grupo.label || "todas"} style={{ marginTop:"8px" }}>
+                  {grupo.label && (
+                    <div style={{ fontSize:"10px", color:"var(--text-4)", letterSpacing:"0.06em",
+                      textTransform:"uppercase", marginBottom:"5px" }}>{grupo.label}</div>
+                  )}
+                  <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
+                    {grupo.cats.map(cat => (
+                      <motion.button key={cat} whileTap={{ scale:0.96 }}
+                        onClick={() => setForm(p => ({ ...p, categoria: p.categoria === cat ? "" : cat }))}
+                        style={{ ...ss.btn, fontSize:"12px", padding:"7px 14px",
+                          background: form.categoria === cat ? `${accentColor}22` : "var(--bg-elev-2)",
+                          color:      form.categoria === cat ? accentColor : "var(--text-2)",
+                          border:`1px solid ${form.categoria === cat ? accentColor+"55" : "var(--border-soft)"}` }}>
+                        {form.categoria === cat ? "✅ " : ""}{cat}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
