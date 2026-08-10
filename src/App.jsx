@@ -573,7 +573,12 @@ export default function SportOS() {
         {/* Sidebar */}
         <motion.div {...fadeUp} className="sportos-sidebar" style={ss.sidebar}>
           <div className="sidebar-profile sport-stripe" style={{padding:"18px 14px",borderBottom:`1px solid ${sportColor}33`,textAlign:"center",background:`linear-gradient(180deg,${sportColor}14 0%,transparent 100%)`}}>
-            <motion.div whileHover={{scale:1.05}} style={{width:"54px",height:"54px",borderRadius:"var(--r-md)",background:`linear-gradient(135deg,${sportColor}55,${sportColor}22)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"28px",border:`2px solid ${sportColor}88`,margin:"0 auto 10px",boxShadow:`0 0 24px ${sportColor}66, inset 0 1px 0 ${sportColor}44`}}>{sp.icon}</motion.div>
+            {/* El escudo del club si lo tiene; si no, el icono del deporte. */}
+            <motion.div whileHover={{scale:1.05}} style={{width:"54px",height:"54px",borderRadius:"var(--r-md)",background:`linear-gradient(135deg,${sportColor}55,${sportColor}22)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"28px",border:`2px solid ${sportColor}88`,margin:"0 auto 10px",boxShadow:`0 0 24px ${sportColor}66, inset 0 1px 0 ${sportColor}44`,overflow:"hidden"}}>
+              {clubRow?.logo_url
+                ? <img src={clubRow.logo_url} alt={clubRow.name} style={{width:"100%",height:"100%",objectFit:"contain"}}/>
+                : sp.icon}
+            </motion.div>
             <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:"17px",letterSpacing:"0.07em",color:"var(--text-1)"}}>{club.name}</div>
             <div style={{...ss.muted,fontSize:"10px",marginTop:"3px",letterSpacing:"0.08em",textTransform:"uppercase"}}>{countryData.flag} {countryData.name}</div>
           </div>
