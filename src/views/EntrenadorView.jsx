@@ -19,7 +19,7 @@ import Cancha from "../components/Cancha";
 import WhatsAppModal from "../components/WhatsAppModal";
 
 /* ── NominaDND ─────────────────────────────────────────────── */
-function NominaDND({sport, sp, club, players, sportColor, showToast, clubId}) {
+function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, currentCategory}) {
   const forms = FORMATIONS[sport];
   const [fKey, setFKey] = useState(forms[0].key);
   // Los equipos dependen de la categoría elegida arriba: en rugby, Adulta
@@ -618,10 +618,11 @@ function MuroModule({ sp, currentCategory, CatsBanner, sportColor, sportCards, p
 /* ── CalendarioModule — mismo problema que MuroModule: useState() llamados
    condicionalmente dentro de if(module==="calendario"){...}. Extraído a su
    propio componente por la misma razón (Rules of Hooks). ──────────────── */
-function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setPartidos, showToast, partidos }) {
+function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setPartidos, showToast, partidos, currentCategory }) {
   const hoy = new Date().toISOString().split("T")[0];
   const myCats = isDemo ? sp.categories : userCats;
-  const equiposOpts = ["A","B","C"];
+  // Equipos que aparecen de verdad en los partidos de esta categoría.
+  const equiposConPartidos = [...new Set(partidos.map(p=>p.cat).filter(Boolean))].sort();
   const resColors = {victoria:"#22C55E", empate:"#F59E0B", derrota:"#EF4444"};
 
   // filtros
@@ -669,7 +670,6 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
   const partidosFiltrados = partidos
     .filter(p=> myCats.includes(p.cat) || isDemo)
     .filter(p=> filtroCat==="todos" || p.cat===filtroCat)
-    .filter(p=> filtroEq==="todos"  || p.equipo===filtroEq)
     .filter(p=> filtroEst==="todos" || p.estado===filtroEst)
     .sort((a,b)=>a.fecha.localeCompare(b.fecha));
 
@@ -732,8 +732,8 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
                 {/* Equipo */}
                 <div>
                   {i===0&&<div style={ss.label}>Equipo</div>}
-                  <select value={p.equipo} onChange={e=>updateFila(p._key,"equipo",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
-                    {equiposOpts.map(eq=><option key={eq}>Equipo {eq}</option>)}
+                  <select value={p.cat} onChange={e=>updateFila(p._key,"cat",e.target.value)} style={{...ss.input,cursor:"pointer"}}>
+                    {equiposDeCategoria(sp, currentCategory).map(t=><option key={t.id} value={t.name}>{t.name}</option>)}
                   </select>
                 </div>
                 {/* Lugar */}
@@ -793,19 +793,16 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
             </motion.button>
           ))}
         </div>
-        <div style={{display:"flex",gap:"4px"}}>
-          {["todos",...myCats].map(c=>(
-            <motion.button key={c} whileTap={{scale:0.96}} onClick={()=>setFiltroCat(c)}
-              style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroCat===c?`${sportColor}22`:"var(--bg-elev-2)",color:filtroCat===c?sportColor:"var(--text-2)",border:`1px solid ${filtroCat===c?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroCat===c?700:400}}>
-              {c==="todos"?"Todas":c}
-            </motion.button>
-          ))}
-        </div>
-        <div style={{display:"flex",gap:"4px"}}>
-          {["todos","A","B","C"].map(eq=>(
-            <motion.button key={eq} whileTap={{scale:0.96}} onClick={()=>setFiltroEq(eq)}
-              style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroEq===eq?`${sportColor}22`:"var(--bg-elev-2)",color:filtroEq===eq?sportColor:"var(--text-2)",border:`1px solid ${filtroEq===eq?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroEq===eq?700:400}}>
-              {eq==="todos"?"Equipos":`Eq. ${eq}`}
+        {/* "Eq. A / B / C" no existe en ningún club: los equipos son los que
+            declara el deporte (en rugby, Primera / Intermedia / Pre-Intermedia)
+            y se sacan de los partidos que realmente hay. El filtro por
+            categoría se fue: los partidos ya llegan filtrados por la categoría
+            elegida arriba, así que era un segundo filtro sobre lo mismo. */}
+        <div style={{display:"flex",gap:"4px",flexWrap:"wrap"}}>
+          {["todos",...equiposConPartidos].map(eq=>(
+            <motion.button key={eq} whileTap={{scale:0.96}} onClick={()=>setFiltroCat(eq)}
+              style={{...ss.btn,fontSize:"11px",padding:"5px 12px",background:filtroCat===eq?`${sportColor}22`:"var(--bg-elev-2)",color:filtroCat===eq?sportColor:"var(--text-2)",border:`1px solid ${filtroCat===eq?sportColor+"44":"var(--border-soft)"}`,fontWeight:filtroCat===eq?700:400}}>
+              {eq==="todos"?"Todos los equipos":eq}
             </motion.button>
           ))}
         </div>
@@ -926,7 +923,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
 
 
   if(module==="calendario") return <CalendarioModule sp={sp} isDemo={isDemo} userCats={userCats} club={club}
-    sportColor={sportColor} clubId={clubId} setPartidos={setPartidos} showToast={showToast} partidos={partidos}/>;
+    sportColor={sportColor} clubId={clubId} setPartidos={setPartidos} showToast={showToast} partidos={partidos} currentCategory={currentCategory}/>;
 
 
   if(module==="matchcenter") return (
@@ -958,7 +955,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="nomina") return <div><CatsBanner/><NominaDND sport={sport} sp={sp} club={club} players={visiblePlayers} sportColor={sportColor} showToast={showToast} clubId={clubId}/></div>;
+  if(module==="nomina") return <div><CatsBanner/><NominaDND sport={sport} sp={sp} club={club} players={visiblePlayers} sportColor={sportColor} showToast={showToast} clubId={clubId} currentCategory={currentCategory}/></div>;
 
   if(module==="estadisticas") return (
     <div>

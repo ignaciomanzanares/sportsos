@@ -91,7 +91,7 @@ export default function SportOS() {
   const { players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer } = usePlayers(clubId);
   const { club: clubRow, error: clubError, reload: reloadClub } = useClub(clubId);
   const { payments: realPayments, addPayment, declarePayment, confirmPayment, rejectPayment, setPayments: setRealPayments } = usePayments(clubId);
-  const { partidos: realPartidos, setPartidos: setRealPartidos } = useMatches(clubId);
+  const { partidos: realPartidos, error: partidosError, setPartidos: setRealPartidos } = useMatches(clubId);
   const isDemo = currentUser === null;
   const userCats = isDemo ? [] : (currentUser.cats || []);
 
