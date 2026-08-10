@@ -283,8 +283,16 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           </motion.div>
           <motion.div {...fadeUp} transition={{duration:0.4,delay:0.2}} style={ss.card}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div><div style={{fontWeight:700,fontSize:"14px"}}>⚡ Plan Pro</div><div style={{...ss.muted,fontSize:"11px",marginTop:"4px"}}>Renueva el 15 Jun 2025</div></div>
-              <Badge color="#A855F7" glow>Activo</Badge>
+              {/* El plan sale del perfil. Estaba escrito a mano ("Plan Pro,
+                  renueva el 15 Jun 2025"): a un club en Free le decía que
+                  tenía Pro, con una fecha de renovación ya vencida. */}
+              <div>
+                <div style={{fontWeight:700,fontSize:"14px"}}>{PLANS[userPlan]?.icon} Plan {PLANS[userPlan]?.label || "Free"}</div>
+                <div style={{...ss.muted,fontSize:"11px",marginTop:"4px"}}>
+                  {PLANS[userPlan]?.price ? `US$${PLANS[userPlan].price} al mes` : "Sin costo"}
+                </div>
+              </div>
+              <Badge color={PLANS[userPlan]?.color || "#6B5A5A"} glow>Activo</Badge>
             </div>
           </motion.div>
         </div>
