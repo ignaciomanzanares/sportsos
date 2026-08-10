@@ -69,6 +69,18 @@ function celda(fila, clase) {
 
 const num = (s) => Number(limpiar(s ?? "0")) || 0;
 
+// fetch() envuelve los errores de red en un escueto "fetch failed" y esconde la
+// causa real (DNS, TLS, conexión rechazada) en err.cause. Sin desenvolverlo no
+// hay forma de distinguir "arusa está caída" de "arusa nos bloquea" ni de
+// "nuestro entorno no puede salir a internet".
+function detallarError(err) {
+  const causa = err?.cause;
+  const partes = [err?.message];
+  if (causa?.code) partes.push(causa.code);
+  if (causa?.message && causa.message !== err?.message) partes.push(causa.message);
+  return partes.filter(Boolean).join(" · ");
+}
+
 async function pedir(url, headersExtra = {}) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
@@ -128,9 +140,9 @@ export async function obtenerPosiciones(division) {
     // El motivo viaja en la respuesta a propósito: un fallo silencioso obliga a
     // adivinar si arusa está caída, si nos bloqueó, o si el parseo se rompió
     // porque cambiaron el HTML. Son tres problemas distintos.
-    console.error(`[leverade] posiciones ${div}:`, err.message);
+    console.error(`[leverade] posiciones ${div}:`, detallarError(err));
     const guardadas = await leerCache(key);
-    return { filas: guardadas ?? [], desdeCache: true, motivo: err.message };
+    return { filas: guardadas ?? [], desdeCache: true, motivo: detallarError(err) };
   }
 }
 
@@ -206,8 +218,8 @@ export async function obtenerEstadisticas(division) {
     await escribirCache(key, todas);
     return { filas: todas, desdeCache: false };
   } catch (err) {
-    console.error(`[leverade] estadísticas ${div}:`, err.message);
+    console.error(`[leverade] estadísticas ${div}:`, detallarError(err));
     const guardadas = await leerCache(key);
-    return { filas: guardadas ?? [], desdeCache: true, motivo: err.message };
+    return { filas: guardadas ?? [], desdeCache: true, motivo: detallarError(err) };
   }
 }
