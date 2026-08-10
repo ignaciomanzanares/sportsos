@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { FORMATIONS, TEAMS } from "../data/sports";
+import { FORMATIONS, TEAMS, equiposDeCategoria } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
 import { usePosts } from "../lib/usePosts";
 import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
@@ -628,7 +628,7 @@ function Noticias({ partidos, club, sportColor }) {
 }
 
 /* ── JugadorView ────────────────────────────────────────────── */
-export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
+export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null, currentCategory=null}) {
   const camiseta = player.number;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};
@@ -859,7 +859,10 @@ export default function JugadorView({module, sport, sp, club, player, players, s
 
   if(module==="nominasclub") {
     const forms = FORMATIONS[sport];
-    const teamsToShow = miPlantel ? TEAMS.filter(t=>t.name===miPlantel) : TEAMS;
+    // Los equipos del club, no "Primer Equipo / Reserva / Sub-20": en rugby
+    // chileno son Primera, Intermedia y Pre-Intermedia.
+    const equipos = equiposDeCategoria(sp, currentCategory);
+    const teamsToShow = miPlantel ? equipos.filter(t=>t.name===miPlantel) : equipos;
     return <NominasClub teamsToShow={teamsToShow} forms={forms} sport={sport} sportColor={sportColor} clubId={clubId} players={players} player={player} sp={sp} PlantelBanner={PlantelBanner}/>;
   }
 

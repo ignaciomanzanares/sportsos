@@ -964,7 +964,17 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
       {/* Datos oficiales del torneo. Van arriba porque hoy son los únicos que
           existen: las estadísticas por jugador del club no se cargan en ningún
           lado todavía, así que los bloques de abajo salen vacíos. */}
-      {sport==="rugby" && clubId && <TorneoARUSA clubName={club?.name} sportColor={sportColor}/>}
+      {/* El torneo solo publica las tres divisiones adultas. Con una formativa
+          elegida, mostrar igual la tabla de Primera sería contestar otra
+          pregunta: el usuario pidió M12 y le respondemos con adultos. */}
+      {sport==="rugby" && clubId && (
+        sp.teamsByCategory?.[currentCategory]
+          ? <TorneoARUSA clubName={club?.name} sportColor={sportColor} equipos={sp.teamsByCategory[currentCategory]}/>
+          : <div style={{...ss.card, ...ss.muted, fontSize:"12px", marginTop:"16px"}}>
+              El torneo de ARUSA solo publica las divisiones adultas. Para {currentCategory} no
+              hay tabla ni estadísticas oficiales — elige <strong>Adulta</strong> arriba para verlas.
+            </div>
+      )}
       {sp.stats.map((stat,si)=>{
         const conDato = visiblePlayers.filter(p=>sv(p,stat.key)!=null);
         const sorted = [...conDato].sort((a,b)=>sv(b,stat.key)-sv(a,stat.key));

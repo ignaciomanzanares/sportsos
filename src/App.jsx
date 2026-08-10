@@ -750,7 +750,7 @@ export default function SportOS() {
                   </div>
                 </div>
               )}
-              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
             </motion.div>
           </AnimatePresence>
         </div>
