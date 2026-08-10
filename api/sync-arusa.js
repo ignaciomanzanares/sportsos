@@ -4,7 +4,7 @@
 // base de datos) para un club ajeno con solo conocer su id.
 import pg from "pg";
 import { createClient } from "@supabase/supabase-js";
-import { syncClubWithArusa } from "./_lib/arusaSync.js";
+import { sincronizarDesdeCache } from "./_lib/arusaDesdeCache.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
@@ -33,13 +33,19 @@ export default async function handler(req, res) {
     const autorizado = profile && profile.club_id === club_id && ["admin", "entrenador", "preparador"].includes(profile.rol);
     if (!autorizado) return res.status(403).json({ error: "no autorizado para este club" });
 
-    const { rows: clubRows } = await client.query("select name, arusa_club_id from clubs where id = $1", [club_id]);
+    const { rows: clubRows } = await client.query("select name from clubs where id = $1", [club_id]);
     const club = clubRows[0];
-    if (!club?.arusa_club_id) {
-      return res.status(400).json({ error: "Este club no tiene configurado su ID de ARUSA." });
-    }
+    if (!club) return res.status(404).json({ error: "club_no_encontrado" });
 
-    const resumen = await syncClubWithArusa(client, { clubId: club_id, clubName: club.name, arusaClubId: club.arusa_club_id });
+    // Ya no se pide el calendario a arusa: se lee del caché del torneo que
+    // llena rugby-chile. Por eso tampoco hace falta el arusa_club_id — el club
+    // se identifica por nombre contra los equipos del torneo.
+    const resumen = await sincronizarDesdeCache(client, { clubId: club_id, clubName: club.name });
+    if (resumen.cacheVacio) {
+      return res.status(503).json({
+        error: "Todavía no hay datos del torneo sincronizados. Reintenta en unos minutos.",
+      });
+    }
     return res.status(200).json(resumen);
   } catch (err) {
     return res.status(500).json({ error: err.message });

@@ -64,7 +64,7 @@ begin
 
   -- Las claves están acotadas a propósito: esta función no puede convertirse
   -- en un lugar donde escribir cualquier cosa si el secreto se filtra.
-  if p_clave !~ '^(standings|players):(PRIMERA|INTERMEDIA|PRE_INTERMEDIA)$' then
+  if p_clave !~ '^((standings|players):(PRIMERA|INTERMEDIA|PRE_INTERMEDIA)|matches:ALL)$' then
     raise exception 'clave_no_permitida';
   end if;
 
