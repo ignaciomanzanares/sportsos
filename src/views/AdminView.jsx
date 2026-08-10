@@ -356,7 +356,12 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           🏉 Integración con ARUSA
         </div>
         <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
-          Carga el ID del club en arusa.cl (se ve en la URL de la página del club, ej: arusa.cl/es/club/<strong>8077049</strong>) para importar los partidos automáticamente todos los días. También puedes sincronizar manualmente cuando quieras.
+          {/* El ID de ARUSA ya no se usa: el club se reconoce por su nombre
+              contra los equipos del torneo. El campo se deja porque hay clubes
+              que lo tienen guardado, pero no condiciona nada. */}
+          Trae el fixture oficial del torneo: adulta (Primera, Intermedia,
+          Pre-Intermedia) y formativas (M13 a M18). Se importa solo cada día;
+          este botón lo adelanta.
         </div>
         <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap",marginBottom:"12px"}}>
           <input value={arusaClubId} onChange={e=>setArusaClubId(e.target.value)} placeholder="Ej: 8077049" style={{...ss.input,maxWidth:"220px"}}/>
@@ -364,8 +369,8 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",border:"1px solid var(--border-soft)",fontSize:"12px",opacity:arusaSaving?0.6:1}}>
             {arusaSaving?"Guardando...":"Guardar ID"}
           </motion.button>
-          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={sincronizarArusa} disabled={arusaSyncing || !arusaClubId}
-            style={{...ss.btn,background:"linear-gradient(135deg,#C0392B,#9B2335)",color:"#fff",fontSize:"12px",fontWeight:700,opacity:(arusaSyncing||!arusaClubId)?0.6:1}}>
+          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={sincronizarArusa} disabled={arusaSyncing}
+            style={{...ss.btn,background:"linear-gradient(135deg,#C0392B,#9B2335)",color:"#fff",fontSize:"12px",fontWeight:700,opacity:arusaSyncing?0.6:1}}>
             {arusaSyncing?"Sincronizando...":"🔄 Sincronizar ahora"}
           </motion.button>
         </div>
