@@ -27,6 +27,31 @@ export const TEAMS = [
   {id:"sub20",name:"Equipo Sub-20"}
 ];
 
+/**
+ * ¿Este partido corresponde a la categoría elegida?
+ *
+ * El campo `cat` de un partido guarda el equipo que jugó ("Primera",
+ * "Intermedia", "Pre-Intermedia") o la categoría formativa ("M14"). Al elegir
+ * Adulta hay que aceptar los tres equipos adultos; al elegir M14, solo M14.
+ * Un partido sin categoría se muestra siempre: esconderlo sería peor que
+ * mostrarlo donde quizá no corresponde.
+ */
+export function partidoEsDeCategoria(sportConfig, categoria, cat) {
+  if (!cat || !categoria) return true;
+  // Los partidos formativos vienen etiquetados "Primera División M13", así que
+  // buscar "Primera" dentro del texto los arrastraba a Adulta. Si el nombre
+  // trae una marca de edad, la edad manda.
+  const edad = /\bM\d+\b/i.exec(cat);
+  const equipos = sportConfig?.teamsByCategory?.[categoria];
+  if (equipos?.length) {
+    if (edad) return false;
+    return equipos.some(e => cat.toLowerCase().includes(e.toLowerCase()));
+  }
+  if (edad) return edad[0].toUpperCase() === categoria.toUpperCase();
+  // Formativas: "M14" tiene que calzar como palabra, para que M1 no arrastre a M14/M16.
+  return new RegExp(`\\b${categoria}\\b`, "i").test(cat);
+}
+
 /** Equipos que el club presenta en una categoría. */
 export function equiposDeCategoria(sportConfig, categoria) {
   const propios = sportConfig?.teamsByCategory?.[categoria];
