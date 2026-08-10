@@ -165,7 +165,7 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
         seguro_salud: form.seguro_salud, grupo_sanguineo: form.grupo_sanguineo,
         contacto_emergencia_nombre: form.contacto_emergencia_nombre,
         contacto_emergencia_tel: form.contacto_emergencia_tel,
-        pie_hab: form.pie_hab, numero_camiseta: form.numero_camiseta ? Number(form.numero_camiseta) : null,
+        pie_hab: form.pie_hab,
       }).eq("id", currentUser.id);
       setSaving(false);
       if (error) { setSaveError("Error al guardar: " + error.message); return; }
@@ -357,10 +357,9 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
                 </select>
               </Field>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"14px" }}>
-              <Field label="Número de camiseta">
-                <input type="number" value={form.numero_camiseta} onChange={e=>set("numero_camiseta",e.target.value)} style={ss.input} placeholder="Ej: 10" min="1" max="99"/>
-              </Field>
+            {/* El número de camiseta lo asigna el club, no el jugador: se saca
+                del formulario. Se sigue mostrando arriba, junto al nombre. */}
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"14px" }}>
               <Field label="Pie / mano hábil">
                 <select value={form.pie_hab} onChange={e=>set("pie_hab",e.target.value)} style={{ ...ss.input, cursor:"pointer" }}>
                   <option value="">Seleccionar</option>
