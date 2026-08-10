@@ -158,7 +158,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   const CARD = { background:"#121110", border:"1px solid #1e1c19", borderRadius:"8px", padding:"18px" };
 
   const kpi = [
-    { label:"Jugadores activos",  value: totalJugs,  change: "+2 este mes",      changeColor: sportColor, onClick: ()=>onNavigate("jugadores") },
+    { label:"Jugadores activos",  value: totalJugs,  change: totalJugs === 1 ? "1 en el plantel" : `${totalJugs} en el plantel`, changeColor: sportColor, onClick: ()=>onNavigate("jugadores") },
     { label:"Partidos ganados",   value: victorias,  change: `${partidos.filter(p=>p.estado==="jugado").length} jugados`, changeColor:"#a8a49f", onClick: ()=>onNavigate("matchcenter") },
     { label:"Goles marcados",     value: totalGoles, change: "Temporada actual",  changeColor:"#a8a49f", onClick: ()=>onNavigate("estadisticas") },
     { label:"Cuotas pagadas",     value: `${pagados}/${totalJugs}`, change: `${Math.round(pagados/(totalJugs||1)*100)}% al día`, changeColor: sportColor, onClick: ()=>onNavigate("finanzas") },
@@ -319,12 +319,16 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
   const presentes = Math.floor(players.length * 0.78);
 
   // Tendencia de asistencia — últimas 4 semanas desde Supabase
+  // Arrancaba en 65/72/80% y el efecto de más abajo se salta si el club no
+  // tiene jugadores: un club recién creado veía "Asistencia en alza" sobre
+  // semanas que nunca ocurrieron. En cero hasta que haya asistencia real.
   const [trendData, setTrendData] = useState([
-    { label:"Sem 1", pct: 65 },
-    { label:"Sem 2", pct: 72 },
-    { label:"Sem 3", pct: 80 },
-    { label:"Hoy",   pct: players.length > 0 ? Math.round(presentes/players.length*100) : 78 },
+    { label:"Sem 1", pct: 0 },
+    { label:"Sem 2", pct: 0 },
+    { label:"Sem 3", pct: 0 },
+    { label:"Hoy",   pct: players.length > 0 ? Math.round(presentes/players.length*100) : 0 },
   ]);
+  const hayAsistencia = trendData.some(t => t.pct > 0);
 
   useEffect(() => {
     if (!clubId || players.length === 0) return;
@@ -378,7 +382,8 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
         <MiniCard title="Tendencia asistencia — 4 semanas" delay={0.08}>
           <TrendBar data={trendData} color={sportColor}/>
           <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"8px"}}>
-            {trendData[3].pct > trendData[0].pct ? "📈 Asistencia en alza este mes" : "📉 Asistencia en baja este mes"}
+            {!hayAsistencia ? "Sin asistencia registrada todavía"
+              : trendData[3].pct > trendData[0].pct ? "📈 Asistencia en alza este mes" : "📉 Asistencia en baja este mes"}
           </div>
         </MiniCard>
 

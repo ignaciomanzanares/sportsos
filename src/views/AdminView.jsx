@@ -556,7 +556,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
       <motion.div {...fadeUp} transition={{delay:0.3}} style={{...ss.card, marginTop:"20px"}}>
         <div style={{fontWeight:700,fontSize:"14px",marginBottom:"16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <span>👥 Miembros del club</span>
-          <span style={{fontSize:"11px",color:"var(--text-3)",fontWeight:400}}>{members.length > 0 ? members.length : players.length} miembros</span>
+          <span style={{fontSize:"11px",color:"var(--text-3)",fontWeight:400}}>{members.length} miembros</span>
         </div>
         {(members.length > 0 ? members : [
           {id:1, nombre:"Admin Toros",      rol:"admin"},
@@ -623,7 +623,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           ...rest,
           category: cat || null,
           med_status: med || "verde",
-          cuota_status: cuota || "ok",
+          cuota_status: cuota || null,
           number: playerForm.number ? Number(playerForm.number) : null,
           age: playerForm.age ? Number(playerForm.age) : null,
         };
@@ -888,7 +888,10 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                 <td style={{color:"var(--text-2)"}}>{p.category||"—"}</td>
                 <td style={{color:"var(--text-2)",fontSize:"11px"}}>{p.position||"—"}</td>
                 <td><Semaforo status={p.med_status}/></td>
-                <td><Badge color={p.cuota_status==="ok"?"#22C55E":"#EF4444"}>{p.cuota_status==="ok"?"Al día":"Vencida"}</Badge></td>
+                {/* Sin dato es "—", no "Al día": nacía en 'ok' y marcaba como
+                    pagado a quien nunca pagó, contradiciendo al panel de Inicio. */}
+                <td>{!p.cuota_status ? <span style={{color:"var(--text-4)"}}>—</span>
+                  : <Badge color={p.cuota_status==="ok"?"#22C55E":"#EF4444"}>{p.cuota_status==="ok"?"Al día":"Vencida"}</Badge>}</td>
                 <td style={{color:"var(--text-2)"}}>{p.age||"—"}</td>
                 <td style={{padding:"12px"}}>
                   <div style={{display:"flex",gap:"6px"}}>

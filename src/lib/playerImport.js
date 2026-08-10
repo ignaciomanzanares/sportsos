@@ -175,7 +175,8 @@ export async function parsePlayersFile(file) {
   const players = dataRows
     .filter(row => row.some(cell => String(cell ?? "").trim() !== ""))
     .map(row => {
-      const player = { med_status: "verde", cuota_status: "ok" };
+      // cuota_status no se asume: importar a alguien no significa que pagó.
+      const player = { med_status: "verde", cuota_status: null };
       let nombre = "", apellido = "";
 
       fieldByCol.forEach((field, i) => {
