@@ -308,6 +308,11 @@ export default function SportOS() {
         // "jugador" en profiles, pero trae el club elegido en el user_metadata.
         const clubPendiente = u.user_metadata?.club_pendiente || null;
         if (!esSuperAdmin && !profile?.club_id && (rolPerfil === "admin" || clubPendiente)) {
+          // currentUser también se fija acá. Antes solo se hacía en la rama de
+          // abajo, así que en el onboarding la app no sabía quién eras: el
+          // botón Volver caía al login, el login te reconocía como admin sin
+          // club y te devolvía al onboarding. Un círculo sin salida.
+          setCurrentUser(usuario);
           setPendingUser({ id: u.id, nombre: usuario.nombre, email: u.email, club_pendiente: clubPendiente });
           setScreen("club-onboarding");
         } else {
@@ -363,7 +368,10 @@ export default function SportOS() {
       // Mandaba siempre al login. A quien ya tiene sesion y club eso se le ve
       // como que el boton no hace nada: sale del onboarding y la pantalla de
       // login lo devuelve a la app de inmediato. Ahora vuelve a donde estaba.
-      onBack={()=>{ setPendingUser(null); setScreen(currentUser?.club_id ? "app" : "login"); }}
+      // Con sesión abierta se vuelve a la app: si todavía no hay club, ahí
+      // está SinClubScreen, que ofrece crear uno, unirse con código o cerrar
+      // sesión. Mandarlo al login sería devolverlo al mismo onboarding.
+      onBack={()=>{ setPendingUser(null); setScreen(currentUser ? "app" : "login"); }}
       existingUser={pendingUser}
       onComplete={(usuario)=>{
         if(!usuario) { setPendingUser(null); setScreen("login"); return; }
@@ -543,9 +551,18 @@ export default function SportOS() {
           </div>}
           <select className="hide-mobile" value={category} onChange={e=>setCategory(Number(e.target.value))} style={{...ss.input,width:"100px",fontSize:"12px",padding:"6px 10px",cursor:"pointer"}}>
             {/* Solo las categorías que el plantel realmente usa: ofrecer las
-                ocho cuando el club juega en dos es ruido. */}
-            {sp.categories.map((c,i)=>categoriasEnUso.has(c)||categoriasEnUso.size===0
-              ? <option key={i} value={i}>{c}</option> : null)}
+                once cuando el club juega en dos es ruido. Y agrupadas cuando el
+                deporte lo define: los tres equipos de adulta no son categorías
+                de edad distintas, son tres planteles del mismo +18. */}
+            {(() => {
+              const visible = (c) => categoriasEnUso.has(c) || categoriasEnUso.size===0;
+              const opcion  = (c) => <option key={c} value={sp.categories.indexOf(c)}>{c}</option>;
+              if (!sp.categoryGroups) return sp.categories.filter(visible).map(opcion);
+              return sp.categoryGroups.map(g => {
+                const cats = g.cats.filter(visible);
+                return cats.length ? <optgroup key={g.label} label={g.label}>{cats.map(opcion)}</optgroup> : null;
+              });
+            })()}
           </select>
         </>}
         <div style={{flex:1}}/>
