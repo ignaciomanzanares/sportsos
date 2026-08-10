@@ -119,15 +119,18 @@ export async function obtenerPosiciones(division) {
   const key = `standings:${div}`;
   try {
     const res = await pedir(`${ARUSA_BASE}/ranking/${DIVISION_A_GRUPO[div]}`);
-    if (!res.ok) throw new Error(`ranking ${res.status}`);
+    if (!res.ok) throw new Error(`arusa respondió ${res.status}`);
     const filas = parsearPosiciones(await res.text());
     if (filas.length === 0) throw new Error("posiciones vacías");
     await escribirCache(key, filas);
     return { filas, desdeCache: false };
   } catch (err) {
+    // El motivo viaja en la respuesta a propósito: un fallo silencioso obliga a
+    // adivinar si arusa está caída, si nos bloqueó, o si el parseo se rompió
+    // porque cambiaron el HTML. Son tres problemas distintos.
     console.error(`[leverade] posiciones ${div}:`, err.message);
     const guardadas = await leerCache(key);
-    return { filas: guardadas ?? [], desdeCache: true };
+    return { filas: guardadas ?? [], desdeCache: true, motivo: err.message };
   }
 }
 
@@ -205,6 +208,6 @@ export async function obtenerEstadisticas(division) {
   } catch (err) {
     console.error(`[leverade] estadísticas ${div}:`, err.message);
     const guardadas = await leerCache(key);
-    return { filas: guardadas ?? [], desdeCache: true };
+    return { filas: guardadas ?? [], desdeCache: true, motivo: err.message };
   }
 }

@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { filas, desdeCache } =
+    const { filas, desdeCache, motivo } =
       tipo === "estadisticas" ? await obtenerEstadisticas(division) : await obtenerPosiciones(division);
 
     // Un minuto de caché en el borde: arusa no cambia más rápido que eso, y
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
     // desdeCache le permite a la vista decir "datos de la última sincronización"
     // en vez de mostrarlos como si fueran de este segundo.
-    return res.status(200).json({ division, tipo, desdeCache, filas });
+    return res.status(200).json({ division, tipo, desdeCache, motivo: motivo ?? null, filas });
   } catch (err) {
     console.error("[api/leverade]", err);
     return res.status(500).json({ error: "error_inesperado" });
