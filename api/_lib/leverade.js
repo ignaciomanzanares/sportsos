@@ -52,6 +52,42 @@ export function nombreCanonico(nombre) {
   return NOMBRE_CANONICO[nombre] ?? nombre;
 }
 
+// ── Una sola forma para el frontend ──────────────────────────────────────
+// El caché lo llena rugby-chile, que usa sus propios nombres de campo en
+// inglés (name/team/points, diff). Si el frontend leyera eso directo, un
+// cambio en aquel proyecto rompería esta app en silencio. El endpoint traduce
+// y acá se acepta cualquiera de las dos formas.
+const numero = (...vs) => { for (const v of vs) if (v != null) return Number(v) || 0; return 0; };
+
+export function normalizarPosicion(f) {
+  return {
+    pos: numero(f.pos),
+    equipo: nombreCanonico(f.equipo ?? f.team ?? ""),
+    pj: numero(f.pj), pg: numero(f.pg), pe: numero(f.pe), pp: numero(f.pp),
+    pf: numero(f.pf), pc: numero(f.pc),
+    dif: numero(f.dif, f.diff),
+    pts: numero(f.pts),
+  };
+}
+
+export function normalizarJugador(f) {
+  return {
+    id: String(f.id ?? ""),
+    nombre: f.nombre ?? f.name ?? "",
+    equipo: nombreCanonico(f.equipo ?? f.team ?? ""),
+    partidos: numero(f.partidos, f.matches),
+    puntos: numero(f.puntos, f.points),
+    tries: numero(f.tries),
+    triesPenal: numero(f.triesPenal, f.penaltyTries),
+    conversiones: numero(f.conversiones, f.conversions),
+    penales: numero(f.penales, f.penalties),
+    drops: numero(f.drops),
+    amarillas: numero(f.amarillas, f.yellowCards),
+    rojas: numero(f.rojas, f.redCards),
+    mvp: numero(f.mvp),
+  };
+}
+
 /** Razón por la que no corresponde salir a arusa, o null si se puede. */
 async function motivoParaNoRaspar() {
   if (!RASPADO_HABILITADO) return "raspado desactivado: SportOS lee del caché que llena rugby-chile";

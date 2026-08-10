@@ -9,6 +9,7 @@ import SectionTitle from "../components/SectionTitle";
 import Stat from "../components/Stat";
 import Badge from "../components/Badge";
 import PanelLesiones from "../components/PanelLesiones";
+import VincularArusa from "../components/VincularArusa";
 import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
 import FinanzasView from "../components/FinanzasView";
@@ -673,6 +674,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             { id:"plantel",      label:`👥 Plantel (${players.length})` },
             { id:"solicitudes",  label:`📩 Solicitudes${pendingCount>0?` (${pendingCount})`:""}` },
             { id:"importar",     label:`📥 Importar Excel` },
+            { id:"arusa",        label:`🔗 ARUSA` },
           ].map(t=>(
             <motion.button key={t.id} whileTap={{scale:0.97}} onClick={()=>setJugTab(t.id)}
               style={{...ss.btn, fontSize:"12px", padding:"8px 16px",
@@ -690,6 +692,12 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             </motion.button>
           ))}
         </div>
+
+        {/* ── Vista: Vincular con ARUSA ── */}
+        {jugTab === "arusa" && (
+          <VincularArusa players={players} clubName={club?.name} sportColor={sportColor}
+            showToast={showToast} onVinculado={()=>window.location.reload()}/>
+        )}
 
         {/* ── Vista: Solicitudes ── */}
         {jugTab === "solicitudes" && (
