@@ -171,8 +171,14 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
       //    invitations y recién ahí asigna rol/club_id/vínculo de jugador.
       //    El cliente ya no puede auto-asignarse un rol (ver accept_invitation
       //    y la política "own profile update" en supabase/schema.sql).
-      const { data: acc, error: accErr } = await supabase.rpc("accept_invitation", { p_token: token });
-      if (accErr || !acc?.[0]) throw new Error("invitacion_invalida");
+      // Los motivos que la función distingue se muestran tal cual: aplastarlos
+      // todos en "link inválido" escondía la causa real y dejaba al usuario (y
+      // a quien depura) sin nada con qué trabajar.
+      if (accErr) {
+        console.error("accept_invitation falló:", accErr);
+        throw new Error(accErr.message || "invitacion_invalida");
+      }
+      if (!acc?.[0]) throw new Error("invitacion_invalida");
       const assigned = acc[0];
 
       setLoading(false);
@@ -195,9 +201,18 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
 
     } catch (err) {
       setLoading(false);
-      if (err.message?.includes("already registered")) {
+      const m = err.message || "";
+      if (m.includes("already registered")) {
         setServerError("Este email ya tiene cuenta. Inicia sesión en su lugar.");
-      } else if (err.message === "invitacion_invalida") {
+      } else if (m.includes("invitacion_no_encontrada")) {
+        setServerError("Este link no corresponde a ninguna invitación. Pide uno nuevo al administrador del club.");
+      } else if (m.includes("invitacion_ya_usada")) {
+        setServerError("Esta invitación ya fue usada por otra persona. Pide una nueva al administrador del club.");
+      } else if (m.includes("invitacion_expirada")) {
+        setServerError("Esta invitación venció (duran 48 horas). Pide una nueva al administrador del club.");
+      } else if (m.includes("invitacion_te_degrada")) {
+        setServerError("Ya perteneces a este club con un rol superior, así que no aplicamos la invitación. El link sigue válido para la persona que quieres invitar.");
+      } else if (m === "invitacion_invalida") {
         setServerError("Este link de invitación ya no es válido (expiró o ya fue usado). Pide uno nuevo al administrador del club.");
       } else {
         setServerError(err.message || "Error al crear la cuenta. Intenta de nuevo.");
