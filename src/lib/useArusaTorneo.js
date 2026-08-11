@@ -34,6 +34,47 @@ export function useArusaTorneo(division = "PRIMERA") {
   return { posiciones, jugadores, cargando, error };
 }
 
+const DIVISIONES_ADULTAS = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
+
+/**
+ * Estadísticas de jugador de las tres divisiones adultas, en una sola lista.
+ *
+ * Un jugador puede aparecer en más de una división en la misma temporada (sube
+ * de Intermedia a Primera y sigue anotando en las dos), así que los registros
+ * del mismo id se suman: mostrar solo el de Primera le borraría los tries del
+ * resto del año.
+ */
+export function useArusaJugadores(activo = true) {
+  const [jugadores, setJugadores] = useState([]);
+
+  useEffect(() => {
+    if (!activo) { setJugadores([]); return; }
+    let vivo = true;
+    Promise.all(
+      DIVISIONES_ADULTAS.map(d =>
+        fetch(`/api/leverade?tipo=estadisticas&division=${d}`).then(r => r.json()).catch(() => ({})),
+      ),
+    ).then(res => {
+      if (!vivo) return;
+      const acc = new Map();
+      for (const r of res) for (const j of r.filas || []) {
+        const id = String(j.id ?? j.nombre);
+        const prev = acc.get(id);
+        acc.set(id, prev ? {
+          ...prev,
+          tries:    (prev.tries || 0)    + (j.tries || 0),
+          puntos:   (prev.puntos || 0)   + (j.puntos || 0),
+          partidos: (prev.partidos || 0) + (j.partidos || 0),
+        } : { ...j, id });
+      }
+      setJugadores([...acc.values()]);
+    });
+    return () => { vivo = false; };
+  }, [activo]);
+
+  return jugadores;
+}
+
 /** Estadísticas de un club, ordenadas por la columna que se pida. */
 export function jugadoresDelClub(jugadores, clubName, ordenarPor = "puntos") {
   const club = String(clubName || "").trim().toLowerCase();

@@ -5,6 +5,7 @@ import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
 import { useAttendance, useAttendanceStats, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
+import { useArusaJugadores } from "../lib/useArusaTorneo";
 import { useComments } from "../lib/useComments";
 import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
@@ -978,7 +979,22 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   // Sin tabla de estadísticas por jugador todavía — no inventar un número
   // cuando no hay dato real (antes generaba uno "consistente" por fórmula,
   // que además daba NaN con ids uuid reales).
-  const sv = (p,k)=>p.stats?.[k] ?? null;
+  // Los tries del club ya existen: los publica ARUSA y el plantel está
+  // vinculado por arusa_player_id. Se usan cuando el club no cargó los suyos,
+  // en vez de mostrar "aún no hay datos" al lado de una tabla que sí los
+  // tiene. Lo que el club cargue a mano manda por sobre el torneo.
+  const arusaJugadores = useArusaJugadores(sport === "rugby" && !!clubId);
+  const arusaPorId = new Map(arusaJugadores.map(j => [String(j.id), j]));
+  const deArusa = (p) => p.arusa_player_id ? arusaPorId.get(String(p.arusa_player_id)) : null;
+  const sv = (p,k)=>{
+    const propio = p.stats?.[k];
+    if (propio != null) return propio;
+    const a = deArusa(p);
+    // ARUSA publica tries, conversiones y penales. Minutos y tackles no los
+    // publica nadie, y no se inventan.
+    if (a && ["tries","conversiones","penales"].includes(k)) return a[k] ?? null;
+    return null;
+  };
   const [reactions, setReactions] = useState({});
   const handleReact = (postId, emoji) => {
     setReactions(prev=>{
@@ -1095,9 +1111,9 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     <div>
       <CatsBanner/>
       <SectionTitle title={`Estadísticas — ${sp.name} ${currentCategory}`}/>
-      {/* Datos oficiales del torneo. Van arriba porque hoy son los únicos que
-          existen: las estadísticas por jugador del club no se cargan en ningún
-          lado todavía, así que los bloques de abajo salen vacíos. */}
+      {/* Datos oficiales del torneo. Van arriba porque son la fuente: los
+          bloques de abajo (tries, conversiones, penales) se llenan con esto
+          mismo, cruzado con el plantel por arusa_player_id. */}
       {/* El torneo solo publica las tres divisiones adultas. Con una de menores
           o juveniles
           elegida, mostrar igual la tabla de Primera sería contestar otra
@@ -1116,13 +1132,22 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
         if (sorted.length===0) return (
           <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
             <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
-            <div style={{...ss.muted,fontSize:"12px"}}>Aún no hay datos de "{stat.label}" cargados para este plantel.</div>
+            <div style={{...ss.muted,fontSize:"12px"}}>
+              {["tries","conversiones","penales"].includes(stat.key)
+                ? `Nadie del plantel figura con ${stat.label.toLowerCase()} en el torneo todavía. Si faltan jugadores por vincular con ARUSA, se hace en Mi Club.`
+                : `"${stat.label}" no lo publica el torneo y todavía no se carga a mano para este plantel.`}
+            </div>
           </motion.div>
         );
         const max = sv(sorted[0],stat.key)||1;
         return (
           <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
-            <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
+            <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>
+              {stat.icon} {stat.label}
+              {["tries","conversiones","penales"].includes(stat.key) && sorted.some(p => p.stats?.[stat.key] == null) && (
+                <span style={{...ss.muted,fontSize:"10px",fontWeight:400}}>· datos de ARUSA</span>
+              )}
+            </div>
             {sorted.slice(0,6).map((p,i)=>(
               <motion.div key={p.id} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{duration:0.3,delay:si*0.05+i*0.05}} style={{display:"flex",alignItems:"center",gap:"12px",marginBottom:"10px"}}>
                 <MedalBadge rank={i+1}/>

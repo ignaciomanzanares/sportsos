@@ -55,8 +55,28 @@ const MODULE_MAP = {
 
 const ROL_ICONS = {superadmin:"⚡",admin:"🏢",entrenador:"📋",preparador:"💪",jugador:"👤"};
 
+// Colores explícitos para el desplegable de categorías: el menú nativo lo
+// dibuja el sistema operativo y no hereda las variables del tema.
+const OPCION = { background:"#16140f", color:"#f0ede8" };
+const GRUPO  = { background:"#0f0d0b", color:"#8a8681", fontWeight:700 };
+
+/**
+ * ¿Hay una sesión guardada en este navegador?
+ *
+ * Supabase la valida de forma asíncrona, así que la app arrancaba siempre en
+ * la landing y saltaba a la app un instante después: al recargar veías el
+ * "TU CLUB DE RUGBY MERECE ALGO MEJOR" por medio segundo antes de volver a tu
+ * pantalla. Mirar el token guardado no valida nada — solo evita mostrar la
+ * puerta de entrada a alguien que ya está adentro.
+ */
+function haySesionGuardada() {
+  try {
+    return Object.keys(window.localStorage).some(k => /^sb-.*-auth-token$/.test(k));
+  } catch { return false; }
+}
+
 export default function SportOS() {
-  const [screen,setScreen]               = useState("landing");
+  const [screen,setScreen]               = useState(() => haySesionGuardada() ? "cargando" : "landing");
   const [sport,setSport]                 = useState("rugby");
   const [country,setCountry]             = useState("CL");
   const [role,setRole]                   = useState("entrenador");
@@ -334,6 +354,13 @@ export default function SportOS() {
         setScreen("newpassword");
         return;
       }
+      // El token guardado existía pero ya no vale (expiró, se cerró sesión en
+      // otra pestaña): se suelta la pantalla de carga y se muestra la landing,
+      // que es lo que corresponde.
+      if (event === "INITIAL_SESSION" && !session?.user) {
+        setScreen(p => p === "cargando" ? "landing" : p);
+        return;
+      }
       if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session?.user && !sesionYaResuelta.current) {
         sesionYaResuelta.current = true;
         const u = session.user;
@@ -436,6 +463,18 @@ export default function SportOS() {
   // Solicitud de jugador con código de club
   if(screen==="join-request") return (
     <JoinRequestScreen onBack={()=>setScreen("landing")}/>
+  );
+
+  // Sesión guardada que todavía se está validando: ni landing ni app. Antes se
+  // mostraba la landing mientras tanto y al recargar veías la portada de venta
+  // por medio segundo antes de volver a tu pantalla.
+  if(screen==="cargando") return (
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",
+      background:"var(--bg-base)",color:"var(--text-3)",fontSize:"13px",gap:"10px"}}>
+      <AuroraBg/>
+      <span style={{position:"relative",fontFamily:"'Bebas Neue',sans-serif",fontSize:"26px",
+        letterSpacing:"0.08em",color:"#1FA04A",filter:"drop-shadow(0 0 14px #1FA04A88)"}}>⚡ SPORTOS</span>
+    </div>
   );
 
   // Landing pública
@@ -642,11 +681,14 @@ export default function SportOS() {
                 de edad distintas, son tres planteles del mismo +18. */}
             {(() => {
               const visible = (c) => categoriasEnUso.has(c) || categoriasEnUso.size===0;
-              const opcion  = (c) => <option key={c} value={sp.categories.indexOf(c)}>{c}</option>;
+              // El desplegable nativo pinta las opciones con los colores del sistema,
+              // no con los del tema: sobre el fondo claro que dibuja el navegador,
+              // el texto salía casi invisible. Se fijan a mano.
+              const opcion  = (c) => <option key={c} value={sp.categories.indexOf(c)} style={OPCION}>{c}</option>;
               if (!sp.categoryGroups) return sp.categories.filter(visible).map(opcion);
               return sp.categoryGroups.map(g => {
                 const cats = g.cats.filter(visible);
-                return cats.length ? <optgroup key={g.label} label={g.label}>{cats.map(opcion)}</optgroup> : null;
+                return cats.length ? <optgroup key={g.label} label={g.label} style={GRUPO}>{cats.map(opcion)}</optgroup> : null;
               });
             })()}
           </select>
