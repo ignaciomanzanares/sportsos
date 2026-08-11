@@ -43,6 +43,18 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
   const faltantes = useMemo(() => arusaSinPlantel(players, delClub), [players, delClub]);
   const duplicados = useMemo(() => duplicadosDelPlantel(players), [players]);
   const sinPuesto  = useMemo(() => conPuestoDisponible(players), [players]);
+  // Nombres que el club escribió distinto a la federación. La planilla del club
+  // puso "Lillo Benjamín" y ARUSA dice "benjamin lillo": misma persona, orden
+  // invertido. No hay forma de deducir cuál palabra es el apellido, así que la
+  // única salida es adoptar una de las dos grafías, y la de ARUSA es la que
+  // aparece en la ficha oficial del torneo.
+  const distintos = useMemo(() => {
+    const porId = new Map(delClub.map(j => [String(j.id), j]));
+    return players
+      .map(p => ({ p, a: p.arusa_player_id ? porId.get(String(p.arusa_player_id)) : null }))
+      .filter(x => x.a && nombreProlijo(x.a.nombre) !== x.p.name)
+      .map(x => ({ id: x.p.id, antes: x.p.name, despues: nombreProlijo(x.a.nombre) }));
+  }, [players, delClub]);
   const yaVinculados = players.filter(p => p.arusa_player_id).length;
 
   const [guardando, setGuardando] = useState(false);
@@ -103,6 +115,21 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
       onVinculado();
     } catch (e) {
       showToast("No se pudo unir: " + e.message, "warning");
+    } finally { setGuardando(false); }
+  };
+
+  const unificarNombres = async () => {
+    if (distintos.length === 0) return;
+    setGuardando(true);
+    try {
+      for (const d of distintos) {
+        const { error } = await supabase.from("players").update({ name: d.despues }).eq("id", d.id);
+        if (error) throw error;
+      }
+      showToast(`${distintos.length} nombres unificados con ARUSA`, "success");
+      onVinculado();
+    } catch (e) {
+      showToast("No se pudieron unificar: " + e.message, "warning");
     } finally { setGuardando(false); }
   };
 
@@ -171,6 +198,33 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
               <div key={d.borrar.id} style={{ fontSize:"11px", padding:"2px 0", color:"var(--text-3)" }}>
                 {d.conservar.name} <span style={{ color:"var(--text-4)" }}>+</span> {d.borrar.name}
                 <span style={{ color:"var(--text-4)" }}> → {d.nombreFinal}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {distintos.length > 0 && (
+        <div style={{ marginBottom:"16px", padding:"12px 14px", borderRadius:"var(--r-md)",
+          background:"rgba(128,64,204,0.07)", border:"1px solid rgba(128,64,204,0.28)" }}>
+          <div style={{ fontSize:"12px", fontWeight:600, marginBottom:"4px" }}>
+            {distintos.length} nombres escritos distinto a la ficha del torneo
+          </div>
+          <div style={{ ...ss.muted, fontSize:"11px", marginBottom:"10px", lineHeight:1.5 }}>
+            La planilla del club escribió unos con el apellido primero y otros con el
+            nombre. Cuál palabra es el apellido no se puede deducir, así que se adopta
+            la grafía de ARUSA, que es la de la ficha oficial. Solo cambia a los
+            vinculados; el resto del plantel queda como está.
+          </div>
+          <motion.button whileTap={{ scale:0.98 }} disabled={guardando} onClick={unificarNombres}
+            style={{ ...ss.btn, background:"#8040CC", color:"#fff", fontSize:"12px", padding:"9px 16px",
+              opacity: guardando ? 0.6 : 1, marginBottom:"10px" }}>
+            {guardando ? "Unificando…" : `Unificar los ${distintos.length} nombres`}
+          </motion.button>
+          <div style={{ maxHeight:"170px", overflowY:"auto" }}>
+            {distintos.map(d => (
+              <div key={d.id} style={{ fontSize:"11px", padding:"2px 0", color:"var(--text-3)" }}>
+                {d.antes} <span style={{ color:"var(--text-4)" }}>→</span> {d.despues}
               </div>
             ))}
           </div>
@@ -274,7 +328,7 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
         </div>
       )}
 
-      {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && faltantes.length === 0 && duplicados.length === 0 && sinPuesto.length === 0 && (
+      {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && faltantes.length === 0 && duplicados.length === 0 && sinPuesto.length === 0 && distintos.length === 0 && (
         <div style={{ ...ss.muted, fontSize:"12px" }}>
           No queda nadie por vincular automáticamente. Los {propuesta.sinMatch.length} restantes
           no aparecen en el torneo — normal en menores y juveniles, o en quien no ha jugado.

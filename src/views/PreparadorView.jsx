@@ -117,17 +117,19 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
   // El día abierto vive en App y arranca en "lunes"; si el plan importado no
   // tiene lunes, se abre el primero que sí exista en vez de romperse.
   const diaActivo = days.includes(expandedDay) ? expandedDay : days[0];
-  const todosDelDia   = planSessions[diaActivo]?.exercises || [];
-  const gruposDelDia  = [...new Set(todosDelDia.map(e => e.grupo).filter(Boolean))];
-  const ejerciciosDelDia = grupoFiltro === "TODOS" || !gruposDelDia.includes(grupoFiltro)
-    ? todosDelDia
-    : todosDelDia.filter(e => e.grupo === grupoFiltro);
-
   // ── Plan real (Supabase) ──────────────────────────────────────────────
   const [planLoading, setPlanLoading] = useLocalState(!!clubId);
   const [saving, setSaving]           = useLocalState(false);
   const [importando, setImportando]   = useLocalState(false);
   const [grupoFiltro, setGrupoFiltro] = useLocalState("TODOS");
+  // Estas tres derivadas estaban escritas arriba, antes de declarar
+  // grupoFiltro: leer un const antes de su declaración es un ReferenceError, y
+  // el preparador veía todas sus pantallas en negro.
+  const todosDelDia   = planSessions[diaActivo]?.exercises || [];
+  const gruposDelDia  = [...new Set(todosDelDia.map(e => e.grupo).filter(Boolean))];
+  const ejerciciosDelDia = grupoFiltro === "TODOS" || !gruposDelDia.includes(grupoFiltro)
+    ? todosDelDia
+    : todosDelDia.filter(e => e.grupo === grupoFiltro);
   const [kpis, setKpis] = useLocalState({ cumplimiento:0, activos:0, volumen:0 });
   const weekStart = getWeekStart();
   const weekLabel = clubId ? formatWeekLabel(weekStart) : GYM_PLAN.week;
