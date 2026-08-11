@@ -15,7 +15,7 @@ import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free"}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", partidos=[]}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -936,6 +936,57 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             </motion.div>
           </div>
         )}
+      </div>
+    );
+  }
+
+  if(module==="partidos") {
+    const hoy = new Date().toISOString().split("T")[0];
+    const resColors = {victoria:"#22C55E", empate:"#F59E0B", derrota:"#EF4444"};
+    const ordenados = [...partidos].sort((a,b)=>a.fecha.localeCompare(b.fecha));
+    const proximos = ordenados.filter(p=>p.estado==="programado");
+    const jugados = [...ordenados].filter(p=>p.estado==="jugado").reverse();
+
+    const Fila = (p, i, total) => {
+      const esHoy = p.fecha===hoy;
+      return (
+        <div key={p.id} style={{display:"flex",alignItems:"center",gap:"12px",padding:"12px 16px",borderBottom:i<total-1?"1px solid var(--border-soft)":"none",background:esHoy?`${sportColor}08`:"transparent",flexWrap:"wrap"}}>
+          <div style={{minWidth:"72px",flexShrink:0}}>
+            <div style={{fontSize:"12px",fontWeight:700,color:esHoy?sportColor:"var(--text-1)"}}>{p.fecha?.slice(5).replace("-","/")||"—"}</div>
+            <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"1px"}}>{p.hora}</div>
+          </div>
+          <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:`${sportColor}15`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600,flexShrink:0}}>{p.cat||"—"}</span>
+          <div style={{flex:1,minWidth:"120px"}}>
+            <div style={{fontSize:"13px",fontWeight:600}}>vs {p.rival}</div>
+            <div style={{fontSize:"10px",color:"var(--text-3)",marginTop:"1px"}}>{p.lugar}{esHoy?" · HOY":""}</div>
+          </div>
+          {p.estado==="jugado" && p.resultado ? (
+            <div style={{display:"flex",alignItems:"center",gap:"8px",flexShrink:0}}>
+              <span style={{fontSize:"17px",fontWeight:900,letterSpacing:"-0.02em",color:resColors[p.resultado]}}>{p.golesLocal}:{p.golesVisita}</span>
+              <span style={{fontSize:"10px",padding:"2px 8px",borderRadius:"99px",background:`${resColors[p.resultado]}18`,color:resColors[p.resultado],border:`1px solid ${resColors[p.resultado]}44`,fontWeight:700,textTransform:"uppercase"}}>{p.resultado.slice(0,3)}</span>
+            </div>
+          ) : (
+            <span style={{fontSize:"10px",padding:"2px 9px",borderRadius:"99px",background:"rgba(59,130,246,0.1)",color:"#60A5FA",border:"1px solid rgba(59,130,246,0.25)",fontWeight:600,flexShrink:0}}>Programado</span>
+          )}
+        </div>
+      );
+    };
+
+    return (
+      <div>
+        <SectionTitle title="Partidos" sub={`${club.name} · ${sp.name} — vista de solo lectura, el entrenador carga los partidos`}/>
+        <motion.div {...fadeUp} style={{...ss.card,padding:0,overflow:"hidden",marginBottom:"20px"}}>
+          <div style={{padding:"14px 16px",borderBottom:"1px solid var(--border-soft)",fontWeight:700,fontSize:"13px"}}>📅 Próximos ({proximos.length})</div>
+          {proximos.length===0
+            ? <EmptyState icon="📅" title="Sin partidos programados" desc="El entrenador todavía no cargó partidos próximos." color={sportColor}/>
+            : proximos.map((p,i)=>Fila(p,i,proximos.length))}
+        </motion.div>
+        <motion.div {...fadeUp} transition={{delay:0.1}} style={{...ss.card,padding:0,overflow:"hidden"}}>
+          <div style={{padding:"14px 16px",borderBottom:"1px solid var(--border-soft)",fontWeight:700,fontSize:"13px"}}>✅ Jugados ({jugados.length})</div>
+          {jugados.length===0
+            ? <EmptyState icon="🏉" title="Sin partidos jugados aún" desc="Los resultados publicados por el entrenador van a aparecer acá." color={sportColor}/>
+            : jugados.map((p,i)=>Fila(p,i,jugados.length))}
+        </motion.div>
       </div>
     );
   }
