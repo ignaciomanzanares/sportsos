@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
+import { usePlataforma } from "../lib/usePlataforma";
 import { getNotifications } from "../lib/db";
 import EmptyState from "../components/EmptyState";
 
@@ -570,6 +571,24 @@ function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavig
 
 // ── Export principal ──────────────────────────────────────────────────────
 
+/**
+ * Panel de superadmin. Antes eran cuatro cifras escritas a mano — 24 clubes,
+ * $1.840 de comisiones, 387 usuarios, 94% de retención — sobre una plataforma
+ * con un club y nueve usuarios. Se muestran las dos que se pueden contar de
+ * verdad; comisiones y retención no tienen tabla de dónde salir y por eso no
+ * están: un panel que inventa sus cifras no sirve para controlar nada.
+ */
+function HomeSuperAdmin({ sportColor, onNavigate }) {
+  const { clubes, usuarios, cargando } = usePlataforma();
+  const valor = (n) => (cargando ? "…" : n ?? "—");
+  return (
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"12px"}}>
+      <HeroStat icon="🏢" value={valor(clubes)} label="Clubes activos" sub="Sin suspender" color={sportColor} onClick={()=>onNavigate("clubes")}/>
+      <HeroStat icon="👥" value={valor(usuarios)} label="Usuarios" sub="Con perfil creado" color="#3B82F6" onClick={()=>onNavigate("dashboard")}/>
+    </div>
+  );
+}
+
 export default function HomeView({ role, players, sportColor, club, sp, countryData, payments, partidos, onNavigate, currentUser, convocado=null, clubId=null }) {
   const greeting = () => {
     const h = new Date().getHours();
@@ -597,14 +616,7 @@ export default function HomeView({ role, players, sportColor, club, sp, countryD
       {role==="entrenador" && <HomeEntrenador players={players} sportColor={sportColor} club={club} sp={sp} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate}/>}
       {role==="jugador"    && <HomeJugador    player={players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}
-      {role==="superadmin" && (
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"12px"}}>
-          <HeroStat icon="🏢" value="24" label="Clubes activos" sub="En SportOS" color={sportColor} onClick={()=>onNavigate("clubes")}/>
-          <HeroStat icon="💰" value="$1.840" label="Comisiones" sub="Este mes (USD)" color="#1FA04A" onClick={()=>onNavigate("comisiones")}/>
-          <HeroStat icon="👥" value="387" label="Usuarios" sub="En la plataforma" color="#3B82F6" onClick={()=>onNavigate("dashboard")}/>
-          <HeroStat icon="📈" value="94%" label="Retención" sub="Últimos 30 días" color="#C98408" onClick={()=>onNavigate("comparativa")}/>
-        </div>
-      )}
+      {role==="superadmin" && <HomeSuperAdmin sportColor={sportColor} onNavigate={onNavigate}/>}
     </div>
   );
 }
