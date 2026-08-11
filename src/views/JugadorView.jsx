@@ -306,12 +306,6 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   // circuito; el resto vienen en blanco. Sin esto, Array.from({length:null})
   // daba cero filas y el jugador no tenía dónde anotar nada.
   const setsDe = (ex)=>Number(ex?.sets) || 1;
-  // Quién va primero en un "A vs B" lo decide la cancha, no de quién es la app:
-  // el marcador ya se ordenaba bien pero el título decía siempre "Old Reds vs
-  // DOBS" encima de un tablero que mostraba a DOBS a la izquierda.
-  const enfrentamiento = (p) => p?.lugar === "Visita"
-    ? `${p.rival} vs ${club.name}`
-    : `${club.name} vs ${p?.rival}`;
   const exCompleted = (ex)=>{for(let i=0;i<setsDe(ex);i++){if(!getLog(ex.name,i,"weight")||!getLog(ex.name,i,"reps"))return false;}return true;};
   // todayPlan puede ser null si el plan está publicado pero sin sesiones. Estas
   // tres líneas corren antes del guard de más abajo, así que tienen que
@@ -606,7 +600,7 @@ function Noticias({ partidos, club, sportColor }) {
                 {resIcons[r.resultado]}
               </div>
               <div>
-                <div style={{fontWeight:700,fontSize:"14px"}}>{enfrentamiento(r)}</div>
+                <div style={{fontWeight:700,fontSize:"14px"}}>{enfrentamiento(r, club?.name)}</div>
                 <div style={{...ss.muted,fontSize:"11px",marginTop:"2px"}}>{r.fecha} · {r.lugar}</div>
               </div>
             </div>
@@ -664,6 +658,16 @@ function Noticias({ partidos, club, sportColor }) {
 }
 
 /* ── JugadorView ────────────────────────────────────────────── */
+/**
+ * Quién va primero en un "A vs B" lo decide la cancha, no de quién es la app:
+ * el marcador ya se ordenaba bien por local y visita, pero el título decía
+ * siempre "Old Reds vs DOBS" encima de un tablero que mostraba a DOBS a la
+ * izquierda. Vive acá afuera porque lo usan tres componentes distintos.
+ */
+function enfrentamiento(p, clubName) {
+  return p?.lugar === "Visita" ? `${p.rival} vs ${clubName}` : `${clubName} vs ${p?.rival}`;
+}
+
 export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null, currentCategory=null}) {
   const camiseta = player.number;
   const { posts: realPosts } = usePosts(clubId);
@@ -820,7 +824,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"14px",flexWrap:"wrap",gap:"8px"}}>
               <div>
                 <div style={{fontSize:"10px",color:"var(--text-3)",textTransform:"uppercase",letterSpacing:"0.1em",fontWeight:600,marginBottom:"4px"}}>Último resultado · {ultimoRes.cat}</div>
-                <div style={{fontSize:"16px",fontWeight:800}}>{enfrentamiento(ultimoRes)}</div>
+                <div style={{fontSize:"16px",fontWeight:800}}>{enfrentamiento(ultimoRes, club?.name)}</div>
                 <div style={{...ss.muted,fontSize:"11px",marginTop:"2px"}}>{ultimoRes.fecha} · {ultimoRes.lugar}</div>
               </div>
               <span style={{fontSize:"11px",padding:"4px 12px",borderRadius:"99px",background:`${resColors[ultimoRes.resultado]}20`,color:resColors[ultimoRes.resultado],border:`1.5px solid ${resColors[ultimoRes.resultado]}55`,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.05em"}}>
