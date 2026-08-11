@@ -344,7 +344,10 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
 
   if (planLoading) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>;
 
-  if (clubId && (!plan?.published || !sessions || !todayPlan)) return (
+  // Un plan marcado como publicado pero sin un solo ejercicio es lo mismo que
+  // no tener plan: el jugador abría Mi Gym y encontraba días vacíos.
+  const planTieneAlgo = Object.values(sessions || {}).some(d => (d?.exercises?.length || 0) > 0);
+  if (clubId && (!plan?.published || !sessions || !todayPlan || !planTieneAlgo)) return (
     <EmptyState icon="🏋️" title="Sin plan de gimnasio publicado" desc="Tu preparador físico todavía no publicó el plan de esta semana." color={sportColor}/>
   );
 

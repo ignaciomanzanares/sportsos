@@ -117,6 +117,13 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
   // El día abierto vive en App y arranca en "lunes"; si el plan importado no
   // tiene lunes, se abre el primero que sí exista en vez de romperse.
   const diaActivo = days.includes(expandedDay) ? expandedDay : days[0];
+  // Un plan sin ejercicios no está publicado, diga lo que diga la base: el
+  // botón se apretó alguna vez sobre un plan vacío y desde entonces la
+  // pantalla decía "Plan publicado" al lado de tres días en blanco. Publicado
+  // es algo que un jugador puede abrir y entrenar.
+  const totalEjercicios = Object.values(planSessions)
+    .reduce((n, d) => n + (d?.exercises?.length || 0), 0);
+  const publicado = publishedPlan && totalEjercicios > 0;
   // ── Plan real (Supabase) ──────────────────────────────────────────────
   const [planLoading, setPlanLoading] = useLocalState(!!clubId);
   const [saving, setSaving]           = useLocalState(false);
@@ -163,12 +170,19 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
   }, [clubId, players, weekStart, planSessions]);
 
   const publicarPlan = async () => {
-    if (!clubId) { setPublishedPlan(true); showToast("Plan marcado como publicado ✅","success"); return; }
+    if (totalEjercicios === 0) {
+      showToast("El plan no tiene ejercicios todavía: sube el Excel o agrégalos a mano","warning");
+      return;
+    }
+    // Vuelto a apretar, despublica: antes no hacía nada y no había forma de
+    // sacar de circulación un plan que se publicó por error.
+    const nuevo = !publicado;
+    if (!clubId) { setPublishedPlan(nuevo); showToast(nuevo ? "Plan marcado como publicado ✅" : "Plan despublicado","success"); return; }
     setSaving(true);
     try {
-      await saveGymPlan({ clubId, weekLabel, coachName, sessions: planSessions, published: true });
-      setPublishedPlan(true);
-      showToast("Plan publicado ✅","success");
+      await saveGymPlan({ clubId, weekLabel, coachName, sessions: planSessions, published: nuevo });
+      setPublishedPlan(nuevo);
+      showToast(nuevo ? "Plan publicado ✅" : "Plan despublicado — los jugadores dejan de verlo","success");
     } catch (e) {
       showToast("Error al publicar el plan: " + e.message, "error");
     } finally {
@@ -227,14 +241,27 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
                 } finally { setImportando(false); }
               }}/>
           </label>
-          <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} disabled={saving} onClick={publicarPlan} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)",opacity:saving?0.6:1}}>{saving?"Publicando...":publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>
+          <motion.button whileHover={totalEjercicios?{scale:1.05}:{}} whileTap={totalEjercicios?{scale:0.95}:{}}
+            disabled={saving || totalEjercicios === 0} onClick={publicarPlan}
+            title={totalEjercicios === 0 ? "Sube el plan de la semana para poder publicarlo" : publicado ? "Vuelve a apretar para despublicarlo" : ""}
+            style={{...ss.btn,
+              background: totalEjercicios === 0 ? "var(--bg-elev-2)" : publicado?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",
+              color: totalEjercicios === 0 ? "var(--text-4)" : publicado?"#22C55E":"#fff",
+              border:`1px solid ${totalEjercicios === 0 ? "var(--border-soft)" : publicado?"#22C55E55":"transparent"}`,
+              fontSize:"12px", cursor: totalEjercicios === 0 ? "not-allowed" : "pointer",
+              boxShadow: (publicado || totalEjercicios===0) ? "none" : "0 4px 12px rgba(34,197,94,0.35)",
+              opacity:saving?0.6:1}}>
+            {saving ? "Guardando..." : totalEjercicios === 0 ? "Sin plan que publicar" : publicado ? "✅ Plan publicado" : "📢 Publicar plan"}
+          </motion.button>
         </div>}
       />
       {planLoading ? (
         <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>
       ) : (
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:"12px",marginBottom:"20px"}}>
-        <Stat label="Plan activo" value={weekLabel} sub={clubId ? (publishedPlan?"Publicado":"Sin publicar") : "Pretemporada 2025"} color={sportColor} icon="📅" delay={0.05}/>
+        <Stat label="Plan activo" value={weekLabel}
+          sub={clubId ? (totalEjercicios === 0 ? "Sin ejercicios" : publicado ? `Publicado · ${totalEjercicios} ejercicios` : `Sin publicar · ${totalEjercicios} ejercicios`) : "Pretemporada 2025"}
+          color={sportColor} icon="📅" delay={0.05}/>
         <Stat label="Cumplimiento" value={clubId?`${kpis.cumplimiento}%`:"78%"} sub="Ejercicios completados" color="#22C55E" icon="✅" delay={0.1}/>
         <Stat label="Jugadores activos" value={clubId?kpis.activos:4} sub="Entrenaron esta semana" color="#F59E0B" icon="🏋️" delay={0.15}/>
         <Stat label="Volumen total" value={clubId?`${kpis.volumen.toLocaleString()} kg`:"184.300 kg"} sub="Todo el plantel" color="#A855F7" icon="💪" delay={0.2}/>
