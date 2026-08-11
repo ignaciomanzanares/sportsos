@@ -52,6 +52,24 @@ export function partidoEsDeCategoria(sportConfig, categoria, cat) {
   return new RegExp(`\\b${categoria}\\b`, "i").test(cat);
 }
 
+/**
+ * Cómo se llama anotar en este deporte.
+ *
+ * Estaba escrito "Goles" en toda la app, también en rugby, donde no existen:
+ * hay tries y puntos. Cada deporte ya declara su estadística principal en
+ * stats[0], así que se saca de ahí en vez de repetir la palabra a mano.
+ */
+export function terminoAnotacion(sportConfig) {
+  const principal = sportConfig?.stats?.[0];
+  const clave = principal?.key || "goles";
+  return {
+    clave,
+    etiqueta: principal?.label || "Goles",
+    // El marcador de un partido: en rugby son puntos, no tries.
+    marcador: clave === "tries" ? "Puntos" : "Goles",
+  };
+}
+
 /** Equipos que el club presenta en una categoría. */
 export function equiposDeCategoria(sportConfig, categoria) {
   const propios = sportConfig?.teamsByCategory?.[categoria];

@@ -4,6 +4,7 @@ import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
 import { usePlataforma } from "../lib/usePlataforma";
+import { terminoAnotacion } from "../data/sports";
 import { getNotifications } from "../lib/db";
 import EmptyState from "../components/EmptyState";
 
@@ -130,7 +131,9 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   const pagados    = payments.filter(p=>p.estado==="pagado").length;
   const totalJugs  = players.length;
   const victorias  = partidos.filter(p=>p.resultado==="victoria").length;
-  const totalGoles = players.reduce((s,p)=>s+(p.stats?.goles||0),0);
+  // "Goles" no existe en rugby. Cada deporte declara su estadística principal.
+  const anot = terminoAnotacion(sp);
+  const totalGoles = players.reduce((s,p)=>s+(p.stats?.[anot.clave]||0),0);
   const balanceMes = payments.filter(p=>p.estado==="pagado").length * 15000;
 
   // Próximos partidos
@@ -161,7 +164,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   const kpi = [
     { label:"Jugadores activos",  value: totalJugs,  change: totalJugs === 1 ? "1 en el plantel" : `${totalJugs} en el plantel`, changeColor: sportColor, onClick: ()=>onNavigate("jugadores") },
     { label:"Partidos ganados",   value: victorias,  change: `${partidos.filter(p=>p.estado==="jugado").length} jugados`, changeColor:"#a8a49f", onClick: ()=>onNavigate("matchcenter") },
-    { label:"Goles marcados",     value: totalGoles, change: "Temporada actual",  changeColor:"#a8a49f", onClick: ()=>onNavigate("estadisticas") },
+    { label:`${anot.etiqueta} marcados`, value: totalGoles, change: "Temporada actual",  changeColor:"#a8a49f", onClick: ()=>onNavigate("estadisticas") },
     { label:"Cuotas pagadas",     value: `${pagados}/${totalJugs}`, change: `${Math.round(pagados/(totalJugs||1)*100)}% al día`, changeColor: sportColor, onClick: ()=>onNavigate("finanzas") },
   ];
 
@@ -249,7 +252,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
           <table style={{width:"100%",borderCollapse:"collapse",minWidth:"500px"}}>
             <thead>
               <tr style={{borderBottom:"1px solid #1e1c19"}}>
-                {["#","Jugador","Pos","PJ","Goles","Asist.","Estado"].map((h,i)=>(
+                {["#","Jugador","Pos","PJ",anot.etiqueta,"Asist.","Estado"].map((h,i)=>(
                   <th key={h} style={{textAlign:i>3?"right":i===6?"center":"left",padding:"6px 10px",fontSize:"10px",fontWeight:500,color:"#3e3b37",textTransform:"uppercase",letterSpacing:"0.08em"}}>{h}</th>
                 ))}
               </tr>
@@ -277,7 +280,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                     </td>
                     <td style={{padding:"10px",borderBottom:"1px solid #1a1816",fontFamily:DM_MONO,fontSize:"11.5px",fontWeight:500,color:"#a8a49f"}}>{posAbbr(p.position)}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{Math.round((p.stats?.minutos||0)/90)}</td>
-                    <td style={{padding:"10px",textAlign:"right",fontFamily:BEBAS,fontSize:"15px",fontWeight:700,color:sportColor,borderBottom:"1px solid #1a1816"}}>{p.stats?.goles||0}</td>
+                    <td style={{padding:"10px",textAlign:"right",fontFamily:BEBAS,fontSize:"15px",fontWeight:700,color:sportColor,borderBottom:"1px solid #1a1816"}}>{p.stats?.[anot.clave]||0}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{p.stats?.asistencias||0}</td>
                     <td style={{padding:"10px",textAlign:"center",borderBottom:"1px solid #1a1816"}}>
                       <span style={{fontSize:"10.5px",fontWeight:500,color:statusColor}}>{statusLabel}</span>
@@ -317,7 +320,20 @@ function TrendBar({ data, color }) {
 function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, clubId=null }) {
   const hoy       = new Date().toISOString().split("T")[0];
   const ultimoRes = partidos.find(p=>p.estado==="jugado");
-  const presentes = Math.floor(players.length * 0.78);
+  // Era Math.floor(players.length * 0.78): la "asistencia de hoy" era el 78%
+  // del plantel, inventado, todos los días. Ahora se cuenta la asistencia real
+  // de hoy; null significa que nadie la tomó, y eso se dice.
+  const [presentes, setPresentes] = useState(null);
+  useEffect(() => {
+    if (!clubId) { setPresentes(null); return; }
+    const hoy = new Date().toISOString().slice(0, 10);
+    let vivo = true;
+    supabase.from("attendance")
+      .select("id", { count: "exact", head: true })
+      .eq("club_id", clubId).eq("date", hoy).eq("present", true)
+      .then(({ count }) => { if (vivo) setPresentes(count ?? 0); });
+    return () => { vivo = false; };
+  }, [clubId]);
 
   // Tendencia de asistencia — últimas 4 semanas desde Supabase
   // Arrancaba en 65/72/80% y el efecto de más abajo se salta si el club no
@@ -327,7 +343,7 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
     { label:"Sem 1", pct: 0 },
     { label:"Sem 2", pct: 0 },
     { label:"Sem 3", pct: 0 },
-    { label:"Hoy",   pct: players.length > 0 ? Math.round(presentes/players.length*100) : 0 },
+    { label:"Hoy",   pct: 0 },
   ]);
   const hayAsistencia = trendData.some(t => t.pct > 0);
 
@@ -369,8 +385,8 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
 
       {/* Stats */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px"}}>
-        <HeroStat icon="✅" value={`${presentes}/${players.length}`} label="Asistencia hoy"
-          sub="Presentes en entrenamiento" color="#1FA04A" onClick={()=>onNavigate("asistencia")}/>
+        <HeroStat icon="✅" value={presentes === null ? "—" : `${presentes}/${players.length}`} label="Asistencia hoy"
+          sub={presentes === null ? "Nadie la tomó todavía" : "Presentes en entrenamiento"} color="#1FA04A" onClick={()=>onNavigate("asistencia")}/>
         <HeroStat icon="🏆" value={partidos.filter(p=>p.resultado==="victoria").length}
           label="Victorias" sub={`de ${partidos.filter(p=>p.estado==="jugado").length} partidos jugados`}
           color={sportColor} onClick={()=>onNavigate("matchcenter")}/>

@@ -65,7 +65,6 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   // Integración con ARUSA (importa partidos automáticamente)
   const [arusaClubId, setArusaClubId] = useState("");
   const [arusaLastSync, setArusaLastSync] = useState(null);
-  const [arusaSaving, setArusaSaving] = useState(false);
   const [arusaSyncing, setArusaSyncing] = useState(false);
 
   useEffect(() => {
@@ -74,14 +73,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
       .then(({ data }) => { if (data) { setArusaClubId(data.arusa_club_id || ""); setArusaLastSync(data.arusa_last_sync); } });
   }, [clubId]);
 
-  const guardarArusaClubId = async () => {
-    if (!clubId) return;
-    setArusaSaving(true);
-    const { error } = await supabase.from("clubs").update({ arusa_club_id: arusaClubId || null }).eq("id", clubId);
-    setArusaSaving(false);
-    if (error) { showToast("Error al guardar: " + error.message, "error"); return; }
-    showToast("ID de ARUSA guardado ✅", "success");
-  };
+
 
   const sincronizarArusa = async () => {
     if (!clubId) return;
@@ -367,11 +359,10 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           este botón lo adelanta.
         </div>
         <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap",marginBottom:"12px"}}>
-          <input value={arusaClubId} onChange={e=>setArusaClubId(e.target.value)} placeholder="Ej: 8077049" style={{...ss.input,maxWidth:"220px"}}/>
-          <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={guardarArusaClubId} disabled={arusaSaving}
-            style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",border:"1px solid var(--border-soft)",fontSize:"12px",opacity:arusaSaving?0.6:1}}>
-            {arusaSaving?"Guardando...":"Guardar ID"}
-          </motion.button>
+          {/* Se fueron el campo del ID de ARUSA y su botón de guardar: el club
+              se reconoce por su nombre contra los equipos del torneo, así que
+              ese número no cambiaba nada. Dejarlo era pedirle al usuario que
+              configurara algo que no se usa. */}
           <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={sincronizarArusa} disabled={arusaSyncing}
             style={{...ss.btn,background:"linear-gradient(135deg,#C0392B,#9B2335)",color:"#fff",fontSize:"12px",fontWeight:700,opacity:arusaSyncing?0.6:1}}>
             {arusaSyncing?"Sincronizando...":"🔄 Sincronizar ahora"}

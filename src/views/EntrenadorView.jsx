@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { FORMATIONS, TEAMS, equiposDeCategoria } from "../data/sports";
+import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
 import { useAttendance } from "../lib/useAttendance";
 import { useComments } from "../lib/useComments";
@@ -506,11 +506,11 @@ function MuroModule({ sp, currentCategory, CatsBanner, sportColor, sportCards, p
                 </select>
               </div>
               <div>
-                <div style={ss.label}>Goles / Puntos — Nosotros</div>
+                <div style={ss.label}>{terminoAnotacion(sp).marcador} — Nosotros</div>
                 <input type="number" min="0" value={resForm.golesLocal} onChange={e=>setResForm(p=>({...p,golesLocal:e.target.value}))} placeholder="0" style={ss.input}/>
               </div>
               <div>
-                <div style={ss.label}>Goles / Puntos — {resForm.rival||"Rival"}</div>
+                <div style={ss.label}>{terminoAnotacion(sp).marcador} — {resForm.rival||"Rival"}</div>
                 <input type="number" min="0" value={resForm.golesVisita} onChange={e=>setResForm(p=>({...p,golesVisita:e.target.value}))} placeholder="0" style={ss.input}/>
               </div>
             </div>
@@ -839,7 +839,8 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
               {/* Cat + Equipo */}
               <div style={{display:"flex",gap:"4px",flexShrink:0}}>
                 <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:`${sportColor}15`,color:sportColor,border:`1px solid ${sportColor}33`,fontWeight:600}}>{p.cat}</span>
-                <span style={{fontSize:"10px",padding:"2px 7px",borderRadius:"99px",background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)",fontWeight:600}}>Eq.{p.equipo}</span>
+                {/* Decía "Eq.A" — una letra que no significa nada para nadie.
+                    El equipo real ya se muestra en la etiqueta de la izquierda. */}
               </div>
 
               {/* Rival */}
