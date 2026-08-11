@@ -15,6 +15,7 @@ import EmptyState from "../components/EmptyState";
 import FinanzasView from "../components/FinanzasView";
 import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 import { clave, contieneNombre } from "../lib/vincularArusa";
+import { filtrarPorNombre } from "../lib/buscarNombre";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
@@ -623,7 +624,9 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   );
 
   if(module==="jugadores") {
-    const filtered = players.filter(p => !playerSearch || p.name?.toLowerCase().includes(playerSearch.toLowerCase()));
+    // Misma búsqueda que la asistencia y la global: sin acentos y por
+    // palabras sueltas. Antes acá "perez" no encontraba a ningún "Pérez".
+    const filtered = filtrarPorNombre(players, playerSearch);
 
     const savePlayer = async () => {
       if (!playerForm?.name?.trim()) { showToast("El nombre es obligatorio","warning"); return; }

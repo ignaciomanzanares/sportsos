@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ss } from "../styles/tokens";
+import { filtrarPorNombre, coincide } from "../lib/buscarNombre";
 
 const MODULE_LABELS = {
   // entrenador
@@ -27,18 +28,25 @@ export default function GlobalSearch({ players=[], posts=[], sportColor="#A855F7
     const q = query.toLowerCase();
     const res = [];
 
-    // Jugadores
-    players.filter(p => p.name?.toLowerCase().includes(q)).slice(0,4).forEach(p => {
+    // Jugadores. Mostraba cuatro y cortaba en silencio: buscando "perez"
+    // salían tres y el plantel tiene nueve, así que la búsqueda global parecía
+    // decir que los otros no existen.
+    const jugadores = filtrarPorNombre(players, q);
+    jugadores.slice(0,8).forEach(p => {
       res.push({ type:"jugador", icon:"👤", label:p.name, sub:`#${p.number||"?"} · ${p.category||"Sin cat."}`, action:()=>onNavigate("jugadores") });
     });
+    if (jugadores.length > 8) {
+      res.push({ type:"jugador", icon:"👥", label:`Ver los ${jugadores.length} que coinciden`,
+        sub:"En Jugadores", action:()=>onNavigate("jugadores") });
+    }
 
     // Posts / El Muro
-    posts.filter(p => p.text?.toLowerCase().includes(q) || p.author?.toLowerCase().includes(q)).slice(0,3).forEach(p => {
+    posts.filter(p => coincide(p.text, q) || coincide(p.author, q)).slice(0,3).forEach(p => {
       res.push({ type:"post", icon:"💬", label:p.author, sub:p.text?.slice(0,60)+"...", action:()=>onNavigate("muro") });
     });
 
     // Módulos
-    modules.filter(m => (MODULE_LABELS[m.id]||m.label||"").toLowerCase().includes(q)).forEach(m => {
+    modules.filter(m => coincide(MODULE_LABELS[m.id]||m.label||"", q)).forEach(m => {
       res.push({ type:"modulo", icon:"⚡", label:MODULE_LABELS[m.id]||m.label, sub:"Ir al módulo", action:()=>onNavigate(m.id) });
     });
 

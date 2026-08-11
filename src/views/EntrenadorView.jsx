@@ -6,6 +6,7 @@ import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data
 import { usePosts } from "../lib/usePosts";
 import { useAttendance, useAttendanceStats, useAsistenciaPrevia, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
 import { useArusaJugadores } from "../lib/useArusaTorneo";
+import { coincide } from "../lib/buscarNombre";
 import { useComments } from "../lib/useComments";
 import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
@@ -396,14 +397,13 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
     : null;
 
   const hayHistorial = Object.keys(conteo).length > 0;
-  const norm = (t) => String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   // El orden: primero los que estuvieron el entrenamiento anterior (pasar
   // lista pasa a ser confirmar una lista), después los que más entrenan, y al
   // final alfabético. El orden de importación no significa nada para quien
   // mira la lista.
   const vino = (p) => previos?.has(p.id) ? 0 : 1;
   const visibles = players
-    .filter(p => !busca || norm(p.name).includes(norm(busca)))
+    .filter(p => coincide(p.name, busca))
     .sort((a,b) =>
       (previos ? vino(a) - vino(b) : 0) ||
       (hayHistorial ? (conteo[b.id]||0) - (conteo[a.id]||0) : 0) ||
