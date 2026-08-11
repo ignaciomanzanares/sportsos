@@ -137,9 +137,13 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
               return (
                 <motion.button key={m} whileHover={listo?{scale:1.03}:{}} whileTap={listo?{scale:0.97}:{}}
                   onClick={()=>listo && setSelectedMethod(m)} disabled={!listo}
-                  style={{...ss.btn, background:selectedMethod===m?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)", color:selectedMethod===m?sportColor:listo?"var(--text-2)":"var(--text-4)", border:`1px solid ${selectedMethod===m?sportColor+"55":"var(--border-soft)"}`, padding:"10px 18px", fontSize:"13px", boxShadow:selectedMethod===m?`0 0 16px ${sportColor}33`:"none", opacity:listo?1:0.55, cursor:listo?"pointer":"not-allowed", display:"flex", alignItems:"center", gap:"6px"}}>
+                  style={{...ss.btn, background:selectedMethod===m?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)", color:selectedMethod===m?sportColor:listo?"var(--text-2)":"var(--text-4)", border:`1px solid ${selectedMethod===m?sportColor+"55":"var(--border-soft)"}`, padding:"10px 18px", fontSize:"13px", boxShadow:selectedMethod===m?`0 0 16px ${sportColor}33`:"none", opacity:listo?1:0.8, cursor:listo?"pointer":"not-allowed", display:"flex", alignItems:"center", gap:"6px"}}>
                   {methodIcons[m]||"💳"} {m}
-                  {!listo && <span style={{fontSize:"9px",padding:"2px 6px",borderRadius:"99px",background:"var(--bg-elev-3)",color:"var(--text-4)",fontWeight:700}}>Próximamente</span>}
+                  {/* La etiqueta iba en gris sobre gris y encima dentro de un
+                      botón a 55% de opacidad: no se leía nada. Con color propio
+                      y menos atenuación se entiende que el método existe pero
+                      todavía no está disponible, que es lo que hay que decir. */}
+                  {!listo && <span style={{fontSize:"9px",padding:"2px 7px",borderRadius:"99px",background:"rgba(201,132,8,0.18)",color:"#E0A82E",border:"1px solid rgba(201,132,8,0.35)",fontWeight:700,letterSpacing:"0.02em"}}>Pronto</span>}
                 </motion.button>
               );
             })}
