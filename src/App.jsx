@@ -177,13 +177,25 @@ export default function SportOS() {
   const jugados    = partidosVisibles.filter(p=>p.estado==="jugado").sort((a,b)=>b.fecha.localeCompare(a.fecha));
   const programados = partidosVisibles.filter(p=>p.estado==="programado").sort((a,b)=>a.fecha.localeCompare(b.fecha));
   const ultimo     = jugados[0];
-  const proximo    = programados[0];
+  // El "próximo" tiene que estar en el futuro. Leverade deja partidos viejos
+  // sin marcar como jugados (el de Old Johns del 18/07 nunca se cerró), y esos
+  // ordenaban primero: el Match Center anunciaba como próximo un partido que ya
+  // se había jugado hace semanas.
+  const hoyISO     = new Date().toISOString().slice(0,10);
+  const proximo    = programados.find(p => p.fecha >= hoyISO) || null;
   const club = clubRow ? {
     name: clubRow.name,
     country: clubRow.country,
     colors: clubRow.colors,
     prev: ultimo ? { res: ultimo.resultado==="victoria"?"Victoria":ultimo.resultado==="derrota"?"Derrota":"Empate", score: `${ultimo.golesLocal}-${ultimo.golesVisita}`, rival: ultimo.rival } : { res:null, score:null, rival:null },
-    next: proximo ? { rival: proximo.rival, dia: new Date(proximo.fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long"}), hora: proximo.hora||null, lugar: proximo.lugar||null } : { rival:null, dia:null, hora:null, lugar:null },
+    // "sábado" a secas no dice cuál sábado. Va el día y el mes.
+    next: proximo ? {
+      rival: proximo.rival,
+      dia:   new Date(proximo.fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"}),
+      fecha: proximo.fecha,
+      hora:  proximo.hora||null,
+      lugar: proximo.lugar||null,
+    } : { rival:null, dia:null, fecha:null, hora:null, lugar:null },
   } : CLUBS[sport];
   const countryData  = COUNTRIES[country];
   // Jugador logueado: su propia ficha (por profile_id), no simplemente el primero del plantel.

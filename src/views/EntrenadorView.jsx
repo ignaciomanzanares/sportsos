@@ -936,15 +936,27 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"16px",marginBottom:"20px"}}>
         <motion.div {...fadeUp} whileHover={{y:-3}} style={{...ss.card,textAlign:"center",border:`1px solid ${club.prev.res==="Victoria"?"#22C55E55":club.prev.res==="Derrota"?"#EF444455":"#F59E0B55"}`,background:club.prev.res==="Victoria"?"linear-gradient(135deg,rgba(34,197,94,0.08),transparent)":club.prev.res==="Derrota"?"linear-gradient(135deg,rgba(239,68,68,0.08),transparent)":"linear-gradient(135deg,rgba(245,158,11,0.08),transparent)"}}>
           <div style={{...ss.muted,fontSize:"11px",marginBottom:"8px",textTransform:"uppercase",letterSpacing:"0.08em"}}>Último partido</div>
-          <div style={{fontSize:"40px",fontWeight:800,color:club.prev.res==="Victoria"?"#22C55E":club.prev.res==="Derrota"?"#EF4444":"#F59E0B",letterSpacing:"-0.02em"}}>{club.prev.score}</div>
-          <div style={{fontSize:"13px",marginTop:"6px",color:"var(--text-2)"}}>vs {club.prev.rival}</div>
-          <div style={{marginTop:"10px"}}><Badge color={club.prev.res==="Victoria"?"#22C55E":club.prev.res==="Derrota"?"#EF4444":"#F59E0B"} glow>{club.prev.res}</Badge></div>
+          {club.prev.rival ? <>
+            <div style={{fontSize:"40px",fontWeight:800,color:club.prev.res==="Victoria"?"#22C55E":club.prev.res==="Derrota"?"#EF4444":"#F59E0B",letterSpacing:"-0.02em"}}>{club.prev.score}</div>
+            <div style={{fontSize:"13px",marginTop:"6px",color:"var(--text-2)"}}>vs {club.prev.rival}</div>
+            <div style={{marginTop:"10px"}}><Badge color={club.prev.res==="Victoria"?"#22C55E":club.prev.res==="Derrota"?"#EF4444":"#F59E0B"} glow>{club.prev.res}</Badge></div>
+          </> : (
+            <div style={{...ss.muted,fontSize:"13px",padding:"14px 0"}}>Todavía no hay partidos jugados en esta categoría.</div>
+          )}
         </motion.div>
         <motion.div {...fadeUp} transition={{duration:0.4,delay:0.1}} whileHover={{y:-3}} style={{...ss.card,textAlign:"center",border:"1px solid rgba(59,130,246,0.35)",background:"linear-gradient(135deg,rgba(59,130,246,0.08),transparent)"}}>
           <div style={{...ss.muted,fontSize:"11px",marginBottom:"8px",textTransform:"uppercase",letterSpacing:"0.08em"}}>Próximo partido</div>
-          <div style={{fontSize:"18px",fontWeight:700,marginBottom:"8px",letterSpacing:"-0.01em"}}>vs {club.next.rival}</div>
-          <div style={{fontSize:"32px",fontWeight:800,color:"#3B82F6",letterSpacing:"-0.02em",marginBottom:"6px",filter:"drop-shadow(0 0 12px rgba(59,130,246,0.4))"}}>{club.next.dia}</div>
-          <div style={ss.muted}>Temporada {new Date().getFullYear()}</div>
+          {club.next.rival ? <>
+            <div style={{fontSize:"22px",fontWeight:800,color:"#3B82F6",letterSpacing:"-0.02em",marginBottom:"8px",filter:"drop-shadow(0 0 12px rgba(59,130,246,0.4))"}}>vs {club.next.rival}</div>
+            <div style={{fontSize:"15px",fontWeight:700,letterSpacing:"-0.01em",textTransform:"capitalize"}}>{club.next.dia}</div>
+            {/* Antes acá decía "Temporada 2026", que no es información: la hora
+                y la cancha sí lo son. */}
+            <div style={{...ss.muted,fontSize:"12px",marginTop:"4px"}}>
+              {[club.next.hora && club.next.hora !== "00:00" ? club.next.hora+" hrs" : null, club.next.lugar].filter(Boolean).join(" · ") || "Hora y lugar por confirmar"}
+            </div>
+          </> : (
+            <div style={{...ss.muted,fontSize:"13px",padding:"14px 0"}}>No hay próximo partido programado en esta categoría.</div>
+          )}
         </motion.div>
       </div>
       <motion.div {...fadeUp} style={ss.card}>

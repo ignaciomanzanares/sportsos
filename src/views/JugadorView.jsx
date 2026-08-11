@@ -513,7 +513,9 @@ function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado,
         <div style={{position:"absolute",top:0,left:0,right:0,height:"3px",background:`linear-gradient(90deg,transparent,${sportColor},transparent)`}}/>
         <motion.div animate={{scale:[1,1.05,1]}} transition={{duration:2,repeat:Infinity,ease:"easeInOut"}} style={{fontSize:"72px",fontWeight:900,color:sportColor,margin:"20px 0",filter:`drop-shadow(0 0 24px ${sportColor}88)`,letterSpacing:"-0.04em"}}>{camiseta}</motion.div>
         <div style={{fontSize:"16px",fontWeight:700,marginBottom:"4px"}}>Estás convocado #{camiseta}</div>
-        <div style={ss.muted}>vs {club.next.rival} · {club.next.dia}</div>
+        <div style={{...ss.muted,textTransform:"capitalize"}}>
+          {club.next.rival ? `vs ${club.next.rival} · ${club.next.dia}` : "Partido por confirmar"}
+        </div>
       </motion.div>
       <div style={{display:"flex",gap:"12px",marginBottom:"16px"}}>
         <motion.button whileHover={{scale:1.02,y:-2}} whileTap={{scale:0.98}} onClick={()=>{setConvocado("confirmed");showToast("✅ Presencia confirmada","success");}} style={{...ss.btn,flex:1,background:convocado==="confirmed"?"linear-gradient(135deg,#22C55E,#16A34A)":"rgba(34,197,94,0.15)",color:convocado==="confirmed"?"#fff":"#22C55E",border:"1px solid #22C55E55",padding:"14px",fontSize:"13px",boxShadow:convocado==="confirmed"?"0 8px 24px rgba(34,197,94,0.35)":"none"}}>{convocado==="confirmed"?"✅ Confirmado":"✓ Confirmar presencia"}</motion.button>
