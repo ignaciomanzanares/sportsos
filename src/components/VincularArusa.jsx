@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabase";
 import { useArusaTorneo } from "../lib/useArusaTorneo";
 import { proponerVinculos, arusaSinPlantel, nombreProlijo, duplicadosDelPlantel } from "../lib/vincularArusa";
 import { puestoDeArusa, conPuestoDisponible } from "../data/posicionesArusa";
+import { unirConRegistrado } from "../data/plantelArusa";
 
 const DIVISIONES = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
 
@@ -30,7 +31,10 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
     const todos = [...p1.jugadores, ...p2.jugadores, ...p3.jugadores];
     const porId = new Map();
     for (const j of todos) if (String(j.equipo).toLowerCase() === club) porId.set(j.id, j);
-    return [...porId.values()];
+    // Y los que el caché en vivo dejó de traer: siete de Old Reds que jugaron
+    // uno o dos partidos y nunca anotaron. Para un plantel valen lo mismo que
+    // el goleador.
+    return unirConRegistrado([...porId.values()], clubName);
   }, [p1.jugadores, p2.jugadores, p3.jugadores, clubName]);
 
   const propuesta = useMemo(() => proponerVinculos(players, delClub), [players, delClub]);

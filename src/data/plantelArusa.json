@@ -1,0 +1,6383 @@
+{
+"54144637": {
+"n": "Antonio Andrés Bozzolo Kullmer",
+"t": "Old Boys",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54144881": {
+"n": "Antonio Corbella Feliu",
+"t": "Old Boys",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54144886": {
+"n": "Benjamín Goñi Hartard",
+"t": "Old Boys",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54144903": {
+"n": "Clemente Barrios",
+"t": "Old Boys",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54144920": {
+"n": "Gabriel Ljubetic Carzoglio",
+"t": "Old Boys",
+"pj": 8,
+"pts": 17,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54144934": {
+"n": "Ian Otersen Kanaan",
+"t": "Old Boys",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54144956": {
+"n": "Jose Tomas Silva Lobo",
+"t": "Old Boys",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54144975": {
+"n": "Lorenzo Huete Larrain",
+"t": "Old Boys",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54145070": {
+"n": "Sebastian Valech Alonso",
+"t": "Old Boys",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54145235": {
+"n": "Mateo Carvajal",
+"t": "Old Boys",
+"pj": 7,
+"pts": 42,
+"tries": 6,
+"conv": 3,
+"pen": 2
+},
+"54145237": {
+"n": "Maximiliano De Peña De Marinis",
+"t": "Old Boys",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54145258": {
+"n": "Tomas Andres Alvarado Duclos",
+"t": "Old Boys",
+"pj": 5,
+"pts": 75,
+"tries": 2,
+"conv": 16,
+"pen": 10
+},
+"54145262": {
+"n": "Vicente Ayarza Saporta",
+"t": "Old Boys",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54145264": {
+"n": "Vicente Huete Larrain",
+"t": "Old Boys",
+"pj": 7,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54148027": {
+"n": "Marco Díaz Alvarado",
+"t": "Old Macks",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148029": {
+"n": "Vicente López",
+"t": "Old Macks",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148032": {
+"n": "Sebastián Novoa Espinosa",
+"t": "Old Macks",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148035": {
+"n": "Juan Rivera Manzor",
+"t": "Old Macks",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148036": {
+"n": "Joaquín Ignacio Rivera Meyer",
+"t": "Old Macks",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148037": {
+"n": "Sebastian Rojas Ramirez de Arellano",
+"t": "Old Macks",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148038": {
+"n": "José Ignacio Scheihing Gonzalez",
+"t": "Old Macks",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54148039": {
+"n": "Gaspar Moltedo Fonzo",
+"t": "Old Macks",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148189": {
+"n": "Vicente Gorichon Crestuzzo",
+"t": "Old Macks",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54148193": {
+"n": "Sebastian Mayral De Micheli",
+"t": "Old Macks",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148197": {
+"n": "Franco Scassi-Buffa Gonzalez",
+"t": "Old Macks",
+"pj": 8,
+"pts": 78,
+"tries": 5,
+"conv": 7,
+"pen": 13
+},
+"54148198": {
+"n": "Joaquín José Troncoso Rubín",
+"t": "Old Macks",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148199": {
+"n": "Gonzalo Valenzuela Kerestegian",
+"t": "Old Macks",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54153958": {
+"n": "Gabriel Acuña Quinteros",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54153961": {
+"n": "Ignacio Flores Vásquez",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54153963": {
+"n": "Felipe Alberto Flores Puelma",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154151": {
+"n": "Maximiliano Leiva Angerstein",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 17,
+"tries": 3,
+"conv": 1,
+"pen": 0
+},
+"54154174": {
+"n": "Felipe Rouret Bueno",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 74,
+"tries": 2,
+"conv": 26,
+"pen": 4
+},
+"54154357": {
+"n": "Javier Alonso Cifuentes Chilovitis",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54154378": {
+"n": "Amaro Xavier Duarte Ortega",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54157532": {
+"n": "Giorgio Moltedo Fonzo",
+"t": "Old Macks",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54157536": {
+"n": "Julián Troncoso Rubín",
+"t": "Old Macks",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158486": {
+"n": "Pedro Pablo Arias Rivera",
+"t": "DOBS",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158487": {
+"n": "Gonzalo Cordova Diemer",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158488": {
+"n": "cristobal atenas parra",
+"t": "DOBS",
+"pj": 6,
+"pts": 24,
+"tries": 2,
+"conv": 7,
+"pen": 0
+},
+"54158489": {
+"n": "Domingo Montan Moreno",
+"t": "DOBS",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158490": {
+"n": "Andro Kovacic",
+"t": "DOBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158491": {
+"n": "Fernando Javier Sahady Molina",
+"t": "DOBS",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158492": {
+"n": "Renato Sebastian Arias Rivera",
+"t": "DOBS",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54158494": {
+"n": "Franco Rossi Santibañez",
+"t": "DOBS",
+"pj": 8,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54158495": {
+"n": "Manuel Andrés Arellano Ferrer",
+"t": "DOBS",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158496": {
+"n": "Diego Pinochet Sinsay",
+"t": "DOBS",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158498": {
+"n": "Cristobal serrano roman",
+"t": "DOBS",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158505": {
+"n": "Diego Zamora fantuzzi",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158506": {
+"n": "Ignacio Arias Rivera",
+"t": "DOBS",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158509": {
+"n": "Tomas Serrano Roman",
+"t": "DOBS",
+"pj": 4,
+"pts": 8,
+"tries": 0,
+"conv": 4,
+"pen": 0
+},
+"54158813": {
+"n": "diego verdugo chahud",
+"t": "Old Boys",
+"pj": 5,
+"pts": 35,
+"tries": 7,
+"conv": 0,
+"pen": 0
+},
+"54158823": {
+"n": "Jaime Ignacio Soler Muñoz",
+"t": "Old Boys",
+"pj": 3,
+"pts": 21,
+"tries": 0,
+"conv": 3,
+"pen": 5
+},
+"54158905": {
+"n": "caleb moran",
+"t": "Old Macks",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158908": {
+"n": "Augusto Villanueva Barrera",
+"t": "Old Macks",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158916": {
+"n": "Benjamin Canales Rivas",
+"t": "Old Macks",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158929": {
+"n": "Nicolas Ovalle Norambuena",
+"t": "Old Boys",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158967": {
+"n": "Santiago Ostornol",
+"t": "Old Boys",
+"pj": 7,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158978": {
+"n": "Mauro Saez",
+"t": "Old Boys",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54159147": {
+"n": "Clemente Bustamante Fernandez",
+"t": "Old Boys",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54159415": {
+"n": "Lukas Carvallo Rauff",
+"t": "PWCC",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54159416": {
+"n": "Sebastian Benard Fernández",
+"t": "PWCC",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54159419": {
+"n": "Sebastian Cortes Berrios",
+"t": "PWCC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54160983": {
+"n": "Tomas Cabello Troncoso",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54161047": {
+"n": "Vicente Torres Bunzli",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54161062": {
+"n": "Rodrigo Cabrera fuentes",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54161159": {
+"n": "Maximiliano Robles",
+"t": "Old Boys",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54161202": {
+"n": "Nicolas Yañez Ureta",
+"t": "Old Boys",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54161316": {
+"n": "Claudio Fernando Iturra Ureta",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54161743": {
+"n": "joaquín eduardo bórquez morales",
+"t": "PWCC",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162331": {
+"n": "Ignacio Berrios",
+"t": "Old Macks",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54162335": {
+"n": "Raimundo Maurel Cardemil",
+"t": "Old Macks",
+"pj": 5,
+"pts": 41,
+"tries": 3,
+"conv": 7,
+"pen": 4
+},
+"54162576": {
+"n": "Ignacio Giacaman Sabal",
+"t": "DOBS",
+"pj": 6,
+"pts": 52,
+"tries": 3,
+"conv": 11,
+"pen": 5
+},
+"54162577": {
+"n": "José Miguel Alcerreca del Río",
+"t": "DOBS",
+"pj": 4,
+"pts": 32,
+"tries": 6,
+"conv": 1,
+"pen": 0
+},
+"54162579": {
+"n": "joseph uauy zirinsky",
+"t": "DOBS",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162580": {
+"n": "German Oelckers Daccarett",
+"t": "DOBS",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162581": {
+"n": "Roberto Melo Zolezzi",
+"t": "DOBS",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162582": {
+"n": "Nicolas Alvarez Romo",
+"t": "DOBS",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54162583": {
+"n": "Cristobal Rene Lagos Nazal",
+"t": "DOBS",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162584": {
+"n": "Santiago Montan Moreno",
+"t": "DOBS",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162585": {
+"n": "Martin Leiva",
+"t": "DOBS",
+"pj": 3,
+"pts": 16,
+"tries": 0,
+"conv": 8,
+"pen": 0
+},
+"54162586": {
+"n": "Tomas Passalacqua",
+"t": "DOBS",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162589": {
+"n": "joaquin cornejo calaf",
+"t": "DOBS",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162598": {
+"n": "Joaquín Ignacio Texidó Petzold",
+"t": "DOBS",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162601": {
+"n": "Nicolas Papasideris Barbosa",
+"t": "DOBS",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54162604": {
+"n": "Jordi Sancho",
+"t": "DOBS",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54162612": {
+"n": "Luis Sottovia Villanueva",
+"t": "Old Macks",
+"pj": 8,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54164468": {
+"n": "Lucas Haddad Domingo",
+"t": "Old Boys",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164662": {
+"n": "Nicolas Antonucci Sole",
+"t": "Old Reds",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164675": {
+"n": "filippo borghi",
+"t": "Old Reds",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164691": {
+"n": "Juan Pablo Coddou Reyes",
+"t": "Old Reds",
+"pj": 3,
+"pts": 4,
+"tries": 0,
+"conv": 2,
+"pen": 0
+},
+"54164699": {
+"n": "Andrei Cherniavsky Bonacic",
+"t": "Old Reds",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164710": {
+"n": "Diego Arturo Espinoza Merino",
+"t": "Old Reds",
+"pj": 8,
+"pts": 69,
+"tries": 4,
+"conv": 11,
+"pen": 9
+},
+"54164714": {
+"n": "Enrique Faúndez Saldaño",
+"t": "Old Reds",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164717": {
+"n": "benjamin frias davila",
+"t": "Old Reds",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54164720": {
+"n": "Alvaro Castro Ulloa",
+"t": "Old Boys",
+"pj": 4,
+"pts": 43,
+"tries": 0,
+"conv": 11,
+"pen": 7
+},
+"54164721": {
+"n": "Vicente Gómez",
+"t": "Old Reds",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164723": {
+"n": "Lorenzo Gaspar Gutiérrez Saitua",
+"t": "Old Reds",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54164725": {
+"n": "Manuel Harttig",
+"t": "Old Reds",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54164726": {
+"n": "Juan Harttig",
+"t": "Old Reds",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164735": {
+"n": "Joaquin Manzanares",
+"t": "Old Reds",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164736": {
+"n": "Ignacio Manzanares",
+"t": "Old Reds",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164743": {
+"n": "Thomas Mateluna",
+"t": "Old Reds",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164745": {
+"n": "Karim Mosa Yousef",
+"t": "Old Reds",
+"pj": 7,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54164747": {
+"n": "Pablo O'Brien Gallegos",
+"t": "Old Reds",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164748": {
+"n": "Santiago Perez Rasmussen",
+"t": "Old Reds",
+"pj": 6,
+"pts": 2,
+"tries": 0,
+"conv": 1,
+"pen": 0
+},
+"54164749": {
+"n": "Vicente Pérez Neumann",
+"t": "Old Reds",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164750": {
+"n": "Juan Pablo Pizarro johannesen",
+"t": "Old Reds",
+"pj": 3,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54164751": {
+"n": "SANTIAGO PRAT PAPIC",
+"t": "Old Reds",
+"pj": 7,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54164756": {
+"n": "Vicente San Martín Manriquez",
+"t": "Old Reds",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164757": {
+"n": "Jose Miguel Sánchez",
+"t": "Old Reds",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164759": {
+"n": "Francisco Urroz",
+"t": "Old Reds",
+"pj": 2,
+"pts": 16,
+"tries": 0,
+"conv": 5,
+"pen": 2
+},
+"54164761": {
+"n": "Tomás Yáñez",
+"t": "Old Reds",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164762": {
+"n": "tomas zehnder novoa",
+"t": "Old Reds",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54165743": {
+"n": "Baltazar Canepa Andrews",
+"t": "Old Macks",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166017": {
+"n": "Alvaro Tejos",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166020": {
+"n": "Gael León Gómez Pérez",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166021": {
+"n": "Joaquín Huici Espinosa",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54166025": {
+"n": "Christian Huerta Moraga",
+"t": "Stade Francais",
+"pj": 7,
+"pts": 65,
+"tries": 1,
+"conv": 15,
+"pen": 10
+},
+"54166060": {
+"n": "Ignacio Silva Aninat",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54166064": {
+"n": "Christian Duarte Ortega",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54166066": {
+"n": "Francisco Vera",
+"t": "Stade Francais",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166067": {
+"n": "jose tomas aguilar tapia",
+"t": "Stade Francais",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166069": {
+"n": "Tomás González Lavandero",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166101": {
+"n": "Tomas Canales",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54166102": {
+"n": "Pedro Pablo Ubeda Velez",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54166752": {
+"n": "Jose Pablo Vargas González",
+"t": "PWCC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166754": {
+"n": "Joaquin Milesi",
+"t": "PWCC",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54166755": {
+"n": "iñaki tuset mercier",
+"t": "PWCC",
+"pj": 7,
+"pts": 102,
+"tries": 3,
+"conv": 18,
+"pen": 17
+},
+"54166781": {
+"n": "Juan Cruz Ianchina",
+"t": "PWCC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166789": {
+"n": "Iñigo Fernandez Zegers",
+"t": "PWCC",
+"pj": 5,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54166794": {
+"n": "Vicente agustin Fernández canales",
+"t": "PWCC",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166812": {
+"n": "Rae Arce Correa",
+"t": "PWCC",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54166816": {
+"n": "Angelo Alvarado Rojas",
+"t": "PWCC",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167489": {
+"n": "Agustin Infante Ledezma",
+"t": "UC",
+"pj": 7,
+"pts": 28,
+"tries": 2,
+"conv": 9,
+"pen": 0
+},
+"54167545": {
+"n": "Tomas Silva",
+"t": "UC",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167554": {
+"n": "gustavo alfonso benko cornjeo",
+"t": "UC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167566": {
+"n": "Elías Bruchfeld Gurovich",
+"t": "UC",
+"pj": 7,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54167599": {
+"n": "Rufino Costa Echeverria",
+"t": "UC",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167601": {
+"n": "Matias ZAPATA LIZAMA",
+"t": "UC",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167602": {
+"n": "nicolas paredes benavente",
+"t": "UC",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167603": {
+"n": "Maximiliano Silva Radnic",
+"t": "UC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167604": {
+"n": "Tomas Gonzalez Hojas",
+"t": "UC",
+"pj": 8,
+"pts": 7,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167605": {
+"n": "Juan andres Lladser etienne",
+"t": "UC",
+"pj": 6,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54167606": {
+"n": "JUAN PABLO DUHALDE PLAZA",
+"t": "UC",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167608": {
+"n": "Juan Pablo Perrotta",
+"t": "UC",
+"pj": 8,
+"pts": 31,
+"tries": 5,
+"conv": 3,
+"pen": 0
+},
+"54167616": {
+"n": "diego perrotta camus",
+"t": "UC",
+"pj": 8,
+"pts": 83,
+"tries": 1,
+"conv": 13,
+"pen": 15
+},
+"54167618": {
+"n": "Jaime Andrés Escobar Radic",
+"t": "UC",
+"pj": 7,
+"pts": 51,
+"tries": 7,
+"conv": 5,
+"pen": 2
+},
+"54167622": {
+"n": "Ignacio Perrotta Camus",
+"t": "UC",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167624": {
+"n": "felipe antonio chavez alarcon",
+"t": "UC",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167626": {
+"n": "Santiago José Izurieta Huerta",
+"t": "UC",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167660": {
+"n": "Matías Piña Naudon",
+"t": "PWCC",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167663": {
+"n": "Damian Fliegel",
+"t": "PWCC",
+"pj": 8,
+"pts": 39,
+"tries": 4,
+"conv": 2,
+"pen": 5
+},
+"54167666": {
+"n": "Bruno Vargas",
+"t": "PWCC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167680": {
+"n": "Stanko Plancic Zuleta",
+"t": "PWCC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167777": {
+"n": "Tomas Norambuena France",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54167778": {
+"n": "Nicolas Aravena muñoz",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 25,
+"tries": 2,
+"conv": 6,
+"pen": 1
+},
+"54167817": {
+"n": "Eduardo Antonio Orpis Ramírez",
+"t": "COBS",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167824": {
+"n": "Vicente Contreras",
+"t": "COBS",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167861": {
+"n": "Wladimir Alexis Jeria Muñoz",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168101": {
+"n": "Benjamín Escobedo",
+"t": "COBS",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168108": {
+"n": "Benjamin Sandoval",
+"t": "COBS",
+"pj": 7,
+"pts": 20,
+"tries": 3,
+"conv": 1,
+"pen": 1
+},
+"54168118": {
+"n": "Martin De Oto Davids",
+"t": "COBS",
+"pj": 5,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54168122": {
+"n": "Lucas Sandoval Pino",
+"t": "COBS",
+"pj": 5,
+"pts": 66,
+"tries": 1,
+"conv": 23,
+"pen": 5
+},
+"54168127": {
+"n": "Martin Escobar",
+"t": "COBS",
+"pj": 5,
+"pts": 51,
+"tries": 4,
+"conv": 11,
+"pen": 3
+},
+"54168132": {
+"n": "Franco Costantino Roger",
+"t": "COBS",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168162": {
+"n": "Vicente Codorniu",
+"t": "COBS",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168168": {
+"n": "Matias Gonzalez Alcoholado",
+"t": "UC",
+"pj": 3,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54168178": {
+"n": "Tomas Fuentes bernal",
+"t": "COBS",
+"pj": 5,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54168185": {
+"n": "SEBASTIAN GONZALEZ REISS",
+"t": "COBS",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168186": {
+"n": "SEBASTIAN GONZALEZ REISS",
+"t": "COBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168189": {
+"n": "José Munita Williams",
+"t": "UC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168193": {
+"n": "Rodrigo Araya",
+"t": "COBS",
+"pj": 5,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54168201": {
+"n": "Germán Herrera Luhrs",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168222": {
+"n": "Diego Lagos Pimstein",
+"t": "COBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168241": {
+"n": "enzo neglia",
+"t": "COBS",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168243": {
+"n": "Dimitri Simonidis Robles",
+"t": "COBS",
+"pj": 2,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168249": {
+"n": "Felipe Andrés Beltrán Bucarey",
+"t": "COBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168250": {
+"n": "Ignacio Soublette",
+"t": "COBS",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168252": {
+"n": "Jan Hasenlechner",
+"t": "COBS",
+"pj": 8,
+"pts": 40,
+"tries": 8,
+"conv": 0,
+"pen": 0
+},
+"54168253": {
+"n": "Jorge Araya Morales",
+"t": "COBS",
+"pj": 7,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168258": {
+"n": "Juan Pablo Beheran Castro",
+"t": "COBS",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168275": {
+"n": "Joao Alves",
+"t": "COBS",
+"pj": 4,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54168278": {
+"n": "José Ignacio Escobedo Leiva",
+"t": "COBS",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168299": {
+"n": "Matías Iker Zavala Hormaechea",
+"t": "Sporting RC",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168300": {
+"n": "Alessandro Gianmarco Cook Ramirez",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 5,
+"tries": 0,
+"conv": 1,
+"pen": 1
+},
+"54168306": {
+"n": "Felipe Carcamo Aguilar",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168308": {
+"n": "Fernando Meyer Hormaechea",
+"t": "Sporting RC",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168309": {
+"n": "Sergio Toro Martinic",
+"t": "Sporting RC",
+"pj": 8,
+"pts": 15,
+"tries": 1,
+"conv": 2,
+"pen": 2
+},
+"54168313": {
+"n": "Daniel Jackson Georgi",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168314": {
+"n": "Franco Yany Costa",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168318": {
+"n": "BALTAZAR GABRIEL GONZALEZ MONTERO",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168322": {
+"n": "Lorenzo Cicarelli",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168332": {
+"n": "Vicente Reyes piñones",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168333": {
+"n": "Emanuel Brane Romero",
+"t": "Sporting RC",
+"pj": 7,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168334": {
+"n": "Ignacio Donaire Adaros",
+"t": "Sporting RC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168342": {
+"n": "Francisco Walters",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168343": {
+"n": "Bruno Peirano",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168344": {
+"n": "Camilo Esteban Ignacio Cornejo Garrido",
+"t": "Sporting RC",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168346": {
+"n": "Agustin Porro Carballo",
+"t": "Sporting RC",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168348": {
+"n": "Bruno Guajardo Naranjo",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 33,
+"tries": 0,
+"conv": 6,
+"pen": 7
+},
+"54168352": {
+"n": "Vicente Pérez Marholz",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168353": {
+"n": "CARLOS BUSCHMAN MANRIQUEZ",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168355": {
+"n": "Rodrigo Gajardo pizarro",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168358": {
+"n": "Gaspar sandoval ortega",
+"t": "Sporting RC",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168360": {
+"n": "Martín Jackson Georgi",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168362": {
+"n": "Sebastián Alvarado Musso",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168363": {
+"n": "Lucas Zavala Hormaecea",
+"t": "Sporting RC",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168367": {
+"n": "Matias Vega García",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168368": {
+"n": "Juan Pablo Gómez Miranda",
+"t": "Sporting RC",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168370": {
+"n": "Earving Velarde Brandt",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168372": {
+"n": "Alvaro Latorre Tapia",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 42,
+"tries": 2,
+"conv": 10,
+"pen": 4
+},
+"54168393": {
+"n": "tarek chahuan beckdorf",
+"t": "UC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168453": {
+"n": "Agustin Alonso Game Jimenez",
+"t": "Old Johns",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168455": {
+"n": "Cristobal Martinez Estay",
+"t": "Old Johns",
+"pj": 7,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54168457": {
+"n": "Joaquín Ignacio Dibán Herrera",
+"t": "Old Johns",
+"pj": 5,
+"pts": 12,
+"tries": 2,
+"conv": 1,
+"pen": 0
+},
+"54168458": {
+"n": "Aldair Márquez cahuana",
+"t": "Old Johns",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168459": {
+"n": "Claudio Roa Benavente",
+"t": "Old Johns",
+"pj": 2,
+"pts": 23,
+"tries": 1,
+"conv": 3,
+"pen": 4
+},
+"54168461": {
+"n": "Allen Felipe Ruminot Cabezas",
+"t": "Old Johns",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168463": {
+"n": "Daivis Leonel Alejandro Guzman Rodriguez",
+"t": "Old Johns",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168464": {
+"n": "Cristobal Nicolas Rivas Urra",
+"t": "Old Johns",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168469": {
+"n": "Hermes Didier Pressta",
+"t": "Old Johns",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168472": {
+"n": "Gonzalo Andrés Reyes Jofré",
+"t": "Old Johns",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168475": {
+"n": "Fabian Andre Lagos Figueroa",
+"t": "Old Johns",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168477": {
+"n": "Lucca Marchini Yunis",
+"t": "Old Johns",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168478": {
+"n": "Rolando Rodriguez Abdala",
+"t": "Old Johns",
+"pj": 7,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168479": {
+"n": "Gonzalo Sepulveda Manquecura",
+"t": "Old Johns",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168480": {
+"n": "Sebastian Ramirez Coll",
+"t": "Old Johns",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168481": {
+"n": "Sebastian Benavente Bianchi",
+"t": "Old Johns",
+"pj": 6,
+"pts": 92,
+"tries": 10,
+"conv": 18,
+"pen": 2
+},
+"54168483": {
+"n": "Lucas Gastón Rubilar",
+"t": "Old Johns",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168484": {
+"n": "Renzo Marchini Yunis",
+"t": "Old Johns",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168486": {
+"n": "Francisco Rivas Urra",
+"t": "Old Johns",
+"pj": 7,
+"pts": 12,
+"tries": 2,
+"conv": 1,
+"pen": 0
+},
+"54168487": {
+"n": "Manuel Ortiz salgado",
+"t": "Old Johns",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168498": {
+"n": "Juan Pablo Castro Viganego",
+"t": "Old Johns",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168505": {
+"n": "FELIPE ANDRES MENDEZ LAZCANO",
+"t": "Old Johns",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168513": {
+"n": "Joaquín Enríquez",
+"t": "Old Johns",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168663": {
+"n": "Juan Ignacio Piña Naudon",
+"t": "PWCC",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168666": {
+"n": "Carlos Delgado",
+"t": "PWCC",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54169830": {
+"n": "Jorge Delgado Romero",
+"t": "UC",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54169908": {
+"n": "aquilino alonso landa",
+"t": "PWCC",
+"pj": 5,
+"pts": 7,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54171093": {
+"n": "Cristóbal Eduardo Ramírez Lazo",
+"t": "PWCC",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54189004": {
+"n": "Gonzalo Lara Mehech",
+"t": "COBS",
+"pj": 5,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54189571": {
+"n": "bruno adolfo",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54189595": {
+"n": "Federico Kennedy",
+"t": "Old Boys",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54189864": {
+"n": "Benjamin Soto Besamat",
+"t": "Old Johns",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54189865": {
+"n": "Diego Pierart",
+"t": "Old Johns",
+"pj": 7,
+"pts": 52,
+"tries": 1,
+"conv": 13,
+"pen": 7
+},
+"54189867": {
+"n": "Felipe Neira Spoerer",
+"t": "Old Johns",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54189912": {
+"n": "Sebastian Parra Hartard",
+"t": "UC",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54192051": {
+"n": "Benjamin Soto Madrigal",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54200312": {
+"n": "Clemente Armstrong Rios",
+"t": "DOBS",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54200315": {
+"n": "benjamin moreno millas",
+"t": "DOBS",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54204496": {
+"n": "Francisco Eduardo Bastias Manquian",
+"t": "Old Reds",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54207110": {
+"n": "Agustín Morandé",
+"t": "PWCC",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54226792": {
+"n": "Felipe Brangier Valdivia",
+"t": "PWCC",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54230413": {
+"n": "sebastian ibarra",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54230414": {
+"n": "Vicente Nanjari bahamondes",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54232647": {
+"n": "Inti Rai Ubeda Velez",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54232683": {
+"n": "Bastián González Muñoz",
+"t": "UC",
+"pj": 5,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54237607": {
+"n": "Nikola Bursic",
+"t": "COBS",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54239720": {
+"n": "gianluca Pierbattisti Navia",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54256610": {
+"n": "Iñaki de Urruticoechea Valenzuela",
+"t": "COBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54256628": {
+"n": "Rafael Barrena Botto",
+"t": "Old Reds",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54257498": {
+"n": "Pablo Romero",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54259350": {
+"n": "pablo huete cibrario",
+"t": "Old Boys",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54260418": {
+"n": "Ignacio Cámara Lorenzini",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54271097": {
+"n": "Pastor Melo",
+"t": "Old Boys",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54144971": {
+"n": "Leonardo Valdes Gajardo",
+"t": "Old Boys",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54145026": {
+"n": "Lucas Gil Sanchez",
+"t": "Old Boys",
+"pj": 7,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54145231": {
+"n": "Martín Caputo Sanhueza",
+"t": "Old Boys",
+"pj": 5,
+"pts": 17,
+"tries": 3,
+"conv": 1,
+"pen": 0
+},
+"54145233": {
+"n": "Martin Grunwald Mollenhauer",
+"t": "Old Boys",
+"pj": 8,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54145234": {
+"n": "Martín Hurtado Cable",
+"t": "Old Boys",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54145248": {
+"n": "Raimundo Gigoux Brunner",
+"t": "Old Boys",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54145250": {
+"n": "Sebastián Saieh Aravena",
+"t": "Old Boys",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54145254": {
+"n": "thomas cooper mehech",
+"t": "Old Boys",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148026": {
+"n": "Nicolás Boye Valenzuela",
+"t": "Old Macks",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148028": {
+"n": "Nicolas Diaz Pozo",
+"t": "Old Macks",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54148031": {
+"n": "Francisco Muñoz Balaresque",
+"t": "Old Macks",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54148034": {
+"n": "Diego Perez Palacios",
+"t": "Old Macks",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148187": {
+"n": "Matias Guzmán",
+"t": "Old Macks",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54148188": {
+"n": "Ignacio Guajardo González",
+"t": "Old Macks",
+"pj": 4,
+"pts": 60,
+"tries": 12,
+"conv": 0,
+"pen": 0
+},
+"54148194": {
+"n": "Mauro Mazzino Barbagelata",
+"t": "Old Macks",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54148195": {
+"n": "Dante Perocarpi Latorre",
+"t": "Old Macks",
+"pj": 2,
+"pts": 22,
+"tries": 2,
+"conv": 6,
+"pen": 0
+},
+"54148196": {
+"n": "Nicolas Rosselot Pizarro",
+"t": "Old Macks",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54153995": {
+"n": "Rodrigo Vargas",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154008": {
+"n": "Juan Manuel Castro Almenara",
+"t": "Stade Francais",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154010": {
+"n": "Francisco Contador ramirez",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154030": {
+"n": "Ernesto Cofré",
+"t": "Stade Francais",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154031": {
+"n": "Santiago Valderrama",
+"t": "Stade Francais",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154096": {
+"n": "Diego Torres Bünzli",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54154153": {
+"n": "Sebastian Gaete Vega",
+"t": "Stade Francais",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154360": {
+"n": "martin madsen monasterio",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154363": {
+"n": "Cristóbal Del Campo",
+"t": "Stade Francais",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154377": {
+"n": "Julian Vera Burgos",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54157534": {
+"n": "Mauricio Marcos Soruco Farías",
+"t": "Old Macks",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54157535": {
+"n": "Lucas Valenzuela Kerestegian",
+"t": "Old Macks",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54157537": {
+"n": "Raul Silva Barbosa",
+"t": "Old Macks",
+"pj": 6,
+"pts": 30,
+"tries": 6,
+"conv": 0,
+"pen": 0
+},
+"54158493": {
+"n": "Vicente Alcaino Sepulveda",
+"t": "DOBS",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158499": {
+"n": "Clemente Ramirez Valcarce",
+"t": "DOBS",
+"pj": 7,
+"pts": 39,
+"tries": 1,
+"conv": 14,
+"pen": 2
+},
+"54158501": {
+"n": "Facundo Victoria Barros",
+"t": "DOBS",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158502": {
+"n": "Clemente Jerez San Martín",
+"t": "DOBS",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158503": {
+"n": "Martin Andres Osorio Perez",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158504": {
+"n": "Nicolas Manriquez marcos",
+"t": "DOBS",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158512": {
+"n": "Clemente Escudero Urtubia",
+"t": "DOBS",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54158793": {
+"n": "Benito Magnasco",
+"t": "Old Boys",
+"pj": 7,
+"pts": 40,
+"tries": 8,
+"conv": 0,
+"pen": 0
+},
+"54158798": {
+"n": "Borja Undurraga Carvallo",
+"t": "Old Boys",
+"pj": 5,
+"pts": 25,
+"tries": 0,
+"conv": 8,
+"pen": 3
+},
+"54158809": {
+"n": "Clemente Romo Schweitzer",
+"t": "Old Boys",
+"pj": 7,
+"pts": 12,
+"tries": 2,
+"conv": 1,
+"pen": 0
+},
+"54158826": {
+"n": "javier antonio morillo otero",
+"t": "Old Boys",
+"pj": 3,
+"pts": 11,
+"tries": 0,
+"conv": 4,
+"pen": 1
+},
+"54158903": {
+"n": "Diego Aguila Rodriguez",
+"t": "Old Macks",
+"pj": 5,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54158906": {
+"n": "Cristobal Salgado Thiers",
+"t": "Old Macks",
+"pj": 7,
+"pts": 18,
+"tries": 0,
+"conv": 9,
+"pen": 0
+},
+"54158907": {
+"n": "Benjamin Sepulveda Layuno",
+"t": "Old Macks",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158909": {
+"n": "Toarii Valantin",
+"t": "Old Macks",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158910": {
+"n": "Rafael Zavala",
+"t": "Old Macks",
+"pj": 7,
+"pts": 95,
+"tries": 5,
+"conv": 32,
+"pen": 2
+},
+"54158913": {
+"n": "Ignacio Tomás González Araya",
+"t": "Old Macks",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54159009": {
+"n": "rafael silva",
+"t": "Old Boys",
+"pj": 3,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54159334": {
+"n": "Cristobal Saieg Zahr",
+"t": "Old Boys",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54159412": {
+"n": "Thomas Zawels Rojas",
+"t": "PWCC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54159417": {
+"n": "Sebastian Andres Vera Soulodre",
+"t": "PWCC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54159825": {
+"n": "Borja Rioseco Orfali",
+"t": "Old Macks",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54159826": {
+"n": "renzo vercellino saenz",
+"t": "Old Macks",
+"pj": 5,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54161014": {
+"n": "Benjamín Urria",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54161015": {
+"n": "Lucas Fuentes",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54161049": {
+"n": "silvio carrasco",
+"t": "Stade Francais",
+"pj": 7,
+"pts": 17,
+"tries": 3,
+"conv": 1,
+"pen": 0
+},
+"54161096": {
+"n": "Tomás Meiser Lorda",
+"t": "Old Boys",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54161109": {
+"n": "Mateo Gil Sanchez",
+"t": "Old Boys",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54161135": {
+"n": "Martin Valacco Cordova",
+"t": "Old Boys",
+"pj": 5,
+"pts": 19,
+"tries": 0,
+"conv": 5,
+"pen": 3
+},
+"54161254": {
+"n": "Vicente Lozano Moore",
+"t": "Old Boys",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54161331": {
+"n": "Gerald Fox Ibarra",
+"t": "Old Macks",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54161546": {
+"n": "Máximo Agustín Canales Neciosup",
+"t": "PWCC",
+"pj": 6,
+"pts": 91,
+"tries": 7,
+"conv": 28,
+"pen": 0
+},
+"54161736": {
+"n": "Matias Ramirez villalobos",
+"t": "PWCC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54161739": {
+"n": "Bruno Lira Montero",
+"t": "PWCC",
+"pj": 4,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54161742": {
+"n": "Ricardo Nahim Lahsen Herreros",
+"t": "PWCC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54161744": {
+"n": "Matias Beale Aravena",
+"t": "PWCC",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54161745": {
+"n": "Domenico Avelli Maira",
+"t": "PWCC",
+"pj": 5,
+"pts": 45,
+"tries": 2,
+"conv": 13,
+"pen": 3
+},
+"54162026": {
+"n": "matias alvarado duclos",
+"t": "Old Boys",
+"pj": 6,
+"pts": 52,
+"tries": 2,
+"conv": 12,
+"pen": 6
+},
+"54162334": {
+"n": "Felipe Figueroa Berger",
+"t": "Old Macks",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162336": {
+"n": "Gabriel Sottovia Villanueva",
+"t": "Old Macks",
+"pj": 6,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54162337": {
+"n": "Pascual Ramos",
+"t": "Old Macks",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162378": {
+"n": "santiago Larraín Stock",
+"t": "Old Macks",
+"pj": 8,
+"pts": 23,
+"tries": 3,
+"conv": 4,
+"pen": 0
+},
+"54162380": {
+"n": "Dante Massimo Marchesse Correa",
+"t": "Old Macks",
+"pj": 2,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54162578": {
+"n": "Gonzalo Antonio Aguilera Munizaga",
+"t": "DOBS",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54162587": {
+"n": "Pedro Pablo Rothmann Robinson",
+"t": "DOBS",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162588": {
+"n": "Bruno Passalacqua Dominguez",
+"t": "DOBS",
+"pj": 5,
+"pts": 31,
+"tries": 5,
+"conv": 3,
+"pen": 0
+},
+"54162594": {
+"n": "Borja Cummins Garcia",
+"t": "DOBS",
+"pj": 7,
+"pts": 9,
+"tries": 1,
+"conv": 2,
+"pen": 0
+},
+"54162595": {
+"n": "Santiago Ramos",
+"t": "DOBS",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162599": {
+"n": "Andrew Yorston Jeretic",
+"t": "DOBS",
+"pj": 5,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54162600": {
+"n": "Raimundo Elgueta Yávar",
+"t": "DOBS",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162603": {
+"n": "Tomas Aparicio",
+"t": "DOBS",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54162609": {
+"n": "Nicolas Salazar calcagno",
+"t": "DOBS",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162610": {
+"n": "Sebastián Berner Carrasco",
+"t": "DOBS",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54163664": {
+"n": "Nicolas Juillerat",
+"t": "Old Boys",
+"pj": 6,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54164424": {
+"n": "Maximiliano Campos Astorquiza",
+"t": "Old Boys",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164663": {
+"n": "Tomás Alonso",
+"t": "Old Reds",
+"pj": 5,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54164666": {
+"n": "Diego Astudillo Avendaño",
+"t": "Old Reds",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54164671": {
+"n": "MAXIMILIANO BAUMANN ZAMORA",
+"t": "Old Reds",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164672": {
+"n": "Patrick Müller East",
+"t": "Old Boys",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164679": {
+"n": "Renzo Bozzo Molina",
+"t": "Old Reds",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164683": {
+"n": "Sebastian Burgos",
+"t": "Old Reds",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164697": {
+"n": "Sebastian Chavez Siebert",
+"t": "Old Reds",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164701": {
+"n": "santiago de la fuente estay",
+"t": "Old Reds",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164702": {
+"n": "Felipe Díaz Rettig",
+"t": "Old Reds",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54164705": {
+"n": "Joaquin Alfonso Doepking Abarzua",
+"t": "Old Reds",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164707": {
+"n": "Matias Escobar niedermayr",
+"t": "Old Reds",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164709": {
+"n": "Tomás Espinoza Espinoza",
+"t": "Old Reds",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164711": {
+"n": "Domingo Estadella Rios",
+"t": "Old Reds",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164715": {
+"n": "José Pablo Fernández Thiers",
+"t": "Old Reds",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164730": {
+"n": "benjamin lillo",
+"t": "Old Reds",
+"pj": 5,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54164739": {
+"n": "Gerard Martin Amar",
+"t": "Old Reds",
+"pj": 5,
+"pts": 29,
+"tries": 0,
+"conv": 13,
+"pen": 1
+},
+"54164742": {
+"n": "Vicente Martinez Huerta",
+"t": "Old Reds",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164752": {
+"n": "Matias Sabaj",
+"t": "Old Reds",
+"pj": 3,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54164753": {
+"n": "Nicolas Sabaj Valderrama",
+"t": "Old Reds",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164760": {
+"n": "Tomas Vargas Arias",
+"t": "Old Reds",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164767": {
+"n": "Juan Ignacio Coria Valenzuela",
+"t": "Old Reds",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54164769": {
+"n": "José Miguel Marchant Rodriguez",
+"t": "Old Reds",
+"pj": 7,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54164771": {
+"n": "Maximiliano Cruz",
+"t": "Old Reds",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164778": {
+"n": "tomas infante fantuzzi",
+"t": "Old Reds",
+"pj": 7,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54164906": {
+"n": "Pablo Felipe Salas Preter",
+"t": "Old Reds",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54165503": {
+"n": "Benjamin Sotomayor paredes",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54165504": {
+"n": "Ignacio Mena Ehrenfeld",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54165510": {
+"n": "Pablo ignacio Correa Cortés",
+"t": "DOBS",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54165699": {
+"n": "Kurt Mc Nab Gschwind",
+"t": "Old Macks",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54165897": {
+"n": "Nicolas Degollada Zarate",
+"t": "DOBS",
+"pj": 5,
+"pts": 35,
+"tries": 7,
+"conv": 0,
+"pen": 0
+},
+"54166022": {
+"n": "Luis Opazo",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 30,
+"tries": 6,
+"conv": 0,
+"pen": 0
+},
+"54166027": {
+"n": "Martín Forno Larrañaga",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166051": {
+"n": "Nicolás Franco Flores Vásquez",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166103": {
+"n": "Samuel Cerón Parra",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166512": {
+"n": "Diego Sereño",
+"t": "Old Reds",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166562": {
+"n": "Matias Cardenas",
+"t": "Old Reds",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166758": {
+"n": "Francisco Soto Arredondo",
+"t": "PWCC",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54166767": {
+"n": "Martin Reyes Vercellino",
+"t": "PWCC",
+"pj": 8,
+"pts": 9,
+"tries": 1,
+"conv": 2,
+"pen": 0
+},
+"54166773": {
+"n": "León Marshall",
+"t": "PWCC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166776": {
+"n": "Polo Jerez herrera",
+"t": "PWCC",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166783": {
+"n": "José-Amaro Guerra Jimenez",
+"t": "PWCC",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166785": {
+"n": "DIEGO ALONSO GOMEZ GONZALEZ",
+"t": "PWCC",
+"pj": 3,
+"pts": 30,
+"tries": 6,
+"conv": 0,
+"pen": 0
+},
+"54166787": {
+"n": "Esteban Sebastián Foncea Figueroa",
+"t": "PWCC",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166801": {
+"n": "Pablo Cornejo López",
+"t": "PWCC",
+"pj": 4,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54166804": {
+"n": "Oscar Antonio Canseco Muñoz",
+"t": "PWCC",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166811": {
+"n": "Javier Baeza Espindola",
+"t": "PWCC",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166814": {
+"n": "Diego Alvarado Rojas",
+"t": "PWCC",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167466": {
+"n": "Jose Reyes Moreno",
+"t": "UC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167494": {
+"n": "Pablo Uranga Ruiz De Gamboa",
+"t": "UC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167518": {
+"n": "Andres Bisquertt Hudson",
+"t": "UC",
+"pj": 2,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54167527": {
+"n": "Gianfranco De Giorgis",
+"t": "UC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167541": {
+"n": "Baltazar Eduardo",
+"t": "UC",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167557": {
+"n": "Bruno Hervia Salinas",
+"t": "UC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167561": {
+"n": "Simon San martin Gonzalez",
+"t": "UC",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167569": {
+"n": "franco perrotta camus",
+"t": "UC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167570": {
+"n": "Jaime Martin Canales Rojas",
+"t": "UC",
+"pj": 7,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54167572": {
+"n": "José Ignacio Galdames Preece",
+"t": "UC",
+"pj": 4,
+"pts": 44,
+"tries": 4,
+"conv": 9,
+"pen": 2
+},
+"54167582": {
+"n": "Rodrigo Rojas Aldunate",
+"t": "UC",
+"pj": 7,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54167638": {
+"n": "Juan Francisco Gago",
+"t": "UC",
+"pj": 1,
+"pts": 19,
+"tries": 3,
+"conv": 2,
+"pen": 0
+},
+"54167639": {
+"n": "Joaquin Nilo Montecinos",
+"t": "UC",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167653": {
+"n": "Nicolás Asenjo Baltra",
+"t": "UC",
+"pj": 4,
+"pts": 8,
+"tries": 0,
+"conv": 4,
+"pen": 0
+},
+"54167658": {
+"n": "Naguib Chejade villaseca",
+"t": "PWCC",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167665": {
+"n": "Ambrosio Rojas Echave",
+"t": "PWCC",
+"pj": 5,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54167667": {
+"n": "Pedro Pablo Vergara Meckes",
+"t": "PWCC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167681": {
+"n": "Cristóbal Escobar Valladares",
+"t": "UC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167724": {
+"n": "Martin Alejandro Lagos Nazal",
+"t": "DOBS",
+"pj": 2,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54167731": {
+"n": "Manuel González Briones",
+"t": "PWCC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167741": {
+"n": "luis sepulveda",
+"t": "Stade Francais",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167815": {
+"n": "Santiago Wood Urenda",
+"t": "Old Boys",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167849": {
+"n": "Timothy Mugisha",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 32,
+"tries": 6,
+"conv": 1,
+"pen": 0
+},
+"54168091": {
+"n": "Andrés Vial Aldridge",
+"t": "COBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168103": {
+"n": "Benjamin Díaz Osorio",
+"t": "COBS",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168107": {
+"n": "Clemente Ulloa Soto",
+"t": "COBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168115": {
+"n": "Lucas Munoz",
+"t": "COBS",
+"pj": 8,
+"pts": 133,
+"tries": 5,
+"conv": 48,
+"pen": 4
+},
+"54168116": {
+"n": "Lucas Fyfe Pinto",
+"t": "COBS",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168124": {
+"n": "Clemente Vásquez",
+"t": "COBS",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168126": {
+"n": "Juan Pablo Labbe",
+"t": "COBS",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168147": {
+"n": "Pedro Sepúlveda Leyton",
+"t": "Stade Francais",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168155": {
+"n": "Gapar Alonso Fuentes Cornejo",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168160": {
+"n": "ignacio Jose Roman Bulnes",
+"t": "UC",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168170": {
+"n": "Tomas Morgan Dallan",
+"t": "COBS",
+"pj": 6,
+"pts": 9,
+"tries": 1,
+"conv": 2,
+"pen": 0
+},
+"54168171": {
+"n": "Tomas Rivera",
+"t": "COBS",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168188": {
+"n": "Santiago Holmgren",
+"t": "COBS",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168195": {
+"n": "Benjamin Perez Figueroa",
+"t": "UC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168199": {
+"n": "Pedro Radrigan",
+"t": "COBS",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168200": {
+"n": "Eduardo Espinoza Araneda",
+"t": "UC",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168202": {
+"n": "Pedro Pichara",
+"t": "COBS",
+"pj": 3,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54168203": {
+"n": "Nicolas Trucco",
+"t": "COBS",
+"pj": 6,
+"pts": 17,
+"tries": 3,
+"conv": 1,
+"pen": 0
+},
+"54168204": {
+"n": "Max Whiting Gutierrez",
+"t": "COBS",
+"pj": 8,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54168206": {
+"n": "rodolfo ivan loyola jeria",
+"t": "COBS",
+"pj": 6,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168207": {
+"n": "Nicolás Donoso Cuevas",
+"t": "COBS",
+"pj": 8,
+"pts": 75,
+"tries": 15,
+"conv": 0,
+"pen": 0
+},
+"54168210": {
+"n": "Benjamin Valdes covarrubias",
+"t": "UC",
+"pj": 5,
+"pts": 47,
+"tries": 0,
+"conv": 19,
+"pen": 3
+},
+"54168213": {
+"n": "alejandro gabler toso",
+"t": "COBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168215": {
+"n": "Cristobal Besoain",
+"t": "COBS",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168218": {
+"n": "Cristobal Vidal Trucco",
+"t": "COBS",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168220": {
+"n": "Diego alliende sylleros",
+"t": "COBS",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168224": {
+"n": "Diego Martinez",
+"t": "COBS",
+"pj": 5,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168236": {
+"n": "Francisco Augusto Acevedo Villouta",
+"t": "COBS",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168238": {
+"n": "Francisco Figueroa Viteri",
+"t": "COBS",
+"pj": 8,
+"pts": 33,
+"tries": 5,
+"conv": 4,
+"pen": 0
+},
+"54168239": {
+"n": "Francisco Alvariño",
+"t": "COBS",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168251": {
+"n": "Ignacio Bravo Cuchacovich",
+"t": "COBS",
+"pj": 6,
+"pts": 2,
+"tries": 0,
+"conv": 1,
+"pen": 0
+},
+"54168279": {
+"n": "Lucas Pizarro",
+"t": "COBS",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168295": {
+"n": "Kurt Wande Ortiz",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168297": {
+"n": "Matias Ignacio Cardemil Guzman",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168307": {
+"n": "Martin Ignacio Gil Barrera",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168310": {
+"n": "Matias Ignacio Irribarra Barrientos",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168325": {
+"n": "Jose Tomas Marin Diaz",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 15,
+"tries": 2,
+"conv": 1,
+"pen": 1
+},
+"54168326": {
+"n": "maximiliano miranda",
+"t": "Sporting RC",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168327": {
+"n": "Esteban Magasich García",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 30,
+"tries": 1,
+"conv": 8,
+"pen": 3
+},
+"54168328": {
+"n": "Felipe Celis Rojas",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168329": {
+"n": "Jose Daniel Aliaga Contreras",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168330": {
+"n": "Vicente Laborde Larrondo",
+"t": "Sporting RC",
+"pj": 3,
+"pts": 14,
+"tries": 1,
+"conv": 3,
+"pen": 1
+},
+"54168331": {
+"n": "Joaquín María Raganato Spertino",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168336": {
+"n": "Sebastián Ortúzar Orestes",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168340": {
+"n": "Felipe Alonso Fuentealba Caro",
+"t": "Sporting RC",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168347": {
+"n": "Diego Pérez Ahumada",
+"t": "Sporting RC",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168351": {
+"n": "TOMAS AYALA PLAZA",
+"t": "Sporting RC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168359": {
+"n": "Diego Padellaro",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 22,
+"tries": 4,
+"conv": 1,
+"pen": 0
+},
+"54168364": {
+"n": "Lucas Arevalo Cea",
+"t": "Sporting RC",
+"pj": 7,
+"pts": 6,
+"tries": 0,
+"conv": 0,
+"pen": 2
+},
+"54168365": {
+"n": "Daniel Ignacio Maturana Huerta",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168369": {
+"n": "Cristóbal Tobar Fuentes",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168452": {
+"n": "Clemente Barría Trebilcock",
+"t": "Old Johns",
+"pj": 7,
+"pts": 12,
+"tries": 0,
+"conv": 3,
+"pen": 2
+},
+"54168456": {
+"n": "Nicolas Andres Martinez Estay",
+"t": "Old Johns",
+"pj": 6,
+"pts": 13,
+"tries": 0,
+"conv": 5,
+"pen": 1
+},
+"54168468": {
+"n": "Bruno Cáceres Catalán",
+"t": "Old Johns",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168470": {
+"n": "Martin Anibal Bastidas Carrillo",
+"t": "Old Johns",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168471": {
+"n": "ENRICO FERRAZ BARRIOS",
+"t": "Old Johns",
+"pj": 6,
+"pts": 9,
+"tries": 1,
+"conv": 2,
+"pen": 0
+},
+"54168473": {
+"n": "Sebastián Silva Soto",
+"t": "Old Johns",
+"pj": 8,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168485": {
+"n": "Joaquín Villalón Navarro",
+"t": "Old Johns",
+"pj": 8,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54168488": {
+"n": "Luciano Nuñez Gonzalez",
+"t": "Old Johns",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168491": {
+"n": "Gabriel Martinez Puentes",
+"t": "Old Johns",
+"pj": 5,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54168492": {
+"n": "Emilio Game Jiménez",
+"t": "Old Johns",
+"pj": 4,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54168494": {
+"n": "Claudio Infante Pozas",
+"t": "Old Johns",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168497": {
+"n": "Mario Romero Grant",
+"t": "Old Johns",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168499": {
+"n": "Tomás Rivas Urra",
+"t": "Old Johns",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168502": {
+"n": "Tomás José Sánchez Burmeister",
+"t": "Old Johns",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168503": {
+"n": "Tomás Figueroa Matamala",
+"t": "Old Johns",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168504": {
+"n": "Sebastian Andres Molina Aguayo",
+"t": "Old Johns",
+"pj": 8,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168507": {
+"n": "gabriel espinoza muñoz",
+"t": "Old Johns",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168508": {
+"n": "Agustin Heredia Postel",
+"t": "Old Johns",
+"pj": 4,
+"pts": 31,
+"tries": 3,
+"conv": 8,
+"pen": 0
+},
+"54168510": {
+"n": "Cristian Arriagada martinez",
+"t": "Old Johns",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168511": {
+"n": "Diego Martínez Zirpel",
+"t": "Old Johns",
+"pj": 8,
+"pts": 40,
+"tries": 8,
+"conv": 0,
+"pen": 0
+},
+"54168537": {
+"n": "Gabirel Leon Rego",
+"t": "UC",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168661": {
+"n": "sven Langer benavides",
+"t": "PWCC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54188881": {
+"n": "Tomas Perez Martinez",
+"t": "Old Macks",
+"pj": 7,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54189000": {
+"n": "Franco Airola Diaz de Cerio",
+"t": "Old Macks",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54189224": {
+"n": "Lukas Marinovic Torrealba",
+"t": "Old Macks",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54189714": {
+"n": "Diego Yáñez Figueroa",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54189889": {
+"n": "Francisco Xavier Montivero",
+"t": "Old Johns",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54189939": {
+"n": "Nivolas Astorga amunategui",
+"t": "UC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54190103": {
+"n": "Fernando López Rossi",
+"t": "COBS",
+"pj": 4,
+"pts": 55,
+"tries": 7,
+"conv": 10,
+"pen": 0
+},
+"54190699": {
+"n": "Max Dauelsberg Noemi",
+"t": "PWCC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54191187": {
+"n": "Julian Chamorro",
+"t": "Old Johns",
+"pj": 5,
+"pts": 27,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54192854": {
+"n": "Santiago Calvo de Bonnafos",
+"t": "PWCC",
+"pj": 4,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54192855": {
+"n": "Sebastián Ignacio Guarda Contardo",
+"t": "PWCC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54201483": {
+"n": "Martin Kanacri Ledesma",
+"t": "Old Reds",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54201867": {
+"n": "JULIAN MANZUR",
+"t": "COBS",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54201869": {
+"n": "Nicolas Toso Aguirre",
+"t": "COBS",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54202516": {
+"n": "Martín Zavala Hormaechea",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54203047": {
+"n": "Jose Tomas Barrena Botto",
+"t": "Old Reds",
+"pj": 6,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54204687": {
+"n": "Marcelo Arancibia",
+"t": "COBS",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54205976": {
+"n": "RENAN SALAS BRICEÑO",
+"t": "PWCC",
+"pj": 2,
+"pts": 17,
+"tries": 0,
+"conv": 7,
+"pen": 1
+},
+"54206233": {
+"n": "Jose Henriquez Calfuqueo",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54206239": {
+"n": "Rodrigo Ivan Walters Diaz",
+"t": "Sporting RC",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54210762": {
+"n": "Matías Flores Opazo",
+"t": "Old Reds",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54229650": {
+"n": "Gabriel Fonzo Arias",
+"t": "Old Macks",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54229651": {
+"n": "Carlo Schiappacasse Pérez",
+"t": "Old Macks",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54230065": {
+"n": "diego kerkebe",
+"t": "Old Boys",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54230364": {
+"n": "Joaquin Fuentes Barreda",
+"t": "COBS",
+"pj": 3,
+"pts": 30,
+"tries": 6,
+"conv": 0,
+"pen": 0
+},
+"54230369": {
+"n": "Tomás Fyfe Pinto",
+"t": "COBS",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54231572": {
+"n": "Samuel Astorga López",
+"t": "Old Reds",
+"pj": 3,
+"pts": 7,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54231614": {
+"n": "Santiago Rojas Aldunate",
+"t": "UC",
+"pj": 5,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54232653": {
+"n": "Felipe Molinare",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54238630": {
+"n": "Clemente Aguirre Harambillet",
+"t": "DOBS",
+"pj": 4,
+"pts": 27,
+"tries": 1,
+"conv": 11,
+"pen": 0
+},
+"54238635": {
+"n": "Christian Gatica",
+"t": "DOBS",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54238673": {
+"n": "Andrés Hojas Hofmann",
+"t": "UC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54238972": {
+"n": "DAMIAN BARRIONUEVO LEIVA",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54239016": {
+"n": "Renato Alonso Miranda Aviles",
+"t": "Sporting RC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54239256": {
+"n": "Dani Gutiérrez Caniulen",
+"t": "UC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54239301": {
+"n": "Simón Moyano Carreño",
+"t": "UC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54257082": {
+"n": "Marco Alexander Vitoria López",
+"t": "PWCC",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54259524": {
+"n": "Diego Villegas Evans",
+"t": "Old Johns",
+"pj": 3,
+"pts": 19,
+"tries": 1,
+"conv": 7,
+"pen": 0
+},
+"54259620": {
+"n": "Ignacio Andres Fuentealba hidalgo",
+"t": "UC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54259634": {
+"n": "Francisco Martinez Zirpel",
+"t": "Old Johns",
+"pj": 3,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54260433": {
+"n": "Joaquin Loch Araya",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54267959": {
+"n": "Tomás Martinez",
+"t": "PWCC",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54269873": {
+"n": "José Pablo Pérez Santander",
+"t": "Old Reds",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54288022": {
+"n": "Samuel Alvarado Cataldo",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54144953": {
+"n": "John Scott",
+"t": "Old Boys",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54145260": {
+"n": "Tomas Hayes Gidi",
+"t": "Old Boys",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148025": {
+"n": "Eduardo Amestica Carvallo",
+"t": "Old Macks",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148030": {
+"n": "vicente Klapp Yanez",
+"t": "Old Macks",
+"pj": 4,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54148108": {
+"n": "Renato Patricio Salazar Escarate",
+"t": "Old Macks",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148185": {
+"n": "Alonso Gabriel Arriaza Marholz",
+"t": "Old Macks",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54148186": {
+"n": "Giancarlo Dasati Correa",
+"t": "Old Macks",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54148191": {
+"n": "Sebastian Jeria Leiva",
+"t": "Old Macks",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154007": {
+"n": "Lukas Ruz Ortiz",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 7,
+"tries": 0,
+"conv": 2,
+"pen": 1
+},
+"54154107": {
+"n": "Luis carlos Santelices isidori",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154109": {
+"n": "Benjamin Droghetti Toro",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154128": {
+"n": "Maximiliano Cobre Vergara",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54154155": {
+"n": "Martín Vera Burgos",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54154175": {
+"n": "Nicolás Pereira Tapia",
+"t": "Stade Francais",
+"pj": 8,
+"pts": 61,
+"tries": 1,
+"conv": 10,
+"pen": 12
+},
+"54158507": {
+"n": "Alen Pavlov Verdugo",
+"t": "DOBS",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158508": {
+"n": "Matias Riveros",
+"t": "DOBS",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54158510": {
+"n": "Cristobal Villena",
+"t": "DOBS",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158511": {
+"n": "Sebastián Ghawali Pérez",
+"t": "DOBS",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158817": {
+"n": "GONZALO CASTRO TRUAN",
+"t": "Old Boys",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158904": {
+"n": "Nasir Halasa Hales",
+"t": "Old Macks",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54158911": {
+"n": "Benjamin Reitze Simian",
+"t": "Old Macks",
+"pj": 0,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158914": {
+"n": "Paul Wilkins",
+"t": "Old Macks",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54158915": {
+"n": "Facundo Yañez",
+"t": "Old Macks",
+"pj": 4,
+"pts": 12,
+"tries": 0,
+"conv": 6,
+"pen": 0
+},
+"54159414": {
+"n": "Ignacio Graver González",
+"t": "PWCC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54159418": {
+"n": "Benjamin Vildósola Middleton",
+"t": "PWCC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54159827": {
+"n": "Dante Caselli Rivera",
+"t": "Old Macks",
+"pj": 3,
+"pts": 15,
+"tries": 0,
+"conv": 6,
+"pen": 1
+},
+"54159872": {
+"n": "Francesco Romeo Hughes",
+"t": "Old Macks",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54161032": {
+"n": "Simón Whiting Monreal",
+"t": "Stade Francais",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54161034": {
+"n": "ANTONIO FERRARI PEREZ",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 3,
+"tries": 0,
+"conv": 0,
+"pen": 1
+},
+"54161748": {
+"n": "Moises Aceituno Fernandez",
+"t": "PWCC",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54162339": {
+"n": "Miguel Sariego Márquez",
+"t": "Old Macks",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162379": {
+"n": "Agustín Quiroz Muñoz",
+"t": "Old Macks",
+"pj": 3,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54162590": {
+"n": "Mateo Galvez",
+"t": "DOBS",
+"pj": 1,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54162597": {
+"n": "Cristian Sarquis",
+"t": "DOBS",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54162602": {
+"n": "Nicolás Francisco Rojas Martin",
+"t": "DOBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54162613": {
+"n": "Pablo Ignacio Vilches Valenzuela",
+"t": "Old Macks",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164451": {
+"n": "Mateo Droppelmann kenrick",
+"t": "Old Boys",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164667": {
+"n": "Sebastián Henriquez Astudillo",
+"t": "Old Reds",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164669": {
+"n": "Nicolas Ayala",
+"t": "Old Reds",
+"pj": 0,
+"pts": 14,
+"tries": 2,
+"conv": 2,
+"pen": 0
+},
+"54164673": {
+"n": "Giancarlo Bertonati guidugli",
+"t": "Old Reds",
+"pj": 1,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54164719": {
+"n": "Thomas Fourt Uribe",
+"t": "Old Reds",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164764": {
+"n": "Tomas Dufournel",
+"t": "Old Reds",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164766": {
+"n": "JUAN PABLO ALVEAR SALINAS",
+"t": "Old Reds",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164772": {
+"n": "Federico Olcese",
+"t": "Old Reds",
+"pj": 1,
+"pts": 13,
+"tries": 1,
+"conv": 4,
+"pen": 0
+},
+"54164773": {
+"n": "Federico Asmussen",
+"t": "Old Reds",
+"pj": 0,
+"pts": 2,
+"tries": 0,
+"conv": 1,
+"pen": 0
+},
+"54164779": {
+"n": "Benjamin Becerra",
+"t": "Old Reds",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54164913": {
+"n": "Ignacio Rojas",
+"t": "Old Reds",
+"pj": 5,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54164915": {
+"n": "Javier Cortés Guillaume",
+"t": "Old Reds",
+"pj": 8,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54164957": {
+"n": "Maximo Hidalgo Gutiérrez",
+"t": "Old Reds",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54165506": {
+"n": "Raimundo Andrés Bobillier Ruff",
+"t": "DOBS",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54165509": {
+"n": "Sebastián Avsolomovich",
+"t": "DOBS",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54165744": {
+"n": "Giuseppe Piceor",
+"t": "Old Macks",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54165898": {
+"n": "Renato Fuenzalida Virot",
+"t": "DOBS",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166015": {
+"n": "ALAN CHRISTIAN FEMENIAS",
+"t": "Stade Francais",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166047": {
+"n": "Paolo DUGUETT GARATE",
+"t": "Stade Francais",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54166566": {
+"n": "jeremias vergara alvarez",
+"t": "Old Reds",
+"pj": 7,
+"pts": 35,
+"tries": 1,
+"conv": 12,
+"pen": 2
+},
+"54166771": {
+"n": "Tomás Morandé Valenzuela",
+"t": "PWCC",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54166797": {
+"n": "Raimundo Delgado",
+"t": "PWCC",
+"pj": 6,
+"pts": 17,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167455": {
+"n": "Mauricio Quiros",
+"t": "UC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167459": {
+"n": "Rodrigo Donoso Durante",
+"t": "UC",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167493": {
+"n": "Joaquin Baraona Prat",
+"t": "UC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167495": {
+"n": "Francisco Rincón Hetz",
+"t": "UC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167496": {
+"n": "Jorge Harambillet",
+"t": "UC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167498": {
+"n": "Diego Sironvalle Padilla",
+"t": "UC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167501": {
+"n": "Hernan Ruiz Bravo",
+"t": "UC",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54167502": {
+"n": "John Manny Tytler Jaraba",
+"t": "UC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167708": {
+"n": "Nicolas Cornejo calaf",
+"t": "DOBS",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167709": {
+"n": "Sebastian Medina Middleton",
+"t": "DOBS",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54167775": {
+"n": "SEBASTIAN ANDRES HERREROS GONZALES",
+"t": "Stade Francais",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54167846": {
+"n": "eric gutierrez",
+"t": "Old Reds",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168098": {
+"n": "Agustin Lathrop Jalaff",
+"t": "COBS",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168109": {
+"n": "Matías Ignacio Pujol Luco",
+"t": "Stade Francais",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168114": {
+"n": "Lucas Conejero",
+"t": "COBS",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168119": {
+"n": "Manuel Escandon Duarte",
+"t": "COBS",
+"pj": 5,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168145": {
+"n": "agustin leon lara manriquez",
+"t": "UC",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168161": {
+"n": "Vicente Whiting Gutierrez",
+"t": "COBS",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168177": {
+"n": "Tomás García Rodríguez",
+"t": "COBS",
+"pj": 4,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168190": {
+"n": "santiago cabargas",
+"t": "COBS",
+"pj": 3,
+"pts": 35,
+"tries": 3,
+"conv": 10,
+"pen": 0
+},
+"54168196": {
+"n": "Diego Lillo",
+"t": "Old Macks",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168216": {
+"n": "Cristobal Gonzalez De Ferari",
+"t": "COBS",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168221": {
+"n": "Diego Baudrand Geisse",
+"t": "COBS",
+"pj": 7,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168225": {
+"n": "Diego Ignacio Beltrán Bucarey",
+"t": "COBS",
+"pj": 7,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168244": {
+"n": "Clemente Jose Vildosola Urrejola",
+"t": "COBS",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168256": {
+"n": "José Tomás Vildósola Urrejola",
+"t": "COBS",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168257": {
+"n": "Juan Francisco Naranjo Acosta",
+"t": "COBS",
+"pj": 2,
+"pts": 26,
+"tries": 1,
+"conv": 9,
+"pen": 1
+},
+"54168287": {
+"n": "Juan Diego Solis De Ovando Bitar",
+"t": "Old Boys",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168293": {
+"n": "Javier Sandoval carrera",
+"t": "Sporting RC",
+"pj": 4,
+"pts": 2,
+"tries": 0,
+"conv": 1,
+"pen": 0
+},
+"54168296": {
+"n": "Diego Silva",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168301": {
+"n": "Maxi López",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168311": {
+"n": "Sebastiam Alejandro Carrasco Mansilla",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168312": {
+"n": "Michael Gonzalez Bustamante",
+"t": "Sporting RC",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168320": {
+"n": "Tiécoura Kanouté Passalacqua",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168323": {
+"n": "matias carrera subiabre",
+"t": "Sporting RC",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168341": {
+"n": "Luciano Araya",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168354": {
+"n": "Martín Guerra Barrera",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168460": {
+"n": "Antonio Espinoza",
+"t": "Old Johns",
+"pj": 6,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168462": {
+"n": "Benjamin Andres Lepe Arroyo",
+"t": "Old Johns",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168465": {
+"n": "Diego Alvear",
+"t": "Old Johns",
+"pj": 6,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168466": {
+"n": "Diether Neudorfer Coronado",
+"t": "Old Johns",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168467": {
+"n": "Diego Ravanal Herreros",
+"t": "Old Johns",
+"pj": 5,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168474": {
+"n": "Jorge Avilés Puentes",
+"t": "Old Johns",
+"pj": 7,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168476": {
+"n": "Maximo Cajales erices",
+"t": "Old Johns",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168493": {
+"n": "Teodoro Rojas Vargas",
+"t": "Old Johns",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168495": {
+"n": "Juan Francisco Moroni",
+"t": "Old Johns",
+"pj": 5,
+"pts": 4,
+"tries": 0,
+"conv": 2,
+"pen": 0
+},
+"54168496": {
+"n": "Ignacio Leal Cartes",
+"t": "Old Johns",
+"pj": 3,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54168501": {
+"n": "Hernan Venegas torres",
+"t": "Old Johns",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54168506": {
+"n": "Tomás Salazar Anriquez",
+"t": "Old Johns",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54168509": {
+"n": "Mauricio Ceroni Escribano",
+"t": "Old Johns",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54168658": {
+"n": "Alvaro Lapostol López",
+"t": "PWCC",
+"pj": 3,
+"pts": 17,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54169906": {
+"n": "Julián Rodríguez Merino",
+"t": "PWCC",
+"pj": 1,
+"pts": 12,
+"tries": 2,
+"conv": 1,
+"pen": 0
+},
+"54170061": {
+"n": "Matias Joaquin Miranda Villa",
+"t": "Old Johns",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54170103": {
+"n": "Felipe Riveros Dolarea",
+"t": "UC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54173620": {
+"n": "alan bastian valenzuela oportus",
+"t": "Old Johns",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54183583": {
+"n": "Aldo Pellerano Aure",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54185378": {
+"n": "felipe perez uribe",
+"t": "Old Reds",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54186178": {
+"n": "Tomas Peña",
+"t": "PWCC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54186208": {
+"n": "Sebastián Urra Melo",
+"t": "PWCC",
+"pj": 4,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54188882": {
+"n": "Gonzalo Vargas Mangel",
+"t": "Old Macks",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54189002": {
+"n": "Gianni franchesco Aceto sacco",
+"t": "Old Macks",
+"pj": 2,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54189311": {
+"n": "Franco Solari",
+"t": "Old Boys",
+"pj": 5,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54190708": {
+"n": "Maximiliano Preuss Ricci",
+"t": "PWCC",
+"pj": 3,
+"pts": 15,
+"tries": 3,
+"conv": 0,
+"pen": 0
+},
+"54190716": {
+"n": "Clemente Guzman",
+"t": "PWCC",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54190717": {
+"n": "alvaro fernandez",
+"t": "PWCC",
+"pj": 1,
+"pts": 20,
+"tries": 4,
+"conv": 0,
+"pen": 0
+},
+"54190725": {
+"n": "Tomas Ianchina",
+"t": "PWCC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54190740": {
+"n": "Martin Vasquez villalon",
+"t": "PWCC",
+"pj": 3,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54190750": {
+"n": "gaston antonio pinto flores",
+"t": "PWCC",
+"pj": 1,
+"pts": 2,
+"tries": 0,
+"conv": 1,
+"pen": 0
+},
+"54197191": {
+"n": "Agustín Bareyre Rebolledo",
+"t": "Old Macks",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54198224": {
+"n": "Maximiliano Foxley Bolocco",
+"t": "Old Boys",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54201553": {
+"n": "Matias Valenzuela Wallis",
+"t": "Old Macks",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54201871": {
+"n": "José Antonio Pérez Santander",
+"t": "Old Reds",
+"pj": 6,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54201874": {
+"n": "Ignacio Gonzalez Valdivieso",
+"t": "Old Reds",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54202135": {
+"n": "Lukas Ronfeldt Carreño",
+"t": "PWCC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54203086": {
+"n": "José Joaquín Pérez Santander",
+"t": "Old Reds",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54204581": {
+"n": "Eduardo Santander Rodriguez",
+"t": "Old Reds",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54205916": {
+"n": "Lucas Lightfoot",
+"t": "DOBS",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54205970": {
+"n": "Sebastián Ayala Clarke",
+"t": "PWCC",
+"pj": 4,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54205994": {
+"n": "Daslav Koscina Del Valle",
+"t": "Old Reds",
+"pj": 0,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54206110": {
+"n": "David Scott Benavente",
+"t": "Old Boys",
+"pj": 4,
+"pts": 16,
+"tries": 2,
+"conv": 3,
+"pen": 0
+},
+"54208019": {
+"n": "Gonzalo Martinez opazo",
+"t": "Old Johns",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54225593": {
+"n": "Máximo Speciali",
+"t": "UC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54228087": {
+"n": "Lucas Radrigan Silva",
+"t": "COBS",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54228101": {
+"n": "Vicente Meneses Arriagada",
+"t": "Old Macks",
+"pj": 2,
+"pts": 4,
+"tries": 0,
+"conv": 2,
+"pen": 0
+},
+"54228823": {
+"n": "vicente martinez fernandez",
+"t": "DOBS",
+"pj": 4,
+"pts": 25,
+"tries": 5,
+"conv": 0,
+"pen": 0
+},
+"54228862": {
+"n": "Benjamín Lira Lara",
+"t": "Sporting RC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54230319": {
+"n": "Nicholas Holmes Chaud",
+"t": "DOBS",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54230322": {
+"n": "Ignacio Osorio flores",
+"t": "COBS",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54230409": {
+"n": "Jose Manuel Henriquez Gana",
+"t": "Old Reds",
+"pj": 3,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54230416": {
+"n": "Cristóbal Jorquera Mendoza",
+"t": "PWCC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54230992": {
+"n": "Agustin Laibe Willeke",
+"t": "Old Johns",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54232649": {
+"n": "Juan Ignacio Letelier fuentes",
+"t": "Stade Francais",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54232655": {
+"n": "Baltazar Piedra Caffarena",
+"t": "Stade Francais",
+"pj": 5,
+"pts": 7,
+"tries": 1,
+"conv": 1,
+"pen": 0
+},
+"54232685": {
+"n": "Felipe Silva",
+"t": "UC",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54238451": {
+"n": "Sebastian Escobar Radic",
+"t": "UC",
+"pj": 2,
+"pts": 9,
+"tries": 0,
+"conv": 3,
+"pen": 1
+},
+"54238452": {
+"n": "Arturo Villanueva Barrera",
+"t": "Old Macks",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54238453": {
+"n": "Renzo Solari",
+"t": "Old Macks",
+"pj": 0,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54238455": {
+"n": "Gaspar Valdés",
+"t": "UC",
+"pj": 0,
+"pts": 4,
+"tries": 0,
+"conv": 2,
+"pen": 0
+},
+"54238639": {
+"n": "Martin Sahady",
+"t": "DOBS",
+"pj": 3,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54238954": {
+"n": "Matias Bruna Arevalo",
+"t": "UC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54239303": {
+"n": "Diego Esteban Cornejo Rosas",
+"t": "UC",
+"pj": 2,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54239305": {
+"n": "Matias De andrade",
+"t": "UC",
+"pj": 2,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54239307": {
+"n": "ignacio lavín izquierdo",
+"t": "UC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54239613": {
+"n": "Lucas León Quezada",
+"t": "Old Johns",
+"pj": 3,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54239660": {
+"n": "Sebastián Iglesias Cares",
+"t": "PWCC",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54256627": {
+"n": "matias valenzuela miranda",
+"t": "Old Reds",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54256629": {
+"n": "José Miguel Pérez Santander",
+"t": "Old Reds",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54256995": {
+"n": "JOAQUIN MOYANO VARGAS",
+"t": "Old Boys",
+"pj": 1,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54259523": {
+"n": "Mateo Jolicoeur Acuña",
+"t": "Old Johns",
+"pj": 2,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54259633": {
+"n": "Alfredo Piwonka Caballero",
+"t": "Old Johns",
+"pj": 1,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+},
+"54260436": {
+"n": "Sebastián Alejandro González Fuentes",
+"t": "Stade Francais",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54267956": {
+"n": "Jose Manuel Garcia Olave",
+"t": "PWCC",
+"pj": 0,
+"pts": 5,
+"tries": 1,
+"conv": 0,
+"pen": 0
+},
+"54268952": {
+"n": "raul duhalde errazuriz",
+"t": "UC",
+"pj": 1,
+"pts": 10,
+"tries": 2,
+"conv": 0,
+"pen": 0
+},
+"54286334": {
+"n": "Camilo Esnaola",
+"t": "UC",
+"pj": 0,
+"pts": 0,
+"tries": 0,
+"conv": 0,
+"pen": 0
+}
+}
