@@ -199,7 +199,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                 <div style={{fontSize:"11px",color:"#4a4743",marginTop:"1px"}}>{m.lugar} · {m.hora||"—"}</div>
               </div>
               <div style={{fontFamily:DM_MONO,fontSize:"10.5px",fontWeight:500,color:m.cat?.includes("Primer")?"#818cf8":"#5a5753",flexShrink:0}}>
-                {m.cat?.includes("Primer")?"LIGA":"AMIST."}
+                {m.cat || "—"}
               </div>
             </motion.div>
           ))}

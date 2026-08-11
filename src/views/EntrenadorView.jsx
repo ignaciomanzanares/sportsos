@@ -668,7 +668,10 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
   };
 
   const partidosFiltrados = partidos
-    .filter(p=> myCats.includes(p.cat) || isDemo)
+    // myCats sale de profiles.cats, que en usuarios reales viene vacío: este
+    // filtro descartaba absolutamente todos los partidos, siempre. Un usuario
+    // sin categorías asignadas no está restringido a ninguna — las ve todas.
+    .filter(p=> myCats.length === 0 || myCats.includes(p.cat))
     .filter(p=> filtroCat==="todos" || p.cat===filtroCat)
     .filter(p=> filtroEst==="todos" || p.estado===filtroEst)
     .sort((a,b)=>a.fecha.localeCompare(b.fecha));

@@ -84,6 +84,12 @@ export default function SportOS() {
   // Usuario ya autenticado (ej. Google OAuth) que aún no tiene club_id asignado
   const [pendingUser,setPendingUser]     = useState(null);
   const [searchOpen,setSearchOpen]       = useState(false);
+  // El listener de auth se crea una sola vez y captura currentUser en null para
+  // siempre. Sin esto, cada vez que Supabase reemitía SIGNED_IN (al volver a la
+  // pestaña, al refrescar el token) el guard "!currentUser" seguía siendo
+  // verdadero, se recalculaba el perfil y el rol volvía al del perfil: si
+  // estabas mirando como Entrenador, te devolvía a Super Admin.
+  const sesionYaResuelta = useRef(false);
   const [upgradeFor,setUpgradeFor]       = useState(null); // id de feature bloqueada
 
   // Jugadores/club/pagos/partidos: datos reales de Supabase si hay club_id, vitrina demo si no
@@ -250,11 +256,13 @@ export default function SportOS() {
   // Detecta sesión de Supabase al cargar (OAuth redirect o sesión guardada)
   useEffect(()=>{
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_OUT") { sesionYaResuelta.current = false; }
       if (event === "PASSWORD_RECOVERY") {
         setScreen("newpassword");
         return;
       }
-      if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session?.user && !currentUser) {
+      if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session?.user && !sesionYaResuelta.current) {
+        sesionYaResuelta.current = true;
         const u = session.user;
         // Buscar perfil en tabla profiles. Reintenta una vez: un hipo
         // transitorio de red/sincronización acá (ej. "JWT issued at future")
