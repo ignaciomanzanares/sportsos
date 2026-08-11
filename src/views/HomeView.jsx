@@ -136,8 +136,15 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   const totalGoles = players.reduce((s,p)=>s+(p.stats?.[anot.clave]||0),0);
   const balanceMes = payments.filter(p=>p.estado==="pagado").length * 15000;
 
-  // Próximos partidos
-  const proximos = partidos.filter(p=>p.estado==="programado").slice(0,4);
+  // Próximos partidos: del más cercano al más lejano, y solo los que aún no se
+  // juegan. La lista venía en el orden en que Supabase devuelve los partidos
+  // (fecha descendente), así que "próximos" mostraba primero el de diciembre;
+  // y Leverade deja partidos viejos sin cerrar, que se colaban como futuros.
+  const hoyISO   = new Date().toISOString().slice(0,10);
+  const proximos = partidos
+    .filter(p => p.estado === "programado" && p.fecha >= hoyISO)
+    .sort((a,b) => (a.fecha+(a.hora||"")).localeCompare(b.fecha+(b.hora||"")))
+    .slice(0,4);
 
   // Actividad reciente — antes era un feed 100% inventado (hat-trick falso,
   // "cuotas procesadas" que nunca corrió, etc). Ahora lee notifications real.
@@ -197,7 +204,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
           ) : proximos.map((m,i)=>(
             <motion.div key={m.id||i} whileHover={{background:"#161412"}}
               style={{display:"flex",alignItems:"center",gap:"14px",padding:"10px 11px",borderRadius:"6px",cursor:"pointer",transition:"background 0.12s"}}>
-              <div style={{fontFamily:DM_MONO,fontSize:"12px",color:"#4a4743",flexShrink:0,width:"56px"}}>{m.fecha?.slice(5).replace("-","/")||"—"}</div>
+              <div style={{fontFamily:DM_MONO,fontSize:"12px",color:"#4a4743",flexShrink:0,width:"56px"}}>{m.fecha ? `${m.fecha.slice(8,10)}/${m.fecha.slice(5,7)}` : "—"}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:"13px",fontWeight:500,color:"#d4d2ce",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{m.rival}</div>
                 <div style={{fontSize:"11px",color:"#4a4743",marginTop:"1px"}}>{m.lugar} · {m.hora||"—"}</div>

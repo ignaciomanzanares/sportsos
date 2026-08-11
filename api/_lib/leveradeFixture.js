@@ -53,6 +53,49 @@ function categoriaDe(nombreTorneo, groupId) {
   return DIVISIONES_ADULTAS[groupId] || nombreTorneo;
 }
 
+/**
+ * Partidos reprogramados que ARUSA no actualizó en Leverade.
+ *
+ * Old Johns vs Old Reds de Intermedia y Pre-Intermedia figura el 18/07 y
+ * quedó ahí, sin jugarse y sin cerrarse: se reprogramó junto con el de Primera
+ * al 29/08. Mientras siga mal en la fuente, el calendario del club muestra dos
+ * partidos fantasma en el pasado y los da por próximos.
+ *
+ * La hora sigue la cadencia del club ese día (Primera 13:00, y las otras dos
+ * dos horas antes cada una); ARUSA todavía no publica el horario oficial de
+ * esas dos, así que es lo más cercano que se puede afirmar.
+ *
+ * Esto es una corrección puntual y con fecha de vencimiento: cuando ARUSA lo
+ * arregle, la línea se borra y no cambia nada.
+ */
+const REPROGRAMADOS = {
+  "144328724": "2026-08-29 11:00:00", // Intermedia · Old Johns vs Old Reds
+  "144361849": "2026-08-29 09:00:00", // Pre-Intermedia · Old Johns vs Old Reds
+};
+
+/**
+ * La hora del partido, en la hora de la cancha.
+ *
+ * Leverade entrega `datetime` en UTC y aparte dice en qué zona hay que
+ * mostrarlo (`display_timezone: America/Santiago`). Estábamos guardando el UTC
+ * tal cual, así que Primera aparecía a las 18:30 o 19:30 — de noche y en
+ * invierno — cuando en realidad se juega a las 15:00. El desfase además cambia
+ * en septiembre, cuando Chile pasa a horario de verano, así que no sirve
+ * restar cuatro horas y listo: hay que convertir con la zona.
+ */
+function aHoraLocal(dt, zona = "America/Santiago") {
+  if (!dt) return null;
+  const utc = new Date(String(dt).replace(" ", "T") + "Z");
+  if (Number.isNaN(utc.getTime())) return null;
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: zona, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false,
+    }).formatToParts(utc).map(x => [x.type, x.value]),
+  );
+  return `${p.year}-${p.month}-${p.day} ${p.hour === "24" ? "00" : p.hour}:${p.minute}:00`;
+}
+
 function partidosDeTorneo(j, nombreTorneo) {
   const inc = j.included || [];
 
@@ -98,7 +141,8 @@ function partidosDeTorneo(j, nombreTorneo) {
       round: rondaNum[rid] ?? 0,
       finished: Boolean(m.attributes?.finished),
       homeScore: pm?.get(hid), awayScore: pm?.get(aid),
-      datetime: m.attributes?.datetime ?? null,
+      datetime: REPROGRAMADOS[String(m.id)]
+        ?? aHoraLocal(m.attributes?.datetime, m.attributes?.display_timezone),
     });
   }
   return out;

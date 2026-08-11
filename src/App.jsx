@@ -251,23 +251,36 @@ export default function SportOS() {
     const pedido = urlPendiente.current?.rol;
     if (!pedido || !currentUser) return;
     const propio = currentUser.rol;
-    if (pedido !== propio && propio !== "superadmin") return;
-    if (MODULE_MAP[pedido]) setRole(pedido);
+    const permitido = (pedido === propio || propio === "superadmin") && MODULE_MAP[pedido];
+    // Si no se puede aplicar se saca del pendiente: si no, el efecto de abajo
+    // se quedaría esperando para siempre un rol que nunca va a llegar y no
+    // soltaría nunca la restauración.
+    if (permitido) setRole(pedido);
+    else urlPendiente.current = { ...urlPendiente.current, rol: null };
   },[currentUser]);
 
+  // Se descartaba al primer render, antes de que llegara la sesión. Y la
+  // sesión, cuando llega, fija el rol del perfil (superadmin) y el deporte —
+  // que a su vez reseteaba la categoría a la primera (M6). O sea: Ctrl+R
+  // restauraba bien durante unos milisegundos y después la sesión lo pisaba,
+  // con la restauración ya tirada a la basura. Ahora la URL manda hasta que se
+  // sabe quién es el usuario, y recién ahí se suelta.
   useEffect(()=>{
-    const pedido = urlPendiente.current?.modulo;
-    const permitido = (MODULE_MAP[role]||[]).some(m=>m.id===pedido);
-    setModule(permitido ? pedido : "home");
+    const pedido = urlPendiente.current;
+    if (!pedido) return;
+    const permitido = (MODULE_MAP[role]||[]).some(m=>m.id===pedido.modulo);
+    setModule(permitido ? pedido.modulo : "home");
     setModuleHistory([]);
     // La categoría se restaura acá y no en su propio efecto porque cambiar de
     // rol no debe perderla, pero sí tiene que ocurrir después de que el rol
     // quedó fijo.
-    const cat = urlPendiente.current?.cat;
-    const i = cat ? (SPORTS_CONFIG[sport]?.categories || []).indexOf(cat) : -1;
+    const i = pedido.cat ? (SPORTS_CONFIG[sport]?.categories || []).indexOf(pedido.cat) : -1;
     if (i >= 0) setCategory(i);
-    urlPendiente.current = null;
-  },[role]);
+    // Se suelta cuando el rol pedido ya quedó puesto (o se descartó): mientras
+    // el rol siga moviéndose, el módulo permitido todavía puede cambiar.
+    const rolListo = !pedido.rol || role === pedido.rol;
+    if (rolListo && (currentUser || screen === "app")) urlPendiente.current = null;
+  },[role, currentUser, sport, screen]);
 
   // Cada cambio de módulo deja una entrada en el historial del navegador.
   useEffect(()=>{
@@ -293,7 +306,11 @@ export default function SportOS() {
     return ()=>window.removeEventListener("popstate", onPop);
   },[]);
 
-  useEffect(()=>{setCategory(0);},[sport]);
+  // Cambiar de deporte vuelve a la primera categoría (las de rugby no existen
+  // en fútbol). Pero al recargar, la sesión fija el deporte del club y esto se
+  // disparaba pisando la categoría que venía en la URL: por eso Ctrl+R te
+  // dejaba siempre en M6. Mientras haya URL por restaurar, no toca nada.
+  useEffect(()=>{ if (!urlPendiente.current) setCategory(0); },[sport]);
 
   // Detecta sesión de Supabase al cargar (OAuth redirect o sesión guardada)
   useEffect(()=>{
