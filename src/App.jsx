@@ -47,13 +47,21 @@ const ROLES = [
 
 const MODULE_MAP = {
   superadmin:[{id:"home",label:"Inicio",icon:"🏠"},{id:"dashboard",label:"Dashboard Global",icon:"📊"},{id:"clubes",label:"Clubes",icon:"🏢"},{id:"membresias",label:"Membresías",icon:"💳"},{id:"comisiones",label:"Comisiones",icon:"💰"},{id:"comparativa",label:"vs SportEasy",icon:"📈"},{id:"vistaroles",label:"Vista Roles",icon:"👁️"}],
-  admin:[{id:"home",label:"Inicio",icon:"🏠"},{id:"miclub",label:"Mi Club",icon:"🏢"},{id:"jugadores",label:"Jugadores",icon:"👥"},{id:"salud",label:"Salud",icon:"🩺"},{id:"finanzas",label:"Finanzas",icon:"💰"},{id:"miperfil",label:"Mi Perfil",icon:"👤"}],
+  // El admin tenía inicio, club, jugadores, salud y finanzas — pero su propia
+  // portada le ofrecía "ver todos" los partidos, el KPI de partidos ganados y
+  // el de tries, todos apuntando a módulos que su rol no tenía: la pantalla
+  // quedaba en negro. Calendario, Match Center y Estadísticas son los mismos
+  // del entrenador; quien administra el club también los mira.
+  admin:[{id:"home",label:"Inicio",icon:"🏠"},{id:"miclub",label:"Mi Club",icon:"🏢"},{id:"jugadores",label:"Jugadores",icon:"👥"},{id:"calendario",label:"Calendario",icon:"📅"},{id:"matchcenter",label:"Match Center",icon:"🏆"},{id:"estadisticas",label:"Estadísticas",icon:"📊"},{id:"salud",label:"Salud",icon:"🩺"},{id:"finanzas",label:"Finanzas",icon:"💰"},{id:"miperfil",label:"Mi Perfil",icon:"👤"}],
   entrenador:[{id:"home",label:"Inicio",icon:"🏠"},{id:"muro",label:"El Muro",icon:"💬"},{id:"calendario",label:"Calendario",icon:"📅"},{id:"matchcenter",label:"Match Center",icon:"🏆"},{id:"nomina",label:"Nómina",icon:"📋"},{id:"estadisticas",label:"Estadísticas",icon:"📊"},{id:"asistencia",label:"Asistencia",icon:"✅"},{id:"salud",label:"Salud",icon:"🩺"},{id:"miperfil",label:"Mi Perfil",icon:"👤"}],
   preparador:[{id:"home",label:"Inicio",icon:"🏠"},{id:"microciclo",label:"Microciclo",icon:"📅"},{id:"estadoplantel",label:"Estado Plantel",icon:"💪"},{id:"rankingfuerza",label:"Ranking Fuerza",icon:"🏋️"},{id:"miperfil",label:"Mi Perfil",icon:"👤"}],
   jugador:[{id:"home",label:"Inicio",icon:"🏠"},{id:"midashboard",label:"Mi Dashboard",icon:"📊"},{id:"noticias",label:"Noticias",icon:"📰"},{id:"micuota",label:"Mi Cuota",icon:"💳"},{id:"migym",label:"Mi Gym",icon:"🏋️"},{id:"nominasclub",label:"Nóminas Club",icon:"📋"},{id:"miconvocatoria",label:"Mi Convocatoria",icon:"🎽"},{id:"miperfil",label:"Mi Perfil",icon:"👤"}],
 };
 
 const ROL_ICONS = {superadmin:"⚡",admin:"🏢",entrenador:"📋",preparador:"💪",jugador:"👤"};
+
+// Módulos que el admin comparte con el entrenador: los renderiza EntrenadorView.
+const MODULOS_COMPARTIDOS = ["calendario", "matchcenter", "estadisticas"];
 
 // Colores explícitos para el desplegable de categorías: el menú nativo lo
 // dibuja el sistema operativo y no hereda las variables del tema.
@@ -856,8 +864,8 @@ export default function SportOS() {
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
-              {module!=="home"&&module!=="miperfil"&&role==="admin"&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
-              {module!=="home"&&module!=="miperfil"&&role==="entrenador"&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={players} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
+              {module!=="home"&&module!=="miperfil"&&(role==="entrenador"||(role==="admin"&&MODULOS_COMPARTIDOS.includes(module)))&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={players} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
               {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={players} clubId={clubId} currentUser={currentUser}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}
               {/* Sin ficha en el plantel, JugadorView revienta en su primera

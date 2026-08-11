@@ -107,19 +107,44 @@ function NextMatchCard({ club, sp, sportColor, onNavigate }) {
 const BEBAS = "'Bebas Neue', sans-serif";
 const DM_MONO = "'DM Mono', monospace";
 
-// Mapea posición larga a abreviatura de 3 letras
-function posAbbr(pos) {
-  // pos="" como default solo cubre undefined, no null — y position es
-  // null de verdad para jugadores reales sin posición cargada (crasheaba
-  // toda la pantalla con "Cannot read properties of null").
+/**
+ * Abreviatura del puesto, con el vocabulario del deporte.
+ *
+ * Estaba escrita solo para fútbol: POR / DEF / MED / DEL. En rugby eso no
+ * existe —no hay defensas ni delanteros, hay forwards y backs, y un pilar no
+ * es lo mismo que un segunda línea— así que un plantel entero de rugby salía
+ * etiquetado con puestos de otro deporte.
+ */
+const RUGBY_ABREV = [
+  [/loosehead|tighthead|\bprop\b|pilar/, "PIL"],
+  [/hooker/,                               "HOO"],
+  [/\block\b|segunda/,                     "2L"],
+  [/flanker|\bala\b/,                      "ALA"],
+  [/number\s*8|octavo|n\.?º?\s*8/,          "N8"],
+  [/scrum-?half|medio scrum/,              "MED"],
+  [/fly-?half|apertura/,                   "APE"],
+  [/centre|center|centro/,                 "CEN"],
+  [/wing|winger/,                          "WIN"],
+  [/fullback|zaguero/,                     "FB"],
+];
+
+const FUTBOL_ABREV = [
+  [/portero|arquero|goalkeeper/,           "POR"],
+  [/lateral|central|defensa|defender/,     "DEF"],
+  [/volante|mediocampista|medio|midfield/, "MED"],
+  [/delantero|forward|punta/,              "DEL"],
+];
+
+// pos puede ser null de verdad (jugador sin puesto cargado), no solo undefined:
+// un default de "" no lo cubre y antes tumbaba la pantalla entera.
+function posAbbr(pos, sportName = "Rugby") {
   const p = (pos || "").toLowerCase();
-  if (p.includes("portero") || p.includes("arquero") || p.includes("goalkeeper")) return "POR";
-  // Los puestos de rugby vienen en inglés (Wing, Centre, Number 8): "wing" no
-  // contiene "ala" y "centre" no contiene "centro", así que caían todos en MED.
-  if (p.includes("wing") || p.includes("delantero") || p.includes("ala") || p.includes("forward") || p.includes("fullback") || p.includes("tries")) return "DEL";
-  if (p.includes("medio") || p.includes("apertura") || p.includes("scrum") || p.includes("centro") || p.includes("centre") || p.includes("half")) return "MED";
-  if (p.includes("defensa") || p.includes("flanker") || p.includes("lock") || p.includes("prop") || p.includes("hooker") || p.includes("número") || p.includes("number 8")) return "DEF";
-  return "MED";
+  if (!p) return "—";
+  const tabla = String(sportName).toLowerCase() === "rugby" ? RUGBY_ABREV : FUTBOL_ABREV;
+  for (const [re, abrev] of tabla) if (re.test(p)) return abrev;
+  // Sin coincidencia, las tres primeras letras del puesto real: dice menos que
+  // una etiqueta correcta, pero nunca dice algo falso.
+  return p.slice(0, 3).toUpperCase();
 }
 
 function relTime(iso) {
@@ -173,8 +198,12 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   }));
 
   // Tabla de jugadores con filtro de posición
-  const allFilters = ["TODOS", ...Array.from(new Set(players.map(p=>posAbbr(p.position))))];
-  const filtered = posFilter === "TODOS" ? players : players.filter(p=>posAbbr(p.position)===posFilter);
+  // Los filtros salen de los puestos que el plantel realmente tiene, en el
+  // vocabulario del deporte. Los sin puesto quedan bajo "—", que también se
+  // puede filtrar: son justo los que hay que ir a completar.
+  const abrev = (p) => posAbbr(p.position, sp?.name);
+  const allFilters = ["TODOS", ...Array.from(new Set(players.map(abrev))).sort()];
+  const filtered = posFilter === "TODOS" ? players : players.filter(p=>abrev(p)===posFilter);
 
   const avatarColors = ["#4f46e5","#0284c7","#b45309","#be185d","#047857","#7c3aed","#c2410c","#0f766e"];
 
@@ -297,7 +326,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                         </div>
                       </div>
                     </td>
-                    <td style={{padding:"10px",borderBottom:"1px solid #1a1816",fontFamily:DM_MONO,fontSize:"11.5px",fontWeight:500,color:"#a8a49f"}}>{posAbbr(p.position)}</td>
+                    <td style={{padding:"10px",borderBottom:"1px solid #1a1816",fontFamily:DM_MONO,fontSize:"11.5px",fontWeight:500,color:"#a8a49f"}}>{abrev(p)}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{Math.round((p.stats?.minutos||0)/90)}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:BEBAS,fontSize:"15px",fontWeight:700,color:sportColor,borderBottom:"1px solid #1a1816"}}>{p.stats?.[anot.clave]||0}</td>
                     <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{p.stats?.asistencias||0}</td>
