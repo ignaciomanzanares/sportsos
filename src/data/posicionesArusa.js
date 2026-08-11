@@ -20,14 +20,14 @@ import DATOS from "./posicionesArusa.json";
 // genérico no distingue, se deja el genérico: inventar "Loosehead" cuando el
 // dato solo dice "Prop" sería precisión falsa.
 const NOMBRE = {
-  PROP: "Prop",
+  PROP: "Pilar",
   HOOKER: "Hooker",
-  LOCK: "Lock",
-  FLANKER: "Flanker",
-  NUMBER_8: "Number 8",
-  SCRUM_HALF: "Scrum-half",
-  FLY_HALF: "Fly-half",
-  CENTER: "Centre",
+  LOCK: "Segunda línea",
+  FLANKER: "Tercera línea",
+  NUMBER_8: "Tercera línea",
+  SCRUM_HALF: "Medio scrum",
+  FLY_HALF: "Apertura",
+  CENTER: "Centro",
   WING: "Wing",
   FULLBACK: "Fullback",
 };

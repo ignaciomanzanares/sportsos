@@ -104,6 +104,34 @@ export function categoriaDePartido(sportConfig, cat) {
 }
 
 /**
+ * El nombre canónico de un puesto.
+ *
+ * Los puestos entraron de dos fuentes con dos vocabularios: la lista de la
+ * ficha en español y la importación del otro proyecto en inglés. El resultado
+ * era el mismo jugador como "Lock" en una pantalla y "Segunda línea" en otra.
+ * Acá se traduce cualquier variante conocida al nombre de la ficha, para que
+ * la app hable un solo idioma aunque la base todavía tenga las dos formas.
+ */
+const CANONICO = [
+  [/loosehead|tighthead|\bprop\b|pilar/i,          "Pilar"],
+  [/hooker|talonador/i,                            "Hooker"],
+  [/\block\b|segunda/i,                            "Segunda línea"],
+  [/flanker|number\s*8|\bn\.?º?\s*8\b|tercera|ala/i, "Tercera línea"],
+  [/scrum-?half|medio/i,                           "Medio scrum"],
+  [/fly-?half|apertura/i,                          "Apertura"],
+  [/centre|center|centro/i,                        "Centro"],
+  [/wing|winger/i,                                 "Wing"],
+  [/fullback|zaguero/i,                            "Fullback"],
+];
+
+export function nombrePuesto(pos) {
+  const p = String(pos || "").trim();
+  if (!p) return null;
+  for (const [re, nombre] of CANONICO) if (re.test(p)) return nombre;
+  return p; // deporte no rugby, o algo que el club escribió a mano
+}
+
+/**
  * Puestos que se le pueden poner a un jugador en su ficha.
  *
  * No son los quince de la formación: en la nómina cada camiseta es un puesto,

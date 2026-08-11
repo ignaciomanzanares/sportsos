@@ -342,3 +342,47 @@ export async function parseGymPlan(files) {
 
   return { sessions: ordenadas, avisos: [...new Set(avisos)], total, grupos };
 }
+
+/**
+ * A qué grupo del microciclo pertenece un puesto.
+ *
+ * El PF arma la semana en tres archivos y cada uno es para un conjunto de
+ * puestos. Esto es lo que permite que un jugador vea su entrenamiento y no los
+ * tres. El hooker entrena con las primeras y segundas líneas: es el tercer
+ * hombre del scrum, aunque no lleve el nombre.
+ */
+const GRUPO_POR_PUESTO = {
+  "Pilar": "primeras",
+  "Hooker": "primeras",
+  "Segunda línea": "primeras",
+  "Tercera línea": "terceras",
+  "Centro": "terceras",
+  "Medio scrum": "medios",
+  "Apertura": "medios",
+  "Wing": "medios",
+  "Fullback": "medios",
+};
+
+// Cómo se reconoce cada grupo en el nombre del archivo que manda el PF.
+const SEÑAS = {
+  primeras: /primera|segunda/i,
+  terceras: /tercera|centro/i,
+  medios:   /medio|wing|full\s*back/i,
+};
+
+/** El grupo del microciclo que le toca a un puesto, o null si no se sabe. */
+export function grupoDePuesto(puesto) {
+  return GRUPO_POR_PUESTO[String(puesto || "")] || null;
+}
+
+/**
+ * ¿Este ejercicio le toca a este jugador?
+ * Sin puesto cargado, o sin grupos en el plan, se muestra todo: esconderle el
+ * entrenamiento a alguien porque falta un dato es peor que mostrarle de más.
+ */
+export function ejercicioEsDe(ejercicio, puesto) {
+  const grupo = grupoDePuesto(puesto);
+  if (!grupo || !ejercicio?.grupo) return true;
+  const seña = SEÑAS[grupo];
+  return seña ? seña.test(ejercicio.grupo) : true;
+}

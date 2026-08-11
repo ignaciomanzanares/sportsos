@@ -135,7 +135,7 @@ export default function SportOS() {
   // Los tries y los puntos del torneo se pegan acá, sobre la lista que reciben
   // todas las vistas: si se hiciera en cada pantalla, unas mostrarían los datos
   // y otras cero para el mismo jugador.
-  const arusaJugadores = useArusaJugadores(sport === "rugby" && !!clubId);
+  const arusaJugadores = useArusaJugadores(sport === "rugby" && !!clubId, clubRow?.name || null);
   const players = enriquecerConArusa(playersCrudos, arusaJugadores);
   const isDemo = currentUser === null;
   const userCats = isDemo ? [] : (currentUser.cats || []);

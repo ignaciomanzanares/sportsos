@@ -4,6 +4,7 @@ import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { GYM_PLAN, PLAN_VACIO } from "../data/gymPlan";
 import { parseGymPlan, ORDEN_DIAS, ETIQUETA_DIA } from "../lib/gymImport";
+import { nombrePuesto } from "../data/sports";
 import { supabase } from "../lib/supabase";
 import { getGymPlan, saveGymPlan, getWeekStart, formatWeekLabel } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
@@ -36,7 +37,7 @@ function EstadoPlantelView({ sportColor, players }) {
           <div style={{width:"36px",height:"36px",borderRadius:"50%",background:`${MED_COLOR[status]}22`,border:`2px solid ${MED_COLOR[status]}55`,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:"12px",color:MED_COLOR[status],flexShrink:0}}>{p.number}</div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontWeight:700,fontSize:"13px"}}>{p.name}</div>
-            <div style={{fontSize:"11px",color:"var(--text-3)"}}>{p.position} · {p.category}</div>
+            <div style={{fontSize:"11px",color:"var(--text-3)"}}>{nombrePuesto(p.position) || "Sin puesto"} · {p.category}</div>
             {p.hia_reason && <div style={{fontSize:"10px",color:MED_COLOR[status],marginTop:"2px",fontWeight:600}}>🩹 {p.hia_reason}</div>}
           </div>
           <div style={{textAlign:"right",flexShrink:0}}>

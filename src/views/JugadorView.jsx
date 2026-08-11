@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { FORMATIONS, TEAMS, equiposDeCategoria } from "../data/sports";
+import { FORMATIONS, TEAMS, equiposDeCategoria, nombrePuesto } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
+import { ejercicioEsDe } from "../lib/gymImport";
 import { usePosts } from "../lib/usePosts";
 import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
 import { supabase } from "../lib/supabase";
@@ -305,7 +306,12 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   // todayPlan puede ser null si el plan está publicado pero sin sesiones. Estas
   // tres líneas corren antes del guard de más abajo, así que tienen que
   // aguantarlo sin reventar.
-  const ejercicios = todayPlan?.exercises ?? [];
+  // Solo lo que le toca a su puesto: el PF manda tres planes distintos por
+  // semana y un pilar no entrena lo mismo que un wing. Sin puesto cargado se
+  // muestra todo — esconderle el entrenamiento a alguien porque falta un dato
+  // es peor que mostrarle de más.
+  const miPuesto = nombrePuesto(player?.position);
+  const ejercicios = (todayPlan?.exercises ?? []).filter(ex => ejercicioEsDe(ex, miPuesto));
   const allDone  = ejercicios.length > 0 && ejercicios.every(ex=>exCompleted(ex));
   const totalVol = ejercicios.reduce((s,ex)=>s+calcVol(ex.name,setsDe(ex)),0);
   const rpeColor = (v)=>v<=3?"#22C55E":v<=6?"#F59E0B":"#EF4444";

@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import { PLANS } from "../lib/freemium";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { SPORTS_CONFIG, puestosDeFicha } from "../data/sports";
+import { SPORTS_CONFIG, puestosDeFicha, nombrePuesto } from "../data/sports";
 import SectionTitle from "../components/SectionTitle";
 import Stat from "../components/Stat";
 import Badge from "../components/Badge";
@@ -927,14 +927,16 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                     </div>
                   </div>
                 </td>
-                <td style={{color:"var(--text-2)"}}>{p.category||"—"}</td>
-                <td style={{color:"var(--text-2)",fontSize:"11px"}}>{p.position||"—"}</td>
-                <td><Semaforo status={p.med_status}/></td>
+                {/* Estas celdas no tenían padding y el encabezado sí, así que
+                    "Salud" quedaba corrido respecto de su columna. */}
+                <td style={{padding:"12px",color:"var(--text-2)"}}>{p.category||"—"}</td>
+                <td style={{padding:"12px",color:"var(--text-2)",fontSize:"11px"}}>{nombrePuesto(p.position)||"—"}</td>
+                <td style={{padding:"12px"}}><Semaforo status={p.med_status}/></td>
                 {/* Sin dato es "—", no "Al día": nacía en 'ok' y marcaba como
                     pagado a quien nunca pagó, contradiciendo al panel de Inicio. */}
-                <td>{!p.cuota_status ? <span style={{color:"var(--text-4)"}}>—</span>
+                <td style={{padding:"12px"}}>{!p.cuota_status ? <span style={{color:"var(--text-4)"}}>—</span>
                   : <Badge color={p.cuota_status==="ok"?"#22C55E":"#EF4444"}>{p.cuota_status==="ok"?"Al día":"Vencida"}</Badge>}</td>
-                <td style={{color:"var(--text-2)"}}>{p.age||"—"}</td>
+                <td style={{padding:"12px",color:"var(--text-2)"}}>{p.age||"—"}</td>
                 <td style={{padding:"12px"}}>
                   <div style={{display:"flex",gap:"6px"}}>
                     <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}

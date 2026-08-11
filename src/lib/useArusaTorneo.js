@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { unirConRegistrado } from "../data/plantelArusa";
 
 /**
  * Tabla de posiciones y estadísticas de jugadores del torneo (ARUSA/Leverade).
@@ -44,7 +45,7 @@ const DIVISIONES_ADULTAS = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
  * del mismo id se suman: mostrar solo el de Primera le borraría los tries del
  * resto del año.
  */
-export function useArusaJugadores(activo = true) {
+export function useArusaJugadores(activo = true, clubName = null) {
   const [jugadores, setJugadores] = useState([]);
 
   useEffect(() => {
@@ -67,10 +68,14 @@ export function useArusaJugadores(activo = true) {
           partidos: (prev.partidos || 0) + (j.partidos || 0),
         } : { ...j, id });
       }
-      setJugadores([...acc.values()]);
+      // El caché en vivo perdió a siete jugadores del club —los que jugaron
+      // uno o dos partidos y no anotaron nunca—, así que sus estadísticas
+      // salían en blanco aunque existen. Se completan con la foto guardada.
+      const completo = clubName ? unirConRegistrado([...acc.values()], clubName) : [...acc.values()];
+      setJugadores(completo);
     });
     return () => { vivo = false; };
-  }, [activo]);
+  }, [activo, clubName]);
 
   return jugadores;
 }

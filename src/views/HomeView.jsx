@@ -4,7 +4,7 @@ import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
 import { usePlataforma } from "../lib/usePlataforma";
-import { terminoAnotacion } from "../data/sports";
+import { terminoAnotacion, nombrePuesto } from "../data/sports";
 import { getNotifications } from "../lib/db";
 import { ordenarPlantel } from "../lib/ordenPlantel";
 import { useInjuryReports, playersEnAlerta } from "../lib/useInjuryReports";
@@ -209,7 +209,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   // Los filtros salen de los puestos que el plantel realmente tiene, en el
   // vocabulario del deporte. Los sin puesto quedan bajo "—", que también se
   // puede filtrar: son justo los que hay que ir a completar.
-  const abrev = (p) => posAbbr(p.position, sp?.name);
+  const abrev = (p) => posAbbr(nombrePuesto(p.position), sp?.name);
   const allFilters = ["TODOS", ...Array.from(new Set(players.map(abrev)))
     .sort((a,b) => {
       const ia = ORDEN_ABREV.indexOf(a), ib = ORDEN_ABREV.indexOf(b);
@@ -717,7 +717,7 @@ export default function HomeView({ role, players, sportColor, club, sp, countryD
       </motion.div>
 
       {/* Contenido por rol */}
-      {role==="admin"      && <HomeAdmin      players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
+      {role==="admin"      && <HomeAdmin      onEditPlayer={onEditPlayer} players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="entrenador" && <HomeEntrenador players={players} sportColor={sportColor} club={club} sp={sp} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="jugador"    && <HomeJugador    player={players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}
