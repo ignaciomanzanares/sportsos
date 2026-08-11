@@ -1,5 +1,26 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "./supabase";
+
+/**
+ * Días en que el club entrena: lunes, martes y jueves.
+ *
+ * El selector era un campo de fecha libre, así que ofrecía los 365 días del
+ * año para marcar asistencia a entrenamientos que solo ocurren tres veces por
+ * semana. Elegir entre los días que existen es más rápido que escribir una
+ * fecha, y no deja marcar un domingo por error.
+ */
+export const DIAS_ENTRENAMIENTO = [1, 2, 4]; // getDay(): 1=lunes, 2=martes, 4=jueves
+
+/** Las últimas `cantidad` fechas de entrenamiento hasta `hasta` (incluida). */
+export function fechasDeEntrenamiento(hasta, cantidad = 6) {
+  const out = [];
+  const d = new Date(hasta + "T12:00:00");
+  while (out.length < cantidad) {
+    if (DIAS_ENTRENAMIENTO.includes(d.getDay())) out.push(d.toISOString().slice(0, 10));
+    d.setDate(d.getDate() - 1);
+  }
+  return out.reverse();
+}
 
 /**
  * Hook para asistencia — guarda en Supabase.
@@ -45,5 +66,49 @@ export function useAttendance(clubId, date) {
     }
   };
 
-  return { present, saving, toggle, load };
+  // Marca a varios de una vez ("marcar todos" / "limpiar"). Uno por uno eran
+  // 124 clics y 124 viajes a la base.
+  const marcarVarios = async (playerIds, valor) => {
+    if (playerIds.length === 0) return;
+    const antes = present;
+    setPresent(p => {
+      const n = { ...p };
+      playerIds.forEach(id => { n[id] = valor; });
+      return n;
+    });
+    if (!isReal) return;
+    const { error } = await supabase.from("attendance").upsert(
+      playerIds.map(id => ({ club_id: clubId, player_id: id, date, present: valor })),
+      { onConflict: "player_id,date" },
+    );
+    if (error) setPresent(antes);
+  };
+
+  return { present, saving, toggle, marcarVarios, load };
+}
+
+/**
+ * Cuántos entrenamientos lleva cada jugador.
+ *
+ * Sirve para ordenar la lista: con el plantel de 124 nombres en orden de
+ * importación, encontrar a alguien es un barrido visual. Los que más vienen
+ * arriba es el orden en que el entrenador los busca.
+ */
+export function useAttendanceStats(clubId) {
+  const [conteo, setConteo] = useState({});
+
+  useEffect(() => {
+    if (!clubId) { setConteo({}); return; }
+    let vivo = true;
+    supabase.from("attendance").select("player_id, present").eq("club_id", clubId).eq("present", true)
+      .then(({ data }) => {
+        if (!vivo) return;
+        const c = {};
+        (data || []).forEach(r => { c[r.player_id] = (c[r.player_id] || 0) + 1; });
+        setConteo(c);
+      });
+    return () => { vivo = false; };
+  }, [clubId]);
+
+  return conteo;
 }

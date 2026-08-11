@@ -4,7 +4,7 @@ import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
-import { useAttendance } from "../lib/useAttendance";
+import { useAttendance, useAttendanceStats, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
 import { useComments } from "../lib/useComments";
 import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
@@ -376,45 +376,130 @@ function PostCard({post, sportColor, onReact, reactions={}, liked=false, onToggl
   );
 }
 
-/* ── AsistenciaGrid ─────────────────────────────────────────── */
-function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, onToggle, fecha, setFecha, hoy}) {
+/* ── AsistenciaGrid ───────────────────────────────────────────
+   Antes: un campo de fecha libre (365 días para tres entrenamientos por
+   semana), 124 tarjetas en el orden de importación y un clic por jugador sin
+   forma de buscar a nadie. Ahora la fecha se elige entre los días que el club
+   entrena, hay buscador, marcado masivo, y los que más han venido salen
+   primero — apenas haya asistencia registrada de dónde sacarlo. ─────────── */
+function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, onToggle, onMarcarVarios, fecha, setFecha, hoy, conteo={}}) {
   const toggle = onToggle || (() => {});
+  const [busca, setBusca]   = useState("");
+  const [ventana, setVentana] = useState(0); // cuántos bloques de fechas hacia atrás
+
+  const tope = ventana === 0 ? hoy : fechasDeEntrenamiento(hoy, 6 * ventana + 1)[0];
+  const fechas = fechasDeEntrenamiento(tope, 6);
   const count = Object.values(present).filter(Boolean).length;
   const diaLargo = fecha
     ? new Date(fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"})
     : null;
+
+  const hayHistorial = Object.keys(conteo).length > 0;
+  const norm = (t) => String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const visibles = players
+    .filter(p => !busca || norm(p.name).includes(norm(busca)))
+    // Con historial, los que más entrenan arriba: es el orden en que el
+    // entrenador los busca. Sin historial, alfabético — el de importación no
+    // significa nada para quien mira la lista.
+    .sort((a,b) => hayHistorial
+      ? (conteo[b.id]||0) - (conteo[a.id]||0) || a.name.localeCompare(b.name)
+      : a.name.localeCompare(b.name));
+
+  const idsVisibles = visibles.map(p => p.id);
+  const todosMarcados = idsVisibles.length > 0 && idsVisibles.every(id => present[id]);
+
+  const chip = (activo) => ({
+    ...ss.btn, flexDirection:"column", gap:"2px", padding:"8px 12px", minWidth:"62px",
+    fontSize:"11px", lineHeight:1.2, cursor:"pointer",
+    background: activo ? `${sportColor}22` : "var(--bg-elev-2)",
+    color:      activo ? sportColor : "var(--text-3)",
+    border: `1px solid ${activo ? sportColor : "var(--border-soft)"}`,
+  });
+
   return (
     <div>
-      {/* La fecha manda: sin ella el entrenador marca a ciegas y no puede
-          corregir el entrenamiento de ayer. */}
       {fecha && (
-        <motion.div {...fadeUp} style={{...ss.card,marginBottom:"12px",display:"flex",alignItems:"center",gap:"12px",flexWrap:"wrap"}}>
-          <span style={{fontSize:"13px",fontWeight:700,textTransform:"capitalize"}}>{diaLargo}</span>
-          {fecha === hoy && <Badge color={sportColor}>Hoy</Badge>}
-          <div style={{flex:1}}/>
-          <input type="date" value={fecha} max={hoy} onChange={e=>setFecha(e.target.value)}
-            style={{...ss.input,width:"auto",fontSize:"12px",padding:"6px 10px",cursor:"pointer",colorScheme:"dark"}}/>
-          {fecha !== hoy && (
-            <button onClick={()=>setFecha(hoy)} style={{...ss.btn,fontSize:"11px",padding:"6px 10px",background:"var(--bg-elev-2)",color:"var(--text-3)",border:"1px solid var(--border-soft)"}}>
-              Volver a hoy
-            </button>
-          )}
+        <motion.div {...fadeUp} style={{...ss.card,marginBottom:"12px"}}>
+          <div style={{display:"flex",alignItems:"center",gap:"10px",flexWrap:"wrap",marginBottom:"12px"}}>
+            <span style={{fontSize:"14px",fontWeight:700,textTransform:"capitalize"}}>{diaLargo}</span>
+            {fecha === hoy && <Badge color={sportColor}>Hoy</Badge>}
+            <div style={{flex:1}}/>
+            <span style={{...ss.muted,fontSize:"11px"}}>El club entrena lunes, martes y jueves</span>
+          </div>
+          <div style={{display:"flex",gap:"6px",alignItems:"center",flexWrap:"wrap"}}>
+            <button onClick={()=>setVentana(v=>v+1)} title="Semanas anteriores"
+              style={{...ss.btn,padding:"8px 10px",fontSize:"12px",background:"var(--bg-elev-2)",color:"var(--text-3)",border:"1px solid var(--border-soft)"}}>←</button>
+            {fechas.map(f => {
+              const d = new Date(f+"T12:00:00");
+              return (
+                <button key={f} onClick={()=>setFecha(f)} style={chip(f===fecha)}>
+                  <span style={{textTransform:"capitalize",fontWeight:700}}>
+                    {d.toLocaleDateString("es-CL",{weekday:"short"}).replace(".","")}
+                  </span>
+                  <span style={{opacity:0.75}}>{f.slice(8,10)}/{f.slice(5,7)}</span>
+                </button>
+              );
+            })}
+            {ventana > 0 && (
+              <button onClick={()=>{setVentana(0);setFecha(hoy);}}
+                style={{...ss.btn,padding:"8px 10px",fontSize:"11px",background:"var(--bg-elev-2)",color:"var(--text-3)",border:"1px solid var(--border-soft)"}}>
+                Volver a hoy
+              </button>
+            )}
+          </div>
         </motion.div>
       )}
+
       <motion.div {...fadeUp} style={{...ss.card,marginBottom:"16px"}}>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:"10px",alignItems:"center"}}>
           <span style={{fontSize:"13px",fontWeight:600}}>Asistencia: {count}/{players.length}</span>
           <span style={{color:sportColor,fontSize:"15px",fontWeight:800,filter:`drop-shadow(0 0 8px ${sportColor}88)`}}>{players.length>0?Math.round(count/players.length*100):0}%</span>
         </div>
         <ProgressBar value={count} max={players.length} color={sportColor} height={8}/>
+        <div style={{display:"flex",gap:"8px",marginTop:"14px",flexWrap:"wrap",alignItems:"center"}}>
+          <input value={busca} onChange={e=>setBusca(e.target.value)} placeholder="Buscar jugador…"
+            style={{...ss.input,flex:1,minWidth:"180px",fontSize:"12px",padding:"8px 12px"}}/>
+          {onMarcarVarios && (
+            <button onClick={()=>onMarcarVarios(idsVisibles, !todosMarcados)}
+              style={{...ss.btn,fontSize:"11px",padding:"8px 12px",background:"var(--bg-elev-2)",color:"var(--text-3)",border:"1px solid var(--border-soft)"}}>
+              {todosMarcados ? "Desmarcar" : "Marcar"} {busca ? `los ${idsVisibles.length}` : "todos"}
+            </button>
+          )}
+        </div>
       </motion.div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:"8px"}}>
-        {players.map((p,i)=>(
-          <motion.div key={p.id} initial={{opacity:0,scale:0.9}} animate={{opacity:1,scale:1}} transition={{duration:0.25,delay:i*0.02}} whileHover={{y:-2,scale:1.02}} whileTap={{scale:0.95}} onClick={()=>{toggle(p.id);if(!present[p.id])showToast(`${p.name} marcado presente`,"success");}} style={{...ss.card,padding:"12px",cursor:"pointer",border:`1px solid ${present[p.id]?sportColor+"66":"var(--border-soft)"}`,background:present[p.id]?`linear-gradient(135deg,${sportColor}22,${sportColor}05)`:"var(--bg-glass)",display:"flex",alignItems:"center",gap:"8px",boxShadow:present[p.id]?`0 0 16px ${sportColor}33`:"none"}}>
-            <span style={{fontSize:"18px"}}>{present[p.id]?"✅":"⬜"}</span>
-            <div style={{fontSize:"12px",fontWeight:600,color:present[p.id]?sportColor:"var(--text-1)"}}>{p.name.split(" ")[0]}</div>
-          </motion.div>
-        ))}
+
+      {visibles.length === 0 && (
+        <div style={{...ss.card,...ss.muted,fontSize:"12px"}}>Nadie coincide con "{busca}".</div>
+      )}
+
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(190px,1fr))",gap:"8px"}}>
+        {visibles.map((p,i)=>{
+          const marcado = !!present[p.id];
+          return (
+            <motion.div key={p.id} initial={{opacity:0,scale:0.96}} animate={{opacity:1,scale:1}}
+              transition={{duration:0.2,delay:Math.min(i,20)*0.015}}
+              whileHover={{y:-2}} whileTap={{scale:0.97}}
+              onClick={()=>{toggle(p.id);if(!marcado)showToast(`${p.name} presente`,"success");}}
+              style={{...ss.card,padding:"12px 14px",cursor:"pointer",opacity:saving[p.id]?0.6:1,
+                border:`1px solid ${marcado?sportColor+"66":"var(--border-soft)"}`,
+                background:marcado?`linear-gradient(135deg,${sportColor}22,${sportColor}05)`:"var(--bg-glass)",
+                display:"flex",alignItems:"center",gap:"10px",
+                boxShadow:marcado?`0 0 16px ${sportColor}33`:"none"}}>
+              <span style={{fontSize:"18px",flexShrink:0}}>{marcado?"✅":"⬜"}</span>
+              <div style={{minWidth:0,flex:1}}>
+                {/* El nombre completo: "Manzanares" aparecía dos veces en el
+                    plantel y no había cómo saber cuál era cuál. */}
+                <div style={{fontSize:"12.5px",fontWeight:600,color:marcado?sportColor:"var(--text-1)",
+                  overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
+                {hayHistorial && (
+                  <div style={{...ss.muted,fontSize:"10px",marginTop:"1px"}}>
+                    {conteo[p.id]||0} entrenamiento{(conteo[p.id]||0)===1?"":"s"}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
@@ -908,8 +993,15 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   // ni dejaba cambiarla: marcabas cruces sin saber de qué día eran y no había
   // forma de mirar el entrenamiento del martes pasado.
   const today = new Date().toISOString().split("T")[0];
-  const [fechaAsistencia, setFechaAsistencia] = useState(today);
-  const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, load: loadAttendance } = useAttendance(clubId, fechaAsistencia);
+  // Si hoy no se entrena (un miércoles, un sábado), abre en el último día que
+  // sí — que es el que el entrenador viene a corregir.
+  const [fechaAsistencia, setFechaAsistencia] = useState(
+    () => DIAS_ENTRENAMIENTO.includes(new Date(today+"T12:00:00").getDay())
+      ? today
+      : fechasDeEntrenamiento(today, 1)[0],
+  );
+  const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, marcarVarios: attendanceMarcarVarios, load: loadAttendance } = useAttendance(clubId, fechaAsistencia);
+  const attendanceConteo = useAttendanceStats(clubId);
 
   // Cargar asistencia del día al montar y cuando cambia la fecha/club
   useEffect(() => { loadAttendance(); }, [loadAttendance]);
@@ -1045,7 +1137,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today}/></div>;
+  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} onMarcarVarios={attendanceMarcarVarios} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today} conteo={attendanceConteo}/></div>;
 
   if(module==="salud") return (
     <div>
