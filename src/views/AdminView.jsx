@@ -14,6 +14,7 @@ import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
 import FinanzasView from "../components/FinanzasView";
 import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
+import { clave, contieneNombre } from "../lib/vincularArusa";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
@@ -219,12 +220,24 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   };
 
   const approveRequest = async (req) => {
+    // Si el club ya tiene su ficha —el plantel se cargó desde ARUSA antes de
+    // que existieran las cuentas— la invitación apunta a ella. Si no, el link
+    // genérico crearía un jugador nuevo y quedarían dos del mismo. Solo cuando
+    // hay una única candidata: con dos, entregarle la equivocada le daría la
+    // asistencia y los tries de otra persona.
+    const k = clave(req.nombre);
+    const candidatas = k.size >= 2
+      ? players.filter(p => !p.profile_id && contieneNombre(k, clave(p.name)))
+      : [];
+    const fichaExistente = candidatas.length === 1 ? candidatas[0] : null;
+
     const base  = window.location.origin;
     const exp   = Date.now() + 48 * 60 * 60 * 1000;
     const token = Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,8).toUpperCase();
 
     const { error: invErr } = await supabase.from("invitations").insert({
       token, club_id: clubId, rol: "jugador", cats: req.categoria || "",
+      player_id: fichaExistente?.id || null,
       created_by: currentUser?.id || null, expires_at: new Date(exp).toISOString(),
     });
     if (invErr) { showToast("Error al aprobar la solicitud","warning"); return; }
@@ -236,7 +249,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     const nameParam = encodeURIComponent(club?.name || "");
     const invParam  = currentUser?.id ? `&inviter=${currentUser.id}` : "";
     const invLink   = `${base}/?token=${token}&rol=jugador&club=${clubId||""}&name=${nameParam}&sport=${sport}&cats=${catsParam}${invParam}&exp=${exp}`;
-    setApprovedReq({ request: req, invLink });
+    setApprovedReq({ request: req, invLink, ficha: fichaExistente });
   };
 
   const rejectRequest = async (req) => {
@@ -948,6 +961,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
               <div style={{fontWeight:800,fontSize:"16px",marginBottom:"6px"}}>✅ Solicitud aprobada</div>
               <div style={{fontSize:"13px",color:"var(--text-2)",marginBottom:"16px"}}>
                 Envíale este link a <strong>{approvedReq.request.nombre}</strong> ({approvedReq.request.email}) para que cree su cuenta en SportOS.
+              </div>
+              <div style={{fontSize:"11px",color:"var(--text-3)",marginBottom:"12px"}}>
+                {approvedReq.ficha
+                  ? <>Se conectará con la ficha de <strong>{approvedReq.ficha.name}</strong> que ya está en el plantel, así conserva su asistencia y sus estadísticas.</>
+                  : "No encontramos una ficha suya en el plantel, así que se le creará una nueva al entrar."}
               </div>
               <div style={{fontFamily:"monospace",fontSize:"11px",color:"#22C55E",padding:"10px 12px",background:"rgba(34,197,94,0.08)",borderRadius:"var(--r-sm)",border:"1px solid rgba(34,197,94,0.2)",wordBreak:"break-all",marginBottom:"14px"}}>
                 {approvedReq.invLink}

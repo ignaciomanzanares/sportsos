@@ -114,9 +114,11 @@ function posAbbr(pos) {
   // toda la pantalla con "Cannot read properties of null").
   const p = (pos || "").toLowerCase();
   if (p.includes("portero") || p.includes("arquero") || p.includes("goalkeeper")) return "POR";
-  if (p.includes("delantero") || p.includes("ala") || p.includes("forward") || p.includes("fullback") || p.includes("tries")) return "DEL";
-  if (p.includes("medio") || p.includes("apertura") || p.includes("scrum") || p.includes("centro") || p.includes("half")) return "MED";
-  if (p.includes("defensa") || p.includes("flanker") || p.includes("lock") || p.includes("prop") || p.includes("hooker") || p.includes("número")) return "DEF";
+  // Los puestos de rugby vienen en inglés (Wing, Centre, Number 8): "wing" no
+  // contiene "ala" y "centre" no contiene "centro", así que caían todos en MED.
+  if (p.includes("wing") || p.includes("delantero") || p.includes("ala") || p.includes("forward") || p.includes("fullback") || p.includes("tries")) return "DEL";
+  if (p.includes("medio") || p.includes("apertura") || p.includes("scrum") || p.includes("centro") || p.includes("centre") || p.includes("half")) return "MED";
+  if (p.includes("defensa") || p.includes("flanker") || p.includes("lock") || p.includes("prop") || p.includes("hooker") || p.includes("número") || p.includes("number 8")) return "DEF";
   return "MED";
 }
 

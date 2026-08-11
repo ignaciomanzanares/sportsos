@@ -1,0 +1,2666 @@
+{
+"54168101": {
+"p": "CENTER",
+"s": "WING",
+"d": "primera",
+"n": "Benjamín Escobedo"
+},
+"54168108": {
+"p": "FULLBACK",
+"s": "WING",
+"d": "primera",
+"n": "Benjamin Sandoval"
+},
+"54168107": {
+"p": "PROP",
+"d": "primera",
+"n": "Clemente Ulloa Soto"
+},
+"54168222": {
+"p": "LOCK",
+"d": "primera",
+"n": "Diego Lagos Pimstein"
+},
+"54167817": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Eduardo Antonio Orpis Ramírez"
+},
+"54168241": {
+"p": "PROP",
+"d": "primera",
+"n": "enzo neglia"
+},
+"54168249": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "primera",
+"n": "Felipe Andrés Beltrán Bucarey"
+},
+"54168132": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Franco Costantino Roger"
+},
+"54189004": {
+"p": "CENTER",
+"d": "primera",
+"n": "Gonzalo Lara Mehech"
+},
+"54168250": {
+"p": "LOCK",
+"s": "FLANKER",
+"d": "primera",
+"n": "Ignacio Soublette"
+},
+"54256610": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Iñaki de Urruticoechea Valenzuela"
+},
+"54168252": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Jan Hasenlechner"
+},
+"54168253": {
+"p": "PROP",
+"d": "primera",
+"n": "Jorge Araya Morales"
+},
+"54168278": {
+"p": "WING",
+"s": "CENTER",
+"d": "primera",
+"n": "José Ignacio Escobedo Leiva"
+},
+"54168258": {
+"p": "LOCK",
+"d": "primera",
+"n": "Juan Pablo Beheran Castro"
+},
+"54168122": {
+"p": "FULLBACK",
+"s": "FLY_HALF",
+"d": "primera",
+"n": "Lucas Sandoval Pino"
+},
+"54168118": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "Martin De Oto Davids"
+},
+"54168127": {
+"p": "CENTER",
+"d": "primera",
+"n": "Martin Escobar"
+},
+"54168193": {
+"p": "WING",
+"d": "primera",
+"n": "Rodrigo Araya"
+},
+"54168185": {
+"p": "FLANKER",
+"d": "primera",
+"n": "SEBASTIAN GONZALEZ REISS"
+},
+"54168178": {
+"p": "WING",
+"d": "primera",
+"n": "Tomas Fuentes bernal"
+},
+"54168171": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "primera",
+"n": "Tomas Rivera"
+},
+"54168162": {
+"p": "PROP",
+"d": "primera",
+"n": "Vicente Codorniu"
+},
+"54167824": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Vicente Contreras"
+},
+"54158490": {
+"p": "FLANKER",
+"s": "PROP",
+"d": "primera",
+"n": "Andro Kovacic"
+},
+"54200315": {
+"p": "PROP",
+"d": "primera",
+"n": "benjamin moreno millas"
+},
+"54200312": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Clemente Armstrong Rios"
+},
+"54158488": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "cristobal atenas parra"
+},
+"54162583": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "primera",
+"n": "Cristobal Rene Lagos Nazal"
+},
+"54158498": {
+"p": "CENTER",
+"d": "primera",
+"n": "Cristobal serrano roman"
+},
+"54158496": {
+"p": "LOCK",
+"d": "primera",
+"n": "Diego Pinochet Sinsay"
+},
+"54158505": {
+"p": "PROP",
+"d": "primera",
+"n": "Diego Zamora fantuzzi"
+},
+"54158489": {
+"p": "LOCK",
+"d": "primera",
+"n": "Domingo Montan Moreno"
+},
+"54158491": {
+"p": "PROP",
+"d": "primera",
+"n": "Fernando Javier Sahady Molina"
+},
+"54158494": {
+"p": "WING",
+"d": "primera",
+"n": "Franco Rossi Santibañez"
+},
+"54162580": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "German Oelckers Daccarett"
+},
+"54158487": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Gonzalo Cordova Diemer"
+},
+"54158506": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Ignacio Arias Rivera"
+},
+"54162576": {
+"p": "WING",
+"d": "primera",
+"n": "Ignacio Giacaman Sabal"
+},
+"54162589": {
+"p": "LOCK",
+"d": "primera",
+"n": "joaquin cornejo calaf"
+},
+"54162598": {
+"p": "FLANKER",
+"s": "NUMBER_8",
+"d": "primera",
+"n": "Joaquín Ignacio Texidó Petzold"
+},
+"54162579": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "primera",
+"n": "joseph uauy zirinsky"
+},
+"54158495": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "primera",
+"n": "Manuel Andrés Arellano Ferrer"
+},
+"54162585": {
+"p": "CENTER",
+"d": "primera",
+"n": "Martin Leiva"
+},
+"54162582": {
+"p": "CENTER",
+"d": "primera",
+"n": "Nicolas Alvarez Romo"
+},
+"54162601": {
+"p": "WING",
+"d": "primera",
+"n": "Nicolas Papasideris Barbosa"
+},
+"54158486": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Pedro Pablo Arias Rivera"
+},
+"54158492": {
+"p": "WING",
+"s": "CENTER",
+"d": "primera",
+"n": "Renato Sebastian Arias Rivera"
+},
+"54162581": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Roberto Melo Zolezzi"
+},
+"54162584": {
+"p": "NUMBER_8",
+"s": "PROP",
+"d": "primera",
+"n": "Santiago Montan Moreno"
+},
+"54158509": {
+"p": "FLY_HALF",
+"s": "SCRUM_HALF",
+"d": "primera",
+"n": "Tomas Serrano Roman"
+},
+"54144637": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Antonio Andrés Bozzolo Kullmer"
+},
+"54144886": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Benjamín Goñi Hartard"
+},
+"54144903": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Clemente Barrios"
+},
+"54158813": {
+"p": "WING",
+"s": "CENTER",
+"d": "primera",
+"n": "diego verdugo chahud"
+},
+"54189595": {
+"p": "WING",
+"d": "primera",
+"n": "Federico Kennedy"
+},
+"54144920": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "primera",
+"n": "Gabriel Ljubetic Carzoglio"
+},
+"54144934": {
+"p": "FLANKER",
+"s": "CENTER",
+"d": "primera",
+"n": "Ian Otersen Kanaan"
+},
+"54144956": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Jose Tomas Silva Lobo"
+},
+"54164468": {
+"p": "LOCK",
+"s": "PROP",
+"d": "primera",
+"n": "Lucas Haddad Domingo"
+},
+"54145235": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Mateo Carvajal"
+},
+"54158978": {
+"p": "LOCK",
+"d": "primera",
+"n": "Mauro Saez"
+},
+"54161159": {
+"p": "WING",
+"d": "primera",
+"n": "Maximiliano Robles"
+},
+"54161202": {
+"p": "LOCK",
+"d": "primera",
+"n": "Nicolas Yañez Ureta"
+},
+"54259350": {
+"p": "PROP",
+"d": "primera",
+"n": "pablo huete cibrario"
+},
+"54271097": {
+"p": "CENTER",
+"d": "primera",
+"n": "Pastor Melo"
+},
+"54158967": {
+"p": "CENTER",
+"d": "primera",
+"n": "Santiago Ostornol"
+},
+"54145070": {
+"p": "PROP",
+"d": "primera",
+"n": "Sebastian Valech Alonso"
+},
+"54145258": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "Tomas Andres Alvarado Duclos"
+},
+"54145262": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Vicente Ayarza Saporta"
+},
+"54145264": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Vicente Huete Larrain"
+},
+"54168453": {
+"p": "WING",
+"s": "FULLBACK",
+"d": "primera",
+"n": "Agustin Alonso Game Jimenez"
+},
+"54168458": {
+"p": "PROP",
+"d": "primera",
+"n": "Aldair Márquez cahuana"
+},
+"54168461": {
+"p": "LOCK",
+"d": "primera",
+"n": "Allen Felipe Ruminot Cabezas"
+},
+"54189864": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "primera",
+"n": "Benjamin Soto Besamat"
+},
+"54168455": {
+"p": "WING",
+"d": "primera",
+"n": "Cristobal Martinez Estay"
+},
+"54168464": {
+"p": "LOCK",
+"d": "primera",
+"n": "Cristobal Nicolas Rivas Urra"
+},
+"54168463": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Daivis Leonel Alejandro Guzman Rodriguez"
+},
+"54189865": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "Diego Pierart"
+},
+"54168475": {
+"p": "PROP",
+"d": "primera",
+"n": "Fabian Andre Lagos Figueroa"
+},
+"54189867": {
+"p": "CENTER",
+"d": "primera",
+"n": "Felipe Neira Spoerer"
+},
+"54168486": {
+"p": "CENTER",
+"d": "primera",
+"n": "Francisco Rivas Urra"
+},
+"54168472": {
+"p": "PROP",
+"d": "primera",
+"n": "Gonzalo Andrés Reyes Jofré"
+},
+"54168479": {
+"p": "PROP",
+"d": "primera",
+"n": "Gonzalo Sepulveda Manquecura"
+},
+"54168469": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Hermes Didier Pressta"
+},
+"54168457": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Joaquín Ignacio Dibán Herrera"
+},
+"54168498": {
+"p": "FLANKER",
+"s": "LOCK",
+"d": "primera",
+"n": "Juan Pablo Castro Viganego"
+},
+"54168483": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Lucas Gastón Rubilar"
+},
+"54168477": {
+"p": "LOCK",
+"d": "primera",
+"n": "Lucca Marchini Yunis"
+},
+"54168488": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Luciano Nuñez Gonzalez"
+},
+"54168484": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Renzo Marchini Yunis"
+},
+"54168480": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Sebastian Ramirez Coll"
+},
+"54158908": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Augusto Villanueva Barrera"
+},
+"54158916": {
+"p": "PROP",
+"d": "primera",
+"n": "Benjamin Canales Rivas"
+},
+"54158905": {
+"p": "CENTER",
+"d": "primera",
+"n": "caleb moran"
+},
+"54148197": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Franco Scassi-Buffa Gonzalez"
+},
+"54157532": {
+"p": "WING",
+"d": "primera",
+"n": "Giorgio Moltedo Fonzo"
+},
+"54148199": {
+"p": "PROP",
+"d": "primera",
+"n": "Gonzalo Valenzuela Kerestegian"
+},
+"54162331": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Ignacio Berrios"
+},
+"54148198": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Joaquín José Troncoso Rubín"
+},
+"54148035": {
+"p": "LOCK",
+"s": "PROP",
+"d": "primera",
+"n": "Juan Rivera Manzor"
+},
+"54157536": {
+"p": "CENTER",
+"d": "primera",
+"n": "Julián Troncoso Rubín"
+},
+"54162612": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Luis Sottovia Villanueva"
+},
+"54148027": {
+"p": "PROP",
+"d": "primera",
+"n": "Marco Díaz Alvarado"
+},
+"54148194": {
+"p": "WING",
+"d": "primera",
+"n": "Mauro Mazzino Barbagelata"
+},
+"54162335": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "Raimundo Maurel Cardemil"
+},
+"54157537": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Raul Silva Barbosa"
+},
+"54159826": {
+"p": "WING",
+"d": "primera",
+"n": "renzo vercellino saenz"
+},
+"54148193": {
+"p": "LOCK",
+"d": "primera",
+"n": "Sebastian Mayral De Micheli"
+},
+"54148032": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Sebastián Novoa Espinosa"
+},
+"54148037": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Sebastian Rojas Ramirez de Arellano"
+},
+"54148189": {
+"p": "WING",
+"s": "CENTER",
+"d": "primera",
+"n": "Vicente Gorichon Crestuzzo"
+},
+"54148029": {
+"p": "WING",
+"d": "primera",
+"n": "Vicente López"
+},
+"54164699": {
+"p": "CENTER",
+"d": "primera",
+"n": "Andrei Cherniavsky Bonacic"
+},
+"54164717": {
+"p": "PROP",
+"d": "primera",
+"n": "benjamin frias davila"
+},
+"54164710": {
+"p": "FLY_HALF",
+"s": "FULLBACK",
+"d": "primera",
+"n": "Diego Arturo Espinoza Merino"
+},
+"54164714": {
+"p": "PROP",
+"d": "primera",
+"n": "Enrique Faúndez Saldaño"
+},
+"54164675": {
+"p": "LOCK",
+"d": "primera",
+"n": "filippo borghi"
+},
+"54204496": {
+"p": "PROP",
+"d": "primera",
+"n": "Francisco Eduardo Bastias Manquian"
+},
+"54164759": {
+"p": "FLY_HALF",
+"s": "FULLBACK",
+"d": "primera",
+"n": "Francisco Urroz"
+},
+"54164739": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "Gerard Martin Amar"
+},
+"54164736": {
+"p": "WING",
+"d": "primera",
+"n": "Ignacio Manzanares"
+},
+"54164735": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Joaquin Manzanares"
+},
+"54164757": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Jose Miguel Sánchez"
+},
+"54164715": {
+"p": "WING",
+"s": "CENTER",
+"d": "primera",
+"n": "José Pablo Fernández Thiers"
+},
+"54164726": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Juan Harttig"
+},
+"54164691": {
+"p": "FLY_HALF",
+"s": "FULLBACK",
+"d": "primera",
+"n": "Juan Pablo Coddou Reyes"
+},
+"54164745": {
+"p": "FLANKER",
+"s": "NUMBER_8",
+"d": "primera",
+"n": "Karim Mosa Yousef"
+},
+"54164723": {
+"p": "LOCK",
+"s": "FLANKER",
+"d": "primera",
+"n": "Lorenzo Gaspar Gutiérrez Saitua"
+},
+"54164725": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Manuel Harttig"
+},
+"54166562": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "primera",
+"n": "Matias Cardenas"
+},
+"54164662": {
+"p": "LOCK",
+"d": "primera",
+"n": "Nicolas Antonucci Sole"
+},
+"54164747": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Pablo O'Brien Gallegos"
+},
+"54256628": {
+"p": "PROP",
+"d": "primera",
+"n": "Rafael Barrena Botto"
+},
+"54164679": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Renzo Bozzo Molina"
+},
+"54164748": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Santiago Perez Rasmussen"
+},
+"54164751": {
+"p": "FULLBACK",
+"s": "CENTER",
+"d": "primera",
+"n": "SANTIAGO PRAT PAPIC"
+},
+"54164743": {
+"p": "WING",
+"d": "primera",
+"n": "Thomas Mateluna"
+},
+"54164663": {
+"p": "WING",
+"d": "primera",
+"n": "Tomás Alonso"
+},
+"54164761": {
+"p": "CENTER",
+"d": "primera",
+"n": "Tomás Yáñez"
+},
+"54164762": {
+"p": "WING",
+"d": "primera",
+"n": "tomas zehnder novoa"
+},
+"54164721": {
+"p": "PROP",
+"d": "primera",
+"n": "Vicente Gómez"
+},
+"54164749": {
+"p": "LOCK",
+"d": "primera",
+"n": "Vicente Pérez Neumann"
+},
+"54164756": {
+"p": "FLANKER",
+"s": "NUMBER_8",
+"d": "primera",
+"n": "Vicente San Martín Manriquez"
+},
+"54166816": {
+"p": "PROP",
+"d": "primera",
+"n": "Angelo Alvarado Rojas"
+},
+"54169908": {
+"p": "PROP",
+"d": "primera",
+"n": "aquilino alonso landa"
+},
+"54167666": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Bruno Vargas"
+},
+"54168666": {
+"p": "PROP",
+"d": "primera",
+"n": "Carlos Delgado"
+},
+"54171093": {
+"p": "CENTER",
+"d": "primera",
+"n": "Cristóbal Eduardo Ramírez Lazo"
+},
+"54167663": {
+"p": "CENTER",
+"s": "FULLBACK",
+"d": "primera",
+"n": "Damian Fliegel"
+},
+"54226792": {
+"p": "WING",
+"d": "primera",
+"n": "Felipe Brangier Valdivia"
+},
+"54166755": {
+"p": "FULLBACK",
+"s": "WING",
+"d": "primera",
+"n": "iñaki tuset mercier"
+},
+"54166789": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Iñigo Fernandez Zegers"
+},
+"54161743": {
+"p": "FLANKER",
+"d": "primera",
+"n": "joaquín eduardo bórquez morales"
+},
+"54166754": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Joaquin Milesi"
+},
+"54166781": {
+"p": "CENTER",
+"d": "primera",
+"n": "Juan Cruz Ianchina"
+},
+"54168663": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "primera",
+"n": "Juan Ignacio Piña Naudon"
+},
+"54159415": {
+"p": "FLY_HALF",
+"s": "SCRUM_HALF",
+"d": "primera",
+"n": "Lukas Carvallo Rauff"
+},
+"54167731": {
+"p": "FLANKER",
+"s": "NUMBER_8",
+"d": "primera",
+"n": "Manuel González Briones"
+},
+"54167660": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Matías Piña Naudon"
+},
+"54166776": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "primera",
+"n": "Polo Jerez herrera"
+},
+"54166812": {
+"p": "WING",
+"d": "primera",
+"n": "Rae Arce Correa"
+},
+"54205976": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "RENAN SALAS BRICEÑO"
+},
+"54159416": {
+"p": "LOCK",
+"d": "primera",
+"n": "Sebastian Benard Fernández"
+},
+"54159419": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Sebastian Cortes Berrios"
+},
+"54166794": {
+"p": "LOCK",
+"d": "primera",
+"n": "Vicente agustin Fernández canales"
+},
+"54168346": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Agustin Porro Carballo"
+},
+"54168372": {
+"p": "FULLBACK",
+"s": "FLY_HALF",
+"d": "primera",
+"n": "Alvaro Latorre Tapia"
+},
+"54168333": {
+"p": "WING",
+"d": "primera",
+"n": "Emanuel Brane Romero"
+},
+"54168308": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Fernando Meyer Hormaechea"
+},
+"54168358": {
+"p": "CENTER",
+"d": "primera",
+"n": "Gaspar sandoval ortega"
+},
+"54168368": {
+"p": "PROP",
+"d": "primera",
+"n": "Juan Pablo Gómez Miranda"
+},
+"54168322": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "primera",
+"n": "Lorenzo Cicarelli"
+},
+"54168363": {
+"p": "LOCK",
+"d": "primera",
+"n": "Lucas Zavala Hormaecea"
+},
+"54168360": {
+"p": "CENTER",
+"d": "primera",
+"n": "Martín Jackson Georgi"
+},
+"54202516": {
+"p": "LOCK",
+"d": "primera",
+"n": "Martín Zavala Hormaechea"
+},
+"54168299": {
+"p": "LOCK",
+"d": "primera",
+"n": "Matías Iker Zavala Hormaechea"
+},
+"54168367": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Matias Vega García"
+},
+"54168362": {
+"p": "WING",
+"d": "primera",
+"n": "Sebastián Alvarado Musso"
+},
+"54230413": {
+"p": "PROP",
+"d": "primera",
+"n": "sebastian ibarra"
+},
+"54168309": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Sergio Toro Martinic"
+},
+"54168351": {
+"p": "FLANKER",
+"d": "primera",
+"n": "TOMAS AYALA PLAZA"
+},
+"54168330": {
+"p": "FLY_HALF",
+"s": "SCRUM_HALF",
+"d": "primera",
+"n": "Vicente Laborde Larrondo"
+},
+"54168352": {
+"p": "SCRUM_HALF",
+"s": "WING",
+"d": "primera",
+"n": "Vicente Pérez Marholz"
+},
+"54166017": {
+"p": "PROP",
+"d": "primera",
+"n": "Alvaro Tejos"
+},
+"54192051": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Benjamin Soto Madrigal"
+},
+"54166064": {
+"p": "PROP",
+"d": "primera",
+"n": "Christian Duarte Ortega"
+},
+"54166025": {
+"p": "CENTER",
+"d": "primera",
+"n": "Christian Huerta Moraga"
+},
+"54161316": {
+"p": "PROP",
+"d": "primera",
+"n": "Claudio Fernando Iturra Ureta"
+},
+"54153963": {
+"p": "CENTER",
+"d": "primera",
+"n": "Felipe Alberto Flores Puelma"
+},
+"54154174": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "Felipe Rouret Bueno"
+},
+"54166066": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Francisco Vera"
+},
+"54153958": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Gabriel Acuña Quinteros"
+},
+"54166020": {
+"p": "LOCK",
+"d": "primera",
+"n": "Gael León Gómez Pérez"
+},
+"54168201": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Germán Herrera Luhrs"
+},
+"54153961": {
+"p": "PROP",
+"d": "primera",
+"n": "Ignacio Flores Vásquez"
+},
+"54166060": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Ignacio Silva Aninat"
+},
+"54232647": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "Inti Rai Ubeda Velez"
+},
+"54154357": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "primera",
+"n": "Javier Alonso Cifuentes Chilovitis"
+},
+"54166021": {
+"p": "FLY_HALF",
+"s": "CENTER",
+"d": "primera",
+"n": "Joaquín Huici Espinosa"
+},
+"54232649": {
+"p": "PROP",
+"d": "primera",
+"n": "Juan Ignacio Letelier fuentes"
+},
+"54154151": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "primera",
+"n": "Maximiliano Leiva Angerstein"
+},
+"54166102": {
+"p": "WING",
+"d": "primera",
+"n": "Pedro Pablo Ubeda Velez"
+},
+"54168147": {
+"p": "WING",
+"d": "primera",
+"n": "Pedro Sepúlveda Leyton"
+},
+"54161062": {
+"p": "LOCK",
+"d": "primera",
+"n": "Rodrigo Cabrera fuentes"
+},
+"54166103": {
+"p": "PROP",
+"d": "primera",
+"n": "Samuel Cerón Parra"
+},
+"54160983": {
+"p": "WING",
+"d": "primera",
+"n": "Tomas Cabello Troncoso"
+},
+"54167777": {
+"p": "WING",
+"d": "primera",
+"n": "Tomas Norambuena France"
+},
+"54167489": {
+"p": "FULLBACK",
+"d": "primera",
+"n": "Agustin Infante Ledezma"
+},
+"54167518": {
+"p": "PROP",
+"d": "primera",
+"n": "Andres Bisquertt Hudson"
+},
+"54232683": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Bastián González Muñoz"
+},
+"54168195": {
+"p": "WING",
+"d": "primera",
+"n": "Benjamin Perez Figueroa"
+},
+"54167616": {
+"p": "FLY_HALF",
+"d": "primera",
+"n": "diego perrotta camus"
+},
+"54167566": {
+"p": "WING",
+"d": "primera",
+"n": "Elías Bruchfeld Gurovich"
+},
+"54167624": {
+"p": "CENTER",
+"d": "primera",
+"n": "felipe antonio chavez alarcon"
+},
+"54167554": {
+"p": "CENTER",
+"d": "primera",
+"n": "gustavo alfonso benko cornjeo"
+},
+"54167622": {
+"p": "WING",
+"s": "CENTER",
+"d": "primera",
+"n": "Ignacio Perrotta Camus"
+},
+"54167618": {
+"p": "WING",
+"d": "primera",
+"n": "Jaime Andrés Escobar Radic"
+},
+"54168189": {
+"p": "PROP",
+"d": "primera",
+"n": "José Munita Williams"
+},
+"54167605": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Juan andres Lladser etienne"
+},
+"54167606": {
+"p": "NUMBER_8",
+"d": "primera",
+"n": "JUAN PABLO DUHALDE PLAZA"
+},
+"54167608": {
+"p": "SCRUM_HALF",
+"d": "primera",
+"n": "Juan Pablo Perrotta"
+},
+"54168168": {
+"p": "CENTER",
+"d": "primera",
+"n": "Matias Gonzalez Alcoholado"
+},
+"54167601": {
+"p": "PROP",
+"d": "primera",
+"n": "Matias ZAPATA LIZAMA"
+},
+"54167603": {
+"p": "LOCK",
+"d": "primera",
+"n": "Maximiliano Silva Radnic"
+},
+"54167602": {
+"p": "LOCK",
+"d": "primera",
+"n": "nicolas paredes benavente"
+},
+"54167599": {
+"p": "PROP",
+"d": "primera",
+"n": "Rufino Costa Echeverria"
+},
+"54189912": {
+"p": "HOOKER",
+"d": "primera",
+"n": "Sebastian Parra Hartard"
+},
+"54167604": {
+"p": "FLANKER",
+"s": "LOCK",
+"d": "primera",
+"n": "Tomas Gonzalez Hojas"
+},
+"54167545": {
+"p": "FLANKER",
+"d": "primera",
+"n": "Tomas Silva"
+},
+"54168213": {
+"p": "PROP",
+"d": "intermedia",
+"n": "alejandro gabler toso"
+},
+"54168091": {
+"p": "HOOKER",
+"s": "NUMBER_8",
+"d": "intermedia",
+"n": "Andrés Vial Aldridge"
+},
+"54168124": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Clemente Vásquez"
+},
+"54168215": {
+"p": "FULLBACK",
+"s": "PROP",
+"d": "intermedia",
+"n": "Cristobal Besoain"
+},
+"54168218": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Cristobal Vidal Trucco"
+},
+"54168220": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Diego alliende sylleros"
+},
+"54168224": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Diego Martinez"
+},
+"54190103": {
+"p": "WING",
+"d": "intermedia",
+"n": "Fernando López Rossi"
+},
+"54168236": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Francisco Augusto Acevedo Villouta"
+},
+"54168238": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Francisco Figueroa Viteri"
+},
+"54168251": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Ignacio Bravo Cuchacovich"
+},
+"54168126": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Juan Pablo Labbe"
+},
+"54201867": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "intermedia",
+"n": "JULIAN MANZUR"
+},
+"54168115": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Lucas Munoz"
+},
+"54168204": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Max Whiting Gutierrez"
+},
+"54168207": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Nicolás Donoso Cuevas"
+},
+"54168202": {
+"p": "WING",
+"d": "intermedia",
+"n": "Pedro Pichara"
+},
+"54168199": {
+"p": "LOCK",
+"s": "FLANKER",
+"d": "intermedia",
+"n": "Pedro Radrigan"
+},
+"54168206": {
+"p": "FULLBACK",
+"s": "WING",
+"d": "intermedia",
+"n": "rodolfo ivan loyola jeria"
+},
+"54230369": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "intermedia",
+"n": "Tomás Fyfe Pinto"
+},
+"54168170": {
+"p": "WING",
+"d": "intermedia",
+"n": "Tomas Morgan Dallan"
+},
+"54162599": {
+"p": "FULLBACK",
+"s": "WING",
+"d": "intermedia",
+"n": "Andrew Yorston Jeretic"
+},
+"54165503": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Benjamin Sotomayor paredes"
+},
+"54162594": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Borja Cummins Garcia"
+},
+"54162588": {
+"p": "CENTER",
+"s": "FULLBACK",
+"d": "intermedia",
+"n": "Bruno Passalacqua Dominguez"
+},
+"54238635": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "Christian Gatica"
+},
+"54158512": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Clemente Escudero Urtubia"
+},
+"54158499": {
+"p": "FULLBACK",
+"s": "FLY_HALF",
+"d": "intermedia",
+"n": "Clemente Ramirez Valcarce"
+},
+"54189714": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Diego Yáñez Figueroa"
+},
+"54158501": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Facundo Victoria Barros"
+},
+"54162578": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Gonzalo Antonio Aguilera Munizaga"
+},
+"54165504": {
+"p": "WING",
+"d": "intermedia",
+"n": "Ignacio Mena Ehrenfeld"
+},
+"54162604": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Jordi Sancho"
+},
+"54162577": {
+"p": "WING",
+"d": "intermedia",
+"n": "José Miguel Alcerreca del Río"
+},
+"54167724": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Martin Alejandro Lagos Nazal"
+},
+"54158503": {
+"p": "NUMBER_8",
+"s": "FLANKER",
+"d": "intermedia",
+"n": "Martin Andres Osorio Perez"
+},
+"54165897": {
+"p": "WING",
+"s": "CENTER",
+"d": "intermedia",
+"n": "Nicolas Degollada Zarate"
+},
+"54162602": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Nicolás Francisco Rojas Martin"
+},
+"54158504": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Nicolas Manriquez marcos"
+},
+"54162609": {
+"p": "WING",
+"d": "intermedia",
+"n": "Nicolas Salazar calcagno"
+},
+"54165510": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Pablo ignacio Correa Cortés"
+},
+"54162587": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "intermedia",
+"n": "Pedro Pablo Rothmann Robinson"
+},
+"54162595": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Santiago Ramos"
+},
+"54162610": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Sebastián Berner Carrasco"
+},
+"54158511": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Sebastián Ghawali Pérez"
+},
+"54162603": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Tomas Aparicio"
+},
+"54162586": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Tomas Passalacqua"
+},
+"54158493": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "intermedia",
+"n": "Vicente Alcaino Sepulveda"
+},
+"54158809": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "Clemente Romo Schweitzer"
+},
+"54158823": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Jaime Ignacio Soler Muñoz"
+},
+"54144971": {
+"p": "WING",
+"d": "intermedia",
+"n": "Leonardo Valdes Gajardo"
+},
+"54144975": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Lorenzo Huete Larrain"
+},
+"54145026": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Lucas Gil Sanchez"
+},
+"54145233": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Martin Grunwald Mollenhauer"
+},
+"54145234": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Martín Hurtado Cable"
+},
+"54164424": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Maximiliano Campos Astorquiza"
+},
+"54159009": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "rafael silva"
+},
+"54145248": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Raimundo Gigoux Brunner"
+},
+"54167815": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Santiago Wood Urenda"
+},
+"54145250": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Sebastián Saieh Aravena"
+},
+"54145254": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "thomas cooper mehech"
+},
+"54161096": {
+"p": "WING",
+"d": "intermedia",
+"n": "Tomás Meiser Lorda"
+},
+"54161254": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Vicente Lozano Moore"
+},
+"54168508": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "Agustin Heredia Postel"
+},
+"54168468": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Bruno Cáceres Catalán"
+},
+"54168494": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Claudio Infante Pozas"
+},
+"54168452": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Clemente Barría Trebilcock"
+},
+"54168510": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Cristian Arriagada martinez"
+},
+"54168511": {
+"p": "WING",
+"d": "intermedia",
+"n": "Diego Martínez Zirpel"
+},
+"54168492": {
+"p": "WING",
+"d": "intermedia",
+"n": "Emilio Game Jiménez"
+},
+"54259634": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Francisco Martinez Zirpel"
+},
+"54189889": {
+"p": "LOCK",
+"s": "FLANKER",
+"d": "intermedia",
+"n": "Francisco Xavier Montivero"
+},
+"54168491": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Gabriel Martinez Puentes"
+},
+"54168513": {
+"p": "WING",
+"d": "intermedia",
+"n": "Joaquín Enríquez"
+},
+"54168485": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Joaquín Villalón Navarro"
+},
+"54191187": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Julian Chamorro"
+},
+"54168487": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "intermedia",
+"n": "Manuel Ortiz salgado"
+},
+"54168470": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Martin Anibal Bastidas Carrillo"
+},
+"54168456": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "Nicolas Andres Martinez Estay"
+},
+"54168478": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Rolando Rodriguez Abdala"
+},
+"54168504": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "Sebastian Andres Molina Aguayo"
+},
+"54168481": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Sebastian Benavente Bianchi"
+},
+"54168473": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Sebastián Silva Soto"
+},
+"54168503": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Tomás Figueroa Matamala"
+},
+"54168499": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Tomás Rivas Urra"
+},
+"54229651": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Carlo Schiappacasse Pérez"
+},
+"54158906": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Cristobal Salgado Thiers"
+},
+"54158903": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Diego Aguila Rodriguez"
+},
+"54148031": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Francisco Muñoz Balaresque"
+},
+"54189000": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Franco Airola Diaz de Cerio"
+},
+"54229650": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Gabriel Fonzo Arias"
+},
+"54162336": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Gabriel Sottovia Villanueva"
+},
+"54148188": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "intermedia",
+"n": "Ignacio Guajardo González"
+},
+"54189224": {
+"p": "WING",
+"d": "intermedia",
+"n": "Lukas Marinovic Torrealba"
+},
+"54148028": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Nicolas Diaz Pozo"
+},
+"54158910": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "Rafael Zavala"
+},
+"54162378": {
+"p": "WING",
+"d": "intermedia",
+"n": "santiago Larraín Stock"
+},
+"54188881": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Tomas Perez Martinez"
+},
+"54166512": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Diego Sereño"
+},
+"54164702": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Felipe Díaz Rettig"
+},
+"54164705": {
+"p": "PROP",
+"s": "LOCK",
+"d": "intermedia",
+"n": "Joaquin Alfonso Doepking Abarzua"
+},
+"54164769": {
+"p": "FULLBACK",
+"s": "CENTER",
+"d": "intermedia",
+"n": "José Miguel Marchant Rodriguez"
+},
+"54203047": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Jose Tomas Barrena Botto"
+},
+"54164767": {
+"p": "WING",
+"d": "intermedia",
+"n": "Juan Ignacio Coria Valenzuela"
+},
+"54164750": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Juan Pablo Pizarro johannesen"
+},
+"54164707": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Matias Escobar niedermayr"
+},
+"54210762": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Matías Flores Opazo"
+},
+"54231572": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "Samuel Astorga López"
+},
+"54164701": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "santiago de la fuente estay"
+},
+"54164697": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "intermedia",
+"n": "Sebastian Chavez Siebert"
+},
+"54164719": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Thomas Fourt Uribe"
+},
+"54164709": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Tomás Espinoza Espinoza"
+},
+"54164778": {
+"p": "WING",
+"d": "intermedia",
+"n": "tomas infante fantuzzi"
+},
+"54164742": {
+"p": "WING",
+"d": "intermedia",
+"n": "Vicente Martinez Huerta"
+},
+"54207110": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Agustín Morandé"
+},
+"54161739": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "intermedia",
+"n": "Bruno Lira Montero"
+},
+"54190716": {
+"p": "WING",
+"s": "CENTER",
+"d": "intermedia",
+"n": "Clemente Guzman"
+},
+"54166814": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Diego Alvarado Rojas"
+},
+"54161745": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Domenico Avelli Maira"
+},
+"54166787": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Esteban Sebastián Foncea Figueroa"
+},
+"54166758": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Francisco Soto Arredondo"
+},
+"54166811": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Javier Baeza Espindola"
+},
+"54166752": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Jose Pablo Vargas González"
+},
+"54166773": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "León Marshall"
+},
+"54257082": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Marco Alexander Vitoria López"
+},
+"54166767": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "Martin Reyes Vercellino"
+},
+"54161744": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Matias Beale Aravena"
+},
+"54190699": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "Max Dauelsberg Noemi"
+},
+"54161742": {
+"p": "WING",
+"d": "intermedia",
+"n": "Ricardo Nahim Lahsen Herreros"
+},
+"54192854": {
+"p": "WING",
+"d": "intermedia",
+"n": "Santiago Calvo de Bonnafos"
+},
+"54192855": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Sebastián Ignacio Guarda Contardo"
+},
+"54168661": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "sven Langer benavides"
+},
+"54267959": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Tomás Martinez"
+},
+"54168300": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "Alessandro Gianmarco Cook Ramirez"
+},
+"54168318": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "BALTAZAR GABRIEL GONZALEZ MONTERO"
+},
+"54228862": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Benjamín Lira Lara"
+},
+"54168369": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Cristóbal Tobar Fuentes"
+},
+"54168365": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "Daniel Ignacio Maturana Huerta"
+},
+"54168347": {
+"p": "PROP",
+"s": "HOOKER",
+"d": "intermedia",
+"n": "Diego Pérez Ahumada"
+},
+"54168327": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Esteban Magasich García"
+},
+"54168340": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "Felipe Alonso Fuentealba Caro"
+},
+"54168306": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Felipe Carcamo Aguilar"
+},
+"54168307": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Martin Ignacio Gil Barrera"
+},
+"54168326": {
+"p": "WING",
+"d": "intermedia",
+"n": "maximiliano miranda"
+},
+"54206239": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Rodrigo Ivan Walters Diaz"
+},
+"54230414": {
+"p": "HOOKER",
+"s": "PROP",
+"d": "intermedia",
+"n": "Vicente Nanjari bahamondes"
+},
+"54168332": {
+"p": "HOOKER",
+"d": "intermedia",
+"n": "Vicente Reyes piñones"
+},
+"54239256": {
+"p": "NUMBER_8",
+"d": "intermedia",
+"n": "Dani Gutiérrez Caniulen"
+},
+"54167569": {
+"p": "FULLBACK",
+"d": "intermedia",
+"n": "franco perrotta camus"
+},
+"54168537": {
+"p": "SCRUM_HALF",
+"d": "intermedia",
+"n": "Gabirel Leon Rego"
+},
+"54259620": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Ignacio Andres Fuentealba hidalgo"
+},
+"54167570": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Jaime Martin Canales Rojas"
+},
+"54167639": {
+"p": "PROP",
+"d": "intermedia",
+"n": "Joaquin Nilo Montecinos"
+},
+"54167653": {
+"p": "CENTER",
+"d": "intermedia",
+"n": "Nicolás Asenjo Baltra"
+},
+"54167582": {
+"p": "WING",
+"d": "intermedia",
+"n": "Rodrigo Rojas Aldunate"
+},
+"54231614": {
+"p": "WING",
+"d": "intermedia",
+"n": "Santiago Rojas Aldunate"
+},
+"54239301": {
+"p": "LOCK",
+"d": "intermedia",
+"n": "Simón Moyano Carreño"
+},
+"54167561": {
+"p": "FLY_HALF",
+"d": "intermedia",
+"n": "Simon San martin Gonzalez"
+},
+"54168393": {
+"p": "FLANKER",
+"d": "intermedia",
+"n": "tarek chahuan beckdorf"
+},
+"54168244": {
+"p": "PROP",
+"d": null,
+"n": "Clemente Jose Vildosola Urrejola"
+},
+"54168216": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Cristobal Gonzalez De Ferari"
+},
+"54168221": {
+"p": "LOCK",
+"s": "FLANKER",
+"d": null,
+"n": "Diego Baudrand Geisse"
+},
+"54168225": {
+"p": "CENTER",
+"s": "WING",
+"d": null,
+"n": "Diego Ignacio Beltrán Bucarey"
+},
+"54230364": {
+"p": "CENTER",
+"s": "WING",
+"d": null,
+"n": "Joaquin Fuentes Barreda"
+},
+"54168257": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Juan Francisco Naranjo Acosta"
+},
+"54168114": {
+"p": "PROP",
+"s": "LOCK",
+"d": null,
+"n": "Lucas Conejero"
+},
+"54228087": {
+"p": "FLANKER",
+"d": null,
+"n": "Lucas Radrigan Silva"
+},
+"54168119": {
+"p": "NUMBER_8",
+"s": "PROP",
+"d": null,
+"n": "Manuel Escandon Duarte"
+},
+"54204687": {
+"p": "PROP",
+"d": null,
+"n": "Marcelo Arancibia"
+},
+"54201869": {
+"p": "SCRUM_HALF",
+"s": "CENTER",
+"d": null,
+"n": "Nicolas Toso Aguirre"
+},
+"54168203": {
+"p": "NUMBER_8",
+"s": "SCRUM_HALF",
+"d": null,
+"n": "Nicolas Trucco"
+},
+"54168190": {
+"p": "FULLBACK",
+"d": null,
+"n": "santiago cabargas"
+},
+"54168188": {
+"p": "HOOKER",
+"s": "PROP",
+"d": null,
+"n": "Santiago Holmgren"
+},
+"54168177": {
+"p": "PROP",
+"d": null,
+"n": "Tomás García Rodríguez"
+},
+"54168161": {
+"p": "WING",
+"s": "CENTER",
+"d": null,
+"n": "Vicente Whiting Gutierrez"
+},
+"54238630": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Clemente Aguirre Harambillet"
+},
+"54158502": {
+"p": "FLANKER",
+"d": null,
+"n": "Clemente Jerez San Martín"
+},
+"54162597": {
+"p": "LOCK",
+"s": "NUMBER_8",
+"d": null,
+"n": "Cristian Sarquis"
+},
+"54158510": {
+"p": "FLANKER",
+"d": null,
+"n": "Cristobal Villena"
+},
+"54205916": {
+"p": "CENTER",
+"s": "WING",
+"d": null,
+"n": "Lucas Lightfoot"
+},
+"54238639": {
+"p": "HOOKER",
+"s": "PROP",
+"d": null,
+"n": "Martin Sahady"
+},
+"54230319": {
+"p": "LOCK",
+"d": null,
+"n": "Nicholas Holmes Chaud"
+},
+"54167708": {
+"p": "CENTER",
+"d": null,
+"n": "Nicolas Cornejo calaf"
+},
+"54165506": {
+"p": "PROP",
+"d": null,
+"n": "Raimundo Andrés Bobillier Ruff"
+},
+"54165898": {
+"p": "PROP",
+"s": "HOOKER",
+"d": null,
+"n": "Renato Fuenzalida Virot"
+},
+"54165509": {
+"p": "LOCK",
+"d": null,
+"n": "Sebastián Avsolomovich"
+},
+"54167709": {
+"p": "FLANKER",
+"s": "PROP",
+"d": null,
+"n": "Sebastian Medina Middleton"
+},
+"54228823": {
+"p": "WING",
+"d": null,
+"n": "vicente martinez fernandez"
+},
+"54158793": {
+"p": "WING",
+"d": null,
+"n": "Benito Magnasco"
+},
+"54206110": {
+"p": "CENTER",
+"d": null,
+"n": "David Scott Benavente"
+},
+"54189311": {
+"p": "FLANKER",
+"d": null,
+"n": "Franco Solari"
+},
+"54158817": {
+"p": "LOCK",
+"d": null,
+"n": "GONZALO CASTRO TRUAN"
+},
+"54256995": {
+"p": "PROP",
+"d": null,
+"n": "JOAQUIN MOYANO VARGAS"
+},
+"54144953": {
+"p": "CENTER",
+"d": null,
+"n": "John Scott"
+},
+"54145231": {
+"p": "HOOKER",
+"d": null,
+"n": "Martín Caputo Sanhueza"
+},
+"54161109": {
+"p": "LOCK",
+"d": null,
+"n": "Mateo Gil Sanchez"
+},
+"54145260": {
+"p": "FLANKER",
+"d": null,
+"n": "Tomas Hayes Gidi"
+},
+"54259633": {
+"p": "LOCK",
+"d": null,
+"n": "Alfredo Piwonka Caballero"
+},
+"54168460": {
+"p": "PROP",
+"d": null,
+"n": "Antonio Espinoza"
+},
+"54168465": {
+"p": "CENTER",
+"d": null,
+"n": "Diego Alvear"
+},
+"54168467": {
+"p": "FLANKER",
+"d": null,
+"n": "Diego Ravanal Herreros"
+},
+"54259524": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Diego Villegas Evans"
+},
+"54168466": {
+"p": "LOCK",
+"d": null,
+"n": "Diether Neudorfer Coronado"
+},
+"54168507": {
+"p": "LOCK",
+"d": null,
+"n": "gabriel espinoza muñoz"
+},
+"54168501": {
+"p": "FLANKER",
+"s": "WING",
+"d": null,
+"n": "Hernan Venegas torres"
+},
+"54168496": {
+"p": "SCRUM_HALF",
+"d": null,
+"n": "Ignacio Leal Cartes"
+},
+"54168474": {
+"p": "WING",
+"s": "FULLBACK",
+"d": null,
+"n": "Jorge Avilés Puentes"
+},
+"54168495": {
+"p": "CENTER",
+"d": null,
+"n": "Juan Francisco Moroni"
+},
+"54239613": {
+"p": "FULLBACK",
+"d": null,
+"n": "Lucas León Quezada"
+},
+"54170061": {
+"p": "HOOKER",
+"s": "PROP",
+"d": null,
+"n": "Matias Joaquin Miranda Villa"
+},
+"54168509": {
+"p": "PROP",
+"d": null,
+"n": "Mauricio Ceroni Escribano"
+},
+"54168476": {
+"p": "PROP",
+"d": null,
+"n": "Maximo Cajales erices"
+},
+"54168493": {
+"p": "WING",
+"s": "PROP",
+"d": null,
+"n": "Teodoro Rojas Vargas"
+},
+"54168506": {
+"p": "LOCK",
+"d": null,
+"n": "Tomás Salazar Anriquez"
+},
+"54162379": {
+"p": "PROP",
+"d": null,
+"n": "Agustín Quiroz Muñoz"
+},
+"54148185": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Alonso Gabriel Arriaza Marholz"
+},
+"54158911": {
+"p": "WING",
+"d": null,
+"n": "Benjamin Reitze Simian"
+},
+"54159827": {
+"p": "FULLBACK",
+"d": null,
+"n": "Dante Caselli Rivera"
+},
+"54148025": {
+"p": "PROP",
+"d": null,
+"n": "Eduardo Amestica Carvallo"
+},
+"54148186": {
+"p": "CENTER",
+"d": null,
+"n": "Giancarlo Dasati Correa"
+},
+"54189002": {
+"p": "WING",
+"d": null,
+"n": "Gianni franchesco Aceto sacco"
+},
+"54162339": {
+"p": "NUMBER_8",
+"d": null,
+"n": "Miguel Sariego Márquez"
+},
+"54158904": {
+"p": "FLANKER",
+"d": null,
+"n": "Nasir Halasa Hales"
+},
+"54148026": {
+"p": "SCRUM_HALF",
+"d": null,
+"n": "Nicolás Boye Valenzuela"
+},
+"54162337": {
+"p": "LOCK",
+"d": null,
+"n": "Pascual Ramos"
+},
+"54148108": {
+"p": "HOOKER",
+"s": "PROP",
+"d": null,
+"n": "Renato Patricio Salazar Escarate"
+},
+"54148191": {
+"p": "FLANKER",
+"d": null,
+"n": "Sebastian Jeria Leiva"
+},
+"54148030": {
+"p": "CENTER",
+"d": null,
+"n": "vicente Klapp Yanez"
+},
+"54164779": {
+"p": "WING",
+"d": null,
+"n": "Benjamin Becerra"
+},
+"54164666": {
+"p": "HOOKER",
+"d": null,
+"n": "Diego Astudillo Avendaño"
+},
+"54204581": {
+"p": "WING",
+"d": null,
+"n": "Eduardo Santander Rodriguez"
+},
+"54167846": {
+"p": "PROP",
+"d": null,
+"n": "eric gutierrez"
+},
+"54185378": {
+"p": "LOCK",
+"d": null,
+"n": "felipe perez uribe"
+},
+"54164915": {
+"p": "PROP",
+"d": null,
+"n": "Javier Cortés Guillaume"
+},
+"54166566": {
+"p": "FULLBACK",
+"d": null,
+"n": "jeremias vergara alvarez"
+},
+"54230409": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Jose Manuel Henriquez Gana"
+},
+"54269873": {
+"p": "SCRUM_HALF",
+"s": "LOCK",
+"d": null,
+"n": "José Pablo Pérez Santander"
+},
+"54164766": {
+"p": "HOOKER",
+"d": null,
+"n": "JUAN PABLO ALVEAR SALINAS"
+},
+"54164752": {
+"p": "CENTER",
+"d": null,
+"n": "Matias Sabaj"
+},
+"54256627": {
+"p": "PROP",
+"d": null,
+"n": "matias valenzuela miranda"
+},
+"54164906": {
+"p": "LOCK",
+"d": null,
+"n": "Pablo Felipe Salas Preter"
+},
+"54164683": {
+"p": "CENTER",
+"d": null,
+"n": "Sebastian Burgos"
+},
+"54164667": {
+"p": "FLANKER",
+"d": null,
+"n": "Sebastián Henriquez Astudillo"
+},
+"54190717": {
+"p": "SCRUM_HALF",
+"d": null,
+"n": "alvaro fernandez"
+},
+"54168658": {
+"p": "FLANKER",
+"d": null,
+"n": "Alvaro Lapostol López"
+},
+"54167665": {
+"p": "WING",
+"d": null,
+"n": "Ambrosio Rojas Echave"
+},
+"54159414": {
+"p": "WING",
+"d": null,
+"n": "Ignacio Graver González"
+},
+"54166783": {
+"p": "PROP",
+"d": null,
+"n": "José-Amaro Guerra Jimenez"
+},
+"54202135": {
+"p": "HOOKER",
+"d": null,
+"n": "Lukas Ronfeldt Carreño"
+},
+"54190708": {
+"p": "WING",
+"d": null,
+"n": "Maximiliano Preuss Ricci"
+},
+"54161546": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Máximo Agustín Canales Neciosup"
+},
+"54161748": {
+"p": "LOCK",
+"d": null,
+"n": "Moises Aceituno Fernandez"
+},
+"54166801": {
+"p": "SCRUM_HALF",
+"d": null,
+"n": "Pablo Cornejo López"
+},
+"54166797": {
+"p": "NUMBER_8",
+"d": null,
+"n": "Raimundo Delgado"
+},
+"54159417": {
+"p": "PROP",
+"d": null,
+"n": "Sebastian Andres Vera Soulodre"
+},
+"54205970": {
+"p": "FULLBACK",
+"d": null,
+"n": "Sebastián Ayala Clarke"
+},
+"54186208": {
+"p": "WING",
+"d": null,
+"n": "Sebastián Urra Melo"
+},
+"54190725": {
+"p": "LOCK",
+"d": null,
+"n": "Tomas Ianchina"
+},
+"54168328": {
+"p": "LOCK",
+"d": null,
+"n": "Felipe Celis Rojas"
+},
+"54168334": {
+"p": "NUMBER_8",
+"s": "PROP",
+"d": null,
+"n": "Ignacio Donaire Adaros"
+},
+"54168293": {
+"p": "SCRUM_HALF",
+"d": null,
+"n": "Javier Sandoval carrera"
+},
+"54206233": {
+"p": "PROP",
+"d": null,
+"n": "Jose Henriquez Calfuqueo"
+},
+"54168325": {
+"p": "FULLBACK",
+"d": null,
+"n": "Jose Tomas Marin Diaz"
+},
+"54168295": {
+"p": "FLANKER",
+"d": null,
+"n": "Kurt Wande Ortiz"
+},
+"54168364": {
+"p": "WING",
+"d": null,
+"n": "Lucas Arevalo Cea"
+},
+"54168323": {
+"p": "CENTER",
+"d": null,
+"n": "matias carrera subiabre"
+},
+"54168297": {
+"p": "FLANKER",
+"d": null,
+"n": "Matias Ignacio Cardemil Guzman"
+},
+"54168301": {
+"p": "HOOKER",
+"d": null,
+"n": "Maxi López"
+},
+"54257498": {
+"p": "CENTER",
+"d": null,
+"n": "Pablo Romero"
+},
+"54239016": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Renato Alonso Miranda Aviles"
+},
+"54168145": {
+"p": "FLANKER",
+"d": null,
+"n": "agustin leon lara manriquez"
+},
+"54168210": {
+"p": "FLY_HALF",
+"d": null,
+"n": "Benjamin Valdes covarrubias"
+},
+"54167681": {
+"p": "PROP",
+"d": null,
+"n": "Cristóbal Escobar Valladares"
+},
+"54239303": {
+"p": "LOCK",
+"d": null,
+"n": "Diego Esteban Cornejo Rosas"
+},
+"54167501": {
+"p": "WING",
+"d": null,
+"n": "Hernan Ruiz Bravo"
+},
+"54168160": {
+"p": "FLANKER",
+"d": null,
+"n": "ignacio Jose Roman Bulnes"
+},
+"54167493": {
+"p": "WING",
+"d": null,
+"n": "Joaquin Baraona Prat"
+},
+"54167572": {
+"p": "SCRUM_HALF",
+"d": null,
+"n": "José Ignacio Galdames Preece"
+},
+"54167466": {
+"p": "LOCK",
+"s": "PROP",
+"d": null,
+"n": "Jose Reyes Moreno"
+},
+"54225593": {
+"p": "FULLBACK",
+"d": null,
+"n": "Máximo Speciali"
+},
+"54189939": {
+"p": "HOOKER",
+"s": "PROP",
+"d": null,
+"n": "Nivolas Astorga amunategui"
+},
+"54268952": {
+"p": "CENTER",
+"d": null,
+"n": "raul duhalde errazuriz"
+},
+"54167459": {
+"p": "NUMBER_8",
+"d": null,
+"n": "Rodrigo Donoso Durante"
+},
+"54167626": {
+"p": "CENTER",
+"d": null,
+"n": "Santiago José Izurieta Huerta"
+}
+}

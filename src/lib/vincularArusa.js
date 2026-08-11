@@ -54,6 +54,11 @@ const contenidoEn = (corto, largo) =>
  *   sinMatch — jugadores del plantel que no aparecen en el torneo (normal:
  *              juveniles o menores, gente que no jugó, o que está con otro nombre)
  */
+/** ¿Uno de los dos nombres contiene al otro? (mismo conjunto, o con un apellido de menos) */
+export function contieneNombre(a, b) {
+  return mismoConjunto(a, b) || contenidoEn(a, b) || contenidoEn(b, a);
+}
+
 export function proponerVinculos(plantel, jugadoresArusa) {
   const arusa = jugadoresArusa.map(j => ({ ...j, k: clave(j.nombre) }));
   const exactos = [], ambiguos = [], sinMatch = [];
