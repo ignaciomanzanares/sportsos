@@ -264,7 +264,14 @@ export default function SportOS() {
   } : CLUBS[sport];
   const countryData  = COUNTRIES[country];
   // Jugador logueado: su propia ficha (por profile_id), no simplemente el primero del plantel.
-  const miJugador = (!isDemo && currentUser) ? (players.find(p=>p.profile_id===currentUser.id) || players[0]) : players[0];
+  // La ficha del jugador logueado se busca por profile_id, no por nombre: dos
+  // personas pueden llamarse igual y el nombre lo escribe quien carga la
+  // planilla. Si no hay ninguna enlazada a esta cuenta se muestra la primera
+  // del plantel, para que la vista de rol sirva de algo — pero eso son los
+  // datos de otra persona y hay que decirlo, no dejar que se lean como propios.
+  const miFicha   = (!isDemo && currentUser) ? players.find(p=>p.profile_id===currentUser.id) : null;
+  const miJugador = miFicha || players[0];
+  const fichaAjena = !isDemo && !miFicha && !!miJugador;
   const sportColor   = sp.color;
   const sportModules = MODULE_MAP[role]||[];
 
@@ -902,6 +909,17 @@ export default function SportOS() {
                     al plantel. Cuando lo haga vas a ver acá tu cuota, tu gym y
                     tus convocatorias.
                   </div>
+                </div>
+              )}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&fichaAjena&&(
+                <div style={{...ss.card,marginBottom:"14px",padding:"10px 14px",display:"flex",gap:"10px",alignItems:"center",
+                  background:"rgba(201,132,8,0.08)",border:"1px solid rgba(201,132,8,0.3)",fontSize:"12px",color:"var(--text-2)"}}>
+                  <span style={{fontSize:"15px"}}>👁️</span>
+                  <span>
+                    Estás viendo la ficha de <strong>{miJugador.name}</strong>, no la tuya: tu cuenta
+                    todavía no está enlazada a un jugador del plantel. Sirve para mirar cómo lo ve
+                    un jugador, pero estos datos no son tuyos.
+                  </span>
                 </div>
               )}
               {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
