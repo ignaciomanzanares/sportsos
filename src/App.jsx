@@ -172,10 +172,22 @@ export default function SportOS() {
   // El selector de categoría no filtraba nada: "próximo partido" se calculaba
   // sobre todos los partidos del club mezclados — Primera, Intermedia, M13… —
   // así que ganaba el de fecha más cercana fuera del equipo que fuera. Con
-  // Adulta elegida se saltaba el partido de Primera y mostraba uno formativo.
+  // Adulta elegida se saltaba el partido de Primera y mostraba uno de juveniles.
   const partidosVisibles = partidos.filter(p => partidoEsDeCategoria(sp, currentCategory, p.cat));
-  const jugados    = partidosVisibles.filter(p=>p.estado==="jugado").sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  const programados = partidosVisibles.filter(p=>p.estado==="programado").sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  // En adulta los tres equipos juegan el mismo día, así que "el último" y "el
+  // próximo" son tres partidos empatados en fecha y ganaba cualquiera: el Match
+  // Center mostraba el resultado de Pre-Intermedia como si fuera el del club.
+  // A igualdad de fecha manda el equipo de arriba (Primera), que es el que uno
+  // quiere decir cuando dice "el partido".
+  const equiposCat = sp.teamsByCategory?.[currentCategory] || [];
+  const prioridad = (p) => {
+    const i = equiposCat.findIndex(e => String(p.cat||"").toLowerCase().includes(e.toLowerCase()));
+    return i < 0 ? equiposCat.length : i;
+  };
+  const jugados    = partidosVisibles.filter(p=>p.estado==="jugado")
+    .sort((a,b)=> b.fecha.localeCompare(a.fecha) || prioridad(a)-prioridad(b));
+  const programados = partidosVisibles.filter(p=>p.estado==="programado")
+    .sort((a,b)=> a.fecha.localeCompare(b.fecha) || prioridad(a)-prioridad(b));
   const ultimo     = jugados[0];
   // El "próximo" tiene que estar en el futuro. Leverade deja partidos viejos
   // sin marcar como jugados (el de Old Johns del 18/07 nunca se cerró), y esos
@@ -187,7 +199,8 @@ export default function SportOS() {
     name: clubRow.name,
     country: clubRow.country,
     colors: clubRow.colors,
-    prev: ultimo ? { res: ultimo.resultado==="victoria"?"Victoria":ultimo.resultado==="derrota"?"Derrota":"Empate", score: `${ultimo.golesLocal}-${ultimo.golesVisita}`, rival: ultimo.rival } : { res:null, score:null, rival:null },
+    // `equipo` para que la tarjeta diga de cuál de los tres está hablando.
+    prev: ultimo ? { res: ultimo.resultado==="victoria"?"Victoria":ultimo.resultado==="derrota"?"Derrota":"Empate", score: `${ultimo.golesLocal}-${ultimo.golesVisita}`, rival: ultimo.rival, equipo: equiposCat.length ? ultimo.cat : null, fecha: ultimo.fecha } : { res:null, score:null, rival:null, equipo:null, fecha:null },
     // "sábado" a secas no dice cuál sábado. Va el día y el mes.
     next: proximo ? {
       rival: proximo.rival,
@@ -195,7 +208,8 @@ export default function SportOS() {
       fecha: proximo.fecha,
       hora:  proximo.hora||null,
       lugar: proximo.lugar||null,
-    } : { rival:null, dia:null, fecha:null, hora:null, lugar:null },
+      equipo: equiposCat.length ? proximo.cat : null,
+    } : { rival:null, dia:null, fecha:null, hora:null, lugar:null, equipo:null },
   } : CLUBS[sport];
   const countryData  = COUNTRIES[country];
   // Jugador logueado: su propia ficha (por profile_id), no simplemente el primero del plantel.

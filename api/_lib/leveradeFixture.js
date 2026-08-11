@@ -1,4 +1,4 @@
-// Fixture completo de la temporada: adulta Y formativas.
+// Fixture completo de la temporada: adulta Y juveniles.
 //
 // Se consulta api.leverade.com directo, no arusa.cl. Esa distinción es todo:
 // arusa cierra la conexión desde Vercel y castiga por IP, pero la API de
@@ -7,7 +7,7 @@
 // del caché.
 //
 // Antes se leía solo el torneo de Primera División, que trae las tres
-// divisiones adultas en tres grupos. Las formativas son torneos aparte
+// divisiones adultas en tres grupos. Las juveniles son torneos aparte
 // ("Primera División M13", "M16"…), y por eso el calendario de M6–M18 salía
 // vacío: no es que el dato no exista, es que estábamos mirando un torneo que
 // no las incluye.
@@ -43,7 +43,7 @@ export async function torneosDeTemporada(seasonId = "8826") {
 /**
  * La categoría que le corresponde a un partido.
  *
- * En los torneos formativos sale del nombre ("Primera División M13" → M13).
+ * En los torneos juveniles sale del nombre ("Primera División M13" → M13).
  * En el de adultos, del grupo: sus tres grupos son los tres equipos que
  * presenta cada club, y ahí el nombre del torneo no distingue.
  */

@@ -66,18 +66,27 @@ function NextMatchCard({ club, sp, sportColor, onNavigate }) {
         <div style={{flex:1, minWidth:"120px"}}>
           <div style={{fontSize:"11px", color:"var(--text-3)", marginBottom:"4px"}}>Rival</div>
           <div style={{fontWeight:800, fontSize:"18px"}}>{next?.rival || "Por definir"}</div>
-          <div style={{fontSize:"11px", color:"var(--text-3)", marginTop:"4px"}}>
-            📅 {next?.dia || "—"} · 📍 Local
+          {/* "📍 Local" estaba escrito a mano: decía Local incluso cuando el
+              partido era de visita, que es la mitad del fixture. */}
+          <div style={{fontSize:"11px", color:"var(--text-3)", marginTop:"4px", textTransform:"capitalize"}}>
+            📅 {next?.dia || "—"}
+            {next?.hora && next.hora !== "00:00" ? ` · ${next.hora} hrs` : ""}
+            {next?.lugar ? ` · 📍 ${next.lugar}` : ""}
           </div>
+          {next?.equipo && (
+            <div style={{fontSize:"11px", color:"var(--text-3)", marginTop:"2px"}}>{next.equipo}</div>
+          )}
         </div>
-        {res && (
+        {res?.rival && (
           <div style={{textAlign:"right"}}>
             <div style={{fontSize:"10px", color:"var(--text-3)", marginBottom:"4px"}}>Último resultado</div>
             <div style={{fontWeight:800, fontSize:"14px",
               color:res.res==="Victoria"?"#1FA04A":res.res==="Derrota"?"#C0392B":"#C98408"}}>
               {res.res} {res.score}
             </div>
-            <div style={{fontSize:"10px", color:"var(--text-3)"}}>vs {res.rival}</div>
+            <div style={{fontSize:"10px", color:"var(--text-3)"}}>
+              vs {res.rival}{res.equipo ? ` · ${res.equipo}` : ""}
+            </div>
           </div>
         )}
         <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}

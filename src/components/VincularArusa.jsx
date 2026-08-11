@@ -125,7 +125,7 @@ export default function VincularArusa({ players = [], clubName, sportColor = "#1
       {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && (
         <div style={{ ...ss.muted, fontSize:"12px" }}>
           No queda nadie por vincular automáticamente. Los {propuesta.sinMatch.length} restantes
-          no aparecen en el torneo — normal en formativas o en quien no ha jugado.
+          no aparecen en el torneo — normal en menores y juveniles, o en quien no ha jugado.
         </div>
       )}
     </motion.div>

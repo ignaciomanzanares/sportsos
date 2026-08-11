@@ -377,11 +377,30 @@ function PostCard({post, sportColor, onReact, reactions={}, liked=false, onToggl
 }
 
 /* ── AsistenciaGrid ─────────────────────────────────────────── */
-function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, onToggle}) {
+function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, onToggle, fecha, setFecha, hoy}) {
   const toggle = onToggle || (() => {});
   const count = Object.values(present).filter(Boolean).length;
+  const diaLargo = fecha
+    ? new Date(fecha+"T12:00:00").toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"})
+    : null;
   return (
     <div>
+      {/* La fecha manda: sin ella el entrenador marca a ciegas y no puede
+          corregir el entrenamiento de ayer. */}
+      {fecha && (
+        <motion.div {...fadeUp} style={{...ss.card,marginBottom:"12px",display:"flex",alignItems:"center",gap:"12px",flexWrap:"wrap"}}>
+          <span style={{fontSize:"13px",fontWeight:700,textTransform:"capitalize"}}>{diaLargo}</span>
+          {fecha === hoy && <Badge color={sportColor}>Hoy</Badge>}
+          <div style={{flex:1}}/>
+          <input type="date" value={fecha} max={hoy} onChange={e=>setFecha(e.target.value)}
+            style={{...ss.input,width:"auto",fontSize:"12px",padding:"6px 10px",cursor:"pointer",colorScheme:"dark"}}/>
+          {fecha !== hoy && (
+            <button onClick={()=>setFecha(hoy)} style={{...ss.btn,fontSize:"11px",padding:"6px 10px",background:"var(--bg-elev-2)",color:"var(--text-3)",border:"1px solid var(--border-soft)"}}>
+              Volver a hoy
+            </button>
+          )}
+        </motion.div>
+      )}
       <motion.div {...fadeUp} style={{...ss.card,marginBottom:"16px"}}>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:"10px",alignItems:"center"}}>
           <span style={{fontSize:"13px",fontWeight:600}}>Asistencia: {count}/{players.length}</span>
@@ -885,8 +904,12 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
 
   // Datos reales desde Supabase (con fallback a mock)
   const { posts, createPost, toggleLike, likedByMe } = usePosts(clubId, currentUserId);
+  // La asistencia siempre se guardó con fecha, pero la pantalla no la mostraba
+  // ni dejaba cambiarla: marcabas cruces sin saber de qué día eran y no había
+  // forma de mirar el entrenamiento del martes pasado.
   const today = new Date().toISOString().split("T")[0];
-  const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, load: loadAttendance } = useAttendance(clubId, today);
+  const [fechaAsistencia, setFechaAsistencia] = useState(today);
+  const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, load: loadAttendance } = useAttendance(clubId, fechaAsistencia);
 
   // Cargar asistencia del día al montar y cuando cambia la fecha/club
   useEffect(() => { loadAttendance(); }, [loadAttendance]);
@@ -939,6 +962,9 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
           {club.prev.rival ? <>
             <div style={{fontSize:"40px",fontWeight:800,color:club.prev.res==="Victoria"?"#22C55E":club.prev.res==="Derrota"?"#EF4444":"#F59E0B",letterSpacing:"-0.02em"}}>{club.prev.score}</div>
             <div style={{fontSize:"13px",marginTop:"6px",color:"var(--text-2)"}}>vs {club.prev.rival}</div>
+            {/* Cuál de los tres equipos de adulta: sin esto el marcador de
+                Pre-Intermedia se leía como el del club. */}
+            {club.prev.equipo && <div style={{...ss.muted,fontSize:"11px",marginTop:"3px"}}>{club.prev.equipo}</div>}
             <div style={{marginTop:"10px"}}><Badge color={club.prev.res==="Victoria"?"#22C55E":club.prev.res==="Derrota"?"#EF4444":"#F59E0B"} glow>{club.prev.res}</Badge></div>
           </> : (
             <div style={{...ss.muted,fontSize:"13px",padding:"14px 0"}}>Todavía no hay partidos jugados en esta categoría.</div>
@@ -952,7 +978,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
             {/* Antes acá decía "Temporada 2026", que no es información: la hora
                 y la cancha sí lo son. */}
             <div style={{...ss.muted,fontSize:"12px",marginTop:"4px"}}>
-              {[club.next.hora && club.next.hora !== "00:00" ? club.next.hora+" hrs" : null, club.next.lugar].filter(Boolean).join(" · ") || "Hora y lugar por confirmar"}
+              {[club.next.equipo, club.next.hora && club.next.hora !== "00:00" ? club.next.hora+" hrs" : null, club.next.lugar].filter(Boolean).join(" · ") || "Hora y lugar por confirmar"}
             </div>
           </> : (
             <div style={{...ss.muted,fontSize:"13px",padding:"14px 0"}}>No hay próximo partido programado en esta categoría.</div>
@@ -980,7 +1006,8 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
       {/* Datos oficiales del torneo. Van arriba porque hoy son los únicos que
           existen: las estadísticas por jugador del club no se cargan en ningún
           lado todavía, así que los bloques de abajo salen vacíos. */}
-      {/* El torneo solo publica las tres divisiones adultas. Con una formativa
+      {/* El torneo solo publica las tres divisiones adultas. Con una de menores
+          o juveniles
           elegida, mostrar igual la tabla de Primera sería contestar otra
           pregunta: el usuario pidió M12 y le respondemos con adultos. */}
       {sport==="rugby" && clubId && (
@@ -1018,7 +1045,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} /></div>;
+  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today}/></div>;
 
   if(module==="salud") return (
     <div>

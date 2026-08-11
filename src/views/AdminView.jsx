@@ -355,7 +355,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
               contra los equipos del torneo. El campo se deja porque hay clubes
               que lo tienen guardado, pero no condiciona nada. */}
           Trae el fixture oficial del torneo: adulta (Primera, Intermedia,
-          Pre-Intermedia) y formativas (M13 a M18). Se importa solo cada día;
+          Pre-Intermedia) y juveniles (M13 a M18). Se importa solo cada día;
           este botón lo adelanta.
         </div>
         <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap",marginBottom:"12px"}}>

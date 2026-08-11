@@ -750,7 +750,9 @@ export default function JugadorView({module, sport, sp, club, player, players, s
             <div style={{position:"absolute",top:0,left:0,right:0,height:"3px",background:`linear-gradient(90deg,transparent,${sportColor},transparent)`}}/>
             <div style={{fontSize:"10px",color:sportColor,textTransform:"uppercase",letterSpacing:"0.1em",fontWeight:700,marginBottom:"12px",display:"flex",alignItems:"center",gap:"6px"}}>
               <span style={{width:"6px",height:"6px",borderRadius:"50%",background:sportColor,boxShadow:`0 0 8px ${sportColor}`,display:"inline-block"}}/>
-              Próximo partido · {proximoPartido.cat} Eq.{proximoPartido.equipo}
+              {/* "Eq.A" era un equipo inventado: la categoría del partido ya
+                  dice cuál es (Primera, M16…). */}
+              Próximo partido{proximoPartido.cat ? ` · ${proximoPartido.cat}` : ""}
             </div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:"12px"}}>
               <div>

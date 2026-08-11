@@ -6,7 +6,7 @@
 // ahora el club se reconoce por su nombre contra los equipos del torneo.
 //
 // Va contra api.leverade.com, que responde desde cualquier lado y trae todas
-// las categorías, adultas y formativas.
+// las categorías: adulta, juveniles y menores.
 //
 // Escribe con la clave de servicio porque no hay sesión de usuario en un cron.
 // Si no está configurada, se dice: un cron que falla en silencio es peor que

@@ -59,7 +59,7 @@ export function partidosDelClub(todos, clubName) {
       score_away: jugado ? m.awayScore : null,
       result: resultado,
       // En adulta la categoría es el equipo que jugó (Primera / Intermedia /
-      // Pre-Intermedia); en formativas, la edad (M13, M16…). El fixture de
+      // Pre-Intermedia); en juveniles y menores, la edad (M13, M16…). El fixture de
       // Leverade ya la trae resuelta; el formato viejo del caché traía
       // `division` y se traduce.
       cat: m.categoria || (m.division

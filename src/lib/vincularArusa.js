@@ -38,7 +38,7 @@ const mismoConjunto = (a, b) => a.size > 0 && a.size === b.size && [...a].every(
  *   exactos  — un solo candidato con el mismo conjunto de palabras
  *   ambiguos — más de un candidato: los decide una persona
  *   sinMatch — jugadores del plantel que no aparecen en el torneo (normal:
- *              formativas, gente que no jugó, o que está con otro nombre)
+ *              juveniles o menores, gente que no jugó, o que está con otro nombre)
  */
 export function proponerVinculos(plantel, jugadoresArusa) {
   const arusa = jugadoresArusa.map(j => ({ ...j, k: clave(j.nombre) }));

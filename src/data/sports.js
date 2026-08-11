@@ -1,5 +1,13 @@
 export const SPORTS_CONFIG = {
-  rugby: { name:"Rugby",icon:"🏉",color:"#1FA04A",squadSize:23,teamSize:15,positions:["Loosehead Prop","Hooker","Tighthead Prop","Lock","Lock","Blindside Flanker","Openside Flanker","Number 8","Scrum-half","Fly-half","Left Wing","Inside Centre","Outside Centre","Right Wing","Fullback"],stats:[{key:"tries",label:"Tries",icon:"🏉"},{key:"conversiones",label:"Conv.",icon:"⚡"},{key:"penales",label:"Pen.",icon:"🎯"},{key:"minutos",label:"Min.",icon:"⏱"},{key:"tackles",label:"Tackles",icon:"💪"}],categories:["M6","M8","M10","M12","M13","M14","M16","M18","Adulta"],teamsByCategory:{Adulta:["Primera","Intermedia","Pre-Intermedia"]},hasGym:true,hasHIA:true,matchDuration:"80 min" },
+  rugby: { name:"Rugby",icon:"🏉",color:"#1FA04A",squadSize:23,teamSize:15,positions:["Loosehead Prop","Hooker","Tighthead Prop","Lock","Lock","Blindside Flanker","Openside Flanker","Number 8","Scrum-half","Fly-half","Left Wing","Inside Centre","Outside Centre","Right Wing","Fullback"],stats:[{key:"tries",label:"Tries",icon:"🏉"},{key:"conversiones",label:"Conv.",icon:"⚡"},{key:"penales",label:"Pen.",icon:"🎯"},{key:"minutos",label:"Min.",icon:"⏱"},{key:"tackles",label:"Tackles",icon:"💪"}],categories:["M6","M8","M10","M12","M13","M14","M16","M18","Adulta"],teamsByCategory:{Adulta:["Primera","Intermedia","Pre-Intermedia"]},
+    // Así las nombra el club: menores hasta M12, juveniles de M13 a M18. No es
+    // decoración del selector — es el vocabulario con el que se habla del
+    // plantel, y "formativas" no lo usa nadie ahí.
+    categoryGroups:[
+      { label:"Menores",   cats:["M6","M8","M10","M12"] },
+      { label:"Juveniles", cats:["M13","M14","M16","M18"] },
+      { label:"Adulta",    cats:["Adulta"] },
+    ],hasGym:true,hasHIA:true,matchDuration:"80 min" },
   futbol: { name:"Fútbol",icon:"⚽",color:"#0896B0",squadSize:18,teamSize:11,positions:["Portero","Lateral Izq.","Central","Central","Lateral Der.","Volante Izq.","Mediocampista","Mediocampista","Volante Der.","Delantero","Delantero"],stats:[{key:"goles",label:"Goles",icon:"⚽"},{key:"asistencias",label:"Asist.",icon:"🅰️"},{key:"paradas",label:"Atajadas",icon:"🧤"},{key:"minutos",label:"Min.",icon:"⏱"},{key:"tarjetas",label:"Tarjetas",icon:"🟨"}],categories:["Sub-10","Sub-13","Sub-15","Sub-17","Sub-20","Primera"],hasGym:true,hasHIA:false,matchDuration:"90 min" },
   handball: { name:"Handball",icon:"🤾",color:"#C98408",squadSize:14,teamSize:7,positions:["Portero","Lateral Izq.","Central","Lateral Der.","Extremo Izq.","Extremo Der.","Pivote"],stats:[{key:"goles",label:"Goles",icon:"🥅"},{key:"asistencias",label:"Asist.",icon:"👋"},{key:"paradas",label:"Paradas",icon:"🧤"},{key:"minutos",label:"Min.",icon:"⏱"},{key:"tarjetas",label:"Tarjetas",icon:"🟨"}],categories:["Infantil","Cadete","Juvenil","Junior","Senior"],hasGym:true,hasHIA:false,matchDuration:"60 min" },
   basketball: { name:"Basketball",icon:"🏀",color:"#C0392B",squadSize:12,teamSize:5,positions:["Base","Escolta","Alero","Ala-Pívot","Pívot"],stats:[{key:"puntos",label:"Puntos",icon:"🏀"},{key:"rebotes",label:"Reb.",icon:"↕️"},{key:"asistencias",label:"Asist.",icon:"🤝"},{key:"tapones",label:"Tap.",icon:"✋"},{key:"robos",label:"Robos",icon:"⚡"},{key:"minutos",label:"Min.",icon:"⏱"}],categories:["Mini","Infantil","Cadete","Junior","Senior","Masters"],hasGym:true,hasHIA:false,matchDuration:"40 min" },
@@ -31,14 +39,14 @@ export const TEAMS = [
  * ¿Este partido corresponde a la categoría elegida?
  *
  * El campo `cat` de un partido guarda el equipo que jugó ("Primera",
- * "Intermedia", "Pre-Intermedia") o la categoría formativa ("M14"). Al elegir
+ * "Intermedia", "Pre-Intermedia") o la categoría de edad ("M14"). Al elegir
  * Adulta hay que aceptar los tres equipos adultos; al elegir M14, solo M14.
  * Un partido sin categoría se muestra siempre: esconderlo sería peor que
  * mostrarlo donde quizá no corresponde.
  */
 export function partidoEsDeCategoria(sportConfig, categoria, cat) {
   if (!cat || !categoria) return true;
-  // Los partidos formativos vienen etiquetados "Primera División M13", así que
+  // Los partidos de menores y juveniles vienen etiquetados "Primera División M13", así que
   // buscar "Primera" dentro del texto los arrastraba a Adulta. Si el nombre
   // trae una marca de edad, la edad manda.
   const edad = /\bM\d+\b/i.exec(cat);
@@ -48,7 +56,7 @@ export function partidoEsDeCategoria(sportConfig, categoria, cat) {
     return equipos.some(e => cat.toLowerCase().includes(e.toLowerCase()));
   }
   if (edad) return edad[0].toUpperCase() === categoria.toUpperCase();
-  // Formativas: "M14" tiene que calzar como palabra, para que M1 no arrastre a M14/M16.
+  // Menores y juveniles: "M14" tiene que calzar como palabra, para que M1 no arrastre a M14/M16.
   return new RegExp(`\\b${categoria}\\b`, "i").test(cat);
 }
 

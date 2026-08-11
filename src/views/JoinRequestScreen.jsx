@@ -167,8 +167,8 @@ export default function JoinRequestScreen({ onBack }) {
               <div style={ss.label}>Categoría <span style={{ color:"var(--text-4)", fontWeight:400 }}>(opcional)</span></div>
               {/* Agrupadas cuando el deporte lo define: en rugby, Pre-Intermedia,
                   Intermedia y Primera no son edades distintas — son los tres
-                  equipos que el club tiene en adulta. Sueltas entre las
-                  formativas se leen como si fueran categorías de edad. */}
+                  equipos que el club tiene en adulta. Sueltas entre menores
+                  y juveniles se leen como si fueran categorías de edad. */}
               {(sp.categoryGroups || [{ label:null, cats:sp.categories }]).map(grupo => (
                 <div key={grupo.label || "todas"} style={{ marginTop:"8px" }}>
                   {grupo.label && (
