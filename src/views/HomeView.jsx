@@ -249,7 +249,10 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
         <div style={CARD}>
           <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:"14px"}}>
             <div style={{fontFamily:BEBAS,fontSize:"14px",color:"#f0ede8",textTransform:"uppercase",letterSpacing:"0.04em"}}>Próximos Partidos</div>
-            <button onClick={()=>onNavigate("matchcenter")} style={{fontSize:"11.5px",fontWeight:500,color:sportColor,background:"none",border:"none",cursor:"pointer",padding:0}}>ver todos →</button>
+            {/* Al calendario, no al Match Center: acá se muestran los próximos
+                partidos y "ver todos" es la lista completa, no el detalle del
+                que viene. */}
+            <button onClick={()=>onNavigate("calendario")} style={{fontSize:"11.5px",fontWeight:500,color:sportColor,background:"none",border:"none",cursor:"pointer",padding:0}}>ver todos →</button>
           </div>
           {proximos.length === 0 ? (
             <div style={{fontSize:"12px",color:"#4a4743",padding:"12px 0"}}>No hay partidos programados.</div>
