@@ -547,7 +547,7 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
       </div>
 
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:"16px", marginBottom:"20px" }}>
-        {/* Gráfico de registros mock semanal */}
+        {/* Registros reales por mes (registrosPorMes sobre profiles), no un mock */}
         <motion.div {...fadeUp} style={{ ...ss.card }}>
           <div style={{ fontWeight:600, marginBottom:"16px", fontSize:"14px" }}>📈 Registros — últimos 6 meses</div>
           <ResponsiveContainer width="100%" height={180}>
