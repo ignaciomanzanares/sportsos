@@ -317,8 +317,15 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                 {/* "PJ" era minutos/90 y "Asist." son asistencias de fútbol:
                     en rugby ninguna de las dos existe. Los partidos jugados y
                     los puntos sí, y vienen del torneo. */}
-                {["#","Jugador","Pos","PJ",anot.etiqueta,anot.clave==="tries"?"Pts":"Asist.","Estado"].map((h,i)=>(
-                  <th key={h} style={{textAlign:i>3?"right":i===6?"center":"left",padding:"6px 10px",fontSize:"10px",fontWeight:500,color:"#3e3b37",textTransform:"uppercase",letterSpacing:"0.08em"}}>{h}</th>
+                {/* La alineación se declara por columna. Antes era una cuenta
+                    sobre el índice ("i>3 ? right : i===6 ? center : left") y el
+                    segundo caso nunca se alcanzaba: el encabezado de PJ quedaba
+                    a la izquierda sobre números alineados a la derecha, y el de
+                    Estado a la derecha sobre texto centrado. */}
+                {[["#","left"],["Jugador","left"],["Pos","left"],["PJ","right"],
+                  [anot.etiqueta,"right"],[anot.clave==="tries"?"Pts":"Asist.","right"],
+                  ["Estado","center"]].map(([h,align])=>(
+                  <th key={h} style={{textAlign:align,padding:"6px 10px",fontSize:"10px",fontWeight:500,color:"#3e3b37",textTransform:"uppercase",letterSpacing:"0.08em"}}>{h}</th>
                 ))}
               </tr>
             </thead>
