@@ -89,14 +89,6 @@ const ROLES_FEATURES = {
   },
 };
 
-const TESTIMONIALS = [
-  { name:"Carlos Vega",   role:"Entrenador · Rugby Club Santiago", initials:"CV",
-    text:"Antes usábamos 3 grupos de WhatsApp y una planilla Excel. Ahora todo está en un solo lugar. Los jugadores saben exactamente qué tienen que hacer.", stars:5 },
-  { name:"María Torres",  role:"Admin · Club Deportivo Andes",     initials:"MT",
-    text:"El cobro de cuotas era un caos total. Con SportOS envío el cobro masivo en un click y tengo el historial de pagos en tiempo real. Recuperé 3 horas semanales.", stars:5 },
-  { name:"Diego Fuentes", role:"Preparador Físico · HC Tigres",    initials:"DF",
-    text:"Publico el microciclo del lunes y los chicos ya lo tienen en su celular. El ranking de fuerza los motiva un montón y el wellness post-partido es clave.", stars:5 },
-];
 
 const PLANS = [
   { name:"Starter", price:"$0",  period:"/ mes",     color:"#6B7896", badge:null,
@@ -534,53 +526,11 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
         </div>
       </Wrap>
 
-      <HR />
-
-      {/* ── TESTIMONIOS ──────────────────────────────────────────────────── */}
-      <Wrap>
-        <div style={{ maxWidth:"960px", margin:"0 auto" }}>
-          <Eyebrow>Lo que dicen los clubes</Eyebrow>
-          <BigH>CLUBES REALES. RESULTADOS REALES.</BigH>
-          <div style={{
-            display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",
-            gap:"16px",
-          }}>
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div key={i}
-                initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }}
-                viewport={{ once:true }} transition={{ delay:i * 0.1 }}
-                style={{ ...card, display:"flex", flexDirection:"column", gap:"16px" }}>
-                <div style={{ display:"flex", gap:"2px" }}>
-                  {"★★★★★".split("").map((_, j) => (
-                    <span key={j} style={{ color:T.gold, fontSize:"13px" }}>★</span>
-                  ))}
-                </div>
-                <p style={{ fontSize:"13px", color:T.text2, lineHeight:1.7, flex:1, margin:0 }}>
-                  "{t.text}"
-                </p>
-                <div style={{ display:"flex", alignItems:"center", gap:"12px" }}>
-                  <div style={{
-                    width:"36px", height:"36px", borderRadius:"2px",
-                    background:`linear-gradient(135deg, ${T.accent}22, ${T.accent}08)`,
-                    border:`1px solid ${T.borderAcc}`,
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                    fontFamily:FF.mono, fontSize:"12px", fontWeight:700, color:T.accent,
-                    flexShrink:0,
-                  }}>
-                    {t.initials}
-                  </div>
-                  <div>
-                    <div style={{ fontWeight:700, fontSize:"13px", color:T.text }}>{t.name}</div>
-                    <div style={{ fontSize:"11px", color:T.text3, marginTop:"2px" }}>{t.role}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </Wrap>
-
-      <HR />
+      {/* Acá había tres testimonios de clientes bajo el título "CLUBES
+          REALES. RESULTADOS REALES": Carlos Vega, María Torres y Diego
+          Fuentes, cinco estrellas cada uno. No existen. La plataforma tiene
+          un club, y publicar elogios inventados como si fueran de clientes
+          es lo único de esta página que no se puede arreglar después. */}
 
       {/* ── PLANES ───────────────────────────────────────────────────────── */}
       <Wrap style={{ background:T.bgSection }}>

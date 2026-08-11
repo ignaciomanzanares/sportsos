@@ -19,3 +19,18 @@ export const GYM_PLAN = {
     ]}
   }
 };
+
+/**
+ * Plan en blanco, para un club real que todavía no armó el suyo.
+ *
+ * GYM_PLAN es la vitrina de demo — Sentadilla, Hip Thrust, Sled Push, del
+ * "Prof. Marcos Díaz". Se usaba también como punto de partida de cualquier
+ * club nuevo, así que el preparador de Old Reds abría Microciclo y veía tres
+ * ejercicios que nadie había programado, con porcentajes de un 1RM que nadie
+ * midió. Un plan vacío se ve peor y dice la verdad.
+ */
+export const PLAN_VACIO = {
+  lunes:     { label:"Sin definir", exercises:[] },
+  miercoles: { label:"Sin definir", exercises:[] },
+  viernes:   { label:"Sin definir", exercises:[] },
+};

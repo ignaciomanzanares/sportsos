@@ -2,7 +2,7 @@ import { useState as useLocalState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { GYM_PLAN } from "../data/gymPlan";
+import { GYM_PLAN, PLAN_VACIO } from "../data/gymPlan";
 import { supabase } from "../lib/supabase";
 import { getGymPlan, saveGymPlan, getWeekStart, formatWeekLabel } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
@@ -106,7 +106,8 @@ function EstadoPlantelView({ sportColor, players }) {
 export default function PreparadorView({module, sp, showToast, sportColor, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay, userCats=[], isDemo=true, players=[], clubId=null, currentUser=null}) {
   const days = ["lunes","miercoles","viernes"];
   const dayLabels = {lunes:"Lunes",miercoles:"Miércoles",viernes:"Viernes"};
-  const planSessions = gymPlanExercises || GYM_PLAN.sessions;
+  // Un club real arranca en blanco; la vitrina de demo sigue con su plan.
+  const planSessions = gymPlanExercises || (clubId ? PLAN_VACIO : GYM_PLAN.sessions);
 
   // ── Plan real (Supabase) ──────────────────────────────────────────────
   const [planLoading, setPlanLoading] = useLocalState(!!clubId);
@@ -120,7 +121,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
     if (!clubId) { setPlanLoading(false); return; }
     setPlanLoading(true);
     getGymPlan(clubId).then(p => {
-      setGymPlanExercises(p?.sessions && Object.keys(p.sessions).length ? p.sessions : GYM_PLAN.sessions);
+      setGymPlanExercises(p?.sessions && Object.keys(p.sessions).length ? p.sessions : PLAN_VACIO);
       setPublishedPlan(!!p?.published);
       setPlanLoading(false);
     }).catch(() => setPlanLoading(false));
@@ -160,7 +161,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
   const addExercise = () => {
     if(!newEx.name){showToast("Escribe el nombre del ejercicio","warning");return;}
     const day = expandedDay;
-    setGymPlanExercises(prev=>{const base=prev||GYM_PLAN.sessions;return {...base,[day]:{...base[day],exercises:[...base[day].exercises,{...newEx}]}};});
+    setGymPlanExercises(prev=>{const base=prev||(clubId?PLAN_VACIO:GYM_PLAN.sessions);return {...base,[day]:{...base[day],exercises:[...base[day].exercises,{...newEx}]}};});
     setNewEx({name:"",sets:3,reps:8,pct:70,rest:120,notes:"",muscles:""});
     setNewExForm(false);
     showToast(`${newEx.name} agregado al ${dayLabels[day]}`,"success");
@@ -204,6 +205,11 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
         <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 2fr",gap:"10px",marginBottom:"10px",padding:"0 4px"}}>
           {["Ejercicio","Series × Reps","% 1RM","Descanso","Músculos"].map(h=><div key={h} style={{...ss.label,fontSize:"9px",marginBottom:0}}>{h}</div>)}
         </div>
+        {planSessions[expandedDay].exercises.length === 0 && (
+          <div style={{...ss.muted,fontSize:"12px",padding:"14px 4px",borderTop:"1px solid var(--border-soft)"}}>
+            Este día todavía no tiene ejercicios. Agrégalos abajo.
+          </div>
+        )}
         {planSessions[expandedDay].exercises.map((ex,i)=>(
           <motion.div key={i} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.06}} style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 2fr",gap:"10px",padding:"12px 4px",borderTop:"1px solid var(--border-soft)",alignItems:"center"}}>
             <div style={{fontWeight:600,fontSize:"13px"}}>{ex.name}</div>

@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabase";
 import { usePlataforma } from "../lib/usePlataforma";
 import { terminoAnotacion } from "../data/sports";
 import { getNotifications } from "../lib/db";
+import { useInjuryReports, playersEnAlerta } from "../lib/useInjuryReports";
 import EmptyState from "../components/EmptyState";
 
 // ── Componentes base del Home ─────────────────────────────────────────────
@@ -459,14 +460,27 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
   );
 }
 
-function HomePreparador({ players, sportColor, sp, onNavigate }) {
-  // Simular estado wellness del plantel
+function HomePreparador({ players, sportColor, sp, onNavigate, clubId=null }) {
+  // Antes decía "2 lesionados, 3 en alerta" siempre, con un comentario que lo
+  // admitía ("Simular estado wellness"): el 96% de aptos era players.length-5
+  // sobre cualquier plantel. Ahora sale de injury_reports, que es donde el
+  // preparador efectivamente registra el estado.
+  const { reports, loading: cargandoLesiones } = useInjuryReports(clubId);
+  const alerta = playersEnAlerta(reports, players);
+  const ultimoPorJugador = new Map();
+  for (const r of reports) if (!ultimoPorJugador.has(r.player_id)) ultimoPorJugador.set(r.player_id, r);
+  const idsAlerta   = new Set(alerta.map(a => a.playerId));
+  const lesionados  = [...ultimoPorJugador.values()].filter(r => r.status === "rojo").length;
+  const enAlerta    = [...idsAlerta].filter(id => ultimoPorJugador.get(id)?.status !== "rojo").length;
+  const aptos       = Math.max(players.length - lesionados - enAlerta, 0);
+  const hayReportes = reports.length > 0;
+
   const WELLNESS_RESUMEN = [
-    {level:"lesionado", count:2, color:"#C0392B", icon:"🚑", label:"Lesionados"},
-    {level:"alerta",    count:3, color:"#C98408", icon:"⚠️", label:"En alerta"},
-    {level:"ok",        count:players.length-5, color:"#1FA04A", icon:"✅", label:"Aptos"},
+    {level:"lesionado", count:lesionados, color:"#C0392B", icon:"🚑", label:"Lesionados"},
+    {level:"alerta",    count:enAlerta,   color:"#C98408", icon:"⚠️", label:"En alerta"},
+    {level:"ok",        count:aptos,      color:"#1FA04A", icon:"✅", label:"Aptos"},
   ];
-  const pct = Math.round((players.length-5)/players.length*100);
+  const pct = players.length ? Math.round(aptos/players.length*100) : 0;
 
   return (
     <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
@@ -476,7 +490,8 @@ function HomePreparador({ players, sportColor, sp, onNavigate }) {
           background:"linear-gradient(135deg,rgba(192,57,43,0.06),transparent)"}}>
         <div style={{padding:"16px 20px",borderBottom:"1px solid var(--border-soft)",
           display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div style={{fontWeight:700,fontSize:"14px"}}>💪 Estado del plantel — Post partido</div>
+          {/* "Post partido" era decorado: el resumen no mira ningún partido. */}
+          <div style={{fontWeight:700,fontSize:"14px"}}>💪 Estado del plantel</div>
           <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
             onClick={()=>onNavigate("estadoplantel")}
             style={{...ss.btn,background:"rgba(192,57,43,0.12)",color:"#C0392B",
@@ -484,6 +499,13 @@ function HomePreparador({ players, sportColor, sp, onNavigate }) {
             Ver detalle →
           </motion.button>
         </div>
+        {!cargandoLesiones && !hayReportes && (
+          <div style={{padding:"18px",fontSize:"12px",color:"var(--text-3)"}}>
+            Todavía nadie registró el estado físico del plantel. Se llena desde
+            Estado Plantel, jugador por jugador.
+          </div>
+        )}
+        {hayReportes && <>
         <div style={{padding:"18px",display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(90px,1fr))",gap:"12px"}}>
           {WELLNESS_RESUMEN.map(w=>(
             <div key={w.level} style={{textAlign:"center",padding:"14px 8px",borderRadius:"var(--r-md)",
@@ -503,32 +525,21 @@ function HomePreparador({ players, sportColor, sp, onNavigate }) {
             <span style={{fontWeight:800,fontSize:"13px",color:"#1FA04A"}}>{pct}% aptos</span>
           </div>
         </div>
+        </>}
       </motion.div>
 
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"16px"}}>
-        {/* Stats */}
-        <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
-          <HeroStat icon="📅" value="Semana 8" label="Microciclo activo" sub="Pretemporada 2025"
-            color={sportColor} onClick={()=>onNavigate("microciclo")}/>
-          <HeroStat icon="🏋️" value="78%" label="Cumplimiento" sub="Plan de entrenamiento"
-            color="#3B82F6" onClick={()=>onNavigate("rankingfuerza")}/>
+      {/* Se fueron "Semana 8 · Pretemporada 2025" y "78% de cumplimiento": el
+          microciclo no guarda semana ni temporada en ningún lado, y no hay
+          registro de ejercicios completados del que sacar un porcentaje. Igual
+          el aviso de "cuestionario wellness programado", que no está
+          programado: no existe tal envío. */}
+      <MiniCard title="Acciones rápidas" delay={0.1}>
+        <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+          <QuickAction icon="💪" label="Estado plantel" color="#C0392B" onClick={()=>onNavigate("estadoplantel")}/>
+          <QuickAction icon="📅" label="Microciclo" color={sportColor} onClick={()=>onNavigate("microciclo")}/>
+          <QuickAction icon="🏋️" label="Ranking" color="#C98408" onClick={()=>onNavigate("rankingfuerza")}/>
         </div>
-
-        {/* Acciones rápidas */}
-        <MiniCard title="Acciones rápidas" delay={0.1}>
-          <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
-            <QuickAction icon="💪" label="Estado plantel" color="#C0392B" onClick={()=>onNavigate("estadoplantel")}/>
-            <QuickAction icon="📅" label="Microciclo" color={sportColor} onClick={()=>onNavigate("microciclo")}/>
-            <QuickAction icon="🏋️" label="Ranking" color="#C98408" onClick={()=>onNavigate("rankingfuerza")}/>
-          </div>
-          <div style={{marginTop:"14px",padding:"10px 12px",borderRadius:"var(--r-md)",
-            background:"rgba(192,57,43,0.06)",border:"1px solid rgba(192,57,43,0.2)",
-            fontSize:"11px",color:"var(--text-2)",display:"flex",gap:"8px",alignItems:"center"}}>
-            <span>📣</span>
-            <span>Cuestionario wellness programado — se enviará mañana a las 24h del partido.</span>
-          </div>
-        </MiniCard>
-      </div>
+      </MiniCard>
     </div>
   );
 }
@@ -579,13 +590,17 @@ function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavig
 
       {/* Stats personales */}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px"}}>
-        <HeroStat icon="💳" value={cuotaOk?"Al día":"Pendiente"} label="Mi cuota"
-          sub={cuotaOk?"Gracias por pagar":"Vence pronto"}
-          color={cuotaOk?"#1FA04A":"#C98408"} onClick={()=>onNavigate("micuota")}/>
-        <HeroStat icon="💪" value="😊 19/25" label="Mi wellness"
-          sub="Última respuesta: ayer" color={sportColor} onClick={()=>onNavigate("midashboard")}/>
-        <HeroStat icon="🏋️" value="#3" label="Ranking fuerza"
-          sub="En tu categoría" color="#C98408" onClick={()=>onNavigate("migym")}/>
+        {/* Sin cuota registrada no se dice "Al día — Gracias por pagar": nadie
+            ha pagado nada, y felicitar por un pago que no existe es peor que
+            no decir nada. El wellness (😊 19/25, "última respuesta: ayer") y
+            el puesto en el ranking de fuerza estaban escritos a mano: no hay
+            cuestionario ni ranking que los produzca. */}
+        <HeroStat icon="💳"
+          value={!miPago ? "—" : (cuotaOk ? "Al día" : "Pendiente")} label="Mi cuota"
+          sub={!miPago ? "Sin cuota registrada" : (cuotaOk ? "Al día con el club" : "Pendiente de pago")}
+          color={!miPago ? "#6B7896" : (cuotaOk ? "#1FA04A" : "#C98408")} onClick={()=>onNavigate("micuota")}/>
+        <HeroStat icon="🏋️" value={sp.icon} label="Mi gym"
+          sub="Plan de la semana" color={sportColor} onClick={()=>onNavigate("migym")}/>
       </div>
 
       {/* Acciones rápidas */}
@@ -646,7 +661,7 @@ export default function HomeView({ role, players, sportColor, club, sp, countryD
       {/* Contenido por rol */}
       {role==="admin"      && <HomeAdmin      players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="entrenador" && <HomeEntrenador players={players} sportColor={sportColor} club={club} sp={sp} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
-      {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate}/>}
+      {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="jugador"    && <HomeJugador    player={players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}
       {role==="superadmin" && <HomeSuperAdmin sportColor={sportColor} onNavigate={onNavigate}/>}
     </div>
