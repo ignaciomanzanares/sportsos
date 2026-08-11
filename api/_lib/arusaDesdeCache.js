@@ -103,9 +103,13 @@ export async function sincronizarDesdeCache(supabase, { clubId, clubName, todos:
 
   await supabase.from("clubs").update({ arusa_last_sync: new Date().toISOString() }).eq("id", clubId);
 
+  const porCategoria = {};
+  for (const p of partidos) porCategoria[p.cat || "sin categoría"] = (porCategoria[p.cat || "sin categoría"] || 0) + 1;
+
   return {
     total: partidos.length,
     guardados: data?.length ?? 0,
+    porCategoria,
     cacheVacio: false,
     cacheActualizado: await edadCache(CLAVE_PARTIDOS),
   };

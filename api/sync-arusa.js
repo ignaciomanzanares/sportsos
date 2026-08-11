@@ -15,6 +15,10 @@ import { createClient } from "@supabase/supabase-js";
 import { sincronizarDesdeCache } from "./_lib/arusaDesdeCache.js";
 import { obtenerFixtureTemporada } from "./_lib/leveradeFixture.js";
 
+// Trece torneos de Leverade más el guardado de un centenar de partidos no
+// caben en los 10 segundos que Vercel da por defecto.
+export const config = { maxDuration: 60 };
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
 

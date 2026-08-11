@@ -96,7 +96,10 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error || "Error desconocido");
       setArusaLastSync(new Date().toISOString());
-      showToast(`Sincronizado ✅ — ${data.creados} nuevos, ${data.actualizados} actualizados`, "success");
+      // La respuesta ya no trae creados/actualizados: el upsert no distingue.
+      // Decía "undefined nuevos, undefined actualizados".
+      const cats = data.porCategoria ? " · " + Object.entries(data.porCategoria).map(([c,n])=>`${c}: ${n}`).join(", ") : "";
+      showToast(`Sincronizado ✅ — ${data.total} partidos${cats}`, "success");
     } catch (e) {
       showToast("Error al sincronizar: " + e.message, "error");
     } finally {
