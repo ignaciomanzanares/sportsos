@@ -78,6 +78,25 @@ export function terminoAnotacion(sportConfig) {
   };
 }
 
+/**
+ * La categoría del deporte a la que pertenece un partido.
+ *
+ * `cat` guarda el equipo ("Primera") o la edad ("M13"); esto devuelve la
+ * categoría con la que se navega ("Adulta", "M13").
+ */
+export function categoriaDePartido(sportConfig, cat) {
+  if (!cat) return null;
+  const edad = /\bM\d+\b/i.exec(cat);
+  if (edad) {
+    const c = edad[0].toUpperCase();
+    return (sportConfig?.categories || []).includes(c) ? c : null;
+  }
+  for (const [categoria, equipos] of Object.entries(sportConfig?.teamsByCategory || {})) {
+    if (equipos.some(e => cat.toLowerCase().includes(e.toLowerCase()))) return categoria;
+  }
+  return (sportConfig?.categories || []).includes(cat) ? cat : null;
+}
+
 /** Equipos que el club presenta en una categoría. */
 export function equiposDeCategoria(sportConfig, categoria) {
   const propios = sportConfig?.teamsByCategory?.[categoria];

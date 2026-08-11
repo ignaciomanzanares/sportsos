@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { SPORTS_CONFIG, COUNTRIES, CLUBS, partidoEsDeCategoria } from "./data/sports";
+import { SPORTS_CONFIG, COUNTRIES, CLUBS, partidoEsDeCategoria, categoriaDePartido } from "./data/sports";
 import { MOCK_PAYMENTS, MOCK_PARTIDOS } from "./data/mockData";
 import { usePlayers } from "./lib/usePlayers";
 import { useClub } from "./lib/useClub";
@@ -184,9 +184,15 @@ export default function SportOS() {
   };
 
   const deportesActivos = Object.entries(activeClubs).filter(([,v])=>v).map(([k])=>k);
-  const categoriasEnUso = new Set(players.map(p=>p.category).filter(Boolean));
+  // Qué categorías ofrece el selector. No basta con las del plantel: el club
+  // tiene fixture de M13 a M18 y ningún jugador cargado en esas categorías
+  // todavía, y ocultarlas dejaría esos partidos sin forma de mirarlos.
   const sp           = SPORTS_CONFIG[sport];
   const currentCategory = sp.categories[category]||sp.categories[0];
+  const categoriasEnUso = new Set([
+    ...players.map(p => p.category).filter(Boolean),
+    ...partidos.map(p => categoriaDePartido(sp, p.cat)).filter(Boolean),
+  ]);
   // Club real (nombre/colores de Supabase) con próximo/último partido derivados
   // de los partidos reales. Sin club_id (demo/preview) usa la vitrina CLUBS[sport].
   // El selector de categoría no filtraba nada: "próximo partido" se calculaba
