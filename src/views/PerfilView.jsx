@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
-import { SPORTS_CONFIG } from "../data/sports";
+import { SPORTS_CONFIG, puestosDeFicha } from "../data/sports";
 
 const GRUPOS = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
 const SEGUROS = ["Fonasa A","Fonasa B","Fonasa C","Fonasa D","Isapre","Sin seguro","Otro"];
@@ -29,7 +29,7 @@ function ReadRow({ label, value, icon }) {
 
 export default function PerfilView({ currentUser, sport, sportColor, readOnly=false, playerData=null, onSaved }) {
   const sp = SPORTS_CONFIG[sport] || SPORTS_CONFIG.rugby;
-  const positions = sp.positions || [];
+  const positions = puestosDeFicha(sp);
   // En rugby hay dos Lock y dos Centro de verdad, pero como opciones de un
   // desplegable repetirlas no aporta nada y ademas rompia las keys de React.
   const posicionesUnicas = [...new Set(positions)];

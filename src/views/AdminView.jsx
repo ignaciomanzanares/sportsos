@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import { PLANS } from "../lib/freemium";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { SPORTS_CONFIG } from "../data/sports";
+import { SPORTS_CONFIG, puestosDeFicha } from "../data/sports";
 import SectionTitle from "../components/SectionTitle";
 import Stat from "../components/Stat";
 import Badge from "../components/Badge";
@@ -854,7 +854,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                 <div style={ss.label}>Posición</div>
                 <select value={playerForm.position||""} onChange={e=>setPlayerForm(p=>({...p,position:e.target.value}))} style={{...ss.input,cursor:"pointer"}}>
                   <option value="">Sin posición</option>
-                  {(sp.positions||[]).map(pos=><option key={pos} value={pos}>{pos}</option>)}
+                  {puestosDeFicha(sp).map(pos=><option key={pos} value={pos}>{pos}</option>)}
                 </select>
               </div>
               <div>

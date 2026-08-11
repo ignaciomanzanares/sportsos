@@ -115,20 +115,25 @@ const DM_MONO = "'DM Mono', monospace";
  * es lo mismo que un segunda línea— así que un plantel entero de rugby salía
  * etiquetado con puestos de otro deporte.
  */
+// En el orden de la camiseta, del 1 al 15: así se lee un plantel de rugby.
+// Ala y N.º 8 van juntos como tercera línea — en la cancha se habla de "los
+// tres" y separarlos es una distinción que nadie usa para mirar una lista.
 const RUGBY_ABREV = [
-  [/loosehead|tighthead|\bprop\b|pilar/, "PIL"],
+  [/loosehead|tighthead|\bprop\b|pilar/,   "PIL"],
   [/hooker/,                               "HOO"],
   [/\block\b|segunda/,                     "2L"],
-  // Ala y N.º 8 son la tercera línea: en la cancha se habla de "los tres" y
-  // separarlos en la tabla es una distinción que nadie usa para leer un plantel.
-  [/flanker|\bala\b/,                      "3L"],
+  [/flanker|\bala\b|tercera/,              "3L"],
   [/number\s*8|octavo|n\.?º?\s*8/,          "3L"],
-  [/scrum-?half|medio scrum/,              "MED"],
+  [/scrum-?half|medio/,                    "MED"],
   [/fly-?half|apertura/,                   "APE"],
   [/centre|center|centro/,                 "CEN"],
   [/wing|winger/,                          "WIN"],
   [/fullback|zaguero/,                     "FB"],
 ];
+
+// El orden de los filtros no puede ser alfabético: 2L antes que PIL no
+// significa nada. Es el de la camiseta, y los sin puesto al final.
+const ORDEN_ABREV = ["PIL","HOO","2L","3L","MED","APE","CEN","WIN","FB"];
 
 const FUTBOL_ABREV = [
   [/portero|arquero|goalkeeper/,           "POR"],
@@ -204,7 +209,11 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   // vocabulario del deporte. Los sin puesto quedan bajo "—", que también se
   // puede filtrar: son justo los que hay que ir a completar.
   const abrev = (p) => posAbbr(p.position, sp?.name);
-  const allFilters = ["TODOS", ...Array.from(new Set(players.map(abrev))).sort()];
+  const allFilters = ["TODOS", ...Array.from(new Set(players.map(abrev)))
+    .sort((a,b) => {
+      const ia = ORDEN_ABREV.indexOf(a), ib = ORDEN_ABREV.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+    })];
   const filtered = posFilter === "TODOS" ? players : players.filter(p=>abrev(p)===posFilter);
 
   const avatarColors = ["#4f46e5","#0284c7","#b45309","#be185d","#047857","#7c3aed","#c2410c","#0f766e"];

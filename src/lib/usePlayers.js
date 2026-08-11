@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "./supabase";
 import { saveNotification } from "./db";
 import { PLAYERS_RUGBY } from "../data/players";
+import { CAMPOS_DERIVADOS } from "./statsArusa";
 
 // PLAYERS_RUGBY usa nombres de campo viejos (pos/num/med/cuota/cat) que no
 // coinciden con las columnas reales de Supabase (position/number/med_status/
@@ -22,6 +23,21 @@ const DEMO_PLAYERS = PLAYERS_RUGBY.map(({ pos, num, med, cuota, cat, hiaReason, 
  * Hook que carga jugadores desde Supabase.
  * Sin club_id (modo preview de rol) usa datos de demo en memoria, sin persistir.
  */
+/**
+ * Saca lo que la app calcula y la tabla no tiene.
+ *
+ * También saca `stats`: sí es columna, pero la lista que ven las pantallas
+ * viene mezclada con los tries y puntos del torneo. Guardarla convertiría un
+ * dato de ARUSA en un dato "cargado por el club", que después no se
+ * actualizaría nunca más. Ninguna pantalla edita stats, así que no se pierde
+ * nada al no mandarla.
+ */
+function soloColumnas(obj) {
+  const limpio = { ...obj };
+  for (const k of [...CAMPOS_DERIVADOS, "stats"]) delete limpio[k];
+  return limpio;
+}
+
 export function usePlayers(clubId) {
   const [players, setPlayers]   = useState(clubId ? [] : DEMO_PLAYERS);
   const [loading, setLoading]   = useState(false);
@@ -105,7 +121,7 @@ export function usePlayers(clubId) {
   const updatePlayer = async (id, changes) => {
     if (!isReal) { setPlayers(p => p.map(x => x.id === id ? { ...x, ...changes } : x)); return; }
     const { data, error: err } = await supabase
-      .from("players").update(changes).eq("id", id).select().single();
+      .from("players").update(soloColumnas(changes)).eq("id", id).select().single();
     if (err) throw err;
     setPlayers(p => p.map(x => x.id === id ? data : x));
     return data;

@@ -17,6 +17,16 @@
 // inventan: quedan sin dato, que es lo que son.
 const DESDE_ARUSA = ["partidos", "tries", "conversiones", "penales", "puntos"];
 
+/**
+ * Campos que esta enriquecida agrega y que NO son columnas de la tabla.
+ *
+ * El formulario de edición manda de vuelta el jugador entero, así que un campo
+ * calculado viaja a Supabase como si fuera columna y la escritura falla con
+ * "Could not find the 'arusaStats' column". Se declaran acá, al lado de donde
+ * se crean, y usePlayers los saca antes de guardar.
+ */
+export const CAMPOS_DERIVADOS = ["arusaStats"];
+
 export function enriquecerConArusa(players, jugadoresArusa) {
   if (!jugadoresArusa?.length) return players;
   const porId = new Map(jugadoresArusa.map(j => [String(j.id), j]));

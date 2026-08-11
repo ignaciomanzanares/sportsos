@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
-import { SPORTS_CONFIG } from "../data/sports";
+import { SPORTS_CONFIG, puestosDeFicha } from "../data/sports";
 import AuroraBg from "../components/AuroraBg";
 import BackButton from "../components/BackButton";
 import { ss } from "../styles/tokens";
@@ -157,7 +157,7 @@ export default function JoinRequestScreen({ onBack }) {
                 onChange={e => setForm(p => ({ ...p, posicion:e.target.value }))}
                 style={{ ...ss.input, cursor:"pointer" }}>
                 <option value="">Sin especificar</option>
-                {[...new Set(sp.positions)].map(pos => <option key={pos} value={pos}>{pos}</option>)}
+                {puestosDeFicha(sp).map(pos => <option key={pos} value={pos}>{pos}</option>)}
               </select>
             </div>
           )}

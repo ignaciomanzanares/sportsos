@@ -1,5 +1,11 @@
 export const SPORTS_CONFIG = {
   rugby: { name:"Rugby",icon:"🏉",color:"#1FA04A",squadSize:23,teamSize:15,positions:["Loosehead Prop","Hooker","Tighthead Prop","Lock","Lock","Blindside Flanker","Openside Flanker","Number 8","Scrum-half","Fly-half","Left Wing","Inside Centre","Outside Centre","Right Wing","Fullback"],stats:[{key:"tries",label:"Tries",icon:"🏉"},{key:"conversiones",label:"Conv.",icon:"⚡"},{key:"penales",label:"Pen.",icon:"🎯"},{key:"minutos",label:"Min.",icon:"⏱"},{key:"tackles",label:"Tackles",icon:"💪"}],categories:["M6","M8","M10","M12","M13","M14","M16","M18","Adulta"],teamsByCategory:{Adulta:["Primera","Intermedia","Pre-Intermedia"]},
+    // Los quince puestos de arriba son la formación: existen para armar la
+    // nómina, donde cada camiseta es un puesto distinto. Para la ficha de un
+    // jugador esa lista es demasiado fina —nadie es "Loosehead" y no
+    // "Tighthead", es pilar— así que el plantel usa esta, más corta, y en el
+    // orden de la camiseta: del 1 al 15.
+    playerPositions:["Pilar","Hooker","Segunda línea","Tercera línea","Medio scrum","Apertura","Centro","Wing","Fullback"],
     // Así las nombra el club: menores hasta M12, juveniles de M13 a M18. No es
     // decoración del selector — es el vocabulario con el que se habla del
     // plantel, y "formativas" no lo usa nadie ahí.
@@ -95,6 +101,17 @@ export function categoriaDePartido(sportConfig, cat) {
     if (equipos.some(e => cat.toLowerCase().includes(e.toLowerCase()))) return categoria;
   }
   return (sportConfig?.categories || []).includes(cat) ? cat : null;
+}
+
+/**
+ * Puestos que se le pueden poner a un jugador en su ficha.
+ *
+ * No son los quince de la formación: en la nómina cada camiseta es un puesto,
+ * pero en la ficha de una persona "Loosehead Prop" y "Tighthead Prop" son lo
+ * mismo —pilar— y la lista larga solo obliga a elegir de más.
+ */
+export function puestosDeFicha(sportConfig) {
+  return sportConfig?.playerPositions || [...new Set(sportConfig?.positions || [])];
 }
 
 /** Equipos que el club presenta en una categoría. */
