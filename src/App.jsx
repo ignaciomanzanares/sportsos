@@ -214,38 +214,68 @@ export default function SportOS() {
   // recargar se perdía el módulo y volvías al inicio.
   // Se usa el hash y no la query porque los links de invitación ya ocupan la
   // query (?token=...) y no queremos pisarlos.
-  const moduloDeUrl = () => {
-    const h = window.location.hash.replace(/^#\/?/, "").split("?")[0];
-    return /^[a-z]+$/.test(h) ? h : null;
+  // La URL guarda módulo, rol y categoría: #/calendario?rol=entrenador&cat=Adulta
+  // Antes solo el módulo, así que al recargar volvías a tu rol de perfil
+  // (Super Admin) y a la primera categoría (M6): perdías dos de las tres cosas
+  // que te ubican en la app.
+  const estadoDeUrl = () => {
+    const bruto = window.location.hash.replace(/^#\/?/, "");
+    const [ruta, query] = bruto.split("?");
+    const params = new URLSearchParams(query || "");
+    return {
+      modulo: /^[a-z]+$/.test(ruta) ? ruta : null,
+      rol: params.get("rol"),
+      cat: params.get("cat"),
+    };
   };
-  // El módulo que pedía la URL al cargar. Se guarda en una ref porque el efecto
-  // de [role] corre después (el rol llega con la sesión) y pondría "home".
-  const moduloPendiente = useRef(moduloDeUrl());
+  // Se guarda en una ref porque los efectos de abajo corren después (el rol
+  // llega con la sesión) y pondrían los valores por defecto encima.
+  const urlPendiente = useRef(estadoDeUrl());
+
+  // El rol de la URL solo se respeta si el perfil puede verlo: el superadmin
+  // previsualiza cualquiera, el resto solo el suyo. Si no, un link compartido
+  // te metería en una vista que no te corresponde.
+  useEffect(()=>{
+    const pedido = urlPendiente.current?.rol;
+    if (!pedido || !currentUser) return;
+    const propio = currentUser.rol;
+    if (pedido !== propio && propio !== "superadmin") return;
+    if (MODULE_MAP[pedido]) setRole(pedido);
+  },[currentUser]);
 
   useEffect(()=>{
-    const pedido = moduloPendiente.current;
+    const pedido = urlPendiente.current?.modulo;
     const permitido = (MODULE_MAP[role]||[]).some(m=>m.id===pedido);
     setModule(permitido ? pedido : "home");
     setModuleHistory([]);
-    moduloPendiente.current = null;
+    // La categoría se restaura acá y no en su propio efecto porque cambiar de
+    // rol no debe perderla, pero sí tiene que ocurrir después de que el rol
+    // quedó fijo.
+    const cat = urlPendiente.current?.cat;
+    const i = cat ? (SPORTS_CONFIG[sport]?.categories || []).indexOf(cat) : -1;
+    if (i >= 0) setCategory(i);
+    urlPendiente.current = null;
   },[role]);
 
   // Cada cambio de módulo deja una entrada en el historial del navegador.
   useEffect(()=>{
     if (screen!=="app") return;
-    const destino = `#/${module}`;
+    const destino = `#/${module}?rol=${role}&cat=${encodeURIComponent(currentCategory || "")}`;
     if (window.location.hash === destino) return;
     // La primera vez se reemplaza: si no, quedaría una entrada de más y el
     // primer "atrás" no haría nada visible.
-    if (!window.location.hash) window.history.replaceState({module}, "", destino);
-    else                       window.history.pushState({module}, "", destino);
-  },[module,screen]);
+    // Cambiar de rol o de categoría no es "navegar": reemplaza, no apila. Si
+    // no, el botón atrás se llenaría de pasos invisibles.
+    const soloModuloCambio = !window.location.hash.startsWith(`#/${module}?`);
+    if (!window.location.hash || !soloModuloCambio) window.history.replaceState({module}, "", destino);
+    else                                            window.history.pushState({module}, "", destino);
+  },[module,screen,role,currentCategory]);
 
   useEffect(()=>{
     const onPop = () => {
-      const m = moduloDeUrl();
+      const { modulo } = estadoDeUrl();
       // Sin restricción de plan: si el usuario estuvo ahí, puede volver.
-      if (m) setModule(m);
+      if (modulo) setModule(modulo);
     };
     window.addEventListener("popstate", onPop);
     return ()=>window.removeEventListener("popstate", onPop);
