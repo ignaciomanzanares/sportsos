@@ -4,7 +4,7 @@ import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
-import { useAttendance, useAttendanceStats, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
+import { useAttendance, useAttendanceStats, useAsistenciaPrevia, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
 import { useArusaJugadores } from "../lib/useArusaTorneo";
 import { useComments } from "../lib/useComments";
 import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
@@ -383,7 +383,7 @@ function PostCard({post, sportColor, onReact, reactions={}, liked=false, onToggl
    forma de buscar a nadie. Ahora la fecha se elige entre los días que el club
    entrena, hay buscador, marcado masivo, y los que más han venido salen
    primero — apenas haya asistencia registrada de dónde sacarlo. ─────────── */
-function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, onToggle, onMarcarVarios, fecha, setFecha, hoy, conteo={}}) {
+function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, onToggle, onMarcarVarios, fecha, setFecha, hoy, conteo={}, previos=null}) {
   const toggle = onToggle || (() => {});
   const [busca, setBusca]   = useState("");
   const [ventana, setVentana] = useState(0); // cuántos bloques de fechas hacia atrás
@@ -397,14 +397,17 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
 
   const hayHistorial = Object.keys(conteo).length > 0;
   const norm = (t) => String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  // El orden: primero los que estuvieron el entrenamiento anterior (pasar
+  // lista pasa a ser confirmar una lista), después los que más entrenan, y al
+  // final alfabético. El orden de importación no significa nada para quien
+  // mira la lista.
+  const vino = (p) => previos?.has(p.id) ? 0 : 1;
   const visibles = players
     .filter(p => !busca || norm(p.name).includes(norm(busca)))
-    // Con historial, los que más entrenan arriba: es el orden en que el
-    // entrenador los busca. Sin historial, alfabético — el de importación no
-    // significa nada para quien mira la lista.
-    .sort((a,b) => hayHistorial
-      ? (conteo[b.id]||0) - (conteo[a.id]||0) || a.name.localeCompare(b.name)
-      : a.name.localeCompare(b.name));
+    .sort((a,b) =>
+      (previos ? vino(a) - vino(b) : 0) ||
+      (hayHistorial ? (conteo[b.id]||0) - (conteo[a.id]||0) : 0) ||
+      a.name.localeCompare(b.name));
 
   const idsVisibles = visibles.map(p => p.id);
   const todosMarcados = idsVisibles.length > 0 && idsVisibles.every(id => present[id]);
@@ -492,8 +495,9 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
                     plantel y no había cómo saber cuál era cuál. */}
                 <div style={{fontSize:"12.5px",fontWeight:600,color:marcado?sportColor:"var(--text-1)",
                   overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.name}</div>
-                {hayHistorial && (
+                {(hayHistorial || previos) && (
                   <div style={{...ss.muted,fontSize:"10px",marginTop:"1px"}}>
+                    {previos?.has(p.id) && <span style={{color:sportColor}}>vino la vez pasada · </span>}
                     {conteo[p.id]||0} entrenamiento{(conteo[p.id]||0)===1?"":"s"}
                   </div>
                 )}
@@ -1018,6 +1022,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   );
   const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, marcarVarios: attendanceMarcarVarios, load: loadAttendance } = useAttendance(clubId, fechaAsistencia);
   const attendanceConteo = useAttendanceStats(clubId);
+  const attendancePrevios = useAsistenciaPrevia(clubId, fechaAsistencia);
 
   // Cargar asistencia del día al montar y cuando cambia la fecha/club
   useEffect(() => { loadAttendance(); }, [loadAttendance]);
@@ -1162,7 +1167,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} onMarcarVarios={attendanceMarcarVarios} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today} conteo={attendanceConteo}/></div>;
+  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} onMarcarVarios={attendanceMarcarVarios} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today} conteo={attendanceConteo} previos={attendancePrevios}/></div>;
 
   if(module==="salud") return (
     <div>

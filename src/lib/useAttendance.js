@@ -88,6 +88,38 @@ export function useAttendance(clubId, date) {
 }
 
 /**
+ * Quiénes estuvieron el entrenamiento anterior a `fecha`.
+ *
+ * Los que vinieron el lunes son casi los mismos que vienen el martes, así que
+ * ponerlos primero convierte pasar lista en confirmar una lista en vez de
+ * buscar 30 nombres entre 124.
+ */
+export function useAsistenciaPrevia(clubId, fecha) {
+  const [previos, setPrevios] = useState(null); // null = todavía no se sabe
+
+  useEffect(() => {
+    if (!clubId || !fecha) { setPrevios(null); return; }
+    let vivo = true;
+    supabase.from("attendance")
+      .select("player_id, date")
+      .eq("club_id", clubId).eq("present", true).lt("date", fecha)
+      .order("date", { ascending: false })
+      .then(({ data }) => {
+        if (!vivo) return;
+        const filas = data || [];
+        if (filas.length === 0) { setPrevios(null); return; }
+        // Solo la sesión inmediatamente anterior, no el acumulado: "vino la
+        // vez pasada" y "viene siempre" son dos preguntas distintas.
+        const ultima = filas[0].date;
+        setPrevios(new Set(filas.filter(f => f.date === ultima).map(f => f.player_id)));
+      });
+    return () => { vivo = false; };
+  }, [clubId, fecha]);
+
+  return previos;
+}
+
+/**
  * Cuántos entrenamientos lleva cada jugador.
  *
  * Sirve para ordenar la lista: con el plantel de 124 nombres en orden de

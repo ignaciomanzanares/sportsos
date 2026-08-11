@@ -4,7 +4,7 @@ import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
 import { useArusaTorneo } from "../lib/useArusaTorneo";
-import { proponerVinculos } from "../lib/vincularArusa";
+import { proponerVinculos, arusaSinPlantel, nombreProlijo } from "../lib/vincularArusa";
 
 const DIVISIONES = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
 
@@ -16,7 +16,7 @@ const DIVISIONES = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
  * jugador podría quedar apuntando a distinta persona según qué datos
  * estuvieran cargados ese día.
  */
-export default function VincularArusa({ players = [], clubName, sportColor = "#1FA04A", showToast = () => {}, onVinculado = () => {} }) {
+export default function VincularArusa({ players = [], clubName, clubId = null, sportColor = "#1FA04A", showToast = () => {}, onVinculado = () => {} }) {
   // Las tres divisiones a la vez: un club reparte su plantel entre los tres
   // equipos, así que buscar solo en Primera dejaría fuera a la mayoría.
   const p1 = useArusaTorneo("PRIMERA");
@@ -33,6 +33,9 @@ export default function VincularArusa({ players = [], clubName, sportColor = "#1
   }, [p1.jugadores, p2.jugadores, p3.jugadores, clubName]);
 
   const propuesta = useMemo(() => proponerVinculos(players, delClub), [players, delClub]);
+  // Los del torneo que no están en el plantel: la planilla con la que se cargó
+  // quedó incompleta y ARUSA tiene la ficha de todos los que jugaron.
+  const faltantes = useMemo(() => arusaSinPlantel(players, delClub), [players, delClub]);
   const yaVinculados = players.filter(p => p.arusa_player_id).length;
 
   const [guardando, setGuardando] = useState(false);
@@ -51,6 +54,28 @@ export default function VincularArusa({ players = [], clubName, sportColor = "#1
       onVinculado();
     } catch (e) {
       showToast("No se pudo vincular: " + e.message, "warning");
+    } finally { setGuardando(false); }
+  };
+
+  const agregarFaltantes = async () => {
+    if (!clubId || faltantes.length === 0) return;
+    setGuardando(true);
+    try {
+      // Sin categoría, igual que el resto del plantel: ponerles "Adulta" a
+      // estos 23 y a nadie más dejaría el selector de categorías mostrando
+      // solo Adulta, como si el club no tuviera menores ni juveniles.
+      const { error } = await supabase.from("players").insert(
+        faltantes.map(j => ({
+          club_id: clubId,
+          name: nombreProlijo(j.nombre),
+          arusa_player_id: String(j.id),
+        })),
+      );
+      if (error) throw error;
+      showToast(`${faltantes.length} jugadores agregados desde ARUSA`, "success");
+      onVinculado();
+    } catch (e) {
+      showToast("No se pudieron agregar: " + e.message, "warning");
     } finally { setGuardando(false); }
   };
 
@@ -76,7 +101,37 @@ export default function VincularArusa({ players = [], clubName, sportColor = "#1
         <span>🎯 Por vincular: <strong>{propuesta.exactos.length}</strong></span>
         <span>❓ Ambiguos: <strong>{propuesta.ambiguos.length}</strong></span>
         <span style={{ color:"var(--text-4)" }}>Sin ficha: {propuesta.sinMatch.length}</span>
+        <span style={{ color: faltantes.length ? "#C98408" : "var(--text-4)" }}>
+          Faltan en el plantel: <strong>{faltantes.length}</strong>
+        </span>
       </div>
+
+      {faltantes.length > 0 && (
+        <div style={{ marginBottom:"16px", padding:"12px 14px", borderRadius:"var(--r-md)",
+          background:"rgba(201,132,8,0.07)", border:"1px solid rgba(201,132,8,0.25)" }}>
+          <div style={{ fontSize:"12px", fontWeight:600, marginBottom:"4px" }}>
+            {faltantes.length} jugadores del torneo no están en el plantel
+          </div>
+          <div style={{ ...ss.muted, fontSize:"11px", marginBottom:"10px" }}>
+            Jugaron por {clubName} esta temporada pero no vinieron en la planilla con
+            la que se cargó el plantel. Se agregan con su nombre y ya vinculados,
+            así traen sus tries desde el primer día.
+          </div>
+          <motion.button whileTap={{ scale:0.98 }} disabled={guardando || !clubId} onClick={agregarFaltantes}
+            style={{ ...ss.btn, background:"#C98408", color:"#fff", fontSize:"12px", padding:"9px 16px",
+              opacity: guardando ? 0.6 : 1, marginBottom:"10px" }}>
+            {guardando ? "Agregando…" : `Agregar los ${faltantes.length} al plantel`}
+          </motion.button>
+          <div style={{ maxHeight:"170px", overflowY:"auto" }}>
+            {faltantes.map(j => (
+              <div key={j.id} style={{ fontSize:"11px", padding:"2px 0", color:"var(--text-3)" }}>
+                {nombreProlijo(j.nombre)}
+                <span style={{ color:"var(--text-4)" }}> · {j.partidos} PJ · {j.puntos} pts</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {propuesta.exactos.length > 0 && (
         <>
@@ -122,7 +177,7 @@ export default function VincularArusa({ players = [], clubName, sportColor = "#1
         </div>
       )}
 
-      {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && (
+      {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && faltantes.length === 0 && (
         <div style={{ ...ss.muted, fontSize:"12px" }}>
           No queda nadie por vincular automáticamente. Los {propuesta.sinMatch.length} restantes
           no aparecen en el torneo — normal en menores y juveniles, o en quien no ha jugado.

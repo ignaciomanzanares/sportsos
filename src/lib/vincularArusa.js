@@ -57,6 +57,38 @@ export function proponerVinculos(plantel, jugadoresArusa) {
   return { exactos, ambiguos, sinMatch };
 }
 
+/**
+ * Jugadores del torneo que no están en el plantel.
+ *
+ * El plantel se cargó a mano desde una planilla y quedó incompleto: faltaban
+ * cuatro Pérez, dos Barrena, un Flores. ARUSA tiene la ficha de todos los que
+ * jugaron, así que sirve para completar en vez de volver a tipear nombres.
+ *
+ * Se excluye a quien ya está vinculado (por id) y a quien calza por nombre con
+ * alguien del plantel, aunque el vínculo todavía no se haya guardado — si no,
+ * se ofrecería agregar un duplicado de alguien que ya está.
+ */
+export function arusaSinPlantel(plantel, jugadoresArusa) {
+  const vinculados = new Set(plantel.map(p => String(p.arusa_player_id || "")).filter(Boolean));
+  const clavesPlantel = plantel.map(p => clave(p.name)).filter(k => k.size > 0);
+  return jugadoresArusa.filter(j => {
+    if (vinculados.has(String(j.id))) return false;
+    const k = clave(j.nombre);
+    return !clavesPlantel.some(kp => mismoConjunto(k, kp));
+  });
+}
+
+/**
+ * "filippo borghi" / "DIego Bozzo Pizarro" → "Filippo Borghi".
+ * ARUSA no tiene criterio de mayúsculas y el plantel se lee como una lista.
+ */
+export function nombreProlijo(nombre) {
+  return String(nombre || "").trim().toLowerCase()
+    .split(/\s+/)
+    .map(t => RUIDO.has(t) ? t : t.charAt(0).toUpperCase() + t.slice(1))
+    .join(" ");
+}
+
 /** Estadísticas de ARUSA de un jugador ya vinculado. */
 export function statsDe(jugador, jugadoresArusa) {
   if (!jugador?.arusa_player_id) return null;

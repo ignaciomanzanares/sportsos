@@ -694,7 +694,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
 
         {/* ── Vista: Vincular con ARUSA ── */}
         {jugTab === "arusa" && (
-          <VincularArusa players={players} clubName={club?.name} sportColor={sportColor}
+          <VincularArusa players={players} clubName={club?.name} clubId={clubId} sportColor={sportColor}
             showToast={showToast} onVinculado={()=>window.location.reload()}/>
         )}
 
