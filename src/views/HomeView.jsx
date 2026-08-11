@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabase";
 import { usePlataforma } from "../lib/usePlataforma";
 import { terminoAnotacion } from "../data/sports";
 import { getNotifications } from "../lib/db";
+import { ordenarPlantel } from "../lib/ordenPlantel";
 import { useInjuryReports, playersEnAlerta } from "../lib/useInjuryReports";
 import EmptyState from "../components/EmptyState";
 
@@ -169,7 +170,7 @@ function relTime(iso) {
 
 const NOTIF_DOT = { nomina:"#818cf8", partido:"#22c55e", pago:"#fbbf24", plantel:"#38bdf8", general:"#5a5753" };
 
-function HomeAdmin({ players, sportColor, club, sp, countryData, payments, partidos, onNavigate, clubId }) {
+function HomeAdmin({ players, sportColor, club, sp, countryData, payments, partidos, onNavigate, clubId, onEditPlayer }) {
   const [posFilter, setPosFilter] = useState("TODOS");
 
   const pagados    = payments.filter(p=>p.estado==="pagado").length;
@@ -214,7 +215,7 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
       const ia = ORDEN_ABREV.indexOf(a), ib = ORDEN_ABREV.indexOf(b);
       return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
     })];
-  const filtered = posFilter === "TODOS" ? players : players.filter(p=>abrev(p)===posFilter);
+  const filtered = ordenarPlantel(posFilter === "TODOS" ? players : players.filter(p=>abrev(p)===posFilter));
 
   const avatarColors = ["#4f46e5","#0284c7","#b45309","#be185d","#047857","#7c3aed","#c2410c","#0f766e"];
 
@@ -336,7 +337,9 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                 const statusLabel = p.med_status==="rojo"?"Lesionado":p.med_status==="amarillo"?"Alerta":"Disponible";
                 const bgColor = avatarColors[i % avatarColors.length];
                 return (
-                  <tr key={p.id} style={{cursor:"pointer"}}
+                  <tr key={p.id} style={{cursor:onEditPlayer?"pointer":"default"}}
+                    onClick={()=>onEditPlayer?.(p)}
+                    title={onEditPlayer?"Editar ficha":undefined}
                     onMouseEnter={e=>{Array.from(e.currentTarget.cells).forEach(c=>c.style.background="#161412");}}
                     onMouseLeave={e=>{Array.from(e.currentTarget.cells).forEach(c=>c.style.background="");}}
                   >
@@ -691,7 +694,7 @@ function HomeSuperAdmin({ sportColor, onNavigate }) {
   );
 }
 
-export default function HomeView({ role, players, sportColor, club, sp, countryData, payments, partidos, onNavigate, currentUser, convocado=null, clubId=null }) {
+export default function HomeView({ role, players, sportColor, club, sp, countryData, payments, partidos, onNavigate, currentUser, convocado=null, clubId=null, onEditPlayer=null }) {
   const greeting = () => {
     const h = new Date().getHours();
     if (h < 12) return "Buenos días";

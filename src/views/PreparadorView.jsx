@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { GYM_PLAN, PLAN_VACIO } from "../data/gymPlan";
+import { parseGymPlan, ORDEN_DIAS, ETIQUETA_DIA } from "../lib/gymImport";
 import { supabase } from "../lib/supabase";
 import { getGymPlan, saveGymPlan, getWeekStart, formatWeekLabel } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
@@ -104,14 +105,22 @@ function EstadoPlantelView({ sportColor, players }) {
 }
 
 export default function PreparadorView({module, sp, showToast, sportColor, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay, userCats=[], isDemo=true, players=[], clubId=null, currentUser=null}) {
-  const days = ["lunes","miercoles","viernes"];
-  const dayLabels = {lunes:"Lunes",miercoles:"Miércoles",viernes:"Viernes"};
   // Un club real arranca en blanco; la vitrina de demo sigue con su plan.
   const planSessions = gymPlanExercises || (clubId ? PLAN_VACIO : GYM_PLAN.sessions);
+  // Los días salen del plan, no de una lista fija: estaban clavados en lunes,
+  // miércoles y viernes, y este club entrena lunes, martes y jueves. Un plan
+  // importado con otros días quedaba invisible.
+  const dayLabels = ETIQUETA_DIA;
+  const days = Object.keys(planSessions)
+    .sort((a,b) => ORDEN_DIAS.indexOf(a) - ORDEN_DIAS.indexOf(b));
+  // El día abierto vive en App y arranca en "lunes"; si el plan importado no
+  // tiene lunes, se abre el primero que sí exista en vez de romperse.
+  const diaActivo = days.includes(expandedDay) ? expandedDay : days[0];
 
   // ── Plan real (Supabase) ──────────────────────────────────────────────
   const [planLoading, setPlanLoading] = useLocalState(!!clubId);
   const [saving, setSaving]           = useLocalState(false);
+  const [importando, setImportando]   = useLocalState(false);
   const [kpis, setKpis] = useLocalState({ cumplimiento:0, activos:0, volumen:0 });
   const weekStart = getWeekStart();
   const weekLabel = clubId ? formatWeekLabel(weekStart) : GYM_PLAN.week;
@@ -160,7 +169,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
 
   const addExercise = () => {
     if(!newEx.name){showToast("Escribe el nombre del ejercicio","warning");return;}
-    const day = expandedDay;
+    const day = diaActivo;
     setGymPlanExercises(prev=>{const base=prev||(clubId?PLAN_VACIO:GYM_PLAN.sessions);return {...base,[day]:{...base[day],exercises:[...base[day].exercises,{...newEx}]}};});
     setNewEx({name:"",sets:3,reps:8,pct:70,rest:120,notes:"",muscles:""});
     setNewExForm(false);
@@ -179,7 +188,33 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
     <div>
       <CatsBanner/>
       <SectionTitle title={`Microciclo — Semana ${weekLabel}`} sub={`${coachName} · ${sp.name}`}
-        action={<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} disabled={saving} onClick={publicarPlan} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)",opacity:saving?0.6:1}}>{saving?"Publicando...":publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>}
+        action={<div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+          {/* El PF manda el microciclo en Excel; cargar tres días a mano son
+              dieciocho formularios para copiar algo que ya está escrito. */}
+          <label style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)",fontSize:"12px",cursor:importando?"wait":"pointer",opacity:importando?0.6:1}}>
+            {importando ? "Leyendo…" : "📄 Subir Excel"}
+            <input type="file" accept=".xlsx,.xls,.csv" style={{display:"none"}} disabled={importando}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                setImportando(true);
+                try {
+                  const { sessions, avisos, total } = await parseGymPlan(file);
+                  setGymPlanExercises(sessions);
+                  // Se guarda de inmediato, pero sin publicar: el PF revisa lo
+                  // que quedó antes de que los jugadores lo vean.
+                  if (clubId) await saveGymPlan({ clubId, weekLabel, coachName, sessions, published: false });
+                  setPublishedPlan(false);
+                  showToast(`${total} ejercicios importados en ${Object.keys(sessions).length} días`, "success");
+                  avisos.forEach(a => showToast(a, "warning"));
+                } catch (err) {
+                  showToast("No se pudo leer el archivo: " + err.message, "error");
+                } finally { setImportando(false); }
+              }}/>
+          </label>
+          <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} disabled={saving} onClick={publicarPlan} style={{...ss.btn,background:publishedPlan?"rgba(34,197,94,0.15)":"linear-gradient(135deg,#22C55E,#16A34A)",color:publishedPlan?"#22C55E":"#fff",border:`1px solid ${publishedPlan?"#22C55E55":"transparent"}`,fontSize:"12px",boxShadow:publishedPlan?"none":"0 4px 12px rgba(34,197,94,0.35)",opacity:saving?0.6:1}}>{saving?"Publicando...":publishedPlan?"✅ Plan publicado":"📢 Publicar plan"}</motion.button>
+        </div>}
       />
       {planLoading ? (
         <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando plan...</div>
@@ -194,23 +229,23 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
       {!planLoading && <>
       <div style={{display:"flex",gap:"8px",marginBottom:"16px",flexWrap:"wrap"}}>
         {days.map(d=>(
-          <motion.button key={d} whileHover={{y:-2}} whileTap={{scale:0.97}} onClick={()=>setExpandedDay(d)} style={{...ss.btn,background:expandedDay===d?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)",color:expandedDay===d?sportColor:"var(--text-2)",border:`1px solid ${expandedDay===d?sportColor+"55":"var(--border-soft)"}`,fontSize:"12px",padding:"10px 16px",textAlign:"left",boxShadow:expandedDay===d?`0 0 16px ${sportColor}33`:"none",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:"2px"}}>
+          <motion.button key={d} whileHover={{y:-2}} whileTap={{scale:0.97}} onClick={()=>setExpandedDay(d)} style={{...ss.btn,background:diaActivo===d?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)",color:diaActivo===d?sportColor:"var(--text-2)",border:`1px solid ${diaActivo===d?sportColor+"55":"var(--border-soft)"}`,fontSize:"12px",padding:"10px 16px",textAlign:"left",boxShadow:diaActivo===d?`0 0 16px ${sportColor}33`:"none",display:"flex",flexDirection:"column",alignItems:"flex-start",gap:"2px"}}>
             <span style={{fontWeight:700}}>{dayLabels[d]}</span>
-            <span style={{fontSize:"10px",opacity:0.7}}>{planSessions[d].label}</span>
+            <span style={{fontSize:"10px",opacity:0.7}}>{planSessions[d]?.label || "Sin definir"}</span>
           </motion.button>
         ))}
       </div>
-      <motion.div {...fadeUp} key={expandedDay} style={ss.card}>
-        <div style={{fontWeight:600,marginBottom:"14px",fontSize:"14px",color:sportColor,display:"flex",alignItems:"center",gap:"8px"}}>🏋️ {dayLabels[expandedDay]} — {planSessions[expandedDay].label}</div>
+      <motion.div {...fadeUp} key={diaActivo} style={ss.card}>
+        <div style={{fontWeight:600,marginBottom:"14px",fontSize:"14px",color:sportColor,display:"flex",alignItems:"center",gap:"8px"}}>🏋️ {dayLabels[diaActivo]} — {planSessions[diaActivo]?.label || "Sin definir"}</div>
         <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 2fr",gap:"10px",marginBottom:"10px",padding:"0 4px"}}>
           {["Ejercicio","Series × Reps","% 1RM","Descanso","Músculos"].map(h=><div key={h} style={{...ss.label,fontSize:"9px",marginBottom:0}}>{h}</div>)}
         </div>
-        {planSessions[expandedDay].exercises.length === 0 && (
+        {(planSessions[diaActivo]?.exercises || []).length === 0 && (
           <div style={{...ss.muted,fontSize:"12px",padding:"14px 4px",borderTop:"1px solid var(--border-soft)"}}>
             Este día todavía no tiene ejercicios. Agrégalos abajo.
           </div>
         )}
-        {planSessions[expandedDay].exercises.map((ex,i)=>(
+        {(planSessions[diaActivo]?.exercises || []).map((ex,i)=>(
           <motion.div key={i} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.06}} style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 2fr",gap:"10px",padding:"12px 4px",borderTop:"1px solid var(--border-soft)",alignItems:"center"}}>
             <div style={{fontWeight:600,fontSize:"13px"}}>{ex.name}</div>
             <div><Badge color={sportColor} size="md">{ex.sets}×{ex.reps}</Badge></div>

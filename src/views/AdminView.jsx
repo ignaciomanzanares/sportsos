@@ -16,10 +16,11 @@ import FinanzasView from "../components/FinanzasView";
 import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 import { clave, contieneNombre } from "../lib/vincularArusa";
 import { filtrarPorNombre } from "../lib/buscarNombre";
+import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -104,6 +105,15 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   // Estado para gestión de jugadores
   const [playerForm, setPlayerForm] = useState(null); // null = cerrado | EMPTY_PLAYER = nuevo | {id,...} = editando
   const [playerSaving, setPlayerSaving] = useState(false);
+  // Llega desde el Inicio: se abre su ficha y se avisa, para que volver a
+  // Jugadores más tarde no reabra el formulario de la vez pasada.
+  useEffect(() => {
+    if (!jugadorAEditar) return;
+    setJugTab("plantel");
+    setPlayerForm({ ...jugadorAEditar, cat: jugadorAEditar.category, med: jugadorAEditar.med_status, cuota: jugadorAEditar.cuota_status });
+    onJugadorEditado();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jugadorAEditar]);
   const [playerSearch, setPlayerSearch] = useState("");
   const [pendingDelete, setPendingDelete] = useState(null); // {id, name, timeoutId}
   const [invRol, setInvRol] = useState("jugador");
@@ -626,7 +636,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   if(module==="jugadores") {
     // Misma búsqueda que la asistencia y la global: sin acentos y por
     // palabras sueltas. Antes acá "perez" no encontraba a ningún "Pérez".
-    const filtered = filtrarPorNombre(players, playerSearch);
+    const filtered = ordenarPlantel(filtrarPorNombre(players, playerSearch));
 
     const savePlayer = async () => {
       if (!playerForm?.name?.trim()) { showToast("El nombre es obligatorio","warning"); return; }
@@ -800,8 +810,16 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         {jugTab === "plantel" && (<>
 
         {/* Formulario agregar/editar */}
+        {/* El formulario vivía arriba de la tabla: editar al jugador ciento
+            veinte te mandaba a subir hasta el principio, y desde ahí no veías a
+            quién estabas editando. Como capa sobre la pantalla aparece siempre
+            donde estás. */}
         {playerForm && (
-          <motion.div initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} style={{...ss.card,marginBottom:"20px",border:`1px solid ${sportColor}44`,background:`linear-gradient(135deg,${sportColor}08,transparent)`}}>
+          <motion.div initial={{opacity:0}} animate={{opacity:1}}
+            onClick={(e)=>{ if (e.target === e.currentTarget) setPlayerForm(null); }}
+            style={{position:"fixed",inset:0,zIndex:60,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(3px)",
+              display:"flex",alignItems:"flex-start",justifyContent:"center",padding:"5vh 16px",overflowY:"auto"}}>
+          <motion.div initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} style={{...ss.card,width:"100%",maxWidth:"820px",marginBottom:"20px",border:`1px solid ${sportColor}44`,background:"var(--bg-elev-1)"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"16px"}}>
               <div style={{fontWeight:700,fontSize:"14px"}}>{playerForm.id ? "✏️ Editar jugador" : "➕ Nuevo jugador"}</div>
               <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}} onClick={()=>setPlayerForm(null)}
@@ -880,6 +898,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                 {playerSaving ? "Guardando..." : (playerForm.id ? "Guardar cambios" : "Agregar al plantel")}
               </motion.button>
             </div>
+          </motion.div>
           </motion.div>
         )}
 
