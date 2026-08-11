@@ -306,6 +306,12 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   // circuito; el resto vienen en blanco. Sin esto, Array.from({length:null})
   // daba cero filas y el jugador no tenía dónde anotar nada.
   const setsDe = (ex)=>Number(ex?.sets) || 1;
+  // Quién va primero en un "A vs B" lo decide la cancha, no de quién es la app:
+  // el marcador ya se ordenaba bien pero el título decía siempre "Old Reds vs
+  // DOBS" encima de un tablero que mostraba a DOBS a la izquierda.
+  const enfrentamiento = (p) => p?.lugar === "Visita"
+    ? `${p.rival} vs ${club.name}`
+    : `${club.name} vs ${p?.rival}`;
   const exCompleted = (ex)=>{for(let i=0;i<setsDe(ex);i++){if(!getLog(ex.name,i,"weight")||!getLog(ex.name,i,"reps"))return false;}return true;};
   // todayPlan puede ser null si el plan está publicado pero sin sesiones. Estas
   // tres líneas corren antes del guard de más abajo, así que tienen que
@@ -600,7 +606,7 @@ function Noticias({ partidos, club, sportColor }) {
                 {resIcons[r.resultado]}
               </div>
               <div>
-                <div style={{fontWeight:700,fontSize:"14px"}}>{club.name} vs {r.rival}</div>
+                <div style={{fontWeight:700,fontSize:"14px"}}>{enfrentamiento(r)}</div>
                 <div style={{...ss.muted,fontSize:"11px",marginTop:"2px"}}>{r.fecha} · {r.lugar}</div>
               </div>
             </div>
@@ -785,7 +791,9 @@ export default function JugadorView({module, sport, sp, club, player, players, s
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:"12px"}}>
               <div>
                 <div style={{fontSize:"22px",fontWeight:900,letterSpacing:"-0.02em",marginBottom:"4px"}}>
-                  {club.name} <span style={{color:"var(--text-3)",fontWeight:300,fontSize:"18px"}}>vs</span> {proximoPartido.rival}
+                  {proximoPartido.lugar === "Visita" ? proximoPartido.rival : club.name}
+                  <span style={{color:"var(--text-3)",fontWeight:300,fontSize:"18px"}}> vs </span>
+                  {proximoPartido.lugar === "Visita" ? club.name : proximoPartido.rival}
                 </div>
                 <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap"}}>
                   <span style={{...ss.muted,fontSize:"12px"}}>📅 {proximoPartido.fecha}</span>
@@ -812,7 +820,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"14px",flexWrap:"wrap",gap:"8px"}}>
               <div>
                 <div style={{fontSize:"10px",color:"var(--text-3)",textTransform:"uppercase",letterSpacing:"0.1em",fontWeight:600,marginBottom:"4px"}}>Último resultado · {ultimoRes.cat}</div>
-                <div style={{fontSize:"16px",fontWeight:800}}>{club.name} vs {ultimoRes.rival}</div>
+                <div style={{fontSize:"16px",fontWeight:800}}>{enfrentamiento(ultimoRes)}</div>
                 <div style={{...ss.muted,fontSize:"11px",marginTop:"2px"}}>{ultimoRes.fecha} · {ultimoRes.lugar}</div>
               </div>
               <span style={{fontSize:"11px",padding:"4px 12px",borderRadius:"99px",background:`${resColors[ultimoRes.resultado]}20`,color:resColors[ultimoRes.resultado],border:`1.5px solid ${resColors[ultimoRes.resultado]}55`,fontWeight:800,textTransform:"uppercase",letterSpacing:"0.05em"}}>

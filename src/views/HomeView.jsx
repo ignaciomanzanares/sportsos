@@ -603,6 +603,7 @@ function HomePreparador({ players, sportColor, sp, onNavigate, clubId=null }) {
 }
 
 function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavigate, convocado=null }) {
+  const anotJug = { ...terminoAnotacion(sp), icono: sp?.stats?.[0]?.icon || "🏉" };
   const miPago     = payments?.find(p=>p.jugador===player?.name);
   const cuotaOk    = !miPago || miPago.estado==="pagado";
   // Si el entrenador no publicó nómina aún, jugadores aptos se muestran como "pendiente"
@@ -654,11 +655,17 @@ function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavig
             el puesto en el ranking de fuerza estaban escritos a mano: no hay
             cuestionario ni ranking que los produzca. */}
         <HeroStat icon="💳"
-          value={!miPago ? "—" : (cuotaOk ? "Al día" : "Pendiente")} label="Mi cuota"
-          sub={!miPago ? "Sin cuota registrada" : (cuotaOk ? "Al día con el club" : "Pendiente de pago")}
+          value={!miPago ? "Sin cuota" : (cuotaOk ? "Al día" : "Pendiente")} label="Mi cuota"
+          sub={!miPago ? "El club no te cobró todavía" : (cuotaOk ? "Al día con el club" : "Pendiente de pago")}
           color={!miPago ? "#6B7896" : (cuotaOk ? "#1FA04A" : "#C98408")} onClick={()=>onNavigate("micuota")}/>
-        <HeroStat icon="🏋️" value={sp.icon} label="Mi gym"
-          sub="Plan de la semana" color={sportColor} onClick={()=>onNavigate("migym")}/>
+        {/* Antes esta tarjeta usaba el ícono del deporte como si fuera un
+            número: una pelota gigante que no decía nada. Van los partidos y los
+            tries del jugador en el torneo, que son datos suyos y reales. Ir al
+            gym ya está en Acciones rápidas, abajo. */}
+        <HeroStat icon="🏉" value={player?.stats?.partidos ?? "—"} label="Partidos"
+          sub="Jugados en el torneo" color="#3B82F6" onClick={()=>onNavigate("midashboard")}/>
+        <HeroStat icon={anotJug.icono} value={player?.stats?.[anotJug.clave] ?? "—"} label={anotJug.etiqueta}
+          sub="En el torneo" color={sportColor} onClick={()=>onNavigate("midashboard")}/>
       </div>
 
       {/* Acciones rápidas */}
