@@ -32,6 +32,20 @@ export function clave(nombre) {
 const mismoConjunto = (a, b) => a.size > 0 && a.size === b.size && [...a].every(t => b.has(t));
 
 /**
+ * ¿`corto` es el mismo nombre que `largo`, escrito con menos apellidos?
+ *
+ * El plantel dice "Infante Tomás" y ARUSA "Tomás Infante Fantuzzi": mismo
+ * jugador, un apellido de diferencia. Comparar conjuntos exactos los daba por
+ * personas distintas y terminamos con dos Tomás Infante.
+ *
+ * Se exige que TODAS las palabras del corto estén en el largo y que sean al
+ * menos dos (nombre y apellido): con una sola, "Pérez" calzaría con los siete
+ * Pérez del club.
+ */
+const contenidoEn = (corto, largo) =>
+  corto.size >= 2 && corto.size < largo.size && [...corto].every(t => largo.has(t));
+
+/**
  * Propone vínculos entre el plantel y las filas de ARUSA.
  *
  * Devuelve:
@@ -50,9 +64,16 @@ export function proponerVinculos(plantel, jugadoresArusa) {
     if (k.size === 0) { sinMatch.push(p); continue; }
 
     const candidatos = arusa.filter(j => mismoConjunto(k, j.k));
-    if (candidatos.length === 1)      exactos.push({ jugador: p, arusa: candidatos[0] });
-    else if (candidatos.length > 1)   ambiguos.push({ jugador: p, candidatos });
-    else                              sinMatch.push(p);
+    if (candidatos.length === 1)    { exactos.push({ jugador: p, arusa: candidatos[0] }); continue; }
+    if (candidatos.length > 1)      { ambiguos.push({ jugador: p, candidatos }); continue; }
+
+    // Segunda pasada: el mismo nombre con un apellido de más en ARUSA. Si hay
+    // un solo candidato es tan seguro como el conjunto exacto; si hay varios,
+    // decide una persona.
+    const parciales = arusa.filter(j => contenidoEn(k, j.k));
+    if (parciales.length === 1)      exactos.push({ jugador: p, arusa: parciales[0] });
+    else if (parciales.length > 1)   ambiguos.push({ jugador: p, candidatos: parciales });
+    else                             sinMatch.push(p);
   }
   return { exactos, ambiguos, sinMatch };
 }
@@ -74,7 +95,10 @@ export function arusaSinPlantel(plantel, jugadoresArusa) {
   return jugadoresArusa.filter(j => {
     if (vinculados.has(String(j.id))) return false;
     const k = clave(j.nombre);
-    return !clavesPlantel.some(kp => mismoConjunto(k, kp));
+    if (clavesPlantel.some(kp => mismoConjunto(k, kp))) return false;
+    // Y tampoco si es alguien del plantel escrito con menos apellidos, y no
+    // hay duda de quién: así fue como se coló un segundo Tomás Infante.
+    return clavesPlantel.filter(kp => contenidoEn(kp, k)).length !== 1;
   });
 }
 
@@ -93,4 +117,48 @@ export function nombreProlijo(nombre) {
 export function statsDe(jugador, jugadoresArusa) {
   if (!jugador?.arusa_player_id) return null;
   return jugadoresArusa.find(j => String(j.id) === String(jugador.arusa_player_id)) || null;
+}
+
+/**
+ * Jugadores repetidos dentro del propio plantel.
+ *
+ * "Infante Tomás" y "Tomás Infante Fantuzzi" son la misma persona cargada dos
+ * veces: la primera vino en la planilla del club y la segunda se agregó desde
+ * ARUSA cuando el emparejamiento exigía que los nombres calzaran palabra por
+ * palabra. Se detecta igual que el emparejamiento —un nombre contenido en el
+ * otro, sin ambigüedad— y se propone conservar uno solo.
+ *
+ * Se conserva la ficha vieja, que es la que tiene la asistencia, el número y
+ * la posición cargados; se le pasa el vínculo con ARUSA y el nombre completo,
+ * y se borra la duplicada. Nunca al revés: perder la asistencia de la
+ * temporada por quedarse con la ficha recién creada sería el peor resultado
+ * posible de una limpieza.
+ */
+export function duplicadosDelPlantel(plantel) {
+  const conClave = plantel.map(p => ({ p, k: clave(p.name) })).filter(x => x.k.size >= 2);
+  const pares = [];
+  const yaTomados = new Set();
+
+  for (const corto of conClave) {
+    const largos = conClave.filter(x => x.p.id !== corto.p.id && contenidoEn(corto.k, x.k));
+    if (largos.length !== 1) continue; // con dudas no se borra nada
+    const largo = largos[0];
+    if (yaTomados.has(corto.p.id) || yaTomados.has(largo.p.id)) continue;
+    yaTomados.add(corto.p.id); yaTomados.add(largo.p.id);
+
+    // La ficha nueva es la que vino de ARUSA: trae vínculo y nada más.
+    const nueva = largo.p.arusa_player_id && !corto.p.arusa_player_id ? largo.p
+                : corto.p.arusa_player_id && !largo.p.arusa_player_id ? corto.p
+                : null;
+    if (!nueva) continue; // las dos son del club o las dos de ARUSA: que decida una persona
+    const vieja = nueva.id === largo.p.id ? corto.p : largo.p;
+    pares.push({
+      conservar: vieja,
+      borrar: nueva,
+      // El nombre completo es el mejor de los dos, venga de donde venga.
+      nombreFinal: (largo.p.name || "").length >= (corto.p.name || "").length ? largo.p.name : corto.p.name,
+      arusaId: nueva.arusa_player_id,
+    });
+  }
+  return pares;
 }

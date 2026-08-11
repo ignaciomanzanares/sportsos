@@ -4,7 +4,7 @@ import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
 import { useArusaTorneo } from "../lib/useArusaTorneo";
-import { proponerVinculos, arusaSinPlantel, nombreProlijo } from "../lib/vincularArusa";
+import { proponerVinculos, arusaSinPlantel, nombreProlijo, duplicadosDelPlantel } from "../lib/vincularArusa";
 
 const DIVISIONES = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
 
@@ -36,6 +36,7 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
   // Los del torneo que no están en el plantel: la planilla con la que se cargó
   // quedó incompleta y ARUSA tiene la ficha de todos los que jugaron.
   const faltantes = useMemo(() => arusaSinPlantel(players, delClub), [players, delClub]);
+  const duplicados = useMemo(() => duplicadosDelPlantel(players), [players]);
   const yaVinculados = players.filter(p => p.arusa_player_id).length;
 
   const [guardando, setGuardando] = useState(false);
@@ -79,6 +80,26 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
     } finally { setGuardando(false); }
   };
 
+  const fusionar = async () => {
+    if (duplicados.length === 0) return;
+    setGuardando(true);
+    try {
+      for (const d of duplicados) {
+        // Primero se traslada lo que la ficha nueva aportaba, después se borra:
+        // al revés, un error a mitad de camino dejaría al jugador sin vínculo.
+        const { error: e1 } = await supabase.from("players")
+          .update({ arusa_player_id: d.arusaId, name: d.nombreFinal }).eq("id", d.conservar.id);
+        if (e1) throw e1;
+        const { error: e2 } = await supabase.from("players").delete().eq("id", d.borrar.id);
+        if (e2) throw e2;
+      }
+      showToast(`${duplicados.length} duplicado${duplicados.length===1?"":"s"} unido${duplicados.length===1?"":"s"}`, "success");
+      onVinculado();
+    } catch (e) {
+      showToast("No se pudo unir: " + e.message, "warning");
+    } finally { setGuardando(false); }
+  };
+
   if (cargando) return <div style={{ ...ss.card, ...ss.muted, fontSize:"12px", marginTop:"16px" }}>Buscando el plantel en el torneo…</div>;
 
   if (delClub.length === 0) return (
@@ -105,6 +126,34 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
           Faltan en el plantel: <strong>{faltantes.length}</strong>
         </span>
       </div>
+
+      {duplicados.length > 0 && (
+        <div style={{ marginBottom:"16px", padding:"12px 14px", borderRadius:"var(--r-md)",
+          background:"rgba(192,57,43,0.07)", border:"1px solid rgba(192,57,43,0.28)" }}>
+          <div style={{ fontSize:"12px", fontWeight:600, marginBottom:"4px" }}>
+            {duplicados.length} jugador{duplicados.length===1?"":"es"} está{duplicados.length===1?"":"n"} dos veces en el plantel
+          </div>
+          <div style={{ ...ss.muted, fontSize:"11px", marginBottom:"10px", lineHeight:1.5 }}>
+            El emparejamiento exigía que los nombres calzaran palabra por palabra, así que
+            "Infante Tomás" y "Tomás Infante Fantuzzi" pasaron por dos personas. Se conserva
+            la ficha vieja —es la que tiene la asistencia y el número— con el nombre completo
+            y el vínculo a ARUSA, y se borra la otra.
+          </div>
+          <motion.button whileTap={{ scale:0.98 }} disabled={guardando} onClick={fusionar}
+            style={{ ...ss.btn, background:"#C0392B", color:"#fff", fontSize:"12px", padding:"9px 16px",
+              opacity: guardando ? 0.6 : 1, marginBottom:"10px" }}>
+            {guardando ? "Uniendo…" : `Unir ${duplicados.length === 1 ? "el duplicado" : `los ${duplicados.length} duplicados`}`}
+          </motion.button>
+          <div style={{ maxHeight:"170px", overflowY:"auto" }}>
+            {duplicados.map(d => (
+              <div key={d.borrar.id} style={{ fontSize:"11px", padding:"2px 0", color:"var(--text-3)" }}>
+                {d.conservar.name} <span style={{ color:"var(--text-4)" }}>+</span> {d.borrar.name}
+                <span style={{ color:"var(--text-4)" }}> → {d.nombreFinal}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {faltantes.length > 0 && (
         <div style={{ marginBottom:"16px", padding:"12px 14px", borderRadius:"var(--r-md)",
@@ -177,7 +226,7 @@ export default function VincularArusa({ players = [], clubName, clubId = null, s
         </div>
       )}
 
-      {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && faltantes.length === 0 && (
+      {propuesta.exactos.length === 0 && propuesta.ambiguos.length === 0 && faltantes.length === 0 && duplicados.length === 0 && (
         <div style={{ ...ss.muted, fontSize:"12px" }}>
           No queda nadie por vincular automáticamente. Los {propuesta.sinMatch.length} restantes
           no aparecen en el torneo — normal en menores y juveniles, o en quien no ha jugado.
