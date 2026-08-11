@@ -116,11 +116,17 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
   // El día abierto vive en App y arranca en "lunes"; si el plan importado no
   // tiene lunes, se abre el primero que sí exista en vez de romperse.
   const diaActivo = days.includes(expandedDay) ? expandedDay : days[0];
+  const todosDelDia   = planSessions[diaActivo]?.exercises || [];
+  const gruposDelDia  = [...new Set(todosDelDia.map(e => e.grupo).filter(Boolean))];
+  const ejerciciosDelDia = grupoFiltro === "TODOS" || !gruposDelDia.includes(grupoFiltro)
+    ? todosDelDia
+    : todosDelDia.filter(e => e.grupo === grupoFiltro);
 
   // ── Plan real (Supabase) ──────────────────────────────────────────────
   const [planLoading, setPlanLoading] = useLocalState(!!clubId);
   const [saving, setSaving]           = useLocalState(false);
   const [importando, setImportando]   = useLocalState(false);
+  const [grupoFiltro, setGrupoFiltro] = useLocalState("TODOS");
   const [kpis, setKpis] = useLocalState({ cumplimiento:0, activos:0, volumen:0 });
   const weekStart = getWeekStart();
   const weekLabel = clubId ? formatWeekLabel(weekStart) : GYM_PLAN.week;
@@ -193,23 +199,28 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
               dieciocho formularios para copiar algo que ya está escrito. */}
           <label style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-2)",border:"1px solid var(--border-soft)",fontSize:"12px",cursor:importando?"wait":"pointer",opacity:importando?0.6:1}}>
             {importando ? "Leyendo…" : "📄 Subir Excel"}
-            <input type="file" accept=".xlsx,.xls,.csv" style={{display:"none"}} disabled={importando}
+            {/* Varios a la vez: el PF manda un archivo por grupo de puestos
+                (medios/wings/fullbacks, primeras y segundas, terceras y
+                centros) y son la misma semana. */}
+            <input type="file" accept=".xlsx,.xls,.csv" multiple style={{display:"none"}} disabled={importando}
               onChange={async (e) => {
-                const file = e.target.files?.[0];
+                const files = Array.from(e.target.files || []);
                 e.target.value = "";
-                if (!file) return;
+                if (files.length === 0) return;
                 setImportando(true);
                 try {
-                  const { sessions, avisos, total } = await parseGymPlan(file);
+                  const { sessions, avisos, total, grupos } = await parseGymPlan(files);
                   setGymPlanExercises(sessions);
                   // Se guarda de inmediato, pero sin publicar: el PF revisa lo
                   // que quedó antes de que los jugadores lo vean.
                   if (clubId) await saveGymPlan({ clubId, weekLabel, coachName, sessions, published: false });
                   setPublishedPlan(false);
-                  showToast(`${total} ejercicios importados en ${Object.keys(sessions).length} días`, "success");
+                  showToast(
+                    `${total} ejercicios en ${Object.keys(sessions).length} días` +
+                    (grupos.length > 1 ? ` · ${grupos.length} grupos de puestos` : ""), "success");
                   avisos.forEach(a => showToast(a, "warning"));
                 } catch (err) {
-                  showToast("No se pudo leer el archivo: " + err.message, "error");
+                  showToast("No se pudo leer: " + err.message, "error");
                 } finally { setImportando(false); }
               }}/>
           </label>
@@ -237,23 +248,64 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
       </div>
       <motion.div {...fadeUp} key={diaActivo} style={ss.card}>
         <div style={{fontWeight:600,marginBottom:"14px",fontSize:"14px",color:sportColor,display:"flex",alignItems:"center",gap:"8px"}}>🏋️ {dayLabels[diaActivo]} — {planSessions[diaActivo]?.label || "Sin definir"}</div>
-        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 2fr",gap:"10px",marginBottom:"10px",padding:"0 4px"}}>
-          {["Ejercicio","Series × Reps","% 1RM","Descanso","Músculos"].map(h=><div key={h} style={{...ss.label,fontSize:"9px",marginBottom:0}}>{h}</div>)}
-        </div>
-        {(planSessions[diaActivo]?.exercises || []).length === 0 && (
-          <div style={{...ss.muted,fontSize:"12px",padding:"14px 4px",borderTop:"1px solid var(--border-soft)"}}>
-            Este día todavía no tiene ejercicios. Agrégalos abajo.
+        {/* Los grupos de puestos: el lunes de un pilar y el de un wing no son
+            el mismo entrenamiento, y vienen en archivos distintos. */}
+        {gruposDelDia.length > 1 && (
+          <div style={{display:"flex",gap:"6px",flexWrap:"wrap",marginBottom:"12px"}}>
+            {["TODOS", ...gruposDelDia].map(g=>(
+              <button key={g} onClick={()=>setGrupoFiltro(g)}
+                style={{...ss.btn,fontSize:"11px",padding:"5px 10px",
+                  background: grupoFiltro===g ? `${sportColor}22` : "var(--bg-elev-2)",
+                  color: grupoFiltro===g ? sportColor : "var(--text-3)",
+                  border:`1px solid ${grupoFiltro===g ? sportColor : "var(--border-soft)"}`}}>
+                {g === "TODOS" ? "Todos" : g}
+              </button>
+            ))}
           </div>
         )}
-        {(planSessions[diaActivo]?.exercises || []).map((ex,i)=>(
-          <motion.div key={i} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:0.3,delay:i*0.06}} style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr 2fr",gap:"10px",padding:"12px 4px",borderTop:"1px solid var(--border-soft)",alignItems:"center"}}>
-            <div style={{fontWeight:600,fontSize:"13px"}}>{ex.name}</div>
-            <div><Badge color={sportColor} size="md">{ex.sets}×{ex.reps}</Badge></div>
-            <div style={{fontSize:"12px",color:ex.pct?"var(--text-1)":"var(--text-3)"}}>{ex.pct?ex.pct+"%":"—"}</div>
-            <div style={{...ss.muted,fontSize:"11px"}}>{ex.rest}s</div>
-            <div style={{...ss.muted,fontSize:"11px"}}>{ex.muscles||"—"}</div>
-          </motion.div>
-        ))}
+        <div style={{display:"grid",gridTemplateColumns:"2.4fr 0.9fr 1.2fr 1fr",gap:"10px",marginBottom:"10px",padding:"0 4px"}}>
+          {["Ejercicio","Series × Reps","Carga","Descanso"].map(h=><div key={h} style={{...ss.label,fontSize:"9px",marginBottom:0}}>{h}</div>)}
+        </div>
+        {ejerciciosDelDia.length === 0 && (
+          <div style={{...ss.muted,fontSize:"12px",padding:"14px 4px",borderTop:"1px solid var(--border-soft)"}}>
+            Este día todavía no tiene ejercicios. Súbelos con el Excel o agrégalos abajo.
+          </div>
+        )}
+        {ejerciciosDelDia.map((ex,i)=>{
+          // El bloque se escribe una vez y no en cada fila: repetirlo doce
+          // veces es ruido, y el PF lo usa como separador de la sesión.
+          const nuevoBloque = ex.bloque && ex.bloque !== ejerciciosDelDia[i-1]?.bloque;
+          return (
+          <div key={i}>
+            {nuevoBloque && (
+              <div style={{fontSize:"11px",fontWeight:700,color:sportColor,textTransform:"uppercase",letterSpacing:"0.06em",padding:"14px 4px 6px"}}>
+                {ex.bloque}
+              </div>
+            )}
+            <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} transition={{duration:0.25,delay:Math.min(i,15)*0.03}}
+              style={{display:"grid",gridTemplateColumns:"2.4fr 0.9fr 1.2fr 1fr",gap:"10px",padding:"10px 4px",borderTop:"1px solid var(--border-soft)",alignItems:"center"}}>
+              <div style={{minWidth:0}}>
+                <div style={{fontWeight:600,fontSize:"13px"}}>
+                  {ex.name}
+                  {ex.video && (
+                    <a href={ex.video} target="_blank" rel="noreferrer" title="Ver video"
+                      style={{marginLeft:"6px",fontSize:"11px",textDecoration:"none"}}>▶</a>
+                  )}
+                </div>
+                {(grupoFiltro === "TODOS" && ex.grupo) && (
+                  <div style={{...ss.muted,fontSize:"10px",marginTop:"1px"}}>{ex.grupo}</div>
+                )}
+                {ex.notes && <div style={{...ss.muted,fontSize:"10px",marginTop:"1px"}}>{ex.notes}</div>}
+              </div>
+              <div>{ex.sets || ex.reps
+                ? <Badge color={sportColor} size="md">{[ex.sets, ex.reps].filter(Boolean).join("×")}</Badge>
+                : <span style={{...ss.muted,fontSize:"11px"}}>—</span>}</div>
+              <div style={{fontSize:"11.5px",color:ex.carga?"var(--text-1)":"var(--text-3)"}}>{ex.carga || (ex.pct ? ex.pct+"%" : "—")}</div>
+              <div style={{...ss.muted,fontSize:"11px"}}>{ex.rest ? (typeof ex.rest === "number" ? ex.rest+"s" : ex.rest) : "—"}</div>
+            </motion.div>
+          </div>
+          );
+        })}
         <div style={{marginTop:"16px",borderTop:"1px solid var(--border-soft)",paddingTop:"14px"}}>
           {!newExForm
             ? <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.98}} onClick={()=>setNewExForm(true)} style={{...ss.btn,background:"transparent",color:"#3B82F6",border:"1px dashed rgba(59,130,246,0.4)",fontSize:"12px",padding:"10px 16px"}}>+ Nuevo ejercicio</motion.button>

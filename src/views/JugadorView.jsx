@@ -297,13 +297,17 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   const getLog   = (exName,setIdx,field)=>{const key=`${exName}_${setIdx}`;return gymLog[key]?gymLog[key][field]:"";};
   const calcVol  = (exName,sets)=>{let t=0;for(let i=0;i<sets;i++){const w=parseFloat(getLog(exName,i,"weight")||0);const r=parseFloat(getLog(exName,i,"reps")||0);t+=w*r;}return Math.round(t);};
   const calc1RM  = (w,r)=>r?Math.round(w*(1+r/30)):0;
-  const exCompleted = (ex)=>{for(let i=0;i<ex.sets;i++){if(!getLog(ex.name,i,"weight")||!getLog(ex.name,i,"reps"))return false;}return true;};
+  // Los planes que manda el PF traen series solo en el primer ejercicio de un
+  // circuito; el resto vienen en blanco. Sin esto, Array.from({length:null})
+  // daba cero filas y el jugador no tenía dónde anotar nada.
+  const setsDe = (ex)=>Number(ex?.sets) || 1;
+  const exCompleted = (ex)=>{for(let i=0;i<setsDe(ex);i++){if(!getLog(ex.name,i,"weight")||!getLog(ex.name,i,"reps"))return false;}return true;};
   // todayPlan puede ser null si el plan está publicado pero sin sesiones. Estas
   // tres líneas corren antes del guard de más abajo, así que tienen que
   // aguantarlo sin reventar.
   const ejercicios = todayPlan?.exercises ?? [];
   const allDone  = ejercicios.length > 0 && ejercicios.every(ex=>exCompleted(ex));
-  const totalVol = ejercicios.reduce((s,ex)=>s+calcVol(ex.name,ex.sets),0);
+  const totalVol = ejercicios.reduce((s,ex)=>s+calcVol(ex.name,setsDe(ex)),0);
   const rpeColor = (v)=>v<=3?"#22C55E":v<=6?"#F59E0B":"#EF4444";
 
   const persistSet = async (exName, setIdx, overrides={}) => {
@@ -325,8 +329,8 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
 
   // Récords reales: 1RM estimado hoy supera el máximo histórico previo (solo si ya existía un máximo previo)
   const records = ejercicios.map(ex => {
-    const maxWeight = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
-    const maxReps   = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
+    const maxWeight = Math.max(0,...Array.from({length:setsDe(ex)},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
+    const maxReps   = Math.max(0,...Array.from({length:setsDe(ex)},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
     const est1RM = calc1RM(maxWeight,maxReps);
     const prev = clubId ? (prevBest[ex.name]||0) : (PREV_1RM_DEMO[ex.name]||0);
     return prev>0 && est1RM>prev ? {exercise:ex.name, value:est1RM} : null;
@@ -373,17 +377,28 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
       {todayPlan.exercises.map((ex,ei)=>{
         const prev1RM  = clubId ? (prevBest[ex.name]||0) : (PREV_1RM_DEMO[ex.name]||100);
         const suggested = ex.pct && prev1RM ?Math.round(prev1RM*(ex.pct/100)):null;
-        const vol  = calcVol(ex.name,ex.sets);
+        const vol  = calcVol(ex.name,setsDe(ex));
         const done = exCompleted(ex);
-        const maxWeight = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
-        const maxReps   = Math.max(0,...Array.from({length:ex.sets},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
+        const maxWeight = Math.max(0,...Array.from({length:setsDe(ex)},(_,i)=>parseFloat(getLog(ex.name,i,"weight")||0)));
+        const maxReps   = Math.max(0,...Array.from({length:setsDe(ex)},(_,i)=>parseFloat(getLog(ex.name,i,"reps")||0)));
         const est1RM = calc1RM(maxWeight,maxReps);
         const isRecord = prev1RM>0 && est1RM>prev1RM && maxWeight>0;
         return (
           <motion.div key={ei} {...fadeUp} transition={{duration:0.4,delay:ei*0.05}} style={{...ss.card,marginBottom:"14px",border:done?"2px solid #22C55E55":isRecord?"2px solid rgba(245,158,11,0.6)":"1px solid var(--border-soft)",boxShadow:isRecord?"0 0 20px rgba(245,158,11,0.25)":"none",transition:"all 0.3s",position:"relative"}}>
             {isRecord&&<motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:"spring",stiffness:300}} style={{position:"absolute",top:"-10px",right:"12px",background:"linear-gradient(135deg,#F59E0B,#D97706)",color:"#fff",fontSize:"11px",fontWeight:800,padding:"4px 12px",borderRadius:"99px",boxShadow:"0 4px 16px rgba(245,158,11,0.5)",zIndex:2}}>🏆 NUEVO RÉCORD</motion.div>}
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"10px",cursor:"pointer"}} onClick={()=>setExpandedEx(expandedEx===ei?null:ei)}>
-              <div><div style={{fontWeight:700,fontSize:"14px",display:"flex",alignItems:"center",gap:"8px",letterSpacing:"-0.01em"}}>{done&&<span style={{color:"#22C55E",fontSize:"16px"}}>✓</span>}{ex.name}</div>{suggested&&<div style={{fontSize:"12px",color:"#3B82F6",marginTop:"4px"}}>{ex.sets} × {ex.reps} × {ex.pct}% 1RM ≈ <strong>{suggested} kg</strong> sugerido</div>}</div>
+              <div><div style={{fontWeight:700,fontSize:"14px",display:"flex",alignItems:"center",gap:"8px",letterSpacing:"-0.01em"}}>{done&&<span style={{color:"#22C55E",fontSize:"16px"}}>✓</span>}{ex.name}
+                {ex.video && <a href={ex.video} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} title="Ver video" style={{fontSize:"12px",textDecoration:"none"}}>▶</a>}
+              </div>
+              {/* Lo que pidió el PF, tal como lo escribió: la carga suele ser
+                  una indicación ("80 a 85% RM (RIR 3)", "Disco 10 a 20 kg") y
+                  no un número que se pueda convertir en kilos. */}
+              {(ex.sets || ex.reps || ex.carga) && (
+                <div style={{fontSize:"12px",color:"var(--text-3)",marginTop:"4px"}}>
+                  {[ [ex.sets, ex.reps].filter(Boolean).join(" × "), ex.carga, ex.rest ].filter(Boolean).join(" · ")}
+                </div>
+              )}
+              {suggested&&<div style={{fontSize:"12px",color:"#3B82F6",marginTop:"4px"}}>{setsDe(ex)} × {ex.reps} × {ex.pct}% 1RM ≈ <strong>{suggested} kg</strong> sugerido</div>}</div>
               <motion.span animate={{rotate:expandedEx===ei?180:0}} transition={{duration:0.2}} style={{color:"var(--text-3)",fontSize:"12px"}}>▼</motion.span>
             </div>
             <AnimatePresence>
@@ -394,7 +409,7 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
                   <div style={{display:"grid",gridTemplateColumns:"50px 70px 70px 60px 1fr",gap:"8px",marginBottom:"8px",paddingTop:"8px",borderTop:"1px solid var(--border-soft)"}}>
                     {["Serie","Sug.","Peso","Reps","RPE"].map(h=><div key={h} style={{...ss.label,fontSize:"10px",marginBottom:0}}>{h}</div>)}
                   </div>
-                  {Array.from({length:ex.sets}).map((_,si)=>(
+                  {Array.from({length:setsDe(ex)}).map((_,si)=>(
                     <div key={si} style={{display:"grid",gridTemplateColumns:"50px 70px 70px 60px 1fr",gap:"8px",marginBottom:"8px",alignItems:"center"}}>
                       <span style={{fontSize:"11px",fontWeight:700,color:sportColor}}>S{si+1}</span>
                       <span style={{...ss.muted,fontSize:"11px"}}>{suggested||"—"}</span>
