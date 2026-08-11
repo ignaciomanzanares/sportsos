@@ -19,7 +19,7 @@ import { filtrarPorNombre } from "../lib/buscarNombre";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free"}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -676,7 +676,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           title={`Plantel — ${sp.name} · ${players.length} jugadores`}
           action={
             <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
-              onClick={()=>setPlayerForm({...EMPTY_PLAYER})}
+              onClick={()=>setPlayerForm({...EMPTY_PLAYER, cat: currentCategory || ""})}
               style={{...ss.btn,background:`linear-gradient(135deg,${sportColor},${sportColor}cc)`,color:"#fff",fontSize:"12px",boxShadow:`0 4px 14px ${sportColor}44`}}>
               + Agregar jugador
             </motion.button>
@@ -949,7 +949,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           {filtered.length === 0 && (
             playerSearch
               ? <EmptyState icon="🔍" title={`Sin resultados para "${playerSearch}"`} desc="Intenta con otro nombre o número." color={sportColor}/>
-              : <EmptyState icon="👥" title="No hay jugadores aún" desc="Agrega tu primer jugador para empezar a gestionar el plantel." color={sportColor} action={()=>setPlayerForm({...EMPTY_PLAYER})} actionLabel="+ Agregar primer jugador"/>
+              : <EmptyState icon="👥" title="No hay jugadores aún" desc="Agrega tu primer jugador para empezar a gestionar el plantel." color={sportColor} action={()=>setPlayerForm({...EMPTY_PLAYER, cat: currentCategory || ""})} actionLabel="+ Agregar primer jugador"/>
           )}
         </motion.div>
         </>)}

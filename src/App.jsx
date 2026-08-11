@@ -215,6 +215,12 @@ export default function SportOS() {
   // así que ganaba el de fecha más cercana fuera del equipo que fuera. Con
   // Adulta elegida se saltaba el partido de Primera y mostraba uno de juveniles.
   const partidosVisibles = partidos.filter(p => partidoEsDeCategoria(sp, currentCategory, p.cat));
+  // El selector filtraba los partidos pero no el plantel: eligiendo M13 salían
+  // los seis partidos de M13 al lado de "140 jugadores", que son los adultos.
+  // Quien no tiene categoría cargada aparece en todas, como los partidos sin
+  // categoría: es preferible verlo donde quizá no corresponde a que quede
+  // invisible en la app y nadie se entere de que hay que categorizarlo.
+  const playersVisibles = players.filter(p => !p.category || p.category === currentCategory);
   // En adulta los tres equipos juegan el mismo día, así que "el último" y "el
   // próximo" son tres partidos empatados en fecha y ganaba cualquiera: el Match
   // Center mostraba el resultado de Pre-Intermedia como si fuera el del club.
@@ -867,13 +873,13 @@ export default function SportOS() {
         <div className="sportos-main" style={ss.main} key={role+module}>
           <AnimatePresence mode="wait">
             <motion.div key={role+module} {...fadeUp} transition={{duration:0.4}}>
-              {module==="home"&&<HomeView role={role} players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidosVisibles} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId}/>}
+              {module==="home"&&<HomeView role={role} players={playersVisibles} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidosVisibles} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId}/>}
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
-              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={players} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan}/>}
-              {module!=="home"&&module!=="miperfil"&&(role==="entrenador"||(role==="admin"&&MODULOS_COMPARTIDOS.includes(module)))&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={players} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
-              {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={players} clubId={clubId} currentUser={currentUser}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={playersVisibles} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan} currentCategory={currentCategory}/>}
+              {module!=="home"&&module!=="miperfil"&&(role==="entrenador"||(role==="admin"&&MODULOS_COMPARTIDOS.includes(module)))&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={playersVisibles} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={playersVisibles} clubId={clubId} currentUser={currentUser}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}
               {/* Sin ficha en el plantel, JugadorView revienta en su primera
                   línea (player.number) y React desmonta la app entera: pantalla
@@ -894,7 +900,7 @@ export default function SportOS() {
                   </div>
                 </div>
               )}
-              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={players} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
             </motion.div>
           </AnimatePresence>
         </div>
