@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SPORTS_CONFIG, COUNTRIES, CLUBS, partidoEsDeCategoria, categoriaDePartido } from "./data/sports";
 import { MOCK_PAYMENTS, MOCK_PARTIDOS } from "./data/mockData";
 import { usePlayers } from "./lib/usePlayers";
+import { useArusaJugadores } from "./lib/useArusaTorneo";
+import { enriquecerConArusa } from "./lib/statsArusa";
 import { useClub } from "./lib/useClub";
 import { usePayments } from "./lib/usePayments";
 import { useMatches } from "./lib/useMatches";
@@ -122,10 +124,15 @@ export default function SportOS() {
 
   // Jugadores/club/pagos/partidos: datos reales de Supabase si hay club_id, vitrina demo si no
   const clubId = currentUser?.club_id ?? null;
-  const { players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer } = usePlayers(clubId);
+  const { players: playersCrudos, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer } = usePlayers(clubId);
   const { club: clubRow, error: clubError, reload: reloadClub } = useClub(clubId);
   const { payments: realPayments, addPayment, declarePayment, confirmPayment, rejectPayment, setPayments: setRealPayments } = usePayments(clubId);
   const { partidos: realPartidos, error: partidosError, setPartidos: setRealPartidos } = useMatches(clubId);
+  // Los tries y los puntos del torneo se pegan acá, sobre la lista que reciben
+  // todas las vistas: si se hiciera en cada pantalla, unas mostrarían los datos
+  // y otras cero para el mismo jugador.
+  const arusaJugadores = useArusaJugadores(sport === "rugby" && !!clubId);
+  const players = enriquecerConArusa(playersCrudos, arusaJugadores);
   const isDemo = currentUser === null;
   const userCats = isDemo ? [] : (currentUser.cats || []);
 

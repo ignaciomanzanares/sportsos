@@ -119,8 +119,10 @@ const RUGBY_ABREV = [
   [/loosehead|tighthead|\bprop\b|pilar/, "PIL"],
   [/hooker/,                               "HOO"],
   [/\block\b|segunda/,                     "2L"],
-  [/flanker|\bala\b/,                      "ALA"],
-  [/number\s*8|octavo|n\.?º?\s*8/,          "N8"],
+  // Ala y N.º 8 son la tercera línea: en la cancha se habla de "los tres" y
+  // separarlos en la tabla es una distinción que nadie usa para leer un plantel.
+  [/flanker|\bala\b/,                      "3L"],
+  [/number\s*8|octavo|n\.?º?\s*8/,          "3L"],
   [/scrum-?half|medio scrum/,              "MED"],
   [/fly-?half|apertura/,                   "APE"],
   [/centre|center|centro/,                 "CEN"],
@@ -300,7 +302,10 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
           <table style={{width:"100%",borderCollapse:"collapse",minWidth:"500px"}}>
             <thead>
               <tr style={{borderBottom:"1px solid #1e1c19"}}>
-                {["#","Jugador","Pos","PJ",anot.etiqueta,"Asist.","Estado"].map((h,i)=>(
+                {/* "PJ" era minutos/90 y "Asist." son asistencias de fútbol:
+                    en rugby ninguna de las dos existe. Los partidos jugados y
+                    los puntos sí, y vienen del torneo. */}
+                {["#","Jugador","Pos","PJ",anot.etiqueta,anot.clave==="tries"?"Pts":"Asist.","Estado"].map((h,i)=>(
                   <th key={h} style={{textAlign:i>3?"right":i===6?"center":"left",padding:"6px 10px",fontSize:"10px",fontWeight:500,color:"#3e3b37",textTransform:"uppercase",letterSpacing:"0.08em"}}>{h}</th>
                 ))}
               </tr>
@@ -327,9 +332,9 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
                       </div>
                     </td>
                     <td style={{padding:"10px",borderBottom:"1px solid #1a1816",fontFamily:DM_MONO,fontSize:"11.5px",fontWeight:500,color:"#a8a49f"}}>{abrev(p)}</td>
-                    <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{Math.round((p.stats?.minutos||0)/90)}</td>
-                    <td style={{padding:"10px",textAlign:"right",fontFamily:BEBAS,fontSize:"15px",fontWeight:700,color:sportColor,borderBottom:"1px solid #1a1816"}}>{p.stats?.[anot.clave]||0}</td>
-                    <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{p.stats?.asistencias||0}</td>
+                    <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{p.stats?.partidos ?? (p.stats?.minutos != null ? Math.round(p.stats.minutos/90) : "—")}</td>
+                    <td style={{padding:"10px",textAlign:"right",fontFamily:BEBAS,fontSize:"15px",fontWeight:700,color:sportColor,borderBottom:"1px solid #1a1816"}}>{p.stats?.[anot.clave] ?? "—"}</td>
+                    <td style={{padding:"10px",textAlign:"right",fontFamily:DM_MONO,fontSize:"13px",color:"#b0ada8",borderBottom:"1px solid #1a1816"}}>{(anot.clave==="tries" ? p.stats?.puntos : p.stats?.asistencias) ?? "—"}</td>
                     <td style={{padding:"10px",textAlign:"center",borderBottom:"1px solid #1a1816"}}>
                       <span style={{fontSize:"10.5px",fontWeight:500,color:statusColor}}>{statusLabel}</span>
                     </td>

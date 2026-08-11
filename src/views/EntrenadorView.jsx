@@ -5,7 +5,7 @@ import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
 import { useAttendance, useAttendanceStats, useAsistenciaPrevia, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
-import { useArusaJugadores } from "../lib/useArusaTorneo";
+import { vieneDeArusa } from "../lib/statsArusa";
 import { coincide } from "../lib/buscarNombre";
 import { useComments } from "../lib/useComments";
 import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
@@ -983,22 +983,11 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   // Sin tabla de estadísticas por jugador todavía — no inventar un número
   // cuando no hay dato real (antes generaba uno "consistente" por fórmula,
   // que además daba NaN con ids uuid reales).
-  // Los tries del club ya existen: los publica ARUSA y el plantel está
-  // vinculado por arusa_player_id. Se usan cuando el club no cargó los suyos,
-  // en vez de mostrar "aún no hay datos" al lado de una tabla que sí los
-  // tiene. Lo que el club cargue a mano manda por sobre el torneo.
-  const arusaJugadores = useArusaJugadores(sport === "rugby" && !!clubId);
-  const arusaPorId = new Map(arusaJugadores.map(j => [String(j.id), j]));
-  const deArusa = (p) => p.arusa_player_id ? arusaPorId.get(String(p.arusa_player_id)) : null;
-  const sv = (p,k)=>{
-    const propio = p.stats?.[k];
-    if (propio != null) return propio;
-    const a = deArusa(p);
-    // ARUSA publica tries, conversiones y penales. Minutos y tackles no los
-    // publica nadie, y no se inventan.
-    if (a && ["tries","conversiones","penales"].includes(k)) return a[k] ?? null;
-    return null;
-  };
+  // Las estadísticas del torneo ya vienen pegadas al plantel desde App.jsx
+  // (statsArusa), así que acá solo se lee. Antes el cruce se hacía en esta
+  // pantalla y solo en esta: el resto de la app mostraba cero para el mismo
+  // jugador.
+  const sv = (p,k)=> p.stats?.[k] ?? null;
   const [reactions, setReactions] = useState({});
   const handleReact = (postId, emoji) => {
     setReactions(prev=>{
@@ -1149,7 +1138,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
           <motion.div key={stat.key} {...fadeUp} transition={{duration:0.4,delay:si*0.1}} style={{...ss.card,marginBottom:"16px"}}>
             <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>
               {stat.icon} {stat.label}
-              {["tries","conversiones","penales"].includes(stat.key) && sorted.some(p => p.stats?.[stat.key] == null) && (
+              {sorted.some(p => vieneDeArusa(p, stat.key)) && (
                 <span style={{...ss.muted,fontSize:"10px",fontWeight:400}}>· datos de ARUSA</span>
               )}
             </div>
