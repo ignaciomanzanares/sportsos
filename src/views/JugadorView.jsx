@@ -4,7 +4,7 @@ import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS, equiposDeCategoria, nombrePuesto } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
-import { ejercicioEsDe } from "../lib/gymImport";
+import { ejercicioEsDe, ORDEN_DIAS, ETIQUETA_DIA } from "../lib/gymImport";
 import { usePosts } from "../lib/usePosts";
 import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
 import { supabase } from "../lib/supabase";
@@ -248,8 +248,14 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
    aparecía siempre vacío para clubes reales. Ahora carga el plan real
    publicado por el preparador y persiste cada serie en gym_logs. ────────── */
 function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players, clubId}) {
-  const dayLabels = {lunes:"Lunes",miercoles:"Miércoles",viernes:"Viernes"};
-  const defaultDay = () => { const d = new Date().getDay(); return d<=1?"lunes":d<=3?"miercoles":"viernes"; };
+  // Los días salían en el orden en que quedaron guardados en el JSON del plan
+  // —lunes, jueves, martes, sábado…— y solo tres tenían etiqueta, así que los
+  // demás se mostraban en minúscula tal como venían. Una semana se lee de lunes
+  // a domingo.
+  const dayLabels = ETIQUETA_DIA;
+  // Abre en el día de hoy. Antes redondeaba a lunes/miércoles/viernes, que era
+  // el plan de la demo: un martes te mostraba el lunes.
+  const defaultDay = () => ORDEN_DIAS[(new Date().getDay() + 6) % 7];
 
   const [plan, setPlan]           = useState(null);
   const [planLoading, setPlanLoading] = useState(!!clubId);
@@ -296,7 +302,11 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   const sessions  = planPropio || (clubId ? null : GYM_PLAN.sessions);
   const weekLabel = clubId ? (plan?.week_label || formatWeekLabel(weekStart)) : GYM_PLAN.week;
   const coachName = clubId ? (plan?.coach_name || "Preparador Físico") : GYM_PLAN.coach;
-  const todayPlan = sessions ? (sessions[selectedDay] || sessions.lunes) : null;
+  // Si hoy no hay sesión, se abre la primera de la semana en vez de forzar el
+  // lunes, que puede no existir en el plan que subió el preparador.
+  const diasDelPlan = Object.keys(sessions || {}).sort((a,b) => ORDEN_DIAS.indexOf(a) - ORDEN_DIAS.indexOf(b));
+  const diaActivo = sessions?.[selectedDay] ? selectedDay : diasDelPlan[0];
+  const todayPlan = sessions ? sessions[diaActivo] : null;
 
   const logSet   = (exName,setIdx,field,val)=>setGymLog(prev=>{const key=`${exName}_${setIdx}`;return {...prev,[key]:{...(prev[key]||{}),[field]:val}};});
   const getLog   = (exName,setIdx,field)=>{const key=`${exName}_${setIdx}`;return gymLog[key]?gymLog[key][field]:"";};
@@ -358,9 +368,11 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
   return (
     <div>
       <div style={{display:"flex",gap:"8px",marginBottom:"14px",flexWrap:"wrap"}}>
-        {Object.keys(sessions).map(d=>(
+        {Object.keys(sessions)
+          .sort((a,b) => ORDEN_DIAS.indexOf(a) - ORDEN_DIAS.indexOf(b))
+          .map(d=>(
           <motion.button key={d} whileHover={{y:-2}} whileTap={{scale:0.97}} onClick={()=>setSelectedDay(d)}
-            style={{...ss.btn,background:selectedDay===d?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)",color:selectedDay===d?sportColor:"var(--text-2)",border:`1px solid ${selectedDay===d?sportColor+"55":"var(--border-soft)"}`,fontSize:"12px",padding:"8px 14px"}}>
+            style={{...ss.btn,background:diaActivo===d?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"var(--bg-elev-2)",color:diaActivo===d?sportColor:"var(--text-2)",border:`1px solid ${diaActivo===d?sportColor+"55":"var(--border-soft)"}`,fontSize:"12px",padding:"8px 14px"}}>
             {dayLabels[d]||d}
           </motion.button>
         ))}
@@ -368,12 +380,12 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
       {!completedSession&&(
         <motion.div {...fadeUp} style={{...ss.card,marginBottom:"16px",background:"linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.02))",border:"1px solid rgba(245,158,11,0.4)",display:"flex",alignItems:"center",gap:"12px",padding:"14px 16px"}}>
           <motion.span animate={{rotate:[0,10,-10,0]}} transition={{duration:2,repeat:Infinity}} style={{fontSize:"22px"}}>💪</motion.span>
-          <div><div style={{fontSize:"13px",fontWeight:700,color:"#F59E0B"}}>Plan activo: {weekLabel}</div><div style={{...ss.muted,fontSize:"11px"}}>{dayLabels[selectedDay]||selectedDay} — {todayPlan.label} · {coachName}</div></div>
+          <div><div style={{fontSize:"13px",fontWeight:700,color:"#F59E0B"}}>Plan activo: {weekLabel}</div><div style={{...ss.muted,fontSize:"11px"}}>{dayLabels[diaActivo]||diaActivo} — {todayPlan.label} · {coachName}</div></div>
         </motion.div>
       )}
       {completedSession&&(
         <motion.div {...scaleIn} style={{...ss.card,marginBottom:"20px",background:"linear-gradient(135deg,rgba(34,197,94,0.12),rgba(34,197,94,0.02))",border:"2px solid rgba(34,197,94,0.5)",boxShadow:"0 0 32px rgba(34,197,94,0.25)"}}>
-          <div style={{color:"#22C55E",fontWeight:700,fontSize:"15px",marginBottom:"10px",display:"flex",alignItems:"center",gap:"8px"}}>🎉 ¡Sesión completada! — {dayLabels[selectedDay]||selectedDay}</div>
+          <div style={{color:"#22C55E",fontWeight:700,fontSize:"15px",marginBottom:"10px",display:"flex",alignItems:"center",gap:"8px"}}>🎉 ¡Sesión completada! — {dayLabels[diaActivo]||diaActivo}</div>
           <div style={{display:"flex",gap:"20px",marginBottom:"12px"}}>
             <div><div style={{fontSize:"26px",fontWeight:800,letterSpacing:"-0.02em"}}>{totalVol.toLocaleString()} kg</div><div style={ss.muted}>Volumen total</div></div>
             {clubId && lastWeekVol>0 && (
