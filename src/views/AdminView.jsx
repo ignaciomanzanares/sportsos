@@ -20,7 +20,7 @@ import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -463,32 +463,29 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         </div>
       </motion.div>
 
-      {/* ── Confirmaciones de pago pendientes ── */}
+      {/* ── Cuotas por confirmar: el trabajo se hace en Finanzas ──
+          Antes las confirmaciones vivían acá abajo, entre las credenciales de
+          Mercado Pago y el generador de invitaciones: nadie las encontraba y
+          el jugador quedaba esperando. Acá queda solo el aviso. */}
       {pagosPendientes.length > 0 && (
-        <motion.div {...fadeUp} transition={{delay:0.24}} style={{...ss.card, marginTop:"20px", border:"1px solid rgba(245,158,11,0.3)", background:"linear-gradient(135deg,rgba(245,158,11,0.06),transparent)"}}>
-          <div style={{fontWeight:700,fontSize:"14px",marginBottom:"12px",display:"flex",alignItems:"center",gap:"8px"}}>
-            ⏳ Confirmaciones de pago pendientes ({pagosPendientes.length})
-          </div>
-          {pagosPendientes.map(p => (
-            <div key={p.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid var(--border-soft)",fontSize:"13px"}}>
-              <div>
-                <div style={{fontWeight:600}}>{p.playerName}</div>
-                <div style={{fontSize:"11px",color:"var(--text-3)"}}>{p.method} · {countryData.symbol}{p.amount.toLocaleString()}</div>
-              </div>
-              <div style={{display:"flex",gap:"6px"}}>
-                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
-                  onClick={()=>confirmPayment && confirmPayment(p.id, p.playerId)}
-                  style={{...ss.btn,background:"rgba(34,197,94,0.15)",color:"#22C55E",border:"1px solid rgba(34,197,94,0.3)",fontSize:"12px",padding:"7px 14px",fontWeight:700}}>
-                  ✅ Confirmar
-                </motion.button>
-                <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
-                  onClick={()=>rejectPayment && rejectPayment(p.id)}
-                  style={{...ss.btn,background:"rgba(239,68,68,0.1)",color:"#EF4444",border:"1px solid rgba(239,68,68,0.25)",fontSize:"12px",padding:"7px 14px"}}>
-                  ✕ Rechazar
-                </motion.button>
-              </div>
+        <motion.div {...fadeUp} transition={{delay:0.24}}
+          onClick={()=>irA && irA("finanzas")}
+          style={{...ss.card, marginTop:"20px", cursor:irA?"pointer":"default",
+            border:"1px solid rgba(245,158,11,0.35)",
+            background:"linear-gradient(135deg,rgba(245,158,11,0.1),transparent)",
+            display:"flex", alignItems:"center", gap:"12px"}}>
+          <span style={{fontSize:"22px"}}>⏳</span>
+          <div style={{flex:1}}>
+            <div style={{fontWeight:700,fontSize:"13px",color:"#F59E0B"}}>
+              {pagosPendientes.length === 1
+                ? "1 jugador transfirió y espera tu confirmación"
+                : `${pagosPendientes.length} jugadores transfirieron y esperan tu confirmación`}
             </div>
-          ))}
+            <div style={{fontSize:"11px",color:"var(--text-3)",marginTop:"2px"}}>
+              Se revisan en 💰 Finanzas → pestaña Cuotas.
+            </div>
+          </div>
+          {irA && <span style={{fontSize:"12px",color:"#F59E0B",fontWeight:700,flexShrink:0}}>Ir a Finanzas →</span>}
         </motion.div>
       )}
 
@@ -1021,7 +1018,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   }
 
   if(module==="finanzas") {
-    return <FinanzasView countryData={countryData} payments={payments} sportColor={sportColor} showToast={showToast} clubId={clubId}/>;
+    return <FinanzasView countryData={countryData} payments={payments} sportColor={sportColor} showToast={showToast} clubId={clubId} confirmPayment={confirmPayment} rejectPayment={rejectPayment}/>;
   }
 
   return null;

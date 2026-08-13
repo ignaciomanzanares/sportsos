@@ -148,8 +148,21 @@ export default function SportOS() {
       .then(({ count }) => setClubRequestsUnseen(count || 0));
   }, [role, module]);
 
+  // Badge de "Jugadores": solicitudes de gente que quiere entrar al club y
+  // todavía nadie aprobó ni rechazó. La lista completa vive en AdminView;
+  // acá solo se cuenta, para que el admin no tenga que entrar a buscarla.
+  const [solicitudesPendientes, setSolicitudesPendientes] = useState(0);
+  useEffect(() => {
+    if (!clubId || role !== "admin") { setSolicitudesPendientes(0); return; }
+    supabase.from("join_requests").select("id", { count: "exact", head: true })
+      .eq("club_id", clubId).eq("status", "pendiente")
+      .then(({ count }) => setSolicitudesPendientes(count || 0));
+  }, [clubId, role, module]);
+
   const payments = clubId ? realPayments : demoPayments;
   const setPayments = clubId ? setRealPayments : setDemoPayments;
+  const cuotasPorConfirmar = clubId && role === "admin"
+    ? payments.filter(p => p.estado === "declarado").length : 0;
   const partidos = clubId ? realPartidos : demoPartidos;
   const setPartidos = clubId ? setRealPartidos : setDemoPartidos;
 
@@ -831,9 +844,17 @@ export default function SportOS() {
                   }}>
                   <span style={{fontSize:"15px",width:"18px",flexShrink:0,textAlign:"center",filter:active?`drop-shadow(0 0 6px ${sportColor})`:"none"}}>{m.icon}</span>
                   <span style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1,letterSpacing:"0.01em"}}>{m.label}</span>
-                  {m.id==="clubes" && clubRequestsUnseen>0 && (
-                    <span style={{fontSize:"10px",flexShrink:0,padding:"1px 7px",borderRadius:"99px",background:sportColor,color:"#fff",fontWeight:800}}>{clubRequestsUnseen}</span>
-                  )}
+                  {(()=>{
+                    // Lo que está esperando a una persona se avisa en el menú:
+                    // si hay que entrar al módulo para enterarse, no se entera.
+                    const pendiente = m.id==="clubes"    ? clubRequestsUnseen
+                                    : m.id==="finanzas"  ? cuotasPorConfirmar
+                                    : m.id==="jugadores" ? solicitudesPendientes
+                                    : 0;
+                    if (!pendiente) return null;
+                    const urgente = m.id!=="clubes";
+                    return <span style={{fontSize:"10px",flexShrink:0,padding:"1px 7px",borderRadius:"99px",background:urgente?"#F59E0B":sportColor,color:urgente?"#1a1a1a":"#fff",fontWeight:800}}>{pendiente}</span>;
+                  })()}
                   {locked && (()=>{ const req=requiredPlan(m.id); const p=PLANS[req]; return <span style={{fontSize:"9px",flexShrink:0,background:`${p.color}22`,color:p.color,border:`1px solid ${p.color}44`,borderRadius:"99px",padding:"2px 6px",fontWeight:700,whiteSpace:"nowrap"}}>{p.icon} {p.label}</span>; })()}
                 </motion.button>
               );
@@ -888,7 +909,7 @@ export default function SportOS() {
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
-              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={playersVisibles} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan} currentCategory={currentCategory} jugadorAEditar={jugadorAEditar} onJugadorEditado={()=>setJugadorAEditar(null)}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={playersVisibles} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan} currentCategory={currentCategory} jugadorAEditar={jugadorAEditar} onJugadorEditado={()=>setJugadorAEditar(null)} irA={navigateTo}/>}
               {module!=="home"&&module!=="miperfil"&&(role==="entrenador"||(role==="admin"&&MODULOS_COMPARTIDOS.includes(module)))&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={playersVisibles} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
               {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={playersVisibles} clubId={clubId} currentUser={currentUser}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}

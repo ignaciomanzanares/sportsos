@@ -80,8 +80,13 @@ function Modal({ title, onClose, children }) {
 
 // ── Componente principal ──────────────────────────────────────────────────
 
-export default function FinanzasView({ countryData, payments=[], sportColor, showToast, clubId=null }) {
+export default function FinanzasView({ countryData, payments=[], sportColor, showToast, clubId=null,
+  confirmPayment=null, rejectPayment=null }) {
   const sym = countryData?.symbol || "$";
+  // Transferencias declaradas por el jugador que nadie ha revisado todavía.
+  // Mientras estén acá, el jugador ve "esperando confirmación" y no puede
+  // hacer nada más: es lo único de esta pantalla que bloquea a otra persona.
+  const porConfirmar = payments.filter(p => p.estado === "declarado");
   const [tab,          setTab]          = useState("resumen");
   // Sin club_id (demo/preview) se usa vitrina; con club_id, siempre lo real de Supabase (aunque esté vacío).
   const [movimientos,  setMovimientos]  = useState(clubId ? [] : MOCK_MOVIMIENTOS);
@@ -123,7 +128,10 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
   // ── Cálculos ──
   const totalIngresosMovs = movimientos.filter(m=>m.tipo==="ingreso").reduce((s,m)=>s+m.monto,0);
   const totalEgresosMovs  = movimientos.filter(m=>m.tipo==="egreso").reduce((s,m)=>s+m.monto,0);
-  const totalCuotas       = payments.reduce((s,p)=>s+p.amount,0);
+  // Solo las cuotas confirmadas son ingreso. Sumar las declaradas —o peor,
+  // las rechazadas— daba un saldo con plata que todavía no está en la cuenta.
+  const cuotasPagadas     = payments.filter(p => p.estado === "pagado");
+  const totalCuotas       = cuotasPagadas.reduce((s,p)=>s+p.amount,0);
   const totalIngresosReal = totalIngresosMovs + totalCuotas;
   const totalSueldos      = sueldos.filter(s=>s.activo).reduce((s,x)=>s+x.monto,0);
   const totalGastosAdmin  = gastosAdmin.filter(g=>g.activo).reduce((s,g)=>s+g.monto,0);
@@ -226,6 +234,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
 
   const TABS = [
     { id:"resumen",   label:"Resumen",    icon:"📊" },
+    { id:"cuotas",    label:"Cuotas",     icon:"🧾", badge: porConfirmar.length },
     { id:"ingresos",  label:"Ingresos",   icon:"💰" },
     { id:"egresos",   label:"Egresos",    icon:"📤" },
     { id:"sueldos",   label:"Sueldos",    icon:"👤" },
@@ -294,6 +303,30 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
           sub={saldo>=0?"Positivo ✅":"Déficit ⚠️"} color={saldo>=0?"#1FA04A":"#C0392B"}/>
       </div>
 
+      {/* Aviso: hay jugadores esperando que les confirmen la transferencia */}
+      {porConfirmar.length > 0 && tab !== "cuotas" && (
+        <motion.button {...fadeUp} whileHover={{scale:1.005}} whileTap={{scale:0.995}}
+          onClick={()=>setTab("cuotas")}
+          style={{ width:"100%", textAlign:"left", cursor:"pointer", marginBottom:"14px",
+            padding:"14px 16px", borderRadius:"var(--r-md)",
+            border:"1px solid rgba(245,158,11,0.4)",
+            background:"linear-gradient(135deg,rgba(245,158,11,0.12),transparent)",
+            display:"flex", alignItems:"center", gap:"12px" }}>
+          <span style={{ fontSize:"22px" }}>⏳</span>
+          <div style={{ flex:1 }}>
+            <div style={{ fontWeight:700, fontSize:"13px", color:"#F59E0B" }}>
+              {porConfirmar.length === 1
+                ? "1 jugador está esperando que le confirmes la cuota"
+                : `${porConfirmar.length} jugadores están esperando que les confirmes la cuota`}
+            </div>
+            <div style={{ fontSize:"11px", color:"var(--text-3)", marginTop:"2px" }}>
+              Ya transfirieron. Hasta que confirmes, les sigue apareciendo la cuota como pendiente.
+            </div>
+          </div>
+          <span style={{ fontSize:"12px", color:"#F59E0B", fontWeight:700, flexShrink:0 }}>Revisar →</span>
+        </motion.button>
+      )}
+
       {/* Tabs */}
       <div style={{ display:"flex", gap:"4px", background:"var(--bg-elev-2)", borderRadius:"var(--r-md)",
         padding:"4px", marginBottom:"20px", overflowX:"auto" }}>
@@ -304,6 +337,10 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
               background:tab===t.id?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"transparent",
               color:tab===t.id?sportColor:"var(--text-2)", transition:"all 0.2s" }}>
             {t.icon} {t.label}
+            {t.badge > 0 && (
+              <span style={{ marginLeft:"5px", fontSize:"10px", padding:"1px 6px", borderRadius:"99px",
+                background:"#F59E0B", color:"#1a1a1a", fontWeight:800 }}>{t.badge}</span>
+            )}
           </motion.button>
         ))}
       </div>
@@ -371,6 +408,98 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
           </motion.div>
         )}
 
+        {/* ── CUOTAS ── */}
+        {tab==="cuotas" && (
+          <motion.div key="cuotas" initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} exit={{opacity:0}}>
+
+            {/* Por confirmar */}
+            <div style={{ ...ss.card, padding:0, overflow:"hidden", marginBottom:"16px",
+              border:porConfirmar.length>0?"1px solid rgba(245,158,11,0.35)":"1px solid var(--border-soft)" }}>
+              <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--border-soft)",
+                display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                <span style={{ fontWeight:700, fontSize:"13px" }}>⏳ Por confirmar</span>
+                <span style={{ fontSize:"11px", color:"var(--text-3)" }}>
+                  {porConfirmar.length} {porConfirmar.length===1?"transferencia":"transferencias"}
+                </span>
+              </div>
+
+              {porConfirmar.length === 0 ? (
+                <div style={{ padding:"28px 16px", textAlign:"center", fontSize:"12px", color:"var(--text-3)" }}>
+                  Nada pendiente. Cuando un jugador transfiera y lo declare en la app, aparece acá.
+                </div>
+              ) : porConfirmar.map(p => (
+                <div key={p.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                  gap:"12px", padding:"12px 16px", borderBottom:"1px solid var(--border-soft)",
+                  fontSize:"12px", flexWrap:"wrap" }}>
+                  <div>
+                    <div style={{ fontWeight:600, fontSize:"13px" }}>{p.playerName || "Jugador"}</div>
+                    <div style={{ color:"var(--text-3)", fontSize:"11px", marginTop:"2px" }}>
+                      {p.method} · {p.date} · <strong style={{ color:"var(--text-2)" }}>{fmt(p.amount,sym)}</strong>
+                    </div>
+                  </div>
+                  <div style={{ display:"flex", gap:"6px", flexShrink:0 }}>
+                    <motion.button whileHover={{scale:1.04}} whileTap={{scale:0.96}}
+                      onClick={async ()=>{ await confirmPayment?.(p.id, p.playerId);
+                        showToast?.(`Cuota de ${p.playerName || "el jugador"} confirmada ✅`, "success"); }}
+                      disabled={!confirmPayment}
+                      style={{ ...ss.btn, background:"rgba(34,197,94,0.15)", color:"#22C55E",
+                        border:"1px solid rgba(34,197,94,0.35)", fontSize:"12px", padding:"8px 16px",
+                        fontWeight:700, opacity:confirmPayment?1:0.5 }}>
+                      ✅ Recibí la plata
+                    </motion.button>
+                    <motion.button whileHover={{scale:1.04}} whileTap={{scale:0.96}}
+                      onClick={async ()=>{ await rejectPayment?.(p.id);
+                        showToast?.("Marcado como no recibido", "warning"); }}
+                      disabled={!rejectPayment}
+                      style={{ ...ss.btn, background:"rgba(239,68,68,0.1)", color:"#EF4444",
+                        border:"1px solid rgba(239,68,68,0.25)", fontSize:"12px", padding:"8px 14px",
+                        opacity:rejectPayment?1:0.5 }}>
+                      ✕ No llegó
+                    </motion.button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Historial de cuotas */}
+            <div style={{ ...ss.card, padding:0, overflow:"hidden" }}>
+              <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--border-soft)",
+                display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                <span style={{ fontWeight:700, fontSize:"13px" }}>🧾 Cuotas registradas</span>
+                <span style={{ fontWeight:800, color:"#1FA04A", fontSize:"14px" }}>{fmt(totalCuotas,sym)}</span>
+              </div>
+              {payments.length === 0 ? (
+                <div style={{ padding:"28px 16px", textAlign:"center", fontSize:"12px", color:"var(--text-3)" }}>
+                  Todavía no hay ninguna cuota registrada en el club.
+                </div>
+              ) : payments.map(p => {
+                const ESTADO = {
+                  pagado:     { label:"Confirmada",   color:"#22C55E" },
+                  declarado:  { label:"Por confirmar",color:"#F59E0B" },
+                  rechazado:  { label:"No recibida",  color:"#EF4444" },
+                  pendiente:  { label:"Pendiente",    color:"var(--text-3)" },
+                }[p.estado] || { label:p.estado, color:"var(--text-3)" };
+                return (
+                  <div key={p.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                    padding:"11px 16px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px", gap:"12px" }}>
+                    <div style={{ minWidth:0 }}>
+                      <div style={{ fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p.playerName}</div>
+                      <div style={{ color:"var(--text-3)", fontSize:"11px" }}>{p.date} · {p.method}</div>
+                    </div>
+                    <div style={{ display:"flex", alignItems:"center", gap:"10px", flexShrink:0 }}>
+                      <span style={{ fontSize:"10px", padding:"3px 9px", borderRadius:"99px",
+                        background:`${ESTADO.color}1A`, color:ESTADO.color, border:`1px solid ${ESTADO.color}44`,
+                        fontWeight:700, whiteSpace:"nowrap" }}>{ESTADO.label}</span>
+                      <span style={{ fontWeight:700, color:p.estado==="pagado"?"#1FA04A":"var(--text-3)",
+                        textDecoration:p.estado==="rechazado"?"line-through":"none" }}>{fmt(p.amount,sym)}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
         {/* ── INGRESOS ── */}
         {tab==="ingresos" && (
           <motion.div key="ingresos" initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} exit={{opacity:0}}>
@@ -380,8 +509,8 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
                 <span style={{ fontWeight:700, fontSize:"13px" }}>Movimientos de ingresos</span>
                 <span style={{ fontWeight:800, color:"#1FA04A", fontSize:"14px" }}>{fmt(totalIngresosReal,sym)}</span>
               </div>
-              {/* Cuotas de jugadores */}
-              {payments.map((p,i) => (
+              {/* Cuotas de jugadores — solo las confirmadas son ingreso */}
+              {cuotasPagadas.map((p,i) => (
                 <div key={p.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
                   padding:"12px 16px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px" }}>
                   <div>
