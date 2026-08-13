@@ -905,7 +905,7 @@ export default function SportOS() {
         <div className="sportos-main" style={ss.main} key={role+module}>
           <AnimatePresence mode="wait">
             <motion.div key={role+module} {...fadeUp} transition={{duration:0.4}}>
-              {module==="home"&&<HomeView role={role} onEditPlayer={(p)=>{ setJugadorAEditar(p); navigateTo("jugadores"); }} players={playersVisibles} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidosVisibles} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId}/>}
+              {module==="home"&&<HomeView role={role} onEditPlayer={(p)=>{ setJugadorAEditar(p); navigateTo("jugadores"); }} players={playersVisibles} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidosVisibles} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId} miJugador={miJugador}/>}
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}

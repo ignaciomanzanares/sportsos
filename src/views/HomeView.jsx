@@ -6,6 +6,7 @@ import { supabase } from "../lib/supabase";
 import { usePlataforma } from "../lib/usePlataforma";
 import { terminoAnotacion, nombrePuesto } from "../data/sports";
 import { getNotifications } from "../lib/db";
+import { periodoDe, periodoDePago, nombrePeriodo } from "../lib/periodo";
 import { ordenarPlantel } from "../lib/ordenPlantel";
 import { useInjuryReports, playersEnAlerta } from "../lib/useInjuryReports";
 import EmptyState from "../components/EmptyState";
@@ -604,8 +605,16 @@ function HomePreparador({ players, sportColor, sp, onNavigate, clubId=null }) {
 
 function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavigate, convocado=null }) {
   const anotJug = { ...terminoAnotacion(sp), icono: sp?.stats?.[0]?.icon || "🏉" };
-  const miPago     = payments?.find(p=>p.jugador===player?.name);
-  const cuotaOk    = !miPago || miPago.estado==="pagado";
+  // Buscaba por p.jugador, un campo que los pagos no tienen (son playerId y
+  // playerName), así que miPago era siempre undefined y la tarjeta decía
+  // "cuota al día" pasara lo que pasara. Ahora se pregunta por el mes en curso.
+  const mesActual  = periodoDe();
+  const delMes     = (payments || []).filter(p => p.playerId === player?.id && periodoDePago(p) === mesActual);
+  const cuotaOk    = delMes.some(p => p.estado === "pagado");
+  const declaradoMes = !cuotaOk && delMes.some(p => p.estado === "declarado");
+  // Mientras el club no haya registrado ninguna cuota, decir "Pendiente" sería
+  // acusar de deuda a gente a la que nadie le cobró nada.
+  const clubCobra  = (payments || []).length > 0;
   // Si el entrenador no publicó nómina aún, jugadores aptos se muestran como "pendiente"
   const estaConvocado = convocado === true;
   const convocadoDefinido = convocado !== null;
@@ -655,9 +664,12 @@ function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavig
             el puesto en el ranking de fuerza estaban escritos a mano: no hay
             cuestionario ni ranking que los produzca. */}
         <HeroStat icon="💳"
-          value={!miPago ? "Sin cuota" : (cuotaOk ? "Al día" : "Pendiente")} label="Mi cuota"
-          sub={!miPago ? "El club no te cobró todavía" : (cuotaOk ? "Al día con el club" : "Pendiente de pago")}
-          color={!miPago ? "#6B7896" : (cuotaOk ? "#1FA04A" : "#C98408")} onClick={()=>onNavigate("micuota")}/>
+          value={cuotaOk ? "Al día" : declaradoMes ? "Por confirmar" : clubCobra ? "Pendiente" : "Sin cuota"}
+          label="Mi cuota"
+          sub={cuotaOk ? nombrePeriodo(mesActual) : declaradoMes ? "El admin la está revisando"
+               : clubCobra ? `Pendiente de ${nombrePeriodo(mesActual)}` : "El club no te cobró todavía"}
+          color={cuotaOk ? "#1FA04A" : declaradoMes ? "#C98408" : clubCobra ? "#C98408" : "#6B7896"}
+          onClick={()=>onNavigate("micuota")}/>
         {/* Antes esta tarjeta usaba el ícono del deporte como si fuera un
             número: una pelota gigante que no decía nada. Van los partidos y los
             tries del jugador en el torneo, que son datos suyos y reales. Ir al
@@ -701,7 +713,7 @@ function HomeSuperAdmin({ sportColor, onNavigate }) {
   );
 }
 
-export default function HomeView({ role, players, sportColor, club, sp, countryData, payments, partidos, onNavigate, currentUser, convocado=null, clubId=null, onEditPlayer=null }) {
+export default function HomeView({ role, players, sportColor, club, sp, countryData, payments, partidos, onNavigate, currentUser, convocado=null, clubId=null, onEditPlayer=null, miJugador=null }) {
   const greeting = () => {
     const h = new Date().getHours();
     if (h < 12) return "Buenos días";
@@ -727,7 +739,9 @@ export default function HomeView({ role, players, sportColor, club, sp, countryD
       {role==="admin"      && <HomeAdmin      onEditPlayer={onEditPlayer} players={players} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="entrenador" && <HomeEntrenador players={players} sportColor={sportColor} club={club} sp={sp} partidos={partidos} onNavigate={onNavigate} clubId={clubId}/>}
       {role==="preparador" && <HomePreparador players={players} sportColor={sportColor} sp={sp} onNavigate={onNavigate} clubId={clubId}/>}
-      {role==="jugador"    && <HomeJugador    player={players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}
+      {/* La ficha del que entró, no la primera de la lista: con players[0] el
+          jugador veía en su Inicio los partidos y los tries de otra persona. */}
+      {role==="jugador"    && <HomeJugador    player={miJugador || players[0]} sportColor={sportColor} sp={sp} club={club} payments={payments} partidos={partidos} onNavigate={onNavigate} convocado={convocado}/>}
       {role==="superadmin" && <HomeSuperAdmin sportColor={sportColor} onNavigate={onNavigate}/>}
     </div>
   );
