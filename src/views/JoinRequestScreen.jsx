@@ -205,7 +205,7 @@ export default function JoinRequestScreen({ onBack }) {
           </motion.button>
 
           <div style={{ fontSize:"11px", color:"var(--text-4)", textAlign:"center", marginTop:"10px" }}>
-            El administrador del club aprobará tu solicitud y te enviará el link de acceso.
+            El administrador del club revisa tu solicitud y te manda el link para crear tu cuenta.
           </div>
         </div>
       </motion.div>
@@ -230,14 +230,18 @@ export default function JoinRequestScreen({ onBack }) {
             ¡Solicitud enviada!
           </div>
           <div style={{ fontSize:"13px", color:"var(--text-2)", lineHeight:1.8, marginBottom:"20px" }}>
-            Le avisamos al administrador de{" "}
+            Tu solicitud quedó registrada en{" "}
             <strong style={{ color:accentColor }}>{club.name}</strong>.<br/>
-            Cuando apruebe tu solicitud, recibirás un link para crear tu cuenta.
+            Cuando el administrador la apruebe, te manda el link para crear tu cuenta.
           </div>
+          {/* SportOS todavía no envía correos: el link se lo pasa el admin por
+              WhatsApp o mail desde su panel. Prometer "revisa tu bandeja" dejaba
+              a la gente esperando un email que nunca iba a llegar. */}
           <div style={{ padding:"12px 16px", borderRadius:"var(--r-md)",
             background:`${accentColor}10`, border:`1px solid ${accentColor}22`,
             fontSize:"12px", color:"var(--text-2)", marginBottom:"24px" }}>
-            Revisa el email <strong>{form.email}</strong> — ahí llegará el link de acceso.
+            Te va a escribir a <strong>{form.email}</strong> o por WhatsApp. Si tienes apuro,
+            pídele directamente el link a tu entrenador.
           </div>
           <motion.button whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }} onClick={onBack}
             style={{ ...ss.btn, background:"var(--bg-elev-2)", color:"var(--text-1)",
