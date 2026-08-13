@@ -20,7 +20,7 @@ import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -236,9 +236,14 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     // genérico crearía un jugador nuevo y quedarían dos del mismo. Solo cuando
     // hay una única candidata: con dos, entregarle la equivocada le daría la
     // asistencia y los tries de otra persona.
+    // Se busca en el plantel COMPLETO, no en el de la categoría que el admin
+    // tiene abierta. Aprobar a un adulto estando en Juveniles no encontraba su
+    // ficha y el modal anunciaba una ficha nueva que el servidor después no
+    // creaba: dos mensajes distintos para el mismo jugador.
+    const plantelCompleto = todosLosPlayers || players;
     const k = clave(req.nombre);
     const candidatas = k.size >= 2
-      ? players.filter(p => !p.profile_id && contieneNombre(k, clave(p.name)))
+      ? plantelCompleto.filter(p => !p.profile_id && contieneNombre(k, clave(p.name)))
       : [];
     const fichaExistente = candidatas.length === 1 ? candidatas[0] : null;
 
