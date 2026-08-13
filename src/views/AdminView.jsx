@@ -20,7 +20,7 @@ import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -253,6 +253,10 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
 
     const { error: invErr } = await supabase.from("invitations").insert({
       token, club_id: clubId, rol: "jugador", cats: req.categoria || "",
+      // El puesto que declaró al pedir entrar viaja con la invitación:
+      // accept_invitation() es quien crea la ficha, y sin esto lo tiraba.
+      // Solo rellena si la ficha no trae puesto propio.
+      posicion: req.posicion || null,
       player_id: fichaExistente?.id || null,
       created_by: currentUser?.id || null, expires_at: new Date(exp).toISOString(),
     });
@@ -1023,7 +1027,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   }
 
   if(module==="finanzas") {
-    return <FinanzasView countryData={countryData} payments={payments} sportColor={sportColor} showToast={showToast} clubId={clubId} confirmPayment={confirmPayment} rejectPayment={rejectPayment}/>;
+    return <FinanzasView countryData={countryData} payments={payments} sportColor={sportColor} showToast={showToast} clubId={clubId} confirmPayment={confirmPayment} rejectPayment={rejectPayment} registrarPagoManual={registrarPagoManual} borrarPago={borrarPago} plantel={todosLosPlayers || players}/>;
   }
 
   return null;

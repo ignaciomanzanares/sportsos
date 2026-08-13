@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { getPayments, createPayment, saveNotification } from "./db";
 import { supabase } from "./supabase";
+import { periodoDe, periodoDePago } from "./periodo";
 
 // DB status ('pending'|'declarado'|'paid'|'failed') -> estado que leen los componentes
 function paymentToUI(p) {
@@ -11,6 +12,7 @@ function paymentToUI(p) {
     amount: Number(p.amount),
     method: p.method,
     date: p.paid_at || p.due_date,
+    periodo: p.periodo || "",
     status: p.status,
     estado: p.status === "paid" ? "pagado" : p.status === "declarado" ? "declarado" : p.status === "failed" ? "rechazado" : "pendiente",
   };
@@ -39,18 +41,20 @@ export function usePayments(clubId) {
 
   // Usado por JugadorView (MiCuota) al pagar: escribe la cuota real (pagada) y recarga.
   // No hay pasarela de pago real integrada hoy — se registra directo como pagada.
-  const addPayment = async ({ playerId, amount, method }) => {
+  const addPayment = async ({ playerId, amount, method, periodo }) => {
     if (!clubId) return;
-    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0] });
+    const mes = periodo || periodoDe();
+    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
     await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id);
     await load();
   };
 
   // El jugador declara que transfirió (transferencia manual) — queda
   // "declarado" hasta que el admin lo confirme, no se marca pagado solo.
-  const declarePayment = async ({ playerId, amount, method }) => {
+  const declarePayment = async ({ playerId, amount, method, periodo }) => {
     if (!clubId) return;
-    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0] });
+    const mes = periodo || periodoDe();
+    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
     await supabase.from("payments").update({ status: "declarado" }).eq("id", created.id);
     await load();
   };
@@ -72,5 +76,48 @@ export function usePayments(clubId) {
     await load();
   };
 
-  return { payments, loading, addPayment, declarePayment, confirmPayment, rejectPayment, reload: load, setPayments };
+  /**
+   * El admin registra una cuota que se pagó fuera de la app.
+   *
+   * La mitad del club paga en efectivo el día del partido o transfiere sin
+   * entrar nunca a SportOS. Sin esto, esa plata no existía para el sistema y
+   * el jugador figuraba debiendo el mes.
+   */
+  const registrarPagoManual = async ({ playerId, amount, method = "Efectivo", periodo }) => {
+    if (!clubId) return;
+    const mes = periodo || periodoDe();
+    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
+    await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id);
+    await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId);
+    await load();
+  };
+
+  /** Deshace una cuota registrada por error (solo admin, por RLS). */
+  const borrarPago = async (paymentId) => {
+    await supabase.from("payments").delete().eq("id", paymentId);
+    await load();
+  };
+
+  return { payments, loading, addPayment, declarePayment, confirmPayment, rejectPayment,
+           registrarPagoManual, borrarPago, reload: load, setPayments };
+}
+
+/**
+ * Cómo está cada jugador en un mes dado.
+ *
+ * Devuelve un Map playerId -> "pagado" | "declarado" | "debe". Se mira el mes
+ * y no players.cuota_status porque esa columna no se resetea nunca: decía "al
+ * día" en diciembre por una cuota de marzo.
+ */
+export function estadoPorJugador(payments, periodo) {
+  const mapa = new Map();
+  for (const p of payments) {
+    if (periodoDePago(p) !== periodo) continue;
+    const previo = mapa.get(p.playerId);
+    // Un mes puede tener varias filas (declaró, se rechazó, volvió a declarar).
+    // Manda la mejor: confirmada > declarada > nada.
+    if (p.estado === "pagado") mapa.set(p.playerId, "pagado");
+    else if (p.estado === "declarado" && previo !== "pagado") mapa.set(p.playerId, "declarado");
+  }
+  return mapa;
 }

@@ -6,6 +6,7 @@ import { FORMATIONS, TEAMS, equiposDeCategoria, nombrePuesto } from "../data/spo
 import { GYM_PLAN } from "../data/gymPlan";
 import { ejercicioEsDe, ORDEN_DIAS, ETIQUETA_DIA } from "../lib/gymImport";
 import { usePosts } from "../lib/usePosts";
+import { periodoDe, periodoDePago, nombrePeriodo } from "../lib/periodo";
 import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
 import { supabase } from "../lib/supabase";
 import SectionTitle from "../components/SectionTitle";
@@ -20,7 +21,10 @@ import RankingView from "../components/RankingView";
 function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment, declarePayment, clubId, isDemo=false}) {
   const [selectedMethod, setSelectedMethod] = useState("Transferencia");
   const [paying, setPaying] = useState(false);
-  const [paid, setPaid] = useState(player.cuota_status ? player.cuota_status === "ok" : player.cuota === "ok");
+  // "Al día" es una pregunta con mes: ¿pagó ESTE mes? Antes se leía
+  // player.cuota_status, una columna que nadie volvía a bajar, así que quien
+  // pagara una vez en marzo seguía viendo "cuota al día" en diciembre.
+  const mesActual = periodoDe();
   const [bankInfo, setBankInfo] = useState(null);
   const [copiedField, setCopiedField] = useState("");
 
@@ -30,7 +34,13 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
   const cuotaConfigurada = !!cuota;
 
   const myPayments = payments.filter(p => p.playerId === player.id);
-  const declarado = myPayments.some(p => p.estado === "declarado");
+  const delMes     = myPayments.filter(p => periodoDePago(p) === mesActual);
+  // En demo no hay períodos guardados: se cae al estado de la ficha para que
+  // la vitrina siga contando la misma historia.
+  const paid       = isDemo
+    ? (player.cuota_status ? player.cuota_status === "ok" : player.cuota === "ok")
+    : delMes.some(p => p.estado === "pagado");
+  const declarado  = delMes.some(p => p.estado === "declarado");
 
   // Métodos realmente implementados hoy — el resto es "Próximamente".
   // Mercado Pago todavía no se verificó de punta a punta con credenciales
@@ -76,7 +86,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
         await declarePayment({ playerId: player.id, amount: cuota, method: selectedMethod });
         showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
       } else {
-        const newPayment = { id: payments.length + 1, playerId: player.id, playerName: player.name, amount: cuota, method: selectedMethod, date: new Date().toISOString().split("T")[0], estado: "declarado" };
+        const newPayment = { id: payments.length + 1, playerId: player.id, playerName: player.name, amount: cuota, method: selectedMethod, date: new Date().toISOString().split("T")[0], periodo: mesActual, estado: "declarado" };
         setPayments(prev => [newPayment, ...prev]);
         showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
       }
@@ -102,7 +112,7 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
             </div>
             <div>
               <div style={{fontSize:"15px",fontWeight:700}}>{paid ? "Cuota al día" : "Cuota pendiente"}</div>
-              <div style={{...ss.muted, marginTop:"4px"}}>Mes en curso · vence el 30</div>
+              <div style={{...ss.muted, marginTop:"4px"}}>{nombrePeriodo(mesActual)}</div>
             </div>
           </div>
           <div style={{textAlign:"right"}}>

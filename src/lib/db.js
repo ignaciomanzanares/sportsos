@@ -159,7 +159,7 @@ export async function getPayments(clubId) {
   return data;
 }
 
-export async function createPayment({ clubId, playerId, amount, currency, method, dueDate }) {
+export async function createPayment({ clubId, playerId, amount, currency, method, dueDate, periodo }) {
   const { data, error } = await supabase
     .from("payments")
     .insert({
@@ -169,6 +169,7 @@ export async function createPayment({ clubId, playerId, amount, currency, method
       currency,
       method,
       due_date: dueDate,
+      periodo,
       status: "pending",
     })
     .select()

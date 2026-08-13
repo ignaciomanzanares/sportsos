@@ -5,6 +5,8 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import EmptyState from "./EmptyState";
+import { periodoDe, nombrePeriodo, correrPeriodo, periodoDePago } from "../lib/periodo";
+import { estadoPorJugador } from "../lib/usePayments";
 
 // ── Categorías predefinidas ───────────────────────────────────────────────
 
@@ -81,13 +83,35 @@ function Modal({ title, onClose, children }) {
 // ── Componente principal ──────────────────────────────────────────────────
 
 export default function FinanzasView({ countryData, payments=[], sportColor, showToast, clubId=null,
-  confirmPayment=null, rejectPayment=null }) {
+  confirmPayment=null, rejectPayment=null, registrarPagoManual=null, borrarPago=null, plantel=[] }) {
   const sym = countryData?.symbol || "$";
   // Transferencias declaradas por el jugador que nadie ha revisado todavía.
   // Mientras estén acá, el jugador ve "esperando confirmación" y no puede
   // hacer nada más: es lo único de esta pantalla que bloquea a otra persona.
   const porConfirmar = payments.filter(p => p.estado === "declarado");
   const [tab,          setTab]          = useState("resumen");
+  const [mes,          setMes]          = useState(periodoDe());
+  const [cuotaMensual, setCuotaMensual] = useState(0);
+
+  // El monto lo fija el admin en Mi Club; acá solo se lee para saber cuánto
+  // falta y para registrar el pago de quien pagó en efectivo.
+  useEffect(() => {
+    if (!clubId) return;
+    supabase.from("club_payment_info").select("cuota_mensual").eq("club_id", clubId).single()
+      .then(({ data }) => setCuotaMensual(Number(data?.cuota_mensual) || 0));
+  }, [clubId]);
+
+  const pagosDelMes    = payments.filter(p => periodoDePago(p) === mes);
+  const estadoMes      = estadoPorJugador(payments, mes);
+  const alDia          = plantel.filter(j => estadoMes.get(j.id) === "pagado");
+  const declararonMes  = plantel.filter(j => estadoMes.get(j.id) === "declarado");
+  const deben          = plantel.filter(j => !estadoMes.get(j.id));
+  const recaudadoMes   = pagosDelMes.filter(p => p.estado === "pagado").reduce((s,p)=>s+p.amount,0);
+  // Los que deben primero: es la lista sobre la que hay que hacer algo.
+  const ORDEN = { debe:0, declarado:1, pagado:2 };
+  const plantelOrdenado = [...plantel].sort((a,b) =>
+    (ORDEN[estadoMes.get(a.id) || "debe"] - ORDEN[estadoMes.get(b.id) || "debe"])
+    || String(a.name||"").localeCompare(String(b.name||"")));
   // Sin club_id (demo/preview) se usa vitrina; con club_id, siempre lo real de Supabase (aunque esté vacío).
   const [movimientos,  setMovimientos]  = useState(clubId ? [] : MOCK_MOVIMIENTOS);
   const [sueldos,      setSueldos]      = useState(clubId ? [] : MOCK_SUELDOS);
@@ -461,41 +485,97 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
               ))}
             </div>
 
-            {/* Historial de cuotas */}
+            {/* Estado del plantel en el mes elegido */}
             <div style={{ ...ss.card, padding:0, overflow:"hidden" }}>
-              <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--border-soft)",
-                display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                <span style={{ fontWeight:700, fontSize:"13px" }}>🧾 Cuotas registradas</span>
-                <span style={{ fontWeight:800, color:"#1FA04A", fontSize:"14px" }}>{fmt(totalCuotas,sym)}</span>
-              </div>
-              {payments.length === 0 ? (
-                <div style={{ padding:"28px 16px", textAlign:"center", fontSize:"12px", color:"var(--text-3)" }}>
-                  Todavía no hay ninguna cuota registrada en el club.
+              <div style={{ padding:"12px 16px", borderBottom:"1px solid var(--border-soft)",
+                display:"flex", justifyContent:"space-between", alignItems:"center", gap:"10px", flexWrap:"wrap" }}>
+                <span style={{ fontWeight:700, fontSize:"13px" }}>🧾 Cuota del mes</span>
+                {/* Selector de mes: una cuota pertenece a un mes, así que la
+                    pregunta "¿está al día?" siempre necesita saber cuál. */}
+                <div style={{ display:"flex", alignItems:"center", gap:"6px" }}>
+                  <button onClick={()=>setMes(m=>correrPeriodo(m,-1))}
+                    style={{ ...ss.btn, background:"var(--bg-elev-2)", color:"var(--text-2)",
+                      border:"1px solid var(--border-soft)", fontSize:"12px", padding:"5px 10px" }}>←</button>
+                  <span style={{ fontWeight:700, fontSize:"12px", minWidth:"110px", textAlign:"center" }}>
+                    {nombrePeriodo(mes)}
+                  </span>
+                  <button onClick={()=>setMes(m=>correrPeriodo(m,1))} disabled={mes>=periodoDe()}
+                    style={{ ...ss.btn, background:"var(--bg-elev-2)",
+                      color:mes>=periodoDe()?"var(--text-4)":"var(--text-2)",
+                      border:"1px solid var(--border-soft)", fontSize:"12px", padding:"5px 10px",
+                      cursor:mes>=periodoDe()?"not-allowed":"pointer" }}>→</button>
                 </div>
-              ) : payments.map(p => {
-                const ESTADO = {
-                  pagado:     { label:"Confirmada",   color:"#22C55E" },
-                  declarado:  { label:"Por confirmar",color:"#F59E0B" },
-                  rechazado:  { label:"No recibida",  color:"#EF4444" },
-                  pendiente:  { label:"Pendiente",    color:"var(--text-3)" },
-                }[p.estado] || { label:p.estado, color:"var(--text-3)" };
-                return (
-                  <div key={p.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-                    padding:"11px 16px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px", gap:"12px" }}>
-                    <div style={{ minWidth:0 }}>
-                      <div style={{ fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p.playerName}</div>
-                      <div style={{ color:"var(--text-3)", fontSize:"11px" }}>{p.date} · {p.method}</div>
+              </div>
+
+              {/* Resumen del mes */}
+              <div style={{ display:"flex", gap:"16px", padding:"12px 16px", flexWrap:"wrap",
+                borderBottom:"1px solid var(--border-soft)", fontSize:"12px" }}>
+                <span><strong style={{ color:"#22C55E", fontSize:"14px" }}>{alDia.length}</strong> al día</span>
+                <span><strong style={{ color:"#F59E0B", fontSize:"14px" }}>{declararonMes.length}</strong> por confirmar</span>
+                <span><strong style={{ color:"#EF4444", fontSize:"14px" }}>{deben.length}</strong> deben</span>
+                <span style={{ marginLeft:"auto", color:"var(--text-3)" }}>
+                  Recaudado: <strong style={{ color:"#1FA04A" }}>{fmt(recaudadoMes,sym)}</strong>
+                  {cuotaMensual > 0 && <> · falta <strong style={{ color:"#EF4444" }}>{fmt(deben.length*cuotaMensual,sym)}</strong></>}
+                </span>
+              </div>
+
+              {plantel.length === 0 ? (
+                <div style={{ padding:"28px 16px", textAlign:"center", fontSize:"12px", color:"var(--text-3)" }}>
+                  No hay jugadores en el plantel todavía.
+                </div>
+              ) : (
+                <>
+                  {!cuotaMensual && (
+                    <div style={{ padding:"10px 16px", fontSize:"11px", color:"#E0A82E",
+                      background:"rgba(201,132,8,0.08)", borderBottom:"1px solid var(--border-soft)" }}>
+                      ⚠️ Todavía no configuras el monto de la cuota en Mi Club. Sin monto no se puede
+                      registrar un pago desde acá ni calcular cuánto falta.
                     </div>
-                    <div style={{ display:"flex", alignItems:"center", gap:"10px", flexShrink:0 }}>
-                      <span style={{ fontSize:"10px", padding:"3px 9px", borderRadius:"99px",
-                        background:`${ESTADO.color}1A`, color:ESTADO.color, border:`1px solid ${ESTADO.color}44`,
-                        fontWeight:700, whiteSpace:"nowrap" }}>{ESTADO.label}</span>
-                      <span style={{ fontWeight:700, color:p.estado==="pagado"?"#1FA04A":"var(--text-3)",
-                        textDecoration:p.estado==="rechazado"?"line-through":"none" }}>{fmt(p.amount,sym)}</span>
-                    </div>
-                  </div>
-                );
-              })}
+                  )}
+                  {/* Primero los que deben: es la lista sobre la que hay que actuar. */}
+                  {plantelOrdenado.map(j => {
+                    const est = estadoMes.get(j.id) || "debe";
+                    const E = {
+                      pagado:    { label:"Al día",        color:"#22C55E" },
+                      declarado: { label:"Por confirmar", color:"#F59E0B" },
+                      debe:      { label:"Debe",          color:"#EF4444" },
+                    }[est];
+                    const suyo = pagosDelMes.filter(p => p.playerId === j.id && p.estado === "pagado")[0];
+                    return (
+                      <div key={j.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                        padding:"10px 16px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px", gap:"10px" }}>
+                        <div style={{ minWidth:0, flex:1 }}>
+                          <div style={{ fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{j.name}</div>
+                          {suyo && (
+                            <div style={{ color:"var(--text-3)", fontSize:"11px" }}>
+                              {suyo.method} · {String(suyo.date||"").slice(0,10)} · {fmt(suyo.amount,sym)}
+                            </div>
+                          )}
+                        </div>
+                        <span style={{ fontSize:"10px", padding:"3px 9px", borderRadius:"99px", flexShrink:0,
+                          background:`${E.color}1A`, color:E.color, border:`1px solid ${E.color}44`,
+                          fontWeight:700, whiteSpace:"nowrap" }}>{E.label}</span>
+                        {est === "debe" && registrarPagoManual && cuotaMensual > 0 && (
+                          <motion.button whileHover={{scale:1.04}} whileTap={{scale:0.96}}
+                            onClick={async ()=>{ await registrarPagoManual({ playerId:j.id, amount:cuotaMensual, method:"Efectivo", periodo:mes });
+                              showToast?.(`Cuota de ${j.name} registrada ✅`, "success"); }}
+                            style={{ ...ss.btn, background:"var(--bg-elev-2)", color:"var(--text-1)",
+                              border:"1px solid var(--border-soft)", fontSize:"11px", padding:"6px 12px",
+                              flexShrink:0, whiteSpace:"nowrap" }}>
+                            💵 Pagó en efectivo
+                          </motion.button>
+                        )}
+                        {est === "pagado" && suyo && borrarPago && (
+                          <button onClick={async ()=>{ await borrarPago(suyo.id); showToast?.("Cuota deshecha","warning"); }}
+                            title="Deshacer este pago"
+                            style={{ background:"none", border:"none", color:"var(--text-4)", cursor:"pointer",
+                              fontSize:"14px", flexShrink:0, padding:"0 4px" }}>↺</button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </motion.div>
         )}
