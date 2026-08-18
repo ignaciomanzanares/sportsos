@@ -18,7 +18,12 @@ export function usePosts(clubId, userId=null) {
     try {
       const { data, error } = await supabase
         .from("posts")
-        .select("*, profiles(nombre, rol)")
+        // El nombre de la clave foránea va explícito: desde que existen
+        // post_likes y post_comments hay tres caminos de posts a profiles
+        // (autor, quién dio like, quién comentó) y PostgREST se negaba a
+        // adivinar — devolvía 300 PGRST201 y El Muro quedaba vacío para
+        // siempre, sin ningún aviso en pantalla.
+        .select("*, profiles!posts_author_id_fkey(nombre, rol)")
         .eq("club_id", clubId)
         .order("created_at", { ascending: false })
         .limit(20);

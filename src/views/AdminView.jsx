@@ -48,7 +48,15 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   useEffect(() => {
     if (!clubId) return;
     supabase.from("club_payment_settings").select("*").eq("club_id", clubId).single()
-      .then(({ data }) => { if (data) setPagoForm({ ...emptyPago, ...data }); });
+      .then(({ data }) => {
+        if (!data) return;
+        // Las columnas vacías vienen como null desde Postgres y, al mezclarlas,
+        // pisaban el "" del formulario. Un <input value={null}> deja de ser
+        // controlado: React avisa y el campo se comporta distinto al resto.
+        const sinNulos = Object.fromEntries(
+          Object.entries(data).filter(([, v]) => v !== null && v !== undefined));
+        setPagoForm({ ...emptyPago, ...sinNulos });
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clubId]);
 

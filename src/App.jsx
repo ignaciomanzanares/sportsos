@@ -248,23 +248,34 @@ export default function SportOS() {
   // cargar el plantel le movería la categoría abajo de los pies.
   const categoriaTocada = useRef(false);
   const elegirCategoria = (i) => { categoriaTocada.current = true; setCategory(i); };
+  const categoriasEnUso = new Set([
+    ...players.map(p => p.category).filter(Boolean),
+    ...partidos.map(p => categoriaDePartido(sp, p.cat)).filter(Boolean),
+  ]);
+
   useEffect(() => {
     if (categoriaTocada.current || urlPendiente.current) return;
-    if (!playersCrudos.length) return;
+    if (!categoriasEnUso.size) return;
+    // Primero: la categoría donde el club tiene más jugadores. Es lo que uno
+    // quiere ver al abrir la app — en Old Reds, Adulta.
     const cuenta = new Map();
     for (const p of playersCrudos) {
       if (!p.category) continue;
       cuenta.set(p.category, (cuenta.get(p.category) || 0) + 1);
     }
-    if (!cuenta.size) return;
-    const [mayor] = [...cuenta.entries()].sort((a, b) => b[1] - a[1])[0];
-    const i = sp.categories.indexOf(mayor);
-    if (i >= 0) setCategory(i);
-  }, [playersCrudos, sp]);
-  const categoriasEnUso = new Set([
-    ...players.map(p => p.category).filter(Boolean),
-    ...partidos.map(p => categoriaDePartido(sp, p.cat)).filter(Boolean),
-  ]);
+    const masGente = cuenta.size
+      ? [...cuenta.entries()].sort((a, b) => b[1] - a[1])[0][0] : null;
+    // Si no hay a quién contar, al menos una que exista en el desplegable.
+    // El estado valía 0 (M6) y esa categoría ni siquiera se ofrece cuando el
+    // club no la usa: un <select> sin opción que coincida muestra la primera,
+    // así que arriba decía "M13" mientras la app filtraba por M6 y las dos
+    // cosas no tenían nada que ver entre sí.
+    const destino = (masGente && categoriasEnUso.has(masGente))
+      ? masGente
+      : sp.categories.find(c => categoriasEnUso.has(c));
+    const i = destino ? sp.categories.indexOf(destino) : -1;
+    if (i >= 0 && i !== category) setCategory(i);
+  }, [playersCrudos, partidos, sp]); // eslint-disable-line react-hooks/exhaustive-deps
   // Club real (nombre/colores de Supabase) con próximo/último partido derivados
   // de los partidos reales. Sin club_id (demo/preview) usa la vitrina CLUBS[sport].
   // El selector de categoría no filtraba nada: "próximo partido" se calculaba

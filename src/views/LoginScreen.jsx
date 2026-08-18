@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
@@ -347,14 +347,17 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
                       ["Ranking fuerza",       false, true,  true],
                       ["Finanzas y cuotas",    false, false, true],
                     ].map(([label,...vals],i)=>(
-                      <>
-                        <div key={label} style={{fontSize:"11px",color:"var(--text-2)",padding:"5px 0",borderTop:i>0?"1px solid var(--border-soft)":"none"}}>{label}</div>
+                      // La key va en el fragmento y no en el <div> de adentro:
+                      // el elemento del array es el fragmento, y era eso lo que
+                      // React reclamaba.
+                      <Fragment key={label}>
+                        <div style={{fontSize:"11px",color:"var(--text-2)",padding:"5px 0",borderTop:i>0?"1px solid var(--border-soft)":"none"}}>{label}</div>
                         {vals.map((v,j)=>(
                           <div key={j} style={{textAlign:"center",fontSize:"12px",borderTop:i>0?"1px solid var(--border-soft)":"none",padding:"5px 0"}}>
                             <span style={{color:v?["#1FA04A","#C0392B","#C98408"][j]:"var(--text-4)"}}>{v?"✓":"—"}</span>
                           </div>
                         ))}
-                      </>
+                      </Fragment>
                     ))}
                     <div style={{gridColumn:"1/-1",marginTop:"10px",borderTop:"1px solid var(--border-soft)",paddingTop:"10px",display:"grid",gridTemplateColumns:"1fr auto auto auto",gap:"6px 10px"}}>
                       <div style={{fontSize:"10px",color:"var(--text-3)"}}>Precio/mes</div>

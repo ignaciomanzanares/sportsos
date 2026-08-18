@@ -183,7 +183,9 @@ export async function createPayment({ clubId, playerId, amount, currency, method
 export async function getPosts(clubId) {
   const { data, error } = await supabase
     .from("posts")
-    .select("*, profiles(nombre, rol)")
+    // Ver la nota en usePosts.js: hay varios caminos de posts a profiles y
+    // sin nombrar la clave PostgREST responde 300 en vez de los posts.
+    .select("*, profiles!posts_author_id_fkey(nombre, rol)")
     .eq("club_id", clubId)
     .order("created_at", { ascending: false })
     .limit(20);
