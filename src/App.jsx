@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { SPORTS_CONFIG, COUNTRIES, CLUBS, partidoEsDeCategoria, categoriaDePartido } from "./data/sports";
@@ -22,17 +22,22 @@ import OnboardingTip from "./components/OnboardingTip";
 import UpgradeModal from "./components/UpgradeModal";
 import { canAccess, requiredPlan, DEMO_PLAN, PLANS } from "./lib/freemium";
 
-import OnboardingScreen from "./views/OnboardingScreen";
 import InvitationScreen from "./views/InvitationScreen";
 import LoginScreen from "./views/LoginScreen";
 import LandingPage from "./views/LandingPage";
 import ClubOnboarding from "./views/ClubOnboarding";
 import JoinRequestScreen from "./views/JoinRequestScreen";
-import SuperAdminView from "./views/SuperAdminView";
-import AdminView from "./views/AdminView";
-import EntrenadorView from "./views/EntrenadorView";
-import PreparadorView from "./views/PreparadorView";
 import JugadorView from "./views/JugadorView";
+
+// Los paneles por rol se traen recién cuando alguien de ese rol los abre.
+// Antes viajaban todos en el mismo archivo: el jugador —que es la enorme
+// mayoría del club y el que peor señal tiene, parado en la cancha— se
+// descargaba el panel del superadmin con sus gráficos, el del entrenador y
+// el del preparador para no ver ninguno.
+const SuperAdminView = lazy(() => import("./views/SuperAdminView"));
+const AdminView      = lazy(() => import("./views/AdminView"));
+const EntrenadorView = lazy(() => import("./views/EntrenadorView"));
+const PreparadorView = lazy(() => import("./views/PreparadorView"));
 import HomeView from "./views/HomeView";
 import PerfilView from "./views/PerfilView";
 import NewPasswordScreen from "./views/NewPasswordScreen";
@@ -136,7 +141,12 @@ export default function SportOS() {
   // todas las vistas: si se hiciera en cada pantalla, unas mostrarían los datos
   // y otras cero para el mismo jugador.
   const arusaJugadores = useArusaJugadores(sport === "rugby" && !!clubId, clubRow?.name || null);
-  const players = enriquecerConArusa(playersCrudos, arusaJugadores);
+  // Sin useMemo esto devolvía un array nuevo en cada render, aunque nada
+  // hubiera cambiado: con ~140 fichas, cada tecla en un buscador rehacía la
+  // lista entera y volvía a renderizar todas las vistas que la reciben.
+  const players = useMemo(
+    () => enriquecerConArusa(playersCrudos, arusaJugadores),
+    [playersCrudos, arusaJugadores]);
   const isDemo = currentUser === null;
   const userCats = isDemo ? [] : (currentUser.cats || []);
 
@@ -152,12 +162,18 @@ export default function SportOS() {
   // todavía nadie aprobó ni rechazó. La lista completa vive en AdminView;
   // acá solo se cuenta, para que el admin no tenga que entrar a buscarla.
   const [solicitudesPendientes, setSolicitudesPendientes] = useState(0);
+  // Se vuelve a contar cuando el admin aprueba o rechaza, no solo al navegar.
+  // Sin esto el número se congelaba: decía 3 después de despachar las tres, y
+  // al entrar a Jugadores a buscarlas la lista estaba vacía.
+  const [recuentoSolicitudes, setRecuentoSolicitudes] = useState(0);
   useEffect(() => {
     if (!clubId || role !== "admin") { setSolicitudesPendientes(0); return; }
+    let vigente = true;
     supabase.from("join_requests").select("id", { count: "exact", head: true })
       .eq("club_id", clubId).eq("status", "pendiente")
-      .then(({ count }) => setSolicitudesPendientes(count || 0));
-  }, [clubId, role, module]);
+      .then(({ count }) => { if (vigente) setSolicitudesPendientes(count || 0); });
+    return () => { vigente = false; };
+  }, [clubId, role, module, recuentoSolicitudes]);
 
   const payments = clubId ? realPayments : demoPayments;
   const setPayments = clubId ? setRealPayments : setDemoPayments;
@@ -189,15 +205,17 @@ export default function SportOS() {
       ...Object.fromEntries(lista.filter(Boolean).map(d => [d, true])) });
   }, [clubRow]);
 
+  // La escritura va FUERA del updater de setState. React puede correr un
+  // updater más de una vez para la misma acción (lo hace siempre en
+  // desarrollo con StrictMode), así que un efecto ahí adentro se dispara
+  // repetido: eran dos UPDATE a clubs por cada interruptor tocado.
   const cambiarDeportes = (actualizador) => {
-    setActiveClubs(prev => {
-      const siguiente = typeof actualizador === "function" ? actualizador(prev) : actualizador;
-      if (clubId) {
-        const lista = Object.entries(siguiente).filter(([,v]) => v).map(([k]) => k);
-        supabase.from("clubs").update({ sports: lista }).eq("id", clubId);
-      }
-      return siguiente;
-    });
+    const siguiente = typeof actualizador === "function" ? actualizador(activeClubs) : actualizador;
+    setActiveClubs(siguiente);
+    if (!clubId) return;
+    const lista = Object.entries(siguiente).filter(([,v]) => v).map(([k]) => k);
+    supabase.from("clubs").update({ sports: lista }).eq("id", clubId)
+      .then(({ error }) => { if (error) showToast("No se pudieron guardar los deportes del club","error"); });
   };
 
   const goBack = () => {
@@ -436,7 +454,13 @@ export default function SportOS() {
           }
         }
 
-        const esSuperAdmin = u.email === "admin@sportostest.com";
+        // Manda lo que dice la base; el email quemado en el código quedó solo
+        // como red por si ese perfil todavía no tiene el rol puesto. Mientras
+        // exista, cualquiera que consiga registrar ese correo entra viendo el
+        // panel de plataforma — las escrituras las sigue frenando RLS, pero la
+        // vista no debería depender de un string acá. Se puede borrar apenas
+        // el perfil tenga rol='superadmin' en profiles.
+        const esSuperAdmin = profile?.rol === "superadmin" || u.email === "admin@sportostest.com";
         const rolPerfil = esSuperAdmin ? "superadmin" : (profile?.rol || "admin");
 
         // Usuarios no-admin heredan el plan del admin de su club (cubre antiguos y nuevos)
@@ -532,7 +556,7 @@ export default function SportOS() {
   if(screen==="landing") return (
     <LandingPage
       onLogin={()=>setScreen("login")}
-      onDemo={()=>setScreen("onboarding")}
+      onDemo={()=>setScreen("demo")}
       onRegister={()=>setScreen("club-onboarding")}
       onJoinRequest={()=>setScreen("join-request")}
     />
@@ -564,8 +588,10 @@ export default function SportOS() {
     <LoginScreen
       onBack={()=>setScreen("landing")}
       onLogin={(user)=>{
-        const rolFinal = user.email==="admin@sportostest.com" ? "superadmin" : user.rol;
-        const planFinal = user.email==="admin@sportostest.com" ? "elite" : (user.plan||"free");
+        // Igual que arriba: el rol del perfil manda, el email es la red vieja.
+        const esSuper = user.rol === "superadmin" || user.email === "admin@sportostest.com";
+        const rolFinal = esSuper ? "superadmin" : user.rol;
+        const planFinal = esSuper ? "elite" : (user.plan||"free");
         // el id va incluido: sin él, la ficha del jugador logueado y las
         // escrituras que guardan autor se quedaban sin a quién apuntar.
         setCurrentUser({id:user.id, nombre:user.nombre, email:user.email, rol:rolFinal, club:user.club, club_id:user.club_id||null, cats:user.cats, plan:planFinal, avatar_url:user.avatar_url||null, isReal:true});
@@ -582,12 +608,18 @@ export default function SportOS() {
           setScreen("app");
         }
       }}
-      onDemo={()=>setScreen("onboarding")}
+      onDemo={()=>setScreen("demo")}
       onRegister={()=>setScreen("club-onboarding")}
     />
   );
 
   // Sin sesión activa y pantalla app → redirigir a login
+  // "demo" es la vitrina sin sesión y a propósito NO tiene rama propia: cae
+  // hasta el render de la app de abajo, salteándose el guard que sigue. Ese
+  // guard manda a login a quien está en "app" sin usuario, que es justo lo
+  // que el demo necesita evitar. Antes esta pantalla se llamaba "onboarding",
+  // nombre de una pantalla que ya no existe, y parecía un caso olvidado: el
+  // primero que "arreglara" el hueco poniendo setScreen("app") rompía el demo.
   if(screen==="app" && !currentUser) { setScreen("login"); return null; }
 
   // Sesión real sin club → nunca la vitrina de demo. Sin club_id, usePlayers/
@@ -905,11 +937,12 @@ export default function SportOS() {
         <div className="sportos-main" style={ss.main} key={role+module}>
           <AnimatePresence mode="wait">
             <motion.div key={role+module} {...fadeUp} transition={{duration:0.4}}>
+              <Suspense fallback={<div style={{padding:"40px",textAlign:"center",color:"var(--text-3)",fontSize:"13px"}}>Cargando…</div>}>
               {module==="home"&&<HomeView role={role} onEditPlayer={(p)=>{ setJugadorAEditar(p); navigateTo("jugadores"); }} players={playersVisibles} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidosVisibles} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId} miJugador={miJugador}/>}
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
                 rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
-              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={playersVisibles} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan} currentCategory={currentCategory} jugadorAEditar={jugadorAEditar} onJugadorEditado={()=>setJugadorAEditar(null)} irA={navigateTo} todosLosPlayers={players} registrarPagoManual={clubId?registrarPagoManual:null} borrarPago={clubId?borrarPago:null}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={playersVisibles} addPlayer={addPlayer} importOrUpdatePlayers={importOrUpdatePlayers} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} setPayments={setPayments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan} currentCategory={currentCategory} jugadorAEditar={jugadorAEditar} onJugadorEditado={()=>setJugadorAEditar(null)} onSolicitudesCambiaron={()=>setRecuentoSolicitudes(n=>n+1)} irA={navigateTo} todosLosPlayers={players} registrarPagoManual={clubId?registrarPagoManual:null} borrarPago={clubId?borrarPago:null}/>}
               {module!=="home"&&module!=="miperfil"&&(role==="entrenador"||(role==="admin"&&MODULOS_COMPARTIDOS.includes(module)))&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={playersVisibles} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}
               {module!=="home"&&module!=="miperfil"&&role==="preparador"&&<PreparadorView module={module} sp={sp} showToast={showToast} sportColor={sportColor} publishedPlan={publishedPlan} setPublishedPlan={setPublishedPlan} newExForm={newExForm} setNewExForm={setNewExForm} newEx={newEx} setNewEx={setNewEx} gymPlanExercises={gymPlanExercises} setGymPlanExercises={setGymPlanExercises} rankTab={rankTab} setRankTab={setRankTab} expandedDay={expandedDay} setExpandedDay={setExpandedDay} userCats={userCats} isDemo={isDemo} players={playersVisibles} clubId={clubId} currentUser={currentUser}/>}
               {module==="miperfil"&&<PerfilView currentUser={currentUser} sport={sport} sportColor={sportColor} onSaved={(data)=>{if(currentUser)setCurrentUser(u=>({...u,nombre:data.nombre,avatar_url:data.avatar_url||u.avatar_url}));showToast("Perfil actualizado ✅");}}/>}
@@ -944,6 +977,7 @@ export default function SportOS() {
                 </div>
               )}
               {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </div>

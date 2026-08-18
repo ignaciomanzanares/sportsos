@@ -92,6 +92,28 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
   const [tab,          setTab]          = useState("resumen");
   const [mes,          setMes]          = useState(periodoDe());
   const [cuotaMensual, setCuotaMensual] = useState(0);
+  const [enCurso,      setEnCurso]      = useState(false);
+
+  /**
+   * Ejecuta una acción sobre la plata y dice la verdad sobre cómo salió.
+   *
+   * Antes cada botón mostraba su mensaje de éxito apenas terminaba el await,
+   * pasara lo que pasara: si la base rechazaba la escritura, el admin leía
+   * "cuota confirmada" y la fila seguía ahí sin explicación. `enCurso` además
+   * evita el doble click, que sobre "Pagó en efectivo" cobraba dos veces.
+   */
+  const correr = async (accion, exito, tono = "success") => {
+    if (enCurso) return;
+    setEnCurso(true);
+    try {
+      await accion();
+      showToast?.(exito, tono);
+    } catch (e) {
+      showToast?.(`No se pudo guardar: ${e?.message || "error de conexión"}`, "error");
+    } finally {
+      setEnCurso(false);
+    }
+  };
 
   // El monto lo fija el admin en Mi Club; acá solo se lee para saber cuánto
   // falta y para registrar el pago de quien pagó en efectivo.
@@ -463,8 +485,9 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
                   </div>
                   <div style={{ display:"flex", gap:"6px", flexShrink:0 }}>
                     <motion.button whileHover={{scale:1.04}} whileTap={{scale:0.96}}
-                      onClick={async ()=>{ await confirmPayment?.(p.id, p.playerId);
-                        showToast?.(`Cuota de ${p.playerName || "el jugador"} confirmada ✅`, "success"); }}
+                      onClick={()=>correr(
+                        ()=>confirmPayment?.(p.id, p.playerId),
+                        `Cuota de ${p.playerName || "el jugador"} confirmada ✅`)}
                       disabled={!confirmPayment}
                       style={{ ...ss.btn, background:"rgba(34,197,94,0.15)", color:"#22C55E",
                         border:"1px solid rgba(34,197,94,0.35)", fontSize:"12px", padding:"8px 16px",
@@ -472,8 +495,9 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
                       ✅ Recibí la plata
                     </motion.button>
                     <motion.button whileHover={{scale:1.04}} whileTap={{scale:0.96}}
-                      onClick={async ()=>{ await rejectPayment?.(p.id);
-                        showToast?.("Marcado como no recibido", "warning"); }}
+                      onClick={()=>correr(
+                        ()=>rejectPayment?.(p.id),
+                        "Marcado como no recibido", "warning")}
                       disabled={!rejectPayment}
                       style={{ ...ss.btn, background:"rgba(239,68,68,0.1)", color:"#EF4444",
                         border:"1px solid rgba(239,68,68,0.25)", fontSize:"12px", padding:"8px 14px",
@@ -557,8 +581,9 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
                           fontWeight:700, whiteSpace:"nowrap" }}>{E.label}</span>
                         {est === "debe" && registrarPagoManual && cuotaMensual > 0 && (
                           <motion.button whileHover={{scale:1.04}} whileTap={{scale:0.96}}
-                            onClick={async ()=>{ await registrarPagoManual({ playerId:j.id, amount:cuotaMensual, method:"Efectivo", periodo:mes });
-                              showToast?.(`Cuota de ${j.name} registrada ✅`, "success"); }}
+                            onClick={()=>correr(
+                              ()=>registrarPagoManual({ playerId:j.id, amount:cuotaMensual, method:"Efectivo", periodo:mes }),
+                              `Cuota de ${j.name} registrada ✅`)}
                             style={{ ...ss.btn, background:"var(--bg-elev-2)", color:"var(--text-1)",
                               border:"1px solid var(--border-soft)", fontSize:"11px", padding:"6px 12px",
                               flexShrink:0, whiteSpace:"nowrap" }}>
@@ -566,7 +591,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
                           </motion.button>
                         )}
                         {est === "pagado" && suyo && borrarPago && (
-                          <button onClick={async ()=>{ await borrarPago(suyo.id); showToast?.("Cuota deshecha","warning"); }}
+                          <button onClick={()=>correr(()=>borrarPago(suyo.id), "Cuota deshecha", "warning")}
                             title="Deshacer este pago"
                             style={{ background:"none", border:"none", color:"var(--text-4)", cursor:"pointer",
                               fontSize:"14px", flexShrink:0, padding:"0 4px" }}>↺</button>

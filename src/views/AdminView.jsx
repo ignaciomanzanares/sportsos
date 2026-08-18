@@ -20,7 +20,7 @@ import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -262,8 +262,14 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     });
     if (invErr) { showToast("Error al aprobar la solicitud","warning"); return; }
 
-    await supabase.from("join_requests").update({ status:"aprobado" }).eq("id", req.id);
-    setJoinRequests(prev => prev.filter(r => r.id !== req.id));
+    // Si esto falla en silencio, la solicitud sale de la lista pero sigue
+    // "pendiente" en la base: el contador del menú marca 1 para siempre y al
+    // entrar a buscarla no hay nada. La invitación ya se creó, así que el
+    // link sirve igual — lo que se avisa es que hay que reintentar el cierre.
+    const { error: cerrarErr } = await supabase.from("join_requests")
+      .update({ status:"aprobado" }).eq("id", req.id);
+    if (cerrarErr) showToast("La invitación se creó, pero la solicitud quedó abierta — reintentá","warning");
+    else { setJoinRequests(prev => prev.filter(r => r.id !== req.id)); onSolicitudesCambiaron?.(); }
 
     const catsParam = encodeURIComponent(req.categoria || "");
     const nameParam = encodeURIComponent(club?.name || "");
@@ -273,8 +279,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   };
 
   const rejectRequest = async (req) => {
-    await supabase.from("join_requests").update({ status:"rechazado" }).eq("id", req.id);
+    const { error } = await supabase.from("join_requests")
+      .update({ status:"rechazado" }).eq("id", req.id);
+    if (error) { showToast("No se pudo rechazar la solicitud","error"); return; }
     setJoinRequests(prev => prev.filter(r => r.id !== req.id));
+    onSolicitudesCambiaron?.();
     showToast(`Solicitud de ${req.nombre} rechazada`, "warning");
   };
 
@@ -788,7 +797,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             </div>
 
             <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}}
-              onClick={downloadTemplate}
+              onClick={()=>downloadTemplate().catch(()=>showToast("No se pudo generar la plantilla","error"))}
               style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",border:"1px solid var(--border-soft)",fontSize:"12px",padding:"10px 18px",fontWeight:600,marginBottom:"18px"}}>
               ⬇️ Descargar plantilla de ejemplo (.xlsx)
             </motion.button>

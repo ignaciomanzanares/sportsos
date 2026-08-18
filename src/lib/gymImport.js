@@ -1,4 +1,20 @@
-import * as XLSX from "xlsx";
+/**
+ * xlsx pesa cerca de la mitad del bundle y solo hace falta cuando alguien
+ * importa una planilla — algo que pasa un puñado de veces al año. Cargándolo
+ * bajo demanda, el jugador que abre la app en el borde de la cancha con
+ * señal de 4G no paga por el importador de Excel del preparador físico.
+ */
+let XLSX = null;
+async function cargarXLSX() {
+  if (!XLSX) {
+    const m = await import("xlsx");
+    // xlsx se instala desde el tarball del CDN y es CommonJS: según cómo lo
+    // empaquete Vite, lo real puede venir en `default` en vez de plano.
+    XLSX = m?.utils ? m : m.default;
+  }
+  return XLSX;
+}
+
 
 /**
  * Leer el microciclo desde los Excel que manda el preparador físico.
@@ -278,6 +294,7 @@ function fusionar(destino, origen) {
 }
 
 async function leerArchivo(file, sessions, avisos) {
+  await cargarXLSX();
   const buf = await file.arrayBuffer();
   const libro = XLSX.read(buf, { type: "array" });
   const grupo = grupoDeArchivo(file.name);

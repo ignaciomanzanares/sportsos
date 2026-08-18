@@ -91,7 +91,10 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
         showToast("Le avisamos al admin — confirma cuando reciba tu transferencia ✅", "success");
       }
     } catch (e) {
-      showToast("Error al notificar el pago", "error");
+      // El mensaje real importa: "duplicate key" (ya declaró este mes) y
+      // "permission denied" mandan a hacer cosas muy distintas, y el jugador
+      // es quien lo reporta por WhatsApp.
+      showToast(`Error al notificar el pago: ${e?.message || "revisá tu conexión"}`, "error");
     } finally {
       setPaying(false);
     }

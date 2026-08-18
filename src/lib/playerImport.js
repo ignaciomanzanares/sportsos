@@ -1,4 +1,20 @@
-import * as XLSX from "xlsx";
+/**
+ * xlsx pesa cerca de la mitad del bundle y solo hace falta cuando alguien
+ * importa una planilla — algo que pasa un puñado de veces al año. Cargándolo
+ * bajo demanda, el jugador que abre la app en el borde de la cancha con
+ * señal de 4G no paga por el importador de Excel del preparador físico.
+ */
+let XLSX = null;
+async function cargarXLSX() {
+  if (!XLSX) {
+    const m = await import("xlsx");
+    // xlsx se instala desde el tarball del CDN y es CommonJS: según cómo lo
+    // empaquete Vite, lo real puede venir en `default` en vez de plano.
+    XLSX = m?.utils ? m : m.default;
+  }
+  return XLSX;
+}
+
 
 // ── Sinónimos de encabezado por campo ──────────────────────────────────────
 // No asumimos que todos los clubes usan el mismo wording — cada club sube su
@@ -127,7 +143,8 @@ function buildFieldMap(headerRow, dataRows) {
   return fieldByCol;
 }
 
-export function buildTemplateWorkbook() {
+export async function buildTemplateWorkbook() {
+  await cargarXLSX();
   const headers = ["Nombre", "Numero", "Posicion", "Categoria", "Edad", "Telefono", "Email", "Contacto Emergencia Nombre", "Contacto Emergencia Telefono"];
   const example  = ["Carlos Rodríguez", "10", "Apertura", "Superior", "24", "+56912345678", "carlos@email.com", "María Rodríguez", "+56987654321"];
   const ws = XLSX.utils.aoa_to_sheet([headers, example]);
@@ -136,8 +153,8 @@ export function buildTemplateWorkbook() {
   return wb;
 }
 
-export function downloadTemplate() {
-  const wb = buildTemplateWorkbook();
+export async function downloadTemplate() {
+  const wb = await buildTemplateWorkbook();
   XLSX.writeFile(wb, "plantilla-jugadores-sportos.xlsx");
 }
 
@@ -150,6 +167,7 @@ export function downloadTemplate() {
  * Devuelve { ok:true, players:[...] } o { ok:false, error:"..." }.
  */
 export async function parsePlayersFile(file) {
+  await cargarXLSX();
   const buf = await file.arrayBuffer();
   const wb = XLSX.read(buf, { type: "array", cellDates: true });
   const sheet = wb.Sheets[wb.SheetNames[0]];

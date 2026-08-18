@@ -3,6 +3,18 @@ import { getPayments, createPayment, saveNotification } from "./db";
 import { supabase } from "./supabase";
 import { periodoDe, periodoDePago } from "./periodo";
 
+
+/**
+ * supabase-js no lanza cuando la base rechaza: devuelve { error }. Un
+ * `await supabase.from(...).update(...)` suelto, sin mirar ese campo, se ve
+ * idéntico tanto si guardó como si RLS lo bloqueó — la app avisaba "listo" y
+ * la plata nunca se registraba. Acá se convierte en una excepción, que es lo
+ * que el llamador ya sabe atrapar para mostrar el error.
+ */
+function lanzarSiFalla({ error }) {
+  if (error) throw error;
+}
+
 // DB status ('pending'|'declarado'|'paid'|'failed') -> estado que leen los componentes
 function paymentToUI(p) {
   return {
@@ -45,7 +57,7 @@ export function usePayments(clubId) {
     if (!clubId) return;
     const mes = periodo || periodoDe();
     const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
-    await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id);
+    lanzarSiFalla(await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id));
     await load();
   };
 
@@ -55,15 +67,15 @@ export function usePayments(clubId) {
     if (!clubId) return;
     const mes = periodo || periodoDe();
     const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
-    await supabase.from("payments").update({ status: "declarado" }).eq("id", created.id);
+    lanzarSiFalla(await supabase.from("payments").update({ status: "declarado" }).eq("id", created.id));
     await load();
   };
 
   // Acciones del admin sobre una declaración de pago
   const confirmPayment = async (paymentId, playerId) => {
     const pago = payments.find(p => p.id === paymentId);
-    await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", paymentId);
-    if (playerId) await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId);
+    lanzarSiFalla(await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", paymentId));
+    if (playerId) lanzarSiFalla(await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId));
     if (clubId) {
       saveNotification({ clubId, type:"pago", title:"Pago confirmado",
         body:`Cuota de ${pago?.playerName || "un jugador"} confirmada${pago?.amount ? ` — $${pago.amount.toLocaleString()}` : ""}` }).catch(()=>{});
@@ -72,7 +84,7 @@ export function usePayments(clubId) {
   };
 
   const rejectPayment = async (paymentId) => {
-    await supabase.from("payments").update({ status: "failed" }).eq("id", paymentId);
+    lanzarSiFalla(await supabase.from("payments").update({ status: "failed" }).eq("id", paymentId));
     await load();
   };
 
@@ -87,14 +99,14 @@ export function usePayments(clubId) {
     if (!clubId) return;
     const mes = periodo || periodoDe();
     const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
-    await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id);
-    await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId);
+    lanzarSiFalla(await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id));
+    lanzarSiFalla(await supabase.from("players").update({ cuota_status: "ok" }).eq("id", playerId));
     await load();
   };
 
   /** Deshace una cuota registrada por error (solo admin, por RLS). */
   const borrarPago = async (paymentId) => {
-    await supabase.from("payments").delete().eq("id", paymentId);
+    lanzarSiFalla(await supabase.from("payments").delete().eq("id", paymentId));
     await load();
   };
 
