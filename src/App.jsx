@@ -239,6 +239,28 @@ export default function SportOS() {
   // todavía, y ocultarlas dejaría esos partidos sin forma de mirarlos.
   const sp           = SPORTS_CONFIG[sport];
   const currentCategory = sp.categories[category]||sp.categories[0];
+
+  // La categoría por defecto era el índice 0, o sea M6: cualquiera que abría
+  // la app caía en la de los más chicos, que en Old Reds no tiene a nadie, y
+  // veía el plantel vacío hasta darse cuenta de que había un selector arriba.
+  // Ahora se elige sola la categoría donde el club tiene más jugadores.
+  // `categoriaTocada` frena esto apenas la persona elige una a mano: si no,
+  // cargar el plantel le movería la categoría abajo de los pies.
+  const categoriaTocada = useRef(false);
+  const elegirCategoria = (i) => { categoriaTocada.current = true; setCategory(i); };
+  useEffect(() => {
+    if (categoriaTocada.current || urlPendiente.current) return;
+    if (!playersCrudos.length) return;
+    const cuenta = new Map();
+    for (const p of playersCrudos) {
+      if (!p.category) continue;
+      cuenta.set(p.category, (cuenta.get(p.category) || 0) + 1);
+    }
+    if (!cuenta.size) return;
+    const [mayor] = [...cuenta.entries()].sort((a, b) => b[1] - a[1])[0];
+    const i = sp.categories.indexOf(mayor);
+    if (i >= 0) setCategory(i);
+  }, [playersCrudos, sp]);
   const categoriasEnUso = new Set([
     ...players.map(p => p.category).filter(Boolean),
     ...partidos.map(p => categoriaDePartido(sp, p.cat)).filter(Boolean),
@@ -378,7 +400,10 @@ export default function SportOS() {
     // rol no debe perderla, pero sí tiene que ocurrir después de que el rol
     // quedó fijo.
     const i = pedido.cat ? (SPORTS_CONFIG[sport]?.categories || []).indexOf(pedido.cat) : -1;
-    if (i >= 0) setCategory(i);
+    // Una categoría que viene en la URL es una elección explícita (recargó
+    // estando ahí): vale igual que tocar el selector, así que la autoelección
+    // no la puede pisar cuando urlPendiente se suelte unas líneas más abajo.
+    if (i >= 0) { categoriaTocada.current = true; setCategory(i); }
     // Se suelta cuando el rol pedido ya quedó puesto (o se descartó): mientras
     // el rol siga moviéndose, el módulo permitido todavía puede cambiar.
     const rolListo = !pedido.rol || role === pedido.rol;
@@ -413,7 +438,9 @@ export default function SportOS() {
   // en fútbol). Pero al recargar, la sesión fija el deporte del club y esto se
   // disparaba pisando la categoría que venía en la URL: por eso Ctrl+R te
   // dejaba siempre en M6. Mientras haya URL por restaurar, no toca nada.
-  useEffect(()=>{ if (!urlPendiente.current) setCategory(0); },[sport]);
+  // Cambiar de deporte resetea la categoría y vuelve a habilitar la elección
+  // automática: las categorías de rugby no son las de fútbol.
+  useEffect(()=>{ if (!urlPendiente.current) { categoriaTocada.current = false; setCategory(0); } },[sport]);
 
   // Detecta sesión de Supabase al cargar (OAuth redirect o sesión guardada)
   useEffect(()=>{
@@ -756,7 +783,7 @@ export default function SportOS() {
               );
             })}
           </div>}
-          <select className="hide-mobile" value={category} onChange={e=>setCategory(Number(e.target.value))} style={{...ss.input,width:"100px",fontSize:"12px",padding:"6px 10px",cursor:"pointer"}}>
+          <select className="hide-mobile" value={category} onChange={e=>elegirCategoria(Number(e.target.value))} style={{...ss.input,width:"100px",fontSize:"12px",padding:"6px 10px",cursor:"pointer"}}>
             {/* Solo las categorías que el plantel realmente usa: ofrecer las
                 once cuando el club juega en dos es ruido. Y agrupadas cuando el
                 deporte lo define: los tres equipos de adulta no son categorías
