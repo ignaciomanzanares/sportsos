@@ -37,8 +37,14 @@ export default async function handler(req, res) {
     const playerName = playerRows[0]?.name || "Jugador";
 
     const { rows: paymentRows } = await client.query(
-      `insert into payments (club_id, player_id, amount, currency, method, status, due_date)
-       values ($1, $2, $3, 'CLP', 'Mercado Pago', 'pending', current_date)
+      // El periodo se escribe acá y no se deja en null: es la columna con la
+      // que la app decide de qué mes es la cuota, y el índice único que
+      // impide cobrar dos veces el mismo mes no agarra las filas con null.
+      // Se calcula en hora de Chile — un pago del 31 a las 22:00 en UTC ya
+      // es del mes siguiente.
+      `insert into payments (club_id, player_id, amount, currency, method, status, due_date, periodo)
+       values ($1, $2, $3, 'CLP', 'Mercado Pago', 'pending', current_date,
+               to_char(now() at time zone 'America/Santiago', 'YYYY-MM'))
        returning id`,
       [club_id, player_id, amount]
     );
