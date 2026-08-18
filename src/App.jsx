@@ -454,13 +454,12 @@ export default function SportOS() {
           }
         }
 
-        // Manda lo que dice la base; el email quemado en el código quedó solo
-        // como red por si ese perfil todavía no tiene el rol puesto. Mientras
-        // exista, cualquiera que consiga registrar ese correo entra viendo el
-        // panel de plataforma — las escrituras las sigue frenando RLS, pero la
-        // vista no debería depender de un string acá. Se puede borrar apenas
-        // el perfil tenga rol='superadmin' en profiles.
-        const esSuperAdmin = profile?.rol === "superadmin" || u.email === "admin@sportostest.com";
+        // Quién es superadmin lo dice la base y nada más. Antes esto era una
+        // comparación contra un email escrito acá, que además PISABA el rol
+        // del perfil: quien consiguiera registrar ese correo entraba viendo
+        // el panel de plataforma. Las escrituras siempre las frenó RLS, pero
+        // la vista no tenía por qué depender de un string en el bundle.
+        const esSuperAdmin = profile?.rol === "superadmin";
         const rolPerfil = esSuperAdmin ? "superadmin" : (profile?.rol || "admin");
 
         // Usuarios no-admin heredan el plan del admin de su club (cubre antiguos y nuevos)
@@ -588,8 +587,8 @@ export default function SportOS() {
     <LoginScreen
       onBack={()=>setScreen("landing")}
       onLogin={(user)=>{
-        // Igual que arriba: el rol del perfil manda, el email es la red vieja.
-        const esSuper = user.rol === "superadmin" || user.email === "admin@sportostest.com";
+        // Igual que arriba: manda el rol que trae el perfil.
+        const esSuper = user.rol === "superadmin";
         const rolFinal = esSuper ? "superadmin" : user.rol;
         const planFinal = esSuper ? "elite" : (user.plan||"free");
         // el id va incluido: sin él, la ficha del jugador logueado y las
