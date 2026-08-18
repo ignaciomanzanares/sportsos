@@ -29,3 +29,6 @@ dist-ssr
 *.sw?
 .vercel
 .env*
+
+# Grabador de sesión local — no se versiona
+bitacora-local.log
