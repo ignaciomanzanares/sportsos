@@ -124,6 +124,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   }, [jugadorAEditar]);
   const [playerSearch, setPlayerSearch] = useState("");
   const [pendingDelete, setPendingDelete] = useState(null); // {id, name, timeoutId}
+  // El 🗑 borraba de una. Ya se perdió una ficha así, y con ella su asistencia,
+  // sus cuotas y su historial de lesiones. Ahora pregunta, y sobre todo ofrece
+  // la salida que el admin casi siempre quiere: sacarlo de la lista sin perder
+  // nada. Borrar sigue estando, pero deja de ser el camino por defecto.
+  const [confirmarSalida, setConfirmarSalida] = useState(null); // el jugador
   const [invRol, setInvRol] = useState("jugador");
   const [invLink, setInvLink] = useState("");
   const [copied, setCopied] = useState(false);
@@ -927,6 +932,51 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
 
         {/* (undo toast manejado desde App.jsx via showToast) */}
 
+        {/* Sacar a alguien del plantel: dos salidas muy distintas, y la que
+            conserva la historia es la que se ofrece primero. */}
+        {confirmarSalida && (
+          <motion.div {...fadeUp} style={{...ss.card, marginBottom:"14px",
+            border:"1px solid rgba(239,68,68,0.35)", background:"rgba(239,68,68,0.06)"}}>
+            <div style={{fontSize:"14px",fontWeight:700,marginBottom:"6px"}}>
+              ¿Sacar a {confirmarSalida.name}?
+            </div>
+            <div style={{fontSize:"12px",color:"var(--text-2)",lineHeight:1.5,marginBottom:"14px"}}>
+              Borrarlo elimina también su asistencia, sus cuotas y su historial de
+              lesiones. No se puede deshacer.
+            </div>
+            <div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
+              <motion.button whileHover={{scale:1.03}} whileTap={{scale:0.97}}
+                onClick={async ()=>{
+                  const j = confirmarSalida;
+                  setConfirmarSalida(null);
+                  try {
+                    await updatePlayer(j.id, { activo: false });
+                    showToast(`${j.name} pasa a inactivos — su historial queda`, "success");
+                  } catch (e) { showToast(`No se pudo: ${e?.message || "error"}`, "error"); }
+                }}
+                style={{...ss.btn, background:"var(--bg-elev-3)", color:"var(--text-1)",
+                  border:"1px solid var(--border-soft)", fontSize:"13px", padding:"10px 16px", fontWeight:700}}>
+                💤 Dar de baja
+              </motion.button>
+              <motion.button whileHover={{scale:1.03}} whileTap={{scale:0.97}}
+                onClick={()=>{ const j = confirmarSalida; setConfirmarSalida(null); startDelete(j); }}
+                style={{...ss.btn, background:"transparent", color:"#EF4444",
+                  border:"1px solid rgba(239,68,68,0.35)", fontSize:"12px", padding:"10px 14px"}}>
+                Borrar igual
+              </motion.button>
+              <motion.button whileHover={{scale:1.03}} whileTap={{scale:0.97}}
+                onClick={()=>setConfirmarSalida(null)}
+                style={{...ss.btn, background:"transparent", color:"var(--text-3)",
+                  border:"1px solid var(--border-soft)", fontSize:"12px", padding:"10px 14px"}}>
+                Cancelar
+              </motion.button>
+            </div>
+            <div style={{fontSize:"11px",color:"var(--text-3)",marginTop:"10px"}}>
+              Dar de baja lo saca de la lista y de las convocatorias; podés devolverlo cuando vuelva.
+            </div>
+          </motion.div>
+        )}
+
         {/* Buscador */}
         <div style={{marginBottom:"14px",display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap"}}>
           <input value={playerSearch} onChange={e=>setPlayerSearch(e.target.value)} placeholder="🔍 Buscar jugador..." style={{...ss.input,flex:"1 1 220px"}}/>
@@ -1019,7 +1069,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                       title="Copiar link de invitación para este jugador"
                       style={{...ss.btn,background:"transparent",color:"#3B82F6",border:"1px solid #3B82F644",padding:"4px 10px",fontSize:"11px"}}>🔗</motion.button>
                     <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}
-                      onClick={()=>startDelete(p)}
+                      onClick={()=>setConfirmarSalida(p)}
                       style={{...ss.btn,background:"transparent",color:"#EF4444",border:"1px solid #EF444444",padding:"4px 10px",fontSize:"11px"}}>🗑️</motion.button>
                   </div>
                 </td>
