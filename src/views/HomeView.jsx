@@ -171,7 +171,7 @@ function relTime(iso) {
 
 const NOTIF_DOT = { nomina:"#818cf8", partido:"#22c55e", pago:"#fbbf24", plantel:"#38bdf8", general:"#5a5753" };
 
-function HomeAdmin({ players, sportColor, club, sp, countryData, payments, partidos, onNavigate, clubId, onEditPlayer }) {
+function HomeAdmin({ players, sportColor, sp, payments, partidos, onNavigate, clubId, onEditPlayer }) {
   const [posFilter, setPosFilter] = useState("TODOS");
 
   const pagados    = payments.filter(p=>p.estado==="pagado").length;
@@ -518,7 +518,7 @@ function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, c
   );
 }
 
-function HomePreparador({ players, sportColor, sp, onNavigate, clubId=null }) {
+function HomePreparador({ players, sportColor, onNavigate, clubId=null }) {
   // Antes decía "2 lesionados, 3 en alerta" siempre, con un comentario que lo
   // admitía ("Simular estado wellness"): el 96% de aptos era players.length-5
   // sobre cualquier plantel. Ahora sale de injury_reports, que es donde el
@@ -602,7 +602,7 @@ function HomePreparador({ players, sportColor, sp, onNavigate, clubId=null }) {
   );
 }
 
-function HomeJugador({ player, sportColor, sp, club, payments, partidos, onNavigate, convocado=null }) {
+function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convocado=null }) {
   const anotJug = { ...terminoAnotacion(sp), icono: sp?.stats?.[0]?.icon || "🏉" };
   // Buscaba por p.jugador, un campo que los pagos no tienen (son playerId y
   // playerName), así que miPago era siempre undefined y la tarjeta decía

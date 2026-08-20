@@ -17,7 +17,7 @@ import Cancha from "../components/Cancha";
 import RankingView from "../components/RankingView";
 
 /* ── MiCuota ────────────────────────────────────────────────── */
-function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, addPayment, declarePayment, clubId, isDemo=false}) {
+function MiCuota({player, club, countryData, sportColor, showToast, payments, setPayments, declarePayment, clubId, isDemo=false}) {
   const [selectedMethod, setSelectedMethod] = useState("Transferencia");
   const [paying, setPaying] = useState(false);
   // "Al día" es una pregunta con mes: ¿pagó ESTE mes? Antes se leía
@@ -920,7 +920,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
 
   if(module==="noticias") return <Noticias partidos={partidos} club={club} sportColor={sportColor}/>;
 
-  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} addPayment={addPayment} declarePayment={declarePayment} clubId={clubId} isDemo={isDemo}/>;
+  if(module==="micuota") return <MiCuota player={player} club={club} countryData={countryData} sportColor={sportColor} showToast={showToast} payments={payments} setPayments={setPayments} declarePayment={declarePayment} clubId={clubId} isDemo={isDemo}/>;
 
   if(module==="migym") return <GymJugador player={player} sportColor={sportColor} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} players={players} clubId={clubId}/>;
 

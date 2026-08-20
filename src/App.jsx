@@ -135,7 +135,7 @@ export default function SportOS() {
   const clubId = currentUser?.club_id ?? null;
   const { players: playersCrudos, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer } = usePlayers(clubId);
   const { club: clubRow, error: clubError, reload: reloadClub } = useClub(clubId);
-  const { payments: realPayments, addPayment, declarePayment, confirmPayment, rejectPayment, registrarPagoManual, borrarPago, setPayments: setRealPayments } = usePayments(clubId);
+  const { payments: realPayments, declarePayment, confirmPayment, rejectPayment, registrarPagoManual, borrarPago, setPayments: setRealPayments } = usePayments(clubId);
   const { partidos: realPartidos, error: partidosError, setPartidos: setRealPartidos } = useMatches(clubId);
   // Los tries y los puntos del torneo se pegan acá, sobre la lista que reciben
   // todas las vistas: si se hiciera en cada pantalla, unas mostrarían los datos
@@ -350,6 +350,15 @@ export default function SportOS() {
 
   // Toast con soporte undo
   const showToast = (msg, type="success", onUndo=null) => setToast({msg, type, onUndo});
+
+  // Si el fixture no carga, el calendario y el Match Center se ven vacíos y
+  // parecen decir "no hay partidos". El error estaba capturado y no se mostraba
+  // en ninguna parte. No bloquea la app como el del club —el resto funciona
+  // igual—, solo avisa que lo vacío es una falla y no la realidad.
+  useEffect(() => {
+    if (partidosError) showToast("No se pudieron cargar los partidos — reintentá recargando", "error");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [partidosError]);
 
   // Atajo de teclado para búsqueda global
   useEffect(()=>{
@@ -1022,7 +1031,7 @@ export default function SportOS() {
                   </span>
                 </div>
               )}
-              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} addPayment={clubId?addPayment:null} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
               </Suspense>
             </motion.div>
           </AnimatePresence>

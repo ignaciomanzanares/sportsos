@@ -189,7 +189,7 @@ const POST_TYPES = [
 ];
 
 /* ── MuroInput ─────────────────────────────────────────── */
-function MuroInput({sportColor, onPublish, players=[]}) {
+function MuroInput({onPublish, players=[]}) {
   const [text, setText]       = useState("");
   const [type, setType]       = useState("general");
   const [expanded, setExpanded] = useState(false);

@@ -51,16 +51,6 @@ export function usePayments(clubId) {
 
   useEffect(() => { load(); }, [load]);
 
-  // Usado por JugadorView (MiCuota) al pagar: escribe la cuota real (pagada) y recarga.
-  // No hay pasarela de pago real integrada hoy — se registra directo como pagada.
-  const addPayment = async ({ playerId, amount, method, periodo }) => {
-    if (!clubId) return;
-    const mes = periodo || periodoDe();
-    const created = await createPayment({ clubId, playerId, amount, currency: "CLP", method, dueDate: new Date().toISOString().split("T")[0], periodo: mes });
-    lanzarSiFalla(await supabase.from("payments").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", created.id));
-    await load();
-  };
-
   // El jugador declara que transfirió (transferencia manual) — queda
   // "declarado" hasta que el admin lo confirme, no se marca pagado solo.
   const declarePayment = async ({ playerId, amount, method, periodo }) => {
@@ -110,7 +100,12 @@ export function usePayments(clubId) {
     await load();
   };
 
-  return { payments, loading, addPayment, declarePayment, confirmPayment, rejectPayment,
+  // addPayment ya no existe: escribía la cuota como pagada de una, sin pasar
+  // por el admin. Ninguna pantalla lo llamaba —MiCuota usa declarePayment— y
+  // las políticas de la base lo habrían rechazado igual: un jugador no puede
+  // marcarse su propia cuota como cobrada. Se llevó consigo la prop que
+  // viajaba de App a JugadorView y de ahí a MiCuota sin que nadie la usara.
+  return { payments, loading, declarePayment, confirmPayment, rejectPayment,
            registrarPagoManual, borrarPago, reload: load, setPayments };
 }
 
