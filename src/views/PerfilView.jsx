@@ -122,8 +122,12 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
       const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
       const cleanUrl = urlData.publicUrl;
       setAvatarUrl(cleanUrl + "?t=" + Date.now());
-      // Guardar en profiles
-      await supabase.from("profiles").update({ avatar_url: cleanUrl }).eq("id", currentUser.id);
+      // Guardar en profiles. La foto ya se ve en pantalla porque se puso arriba,
+      // así que un fallo acá pasaba desapercibido hasta el próximo login, cuando
+      // el avatar volvía a las iniciales sin explicación.
+      const { error: perfilErr } = await supabase.from("profiles")
+        .update({ avatar_url: cleanUrl }).eq("id", currentUser.id);
+      if (perfilErr) setUploadError("La foto se subió pero no quedó guardada en tu perfil.");
       // Actualizar players por profile_id (funciona si el admin usó el botón 🔗 Invitar)
       const { data: updated } = await supabase
         .from("players")

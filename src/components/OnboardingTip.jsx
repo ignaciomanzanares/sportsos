@@ -52,9 +52,14 @@ export default function OnboardingTip({ sportColor="#22C55E", role="entrenador",
     setVisible(false);
     // Guardar en localStorage (respaldo instantáneo)
     localStorage.setItem(`sportos_onboarding_${userKey}`, "1");
-    // Guardar en Supabase para que no vuelva a aparecer en ningún dispositivo
+    // Guardar en Supabase para que no vuelva a aparecer en ningún dispositivo.
+    // Si falla no se avisa a propósito: el localStorage de arriba ya lo ocultó
+    // en este equipo, y molestar con un error por un cartel de bienvenida es
+    // peor que el problema. Queda en consola por si alguien lo persigue.
     if (userId) {
-      await supabase.from("profiles").update({ onboarding_done: true }).eq("id", userId);
+      const { error } = await supabase.from("profiles")
+        .update({ onboarding_done: true }).eq("id", userId);
+      if (error) console.warn("[onboarding] no se pudo marcar como visto:", error.message);
     }
   };
 

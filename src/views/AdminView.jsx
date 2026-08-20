@@ -237,7 +237,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     const prefixes = { rugby:"RUGBY", futbol:"FUTBOL", basketball:"BASKET", handball:"HAND", hockey:"HOCKEY" };
     const prefix   = prefixes[sport] || "CLUB";
     const newCode  = `${prefix}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
-    await supabase.from("clubs").update({ join_code: newCode }).eq("id", clubId);
+    // Sin mirar el error, el admin se llevaba en pantalla un código que la base
+    // nunca guardó y se lo repartía al plantel por WhatsApp: nadie podía entrar
+    // y el código viejo seguía siendo el bueno.
+    const { error } = await supabase.from("clubs").update({ join_code: newCode }).eq("id", clubId);
+    if (error) { showToast("No se pudo regenerar el código: " + error.message, "error"); return; }
     setJoinCode(newCode);
     showToast("Código regenerado ✅", "success");
   };

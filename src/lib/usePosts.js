@@ -61,15 +61,33 @@ export function usePosts(clubId, userId=null) {
   const toggleLike = async (postId) => {
     if (!isReal || !userId) return;
     const already = likedByMe[postId];
-    if (already) {
-      await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", userId);
-      setLikedByMe(prev => { const n = { ...prev }; delete n[postId]; return n; });
-      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: Math.max(0, p.likes - 1) } : p));
-    } else {
-      await supabase.from("post_likes").insert({ post_id: postId, user_id: userId });
-      setLikedByMe(prev => ({ ...prev, [postId]: true }));
-      setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
-    }
+    // El contador se mueve antes de que conteste el servidor, que es lo correcto
+    // para que el toque se sienta instantáneo. Lo que faltaba era deshacerlo
+    // cuando la escritura no entra: el corazón quedaba encendido y el número
+    // subido hasta que alguien recargara, y el "me gusta" no existía.
+    const optimista = () => {
+      if (already) {
+        setLikedByMe(prev => { const n = { ...prev }; delete n[postId]; return n; });
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: Math.max(0, p.likes - 1) } : p));
+      } else {
+        setLikedByMe(prev => ({ ...prev, [postId]: true }));
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
+      }
+    };
+    const revertir = () => {
+      if (already) {
+        setLikedByMe(prev => ({ ...prev, [postId]: true }));
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: p.likes + 1 } : p));
+      } else {
+        setLikedByMe(prev => { const n = { ...prev }; delete n[postId]; return n; });
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: Math.max(0, p.likes - 1) } : p));
+      }
+    };
+    optimista();
+    const { error } = already
+      ? await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", userId)
+      : await supabase.from("post_likes").insert({ post_id: postId, user_id: userId });
+    if (error) revertir();
   };
 
   useEffect(() => { load(); }, [load]);
