@@ -20,7 +20,7 @@ import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null, verInactivos=false, setVerInactivos=null, inactivos=0}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -928,8 +928,20 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         {/* (undo toast manejado desde App.jsx via showToast) */}
 
         {/* Buscador */}
-        <div style={{marginBottom:"14px"}}>
-          <input value={playerSearch} onChange={e=>setPlayerSearch(e.target.value)} placeholder="🔍 Buscar jugador..." style={{...ss.input,width:"100%"}}/>
+        <div style={{marginBottom:"14px",display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap"}}>
+          <input value={playerSearch} onChange={e=>setPlayerSearch(e.target.value)} placeholder="🔍 Buscar jugador..." style={{...ss.input,flex:"1 1 220px"}}/>
+          {/* Solo aparece si hay alguien de baja: un interruptor que nunca
+              cambia nada es una pregunta que el admin tiene que descartar
+              cada vez que entra. */}
+          {inactivos > 0 && setVerInactivos && (
+            <button onClick={()=>setVerInactivos(v=>!v)}
+              style={{...ss.btn, fontSize:"12px", padding:"9px 14px", whiteSpace:"nowrap",
+                background: verInactivos ? "var(--bg-elev-3)" : "var(--bg-elev-2)",
+                color: verInactivos ? "var(--text-1)" : "var(--text-3)",
+                border:"1px solid var(--border-soft)"}}>
+              {verInactivos ? "👁 Ocultar" : "👁 Ver"} {inactivos} de baja
+            </button>
+          )}
         </div>
 
         {/* Tabla de jugadores */}
@@ -937,7 +949,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           <table style={{width:"100%",fontSize:"12px",borderCollapse:"collapse"}}>
             <thead><tr>{["Jugador","Cat.","Pos.","Salud","Cuota","Edad",""].map(h=><th key={h} style={{textAlign:"left",color:"var(--text-3)",padding:"14px 12px",fontWeight:600,borderBottom:"1px solid var(--border-soft)",textTransform:"uppercase",letterSpacing:"0.05em",fontSize:"10px"}}>{h}</th>)}</tr></thead>
             <tbody>{filtered.map((p,i)=>(
-              <motion.tr key={p.id} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{duration:0.3,delay:i*0.03}} whileHover={{background:"var(--bg-elev-2)"}} style={{borderBottom:"1px solid var(--border-soft)"}}>
+              <motion.tr key={p.id} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} transition={{duration:0.3,delay:i*0.03}} whileHover={{background:"var(--bg-elev-2)"}}
+                style={{borderBottom:"1px solid var(--border-soft)",
+                        // Apagado, no escondido: cuando el admin pide ver los
+                        // de baja tiene que distinguirlos de un vistazo.
+                        opacity: p.activo === false ? 0.45 : 1}}>
                 <td style={{padding:"12px"}}>
                   <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
                     {p.avatar_url
@@ -965,6 +981,26 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                     <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}
                       onClick={()=>setPlayerForm({...p, cat: p.category, med: p.med_status, cuota: p.cuota_status})}
                       style={{...ss.btn,background:"transparent",color:sportColor,border:`1px solid ${sportColor}44`,padding:"4px 10px",fontSize:"11px"}}>✏️</motion.button>
+                    {/* Baja y alta, no borrado: el que deja de venir en junio
+                        vuelve en marzo, y su asistencia y sus cuotas de los
+                        años anteriores tienen que seguir ahí cuando vuelva. */}
+                    <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}
+                      onClick={async ()=>{
+                        const baja = p.activo === false;
+                        try {
+                          await updatePlayer(p.id, { activo: baja });
+                          showToast(baja ? `${p.name} vuelve al plantel` : `${p.name} pasa a inactivos`,
+                                    baja ? "success" : "warning");
+                        } catch (e) {
+                          // Si falta la columna en la base, el mensaje lo dice
+                          // en vez de dejar el botón sin efecto y sin motivo.
+                          showToast(`No se pudo: ${e?.message || "error de conexión"}`, "error");
+                        }
+                      }}
+                      title={p.activo === false ? "Devolver al plantel" : "Dar de baja (no borra nada)"}
+                      style={{...ss.btn,background:"transparent",color:"var(--text-3)",border:"1px solid var(--border-soft)",padding:"4px 10px",fontSize:"11px"}}>
+                      {p.activo === false ? "↩︎" : "💤"}
+                    </motion.button>
                     <motion.button whileHover={{scale:1.1}} whileTap={{scale:0.9}}
                       onClick={async ()=>{
                         const base = window.location.origin;
