@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { ss } from "../styles/tokens";
 import { filtrarPorNombre, coincide } from "../lib/buscarNombre";
 

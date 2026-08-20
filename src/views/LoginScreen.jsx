@@ -1,5 +1,5 @@
 import { useState, Fragment } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import AuroraBg from "../components/AuroraBg";

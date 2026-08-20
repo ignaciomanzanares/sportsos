@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { SPORTS_CONFIG, COUNTRIES } from "../data/sports";
 import AuroraBg from "../components/AuroraBg";
 import { ss } from "../styles/tokens";

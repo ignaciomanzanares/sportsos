@@ -1,5 +1,5 @@
 import { useState as useLocalState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { GYM_PLAN, PLAN_VACIO } from "../data/gymPlan";
@@ -199,17 +199,16 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
     showToast(`${newEx.name} agregado al ${dayLabels[day]}`,"success");
   };
 
-  const CatsBanner = () => !isDemo && userCats.length > 0 ? (
+  const catsBanner = !isDemo && userCats.length > 0 ? (
     <motion.div {...fadeUp} style={{...ss.card, marginBottom:"14px", padding:"10px 14px", background:"linear-gradient(135deg,rgba(239,68,68,0.08),transparent)", border:"1px solid rgba(239,68,68,0.2)", display:"flex", alignItems:"center", gap:"10px", flexWrap:"wrap"}}>
       <span style={{fontSize:"11px",color:"var(--text-2)"}}>💪 Tus categorías:</span>
       {userCats.map(c=><span key={c} style={{fontSize:"11px",padding:"2px 10px",borderRadius:"99px",background:"rgba(239,68,68,0.12)",color:"#F87171",border:"1px solid rgba(239,68,68,0.25)",fontWeight:600}}>{c}</span>)}
     </motion.div>
   ) : null;
-  const statusIcon = (s)=>s==="ok"?"✅":s==="parcial"?"⚠️":"⏳";
 
   if(module==="microciclo") return (
     <div>
-      <CatsBanner/>
+      {catsBanner}
       <SectionTitle title={`Microciclo — Semana ${weekLabel}`} sub={`${coachName} · ${sp.name}`}
         action={<div style={{display:"flex",gap:"8px",flexWrap:"wrap"}}>
           {/* El PF manda el microciclo en Excel; cargar tres días a mano son
@@ -363,7 +362,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
 
   if(module==="estadoplantel") return (
     <div>
-      <CatsBanner/>
+      {catsBanner}
       <EstadoPlantelView sportColor={sportColor} players={players}/>
     </div>
   );

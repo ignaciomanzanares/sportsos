@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
 import { PLANS } from "../lib/freemium";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { SPORTS_CONFIG, puestosDeFicha, nombrePuesto } from "../data/sports";
 import SectionTitle from "../components/SectionTitle";
-import Stat from "../components/Stat";
 import Badge from "../components/Badge";
 import PanelLesiones from "../components/PanelLesiones";
 import VincularArusa from "../components/VincularArusa";

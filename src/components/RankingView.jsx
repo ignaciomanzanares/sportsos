@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { ss } from "../styles/tokens";
 import ProgressBar from "./ProgressBar";
 import MedalBadge from "./MedalBadge";
@@ -55,7 +55,7 @@ export default function RankingView({tab, setTab, sportColor, players, compact, 
   const medalColors = ["#F59E0B","#94A3B8","#CD7F32"];
   const maxVal = Math.max(...sorted.map(getVal), 1);
 
-  const Tabs = () => (
+  const barraTabs = (
     <div style={{display:"flex",gap:"4px",marginBottom:"16px",background:"var(--bg-elev-2)",borderRadius:"var(--r-md)",padding:"3px"}}>
       {tabs.map(t=>(
         <motion.button key={t.id} whileTap={{scale:0.97}} onClick={()=>setTab(t.id)} style={{...ss.btn,flex:1,background:activeTab===t.id?`linear-gradient(135deg,${sportColor}33,${sportColor}11)`:"transparent",color:activeTab===t.id?sportColor:"var(--text-2)",border:"none",fontSize:"10px",padding:"7px 4px",textTransform:"uppercase",letterSpacing:"0.05em",fontWeight:700,boxShadow:activeTab===t.id?`0 0 12px ${sportColor}33`:"none"}}>{t.label}</motion.button>
@@ -73,7 +73,7 @@ export default function RankingView({tab, setTab, sportColor, players, compact, 
   if (sorted.length === 0) return (
     <div style={{...ss.card,marginTop:compact?"8px":"0"}}>
       <div style={{fontWeight:700,fontSize:"14px",marginBottom:"12px",display:"flex",alignItems:"center",gap:"6px"}}>🏋️ Ranking de Fuerza</div>
-      <Tabs/>
+      {barraTabs}
       <EmptyState icon="🏋️" title="Sin datos de gym todavía" desc="El ranking aparece cuando los jugadores registran series en Mi Gym." color={sportColor}/>
     </div>
   );
@@ -81,7 +81,7 @@ export default function RankingView({tab, setTab, sportColor, players, compact, 
   return (
     <div style={{...ss.card,marginTop:compact?"8px":"0"}}>
       <div style={{fontWeight:700,fontSize:"14px",marginBottom:"12px",display:"flex",alignItems:"center",gap:"6px"}}>🏋️ Ranking de Fuerza</div>
-      <Tabs/>
+      {barraTabs}
       {!compact&&(
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(100px,1fr))",gap:"10px",marginBottom:"16px"}}>
           {top3.map((p,i)=>(

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { ss } from "../styles/tokens";
 import { PLANS, UPGRADE_TEXT } from "../lib/freemium";
 

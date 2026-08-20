@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { ss } from "../styles/tokens";
 
 export default function EmptyState({ icon="📭", title, desc, action, actionLabel, color="#A855F7" }) {

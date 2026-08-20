@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
@@ -180,7 +180,6 @@ function HomeAdmin({ players, sportColor, club, sp, countryData, payments, parti
   // "Goles" no existe en rugby. Cada deporte declara su estadística principal.
   const anot = terminoAnotacion(sp);
   const totalGoles = players.reduce((s,p)=>s+(p.stats?.[anot.clave]||0),0);
-  const balanceMes = payments.filter(p=>p.estado==="pagado").length * 15000;
 
   // Próximos partidos: del más cercano al más lejano, y solo los que aún no se
   // juegan. La lista venía en el orden en que Supabase devuelve los partidos

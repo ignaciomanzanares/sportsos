@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { supabase } from "../lib/supabase";
@@ -8,7 +8,6 @@ import { proponerVinculos, arusaSinPlantel, nombreProlijo, duplicadosDelPlantel 
 import { puestoDeArusa, conPuestoDisponible } from "../data/posicionesArusa";
 import { unirConRegistrado } from "../data/plantelArusa";
 
-const DIVISIONES = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
 
 /**
  * Vincula cada jugador del plantel con su ficha del torneo.

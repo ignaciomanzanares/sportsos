@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { unirConRegistrado } from "../data/plantelArusa";
 
 /**
  * Tabla de posiciones y estadísticas de jugadores del torneo (ARUSA/Leverade).
@@ -68,11 +67,18 @@ export function useArusaJugadores(activo = true, clubName = null) {
           partidos: (prev.partidos || 0) + (j.partidos || 0),
         } : { ...j, id });
       }
+      if (!clubName) { setJugadores([...acc.values()]); return; }
       // El caché en vivo perdió a siete jugadores del club —los que jugaron
       // uno o dos partidos y no anotaron nunca—, así que sus estadísticas
       // salían en blanco aunque existen. Se completan con la foto guardada.
-      const completo = clubName ? unirConRegistrado([...acc.values()], clubName) : [...acc.values()];
-      setJugadores(completo);
+      //
+      // La foto son 723 jugadores de todos los clubes del torneo (83 kB) y de
+      // ahí se usan los ~95 del club propio. Se carga bajo demanda para que no
+      // viaje en el arranque: el jugador que entra a ver su cuota se bajaba el
+      // plantel entero de la ARUSA sin necesitarlo.
+      import("../data/plantelArusa").then(({ unirConRegistrado }) => {
+        if (vivo) setJugadores(unirConRegistrado([...acc.values()], clubName));
+      });
     });
     return () => { vivo = false; };
   }, [activo, clubName]);

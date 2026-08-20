@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
 import { SPORTS_CONFIG, puestosDeFicha } from "../data/sports";
 import AuroraBg from "../components/AuroraBg";

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import Badge from "./Badge";

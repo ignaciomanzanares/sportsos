@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { FORMATIONS, TEAMS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
+import { FORMATIONS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
 import { useAttendance, useAttendanceStats, useAsistenciaPrevia, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
 import { vieneDeArusa } from "../lib/statsArusa";
@@ -517,7 +517,7 @@ function AsistenciaGrid({players, sportColor, showToast, present={}, saving={}, 
    entre renders y tiraba abajo el árbol de React (pantalla en blanco o
    congelada). Ahora es su propio componente, como el resto de los módulos
    de esta vista. ─────────────────────────────────────────────────────── */
-function MuroModule({ sp, currentCategory, CatsBanner, sportColor, sportCards, players, visiblePlayers, isDemo, userCats, clubId, setPartidos, showToast, posts, createPost, reactions, handleReact, likedByMe, toggleLike, currentUserId }) {
+function MuroModule({ sp, currentCategory, catsBanner, sportColor, sportCards, players, visiblePlayers, isDemo, userCats, clubId, setPartidos, showToast, posts, createPost, reactions, handleReact, likedByMe, toggleLike, currentUserId }) {
   const [showResultForm, setShowResultForm] = useState(false);
   const [resForm, setResForm] = useState({rival:"", golesLocal:"", golesVisita:"", lugar:"Local", resumen:"", destacados:""});
   const [tarjetas, setTarjetas] = useState([]);          // [{playerId, playerName, tipo, suspende}]
@@ -588,7 +588,7 @@ function MuroModule({ sp, currentCategory, CatsBanner, sportColor, sportCards, p
   return (
     <div>
       <SectionTitle title={`El Muro — ${sp.name} ${currentCategory}`}/>
-      <CatsBanner/>
+      {catsBanner}
 
       {/* Publicar resultado de partido */}
       <motion.div {...fadeUp} style={{...ss.card, marginBottom:"16px", border:`1px solid ${sportColor}33`, background:`linear-gradient(135deg,${sportColor}08,transparent)`}}>
@@ -736,7 +736,6 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
 
   // filtros
   const [filtroCat,  setFiltroCat]  = useState("todos");
-  const [filtroEq,   setFiltroEq]   = useState("todos");
   const [filtroEst,  setFiltroEst]  = useState("todos"); // todos | programado | jugado
 
   // nuevo partido (fila vacía)
@@ -1027,7 +1026,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   // En modo real filtra jugadores por las categorías asignadas al entrenador
   const visiblePlayers = isDemo || userCats.length === 0 ? players : players.filter(p => userCats.includes(p.category));
 
-  const CatsBanner = () => !isDemo && userCats.length > 0 ? (
+  const catsBanner = !isDemo && userCats.length > 0 ? (
     <motion.div {...fadeUp} style={{...ss.card, marginBottom:"14px", padding:"10px 14px", background:"linear-gradient(135deg,rgba(59,130,246,0.08),transparent)", border:"1px solid rgba(59,130,246,0.25)", display:"flex", alignItems:"center", gap:"10px", flexWrap:"wrap"}}>
       <span style={{fontSize:"11px",color:"var(--text-2)"}}>📋 Tus categorías:</span>
       {userCats.map(c=><span key={c} style={{fontSize:"11px",padding:"2px 10px",borderRadius:"99px",background:"rgba(59,130,246,0.15)",color:"#60A5FA",border:"1px solid rgba(59,130,246,0.3)",fontWeight:600}}>{c}</span>)}
@@ -1044,7 +1043,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   };
   const sportCards = CARD_TYPES[sport] || CARD_TYPES.rugby;
 
-  if(module==="muro") return <MuroModule sp={sp} currentCategory={currentCategory} CatsBanner={CatsBanner}
+  if(module==="muro") return <MuroModule sp={sp} currentCategory={currentCategory} catsBanner={catsBanner}
     sportColor={sportColor} sportCards={sportCards} players={players} visiblePlayers={visiblePlayers}
     isDemo={isDemo} userCats={userCats} clubId={clubId} setPartidos={setPartidos} showToast={showToast}
     posts={posts} createPost={createPost} reactions={reactions} handleReact={handleReact}
@@ -1099,11 +1098,11 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="nomina") return <div><CatsBanner/><NominaDND sport={sport} sp={sp} club={club} players={visiblePlayers} sportColor={sportColor} showToast={showToast} clubId={clubId} currentCategory={currentCategory}/></div>;
+  if(module==="nomina") return <div>{catsBanner}<NominaDND sport={sport} sp={sp} club={club} players={visiblePlayers} sportColor={sportColor} showToast={showToast} clubId={clubId} currentCategory={currentCategory}/></div>;
 
   if(module==="estadisticas") return (
     <div>
-      <CatsBanner/>
+      {catsBanner}
       <SectionTitle title={`Estadísticas — ${sp.name} ${currentCategory}`}/>
       {/* Datos oficiales del torneo. Van arriba porque son la fuente: los
           bloques de abajo (tries, conversiones, penales) se llenan con esto
@@ -1156,7 +1155,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="asistencia") return <div><CatsBanner/><SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} onMarcarVarios={attendanceMarcarVarios} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today} conteo={attendanceConteo} previos={attendancePrevios}/></div>;
+  if(module==="asistencia") return <div>{catsBanner}<SectionTitle title="Control de Asistencia"/><AsistenciaGrid players={visiblePlayers} sportColor={sportColor} showToast={showToast} present={attendancePresent} saving={attendanceSaving} onToggle={(id)=>{attendanceToggle(id);}} onMarcarVarios={attendanceMarcarVarios} fecha={fechaAsistencia} setFecha={setFechaAsistencia} hoy={today} conteo={attendanceConteo} previos={attendancePrevios}/></div>;
 
   if(module==="salud") return (
     <div>

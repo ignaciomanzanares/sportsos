@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
 import { FORMATIONS, TEAMS, equiposDeCategoria, nombrePuesto } from "../data/sports";
@@ -14,7 +14,6 @@ import Badge from "../components/Badge";
 import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
 import Cancha from "../components/Cancha";
-import ProgressBar from "../components/ProgressBar";
 import RankingView from "../components/RankingView";
 
 /* ── MiCuota ────────────────────────────────────────────────── */
@@ -717,7 +716,6 @@ export default function JugadorView({module, sport, sp, club, player, players, s
   // El plantel del jugador es su primera categoría asignada (solo una)
   const miPlantel = isDemo ? null : (userCats[0] || null);
   // Filtra compañeros de su mismo plantel
-  const visiblePlayers = miPlantel ? players.filter(p=>p.category===miPlantel) : players;
 
   const PlantelBanner = () => miPlantel ? (
     <motion.div {...fadeUp} style={{...ss.card, marginBottom:"14px", padding:"10px 14px", background:"linear-gradient(135deg,rgba(34,197,94,0.08),transparent)", border:"1px solid rgba(34,197,94,0.2)", display:"flex", alignItems:"center", gap:"8px"}}>

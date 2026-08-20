@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 
 export default function ProgressBar({value, max, color, height=6, animated=true}) {
   const pct = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0;

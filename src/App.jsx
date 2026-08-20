@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, lazy, Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 
 import { SPORTS_CONFIG, COUNTRIES, CLUBS, partidoEsDeCategoria, categoriaDePartido } from "./data/sports";
 import { MOCK_PAYMENTS, MOCK_PARTIDOS } from "./data/mockData";
