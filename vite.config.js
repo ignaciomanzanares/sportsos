@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'node:fs'
+import { resolve } from 'node:path'
 
 const ARCHIVO = 'bitacora-local.log'
 
@@ -40,9 +41,58 @@ function bitacora() {
   }
 }
 
+/**
+ * Rellena public/sw.js con la lista real de archivos del build y una versión.
+ *
+ * El service worker necesita saber qué precargar, y esos nombres llevan un
+ * hash que recién existe cuando termina el build. La versión sale del nombre
+ * del bundle principal: cambia sola en cada despliegue, que es lo que hace que
+ * el navegador note el service worker nuevo y tire el caché viejo.
+ */
+function serviceWorker() {
+  let shell = []
+  return {
+    name: 'sw-lista-de-archivos',
+    apply: 'build',
+    // Acá Vite entrega el mapa del build: qué trozo importa a cuál, y cuáles
+    // se cargan bajo demanda. Se precarga el arranque y todo lo que este
+    // necesita para poder ejecutarse — nada más. Los paneles por rol y el
+    // importador de Excel se bajan cuando se abren; meterlos en el caché
+    // costaría megas en el primer ingreso por pantallas que casi nadie abre.
+    generateBundle(_opts, bundle) {
+      const entrada = Object.values(bundle).find(c => c.type === 'chunk' && c.isEntry)
+      if (!entrada) return
+      const vistos = new Set()
+      const recorrer = (nombre) => {
+        if (!nombre || vistos.has(nombre)) return
+        vistos.add(nombre)
+        const c = bundle[nombre]
+        if (!c || c.type !== 'chunk') return
+        // Solo `imports`: son los estáticos, los que el navegador necesita sí o
+        // sí para que el archivo corra. `dynamicImports` queda fuera adrede.
+        for (const dep of c.imports || []) recorrer(dep)
+        for (const css of c.viteMetadata?.importedCss || []) vistos.add(css)
+      }
+      recorrer(entrada.fileName)
+      shell = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/favicon.svg']
+        .concat([...vistos].map(f => `/${f}`))
+    },
+    closeBundle() {
+      const swPath = resolve('dist/sw.js')
+      if (!fs.existsSync(swPath) || !shell.length) return
+      const version = (shell.find(f => /\/assets\/index-.*\.js$/.test(f)) || 'dev')
+        .replace(/.*index-|\.js$/g, '')
+      fs.writeFileSync(swPath, fs.readFileSync(swPath, 'utf8')
+        .replace('__SHELL__', JSON.stringify(shell))
+        .replace('__VERSION__', version))
+      console.log(`  service worker: ${shell.length} archivos precargados · versión ${version}`)
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), bitacora()],
+  plugins: [react(), bitacora(), serviceWorker()],
   server: {
     // En local no corren las funciones de /api: el dev server respondía el
     // HTML de la app y el fetch reventaba con "no es JSON válido", que parecía

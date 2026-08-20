@@ -10,6 +10,7 @@ import { useClub } from "./lib/useClub";
 import { usePayments } from "./lib/usePayments";
 import { useMatches } from "./lib/useMatches";
 import { supabase } from "./lib/supabase";
+import { vigilarConexion, olvidarDatosGuardados } from "./lib/sinConexion";
 
 import { fadeUp } from "./styles/motion";
 import { ss } from "./styles/tokens";
@@ -350,6 +351,13 @@ export default function SportOS() {
 
   // Toast con soporte undo
   const showToast = (msg, type="success", onUndo=null) => setToast({msg, type, onUndo});
+
+  // Sin señal la app ahora abre igual, con lo último que alcanzó a guardar.
+  // Eso obliga a decirlo: una nómina de la semana pasada mostrada como la de
+  // hoy hace que el entrenador cite a alguien que ya no está convocado, y sin
+  // el cartel no tiene forma de sospecharlo.
+  const [enLinea, setEnLinea] = useState(true);
+  useEffect(() => vigilarConexion(setEnLinea), []);
 
   // Si el fixture no carga, el calendario y el Match Center se ven vacíos y
   // parecen decir "no hay partidos". El error estaba capturado y no se mostraba
@@ -692,7 +700,7 @@ export default function SportOS() {
       }}
       onUnirme={()=>setScreen("join-request")}
       onSalir={async()=>{
-        await supabase.auth.signOut();
+        await supabase.auth.signOut(); await olvidarDatosGuardados();
         setCurrentUser(null);
         setScreen("login");
       }}
@@ -723,7 +731,7 @@ export default function SportOS() {
           Reintentar
         </button>
         <button
-          onClick={async()=>{ await supabase.auth.signOut(); setCurrentUser(null); setScreen("login"); }}
+          onClick={async()=>{ await supabase.auth.signOut(); await olvidarDatosGuardados(); setCurrentUser(null); setScreen("login"); }}
           style={{ background:"none", border:"none", color:"var(--text-4)", fontSize:"12px",
             cursor:"pointer", textDecoration:"underline" }}
         >Cerrar sesión</button>
@@ -966,7 +974,7 @@ export default function SportOS() {
             })()}
             <motion.button whileHover={{scale:1.02,y:-1}} whileTap={{scale:0.97}}
               onClick={async()=>{
-                await supabase.auth.signOut();
+                await supabase.auth.signOut(); await olvidarDatosGuardados();
                 setCurrentUser(null);
                 setRole("entrenador");
                 setScreen("landing");
@@ -989,6 +997,14 @@ export default function SportOS() {
         </AnimatePresence>
 
         {/* Main content */}
+        {!enLinea && (
+          <div style={{position:"sticky",top:0,zIndex:60,padding:"9px 16px",
+            background:"#7C2D12",color:"#FED7AA",fontSize:"12.5px",fontWeight:600,
+            textAlign:"center",borderBottom:"1px solid rgba(254,215,170,0.25)"}}>
+            📡 Sin conexión — estás viendo lo último que se guardó. No se puede
+            confirmar cuotas ni pasar asistencia hasta que vuelva la señal.
+          </div>
+        )}
         <div className="sportos-main" style={ss.main} key={role+module}>
           <AnimatePresence mode="wait">
             <motion.div key={role+module} {...fadeUp} transition={{duration:0.4}}>

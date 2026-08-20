@@ -5,10 +5,14 @@ import App from './App.jsx'
 import { AuthProvider } from './lib/useAuth.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { LazyMotion, domAnimation } from 'framer-motion'
+import { registrarServiceWorker } from './lib/sinConexion.js'
 import { iniciarBitacora } from './lib/bitacora.js'
 
 // Grabador de sesión: solo en desarrollo, se compila fuera del bundle final.
 iniciarBitacora()
+
+// Para que la app abra en la cancha sin señal. Solo en producción.
+registrarServiceWorker()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
