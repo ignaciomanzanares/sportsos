@@ -51,7 +51,14 @@ export default function GlobalSearch({ players=[], posts=[], sportColor="#A855F7
     });
 
     setResults(res);
-  }, [query]);
+    // players y posts van en las dependencias: sin ellos, buscar mientras el
+    // plantel todavía cargaba dejaba la lista vacía para siempre, y dar de
+    // baja a alguien lo seguía mostrando en los resultados abiertos.
+    // onNavigate y modules quedan fuera a propósito — llegan como identidad
+    // nueva en cada render del padre y meterlos haría recalcular la búsqueda
+    // entera en cada tecla del resto de la app.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, players, posts]);
 
   const groupColors = { jugador:sportColor, post:"#22C55E", modulo:"#A855F7" };
   const groupLabels = { jugador:"Jugadores", post:"El Muro", modulo:"Módulos" };

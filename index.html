@@ -8,7 +8,19 @@
     <meta name="description" content="SportOS — La plataforma deportiva de América Latina" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Se carga sin bloquear el dibujado: como hoja de estilos normal, el
+         navegador esperaba a Google Fonts (474 ms medidos) antes de pintar
+         nada, y eso era casi todo el tiempo hasta que aparecía contenido.
+         Con media="print" el navegador la baja sin bloquear y onload la
+         activa; el texto aparece en la tipografía del sistema y cambia al
+         llegar la buena, que es lo que display=swap ya hacía igual.
+         Se quitó DM Sans: se descargaba y no la usaba ninguna pantalla. -->
+    <link rel="stylesheet" media="print" onload="this.media='all'"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" />
+    <noscript>
+      <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" />
+    </noscript>
     <title>SportOS ⚡</title>
   </head>
   <body>
