@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "./supabase";
 import { MOCK_POSTS } from "../data/mockData";
+import { haceCuanto } from "./tiempo";
 
 /**
  * Hook para El Muro — carga posts desde Supabase.
@@ -45,7 +46,7 @@ export function usePosts(clubId, userId=null) {
         id:     p.id,
         type:   p.type,
         author: p.profiles?.nombre || "Usuario",
-        time:   timeAgo(p.created_at),
+        time:   haceCuanto(p.created_at),
         text:   p.text,
         likes:  likeCounts[p.id] || 0,
       }));
@@ -110,12 +111,3 @@ export function usePosts(clubId, userId=null) {
   return { posts, loading, createPost, toggleLike, likedByMe, reload: load };
 }
 
-function timeAgo(dateStr) {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const m = Math.floor(diff / 60000);
-  if (m < 1)  return "Ahora";
-  if (m < 60) return `Hace ${m}m`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `Hace ${h}h`;
-  return `Hace ${Math.floor(h / 24)}d`;
-}
