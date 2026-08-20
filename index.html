@@ -3,6 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Instalable en el teléfono ("Agregar a pantalla de inicio"): la app se
+         usa al borde de la cancha y hasta ahora había que abrir el navegador y
+         buscar la dirección cada vez. Con esto queda como un ícono más, y abre
+         a pantalla completa sin la barra del navegador.
+         Ojo: NO da uso sin conexión — eso necesita un service worker, que no
+         existe todavía. Sin señal la app sigue sin cargar. -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SportOS" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#040812" />
     <meta name="description" content="SportOS — La plataforma deportiva de América Latina" />
