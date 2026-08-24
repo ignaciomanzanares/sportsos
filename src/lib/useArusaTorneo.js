@@ -52,7 +52,8 @@ export function useArusaJugadores(activo = true, clubName = null) {
     let vivo = true;
     Promise.all(
       DIVISIONES_ADULTAS.map(d =>
-        fetch(`/api/leverade?tipo=estadisticas&division=${d}`).then(r => r.json()).catch(() => ({})),
+        fetch(`/api/leverade?tipo=estadisticas&division=${d}`).then(r => r.json())
+          .then(r => ({ division: d, ...r })).catch(() => ({ division: d })),
       ),
     ).then(res => {
       if (!vivo) return;
@@ -60,12 +61,19 @@ export function useArusaJugadores(activo = true, clubName = null) {
       for (const r of res) for (const j of r.filas || []) {
         const id = String(j.id ?? j.nombre);
         const prev = acc.get(id);
+        // Los caps de Primera se guardan aparte de la suma. En el rugby un
+        // "cap" es un partido del primer equipo: sumar los de Intermedia y
+        // Pre-Intermedia infla el número y le quita el sentido que tiene
+        // dentro del club, que es justamente distinguir quién jugó arriba.
+        const capsPrimera = (prev?.capsPrimera || 0) +
+          (r.division === "PRIMERA" ? (j.partidos || 0) : 0);
         acc.set(id, prev ? {
           ...prev,
+          capsPrimera,
           tries:    (prev.tries || 0)    + (j.tries || 0),
           puntos:   (prev.puntos || 0)   + (j.puntos || 0),
           partidos: (prev.partidos || 0) + (j.partidos || 0),
-        } : { ...j, id });
+        } : { ...j, id, capsPrimera });
       }
       if (!clubName) { setJugadores([...acc.values()]); return; }
       // El caché en vivo perdió a siete jugadores del club —los que jugaron

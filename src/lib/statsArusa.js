@@ -15,7 +15,7 @@
 
 // Lo que ARUSA publica por jugador. Minutos y tackles no están y no se
 // inventan: quedan sin dato, que es lo que son.
-const DESDE_ARUSA = ["partidos", "tries", "conversiones", "penales", "puntos"];
+const DESDE_ARUSA = ["partidos", "tries", "conversiones", "penales", "puntos", "capsPrimera"];
 
 /**
  * Campos que esta enriquecida agrega y que NO son columnas de la tabla.

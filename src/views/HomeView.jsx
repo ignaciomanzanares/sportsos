@@ -675,6 +675,15 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
             gym ya está en Acciones rápidas, abajo. */}
         <HeroStat icon="🏉" value={player?.stats?.partidos ?? "—"} label="Partidos"
           sub="Jugados en el torneo" color="#3B82F6" onClick={()=>onNavigate("midashboard")}/>
+        {/* Los caps van aparte de "Partidos" a propósito: son solo los de
+            Primera. En el rugby esa distinción es el dato, no un detalle —
+            sumarle Intermedia y Pre lo convertiría en otro número. Solo
+            aparece si jugó alguno; un "0 caps" en la pantalla de inicio del
+            juvenil que nunca subió no le aporta nada. */}
+        {(player?.stats?.capsPrimera || 0) > 0 && (
+          <HeroStat icon="🎖" value={player.stats.capsPrimera} label="Caps"
+            sub="Partidos en Primera" color="#D4AF37" onClick={()=>onNavigate("midashboard")}/>
+        )}
         <HeroStat icon={anotJug.icono} value={player?.stats?.[anotJug.clave] ?? "—"} label={anotJug.etiqueta}
           sub="En el torneo" color={sportColor} onClick={()=>onNavigate("midashboard")}/>
       </div>

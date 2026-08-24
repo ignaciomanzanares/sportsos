@@ -19,6 +19,7 @@ import ProgressBar from "../components/ProgressBar";
 import MedalBadge from "../components/MedalBadge";
 import Cancha from "../components/Cancha";
 import WhatsAppModal from "../components/WhatsAppModal";
+import CapsPrimera from "../components/CapsPrimera";
 
 /* ── NominaDND ─────────────────────────────────────────────── */
 function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, currentCategory}) {
@@ -1118,6 +1119,11 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
               El torneo de ARUSA solo publica las divisiones adultas. Para {currentCategory} no
               hay tabla ni estadísticas oficiales — elige <strong>Adulta</strong> arriba para verlas.
             </div>
+      )}
+      {/* Caps: aparte de los bloques de abajo porque cuenta SOLO Primera,
+          mientras que tries/puntos suman las tres divisiones. */}
+      {sport==="rugby" && clubId && sp.teamsByCategory?.[currentCategory] && (
+        <CapsPrimera players={visiblePlayers} sportColor={sportColor}/>
       )}
       {sp.stats.map((stat,si)=>{
         const conDato = visiblePlayers.filter(p=>sv(p,stat.key)!=null);
