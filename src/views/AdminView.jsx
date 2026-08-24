@@ -135,6 +135,20 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   const [invPlantel, setInvPlantel] = useState("");
   const [members, setMembers]           = useState([]);
   const [joinCode, setJoinCode]         = useState("");
+  // El link que se reparte. Se arma con el origen real para que sirva igual en
+  // producción, en una preview de Vercel y en local.
+  const linkUnirse = joinCode ? `${window.location.origin}/?unirme=${encodeURIComponent(joinCode)}` : "";
+  // El QR se genera cuando alguien lo pide: la librería son 50 kB y solo hace
+  // falta el día que se imprime el cartel del camarín.
+  const [qr, setQr] = useState("");
+  const generarQR = async () => {
+    if (qr) { setQr(""); return; }
+    try {
+      const { default: QRCode } = await import("qrcode");
+      setQr(await QRCode.toDataURL(linkUnirse, { width: 640, margin: 2,
+        color: { dark: "#0B0F1A", light: "#FFFFFF" } }));
+    } catch { showToast("No se pudo generar el QR", "error"); }
+  };
   const [joinCopied, setJoinCopied]     = useState(false);
   const [joinRequests, setJoinRequests] = useState([]);
   const [jugTab, setJugTab]             = useState("plantel");
@@ -377,8 +391,79 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
         <div style={{fontWeight:700,fontSize:"14px",marginBottom:"8px",display:"flex",alignItems:"center",gap:"8px"}}>
           🔑 Código de solicitud del club
         </div>
-        <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
-          Comparte este código con jugadores para que puedan solicitar unirse desde la pantalla de inicio. Cuando lo apruebas, les envías el link de acceso.
+        <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px",lineHeight:1.55}}>
+          Mandá este link <strong style={{color:"var(--text-2)"}}>una sola vez</strong> al grupo del club y cada
+          uno se registra solo — no tenés que aprobar ni mandarle nada a nadie.
+          Entran como jugadores y la app los engancha con su ficha por el nombre.
+        </div>
+
+        {/* El link armado, que es lo que de verdad se reparte. El código
+            suelto obligaba al admin a explicar dónde pegarlo; así se toca y
+            listo. */}
+        {joinCode && (
+          <div style={{marginBottom:"14px"}}>
+            <div style={{display:"flex",gap:"8px",alignItems:"center",flexWrap:"wrap"}}>
+              <div style={{flex:"1 1 220px",fontSize:"12px",fontFamily:"monospace",color:"var(--text-2)",
+                padding:"11px 13px",background:"var(--bg-elev-2)",borderRadius:"var(--r-md)",
+                border:"1px solid var(--border-soft)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                {linkUnirse}
+              </div>
+              <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                onClick={()=>{ navigator.clipboard.writeText(linkUnirse); showToast("Link copiado ✅","success"); }}
+                style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",
+                  border:"1px solid var(--border-soft)",fontSize:"12px",padding:"11px 14px",flexShrink:0}}>
+                📋 Copiar
+              </motion.button>
+              <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
+                onClick={()=>{
+                  const msg = encodeURIComponent(
+                    `¡Hola! Ya tenemos ${club?.name || "el club"} en SportOS: ahí van la asistencia, las nóminas y las cuotas.\n\n` +
+                    `Entrá acá y creá tu cuenta (te toma un minuto):\n${linkUnirse}\n\n` +
+                    `Poné tu nombre completo como sale en las nóminas, así te aparecen tus partidos y tus tries.`);
+                  window.open(`https://wa.me/?text=${msg}`, "_blank");
+                }}
+                style={{...ss.btn,background:"rgba(37,211,102,0.15)",color:"#25D366",
+                  border:"1px solid rgba(37,211,102,0.35)",fontSize:"12px",padding:"11px 14px",
+                  fontWeight:700,flexShrink:0}}>
+                Mandar por WhatsApp
+              </motion.button>
+            </div>
+            <button onClick={generarQR}
+              style={{...ss.btn, marginTop:"8px", background:"transparent", color:"var(--text-3)",
+                border:"1px solid var(--border-soft)", fontSize:"12px", padding:"9px 14px"}}>
+              {qr ? "Ocultar el QR" : "🖨 QR para pegar en el camarín"}
+            </button>
+
+            {qr && (
+              <div style={{marginTop:"12px", padding:"18px", background:"#fff", borderRadius:"var(--r-md)",
+                textAlign:"center", maxWidth:"300px"}}>
+                <img src={qr} alt={`Código QR para entrar a ${club?.name || "el club"}`}
+                  style={{width:"100%", maxWidth:"220px", display:"block", margin:"0 auto"}}/>
+                <div style={{color:"#0B0F1A", fontWeight:800, fontSize:"14px", marginTop:"10px"}}>
+                  {club?.name}
+                </div>
+                <div style={{color:"#4a4743", fontSize:"11px", marginTop:"3px", lineHeight:1.45}}>
+                  Escaneá para entrar a SportOS<br/>o escribí el código {joinCode}
+                </div>
+                <div style={{display:"flex", gap:"6px", marginTop:"12px", justifyContent:"center"}}>
+                  <a href={qr} download={`sportos-${(club?.name||"club").toLowerCase().replace(/\s+/g,"-")}-qr.png`}
+                    style={{...ss.btn, background:"#0B0F1A", color:"#fff", fontSize:"11px",
+                      padding:"8px 14px", textDecoration:"none"}}>
+                    Descargar
+                  </a>
+                  <button onClick={()=>window.print()}
+                    style={{...ss.btn, background:"transparent", color:"#0B0F1A",
+                      border:"1px solid rgba(0,0,0,0.2)", fontSize:"11px", padding:"8px 14px"}}>
+                    Imprimir
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div style={{fontSize:"11px",color:"var(--text-4)",marginBottom:"10px"}}>
+          O que escriban este código a mano en “Entrar a mi club”:
         </div>
         {joinCode ? (
           <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap"}}>

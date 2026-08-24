@@ -26,3 +26,26 @@ export async function redeemPendingInvitation(user) {
   if (error || !data?.[0]) return null;
   return data[0];
 }
+
+/**
+ * Igual que arriba, pero para el que entró con el código del club.
+ *
+ * Mismo motivo: con "Confirm email" activado, signUp no deja sesión, así que
+ * unirme_con_codigo() no tiene a quién asignarle el club. El código queda
+ * guardado en el user_metadata y se canjea en el primer login de verdad.
+ */
+export async function redeemPendingCode(user) {
+  const codigo = user?.user_metadata?.codigo_club;
+  if (!codigo) return null;
+
+  const { data, error } = await supabase.rpc("unirme_con_codigo", { p_codigo: codigo });
+
+  // Se limpia pase lo que pase: si el código ya no sirve, dejarlo ahí haría
+  // que cada login volviera a chocar con el mismo error.
+  await supabase.auth.updateUser({ data: { codigo_club: null } });
+
+  if (error || !data?.[0]) return null;
+  const c = data[0];
+  return { rol: "jugador", club_id: c.club_id, club_name: c.club_name,
+           sport: c.sport, cats: "", player_id: c.player_id };
+}

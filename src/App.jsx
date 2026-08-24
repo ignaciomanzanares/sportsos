@@ -28,6 +28,7 @@ import LoginScreen from "./views/LoginScreen";
 import LandingPage from "./views/LandingPage";
 import ClubOnboarding from "./views/ClubOnboarding";
 import JoinRequestScreen from "./views/JoinRequestScreen";
+import UnirmeScreen from "./views/UnirmeScreen";
 import JugadorView from "./views/JugadorView";
 
 // Los paneles por rol se traen recién cuando alguien de ese rol los abre.
@@ -43,7 +44,7 @@ import HomeView from "./views/HomeView";
 import PerfilView from "./views/PerfilView";
 import NewPasswordScreen from "./views/NewPasswordScreen";
 import SinClubScreen from "./views/SinClubScreen";
-import { redeemPendingInvitation } from "./lib/pendingInvitation";
+import { redeemPendingInvitation, redeemPendingCode } from "./lib/pendingInvitation";
 
 const ROLES = [
   {id:"superadmin",label:"Super Admin",icon:"⚡"},
@@ -518,6 +519,16 @@ export default function SportOS() {
           }
         }
 
+        // Lo mismo para el que entró con el código del club y tuvo que
+        // confirmar el correo antes de tener sesión.
+        if (!profile?.club_id && u.user_metadata?.codigo_club) {
+          const asignado = await redeemPendingCode(u);
+          if (asignado) {
+            const r = await supabase.from("profiles").select("*").eq("id", u.id).single();
+            if (!r.error) profile = r.data;
+          }
+        }
+
         // Quién es superadmin lo dice la base y nada más. Antes esto era una
         // comparación contra un email escrito acá, que además PISABA el rol
         // del perfil: quien consiguiera registrar ese correo entraba viendo
@@ -579,6 +590,24 @@ export default function SportOS() {
   // Detecta link de invitación en la URL — va ANTES de landing para que no la tape
   const urlParams = new URLSearchParams(window.location.search);
   const isInvitation = urlParams.has("token") && urlParams.has("rol");
+  // Link de autoservicio: sportos.app/?unirme=RUGBY-4F2A. Es el que se manda
+  // UNA vez al grupo de WhatsApp del club para que entren todos.
+  const codigoDeUrl = urlParams.get("unirme");
+
+  if (codigoDeUrl || screen === "unirme") return (
+    <UnirmeScreen
+      codigoInicial={codigoDeUrl || ""}
+      onBack={()=>{ window.history.replaceState({},"","/"); setScreen("landing"); }}
+      onIrALogin={()=>{ window.history.replaceState({},"","/"); setScreen("login"); }}
+      onComplete={(usuario)=>{
+        setCurrentUser(usuario);
+        setRole(usuario.rol);
+        setSport(usuario.sport || "rugby");
+        setScreen("app");
+        window.history.replaceState({},"","/");
+      }}
+    />
+  );
 
   if(isInvitation) return (
     <InvitationScreen

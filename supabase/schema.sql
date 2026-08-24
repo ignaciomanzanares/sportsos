@@ -27,6 +27,9 @@ alter table clubs add column if not exists join_code       text unique;
 alter table clubs add column if not exists plan_vence      date;
 alter table clubs add column if not exists plan_notas      text;
 alter table clubs add column if not exists suspended       boolean not null default false;
+-- Baja reversible: el que deja de venir sale de las listas pero conserva su
+-- asistencia, sus cuotas y su historial de lesiones para cuando vuelva.
+alter table players add column if not exists activo boolean not null default true;
 alter table clubs add column if not exists plan_updated_at timestamptz;
 alter table clubs add column if not exists arusa_club_id   text;
 alter table clubs add column if not exists arusa_last_sync timestamptz;
