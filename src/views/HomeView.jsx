@@ -7,6 +7,7 @@ import { usePlataforma } from "../lib/usePlataforma";
 import { terminoAnotacion, nombrePuesto } from "../data/sports";
 import { getNotifications } from "../lib/db";
 import { periodoDe, periodoDePago, nombrePeriodo } from "../lib/periodo";
+import { capsHistoricos, HISTORICO_DESDE } from "../data/capsHistoricos";
 import { ordenarPlantel } from "../lib/ordenPlantel";
 import { useInjuryReports, playersEnAlerta } from "../lib/useInjuryReports";
 import EmptyState from "../components/EmptyState";
@@ -607,6 +608,12 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
   // Buscaba por p.jugador, un campo que los pagos no tienen (son playerId y
   // playerName), así que miPago era siempre undefined y la tarjeta decía
   // "cuota al día" pasara lo que pasara. Ahora se pregunta por el mes en curso.
+  // Caps de toda la carrera: lo guardado de temporadas anteriores más lo que
+  // va del año. Para el que lleva seis temporadas, ver solo las de este año
+  // le borra el resto.
+  const histCaps    = capsHistoricos(player)?.total || 0;
+  const carreraCaps = histCaps + (player?.stats?.capsPrimera || 0);
+
   const mesActual  = periodoDe();
   const delMes     = (payments || []).filter(p => p.playerId === player?.id && periodoDePago(p) === mesActual);
   const cuotaOk    = delMes.some(p => p.estado === "pagado");
@@ -680,9 +687,10 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
             sumarle Intermedia y Pre lo convertiría en otro número. Solo
             aparece si jugó alguno; un "0 caps" en la pantalla de inicio del
             juvenil que nunca subió no le aporta nada. */}
-        {(player?.stats?.capsPrimera || 0) > 0 && (
-          <HeroStat icon="🎖" value={player.stats.capsPrimera} label="Caps"
-            sub="Partidos en Primera" color="#D4AF37" onClick={()=>onNavigate("midashboard")}/>
+        {carreraCaps > 0 && (
+          <HeroStat icon="🎖" value={carreraCaps} label="Caps"
+            sub={histCaps > 0 ? `Primer equipo desde ${HISTORICO_DESDE}` : "Partidos en Primera"}
+            color="#D4AF37" onClick={()=>onNavigate("midashboard")}/>
         )}
         <HeroStat icon={anotJug.icono} value={player?.stats?.[anotJug.clave] ?? "—"} label={anotJug.etiqueta}
           sub="En el torneo" color={sportColor} onClick={()=>onNavigate("midashboard")}/>

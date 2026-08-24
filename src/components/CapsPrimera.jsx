@@ -1,6 +1,7 @@
 import { m as motion } from "framer-motion";
 import { ss } from "../styles/tokens";
 import { fadeUp } from "../styles/motion";
+import { capsHistoricos, HISTORICO_DESDE } from "../data/capsHistoricos";
 
 /**
  * Cuántos partidos jugó cada uno en Primera.
@@ -15,25 +16,39 @@ import { fadeUp } from "../styles/motion";
  * división. No hace falta contar formaciones ni leer el minuto a minuto.
  */
 export default function CapsPrimera({ players = [], sportColor = "#1FA04A" }) {
+  const anioEnCurso = new Date().getFullYear();
+
+  // Carrera completa: lo guardado de 2021 a 2025 más lo que va del año, que
+  // llega en vivo desde la API. Se suman en vez de guardar el año en curso
+  // en el archivo, así no hay que regenerarlo cada fecha.
   const conCaps = players
-    .filter(p => (p.stats?.capsPrimera || 0) > 0)
-    .sort((a, b) => (b.stats.capsPrimera - a.stats.capsPrimera)
+    .map(p => {
+      const hist = capsHistoricos(p);
+      const esteAnio = p.stats?.capsPrimera || 0;
+      return { ...p, _hist: hist?.total || 0, _anio: esteAnio,
+               _carrera: (hist?.total || 0) + esteAnio };
+    })
+    .filter(p => p._carrera > 0)
+    .sort((a, b) => (b._carrera - a._carrera)
                  || String(a.name || "").localeCompare(String(b.name || "")));
 
   if (conCaps.length === 0) return null;
 
-  const max = conCaps[0].stats.capsPrimera;
+  const max = conCaps[0]._carrera;
   const medalla = ["#D4AF37", "#94A3B8", "#CD7F32"];
 
   return (
     <motion.div {...fadeUp} style={{ ...ss.card, marginBottom: "16px" }}>
       <div style={{ fontWeight: 600, fontSize: "13px", display: "flex",
                     alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-        🎖 Caps en Primera
+        🎖 Caps del primer equipo
         <span style={{ ...ss.muted, fontSize: "10px", fontWeight: 400 }}>· datos de ARUSA</span>
       </div>
-      <div style={{ ...ss.muted, fontSize: "11px", marginBottom: "14px" }}>
-        Partidos del primer equipo. Intermedia y Pre-Intermedia no cuentan.
+      {/* Se dice qué se está contando y qué no: un número de caps sin la regla
+          al lado se presta a que cada uno entienda otra cosa. */}
+      <div style={{ ...ss.muted, fontSize: "11px", marginBottom: "14px", lineHeight: 1.5 }}>
+        Partidos de titular desde {HISTORICO_DESDE}. Intermedia y Pre-Intermedia no
+        cuentan. ARUSA no publica quién entró desde la banca, así que esos no están.
       </div>
 
       {conCaps.map((p, i) => (
@@ -55,13 +70,21 @@ export default function CapsPrimera({ players = [], sportColor = "#1FA04A" }) {
               titular fijo y quién entró dos veces se ve sin leer. */}
           <div style={{ width: "38%", maxWidth: "150px", height: "5px", borderRadius: "99px",
                         background: "var(--bg-elev-2)", overflow: "hidden", flexShrink: 0 }}>
-            <div style={{ width: `${(p.stats.capsPrimera / max) * 100}%`, height: "100%",
+            <div style={{ width: `${(p._carrera / max) * 100}%`, height: "100%",
                           borderRadius: "99px",
                           background: i < 3 ? sportColor : "var(--text-4)" }}/>
           </div>
+          {/* El desglose importa: 40 caps de los cuales 6 son de este año
+              cuenta una historia distinta a 40 todos de este año. */}
+          {p._anio > 0 && (
+            <span style={{ fontSize: "10px", color: "var(--text-4)", flexShrink: 0 }}
+              title={`${p._anio} este año`}>
+              +{p._anio}
+            </span>
+          )}
           <span style={{ fontSize: "13px", fontWeight: 800, minWidth: "26px", textAlign: "right",
                          color: i < 3 ? sportColor : "var(--text-1)" }}>
-            {p.stats.capsPrimera}
+            {p._carrera}
           </span>
         </div>
       ))}
