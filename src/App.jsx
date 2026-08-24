@@ -650,7 +650,11 @@ export default function SportOS() {
       onLogin={()=>setScreen("login")}
       onDemo={()=>setScreen("demo")}
       onRegister={()=>setScreen("club-onboarding")}
-      onJoinRequest={()=>setScreen("join-request")}
+      // "Tengo un código" ahora lleva al autoservicio: se registra y entra.
+      // Antes iba a mandar una solicitud, que dejaba a la persona esperando un
+      // link que el admin tenía que copiar y mandar a mano. La pantalla de
+      // solicitud sigue existiendo para el caso raro de quien no tiene código.
+      onJoinRequest={()=>setScreen("unirme")}
     />
   );
 

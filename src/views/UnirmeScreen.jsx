@@ -36,6 +36,38 @@ export default function UnirmeScreen({ codigoInicial = "", onComplete, onBack, o
       return;
     }
     setClub(data[0]);
+
+    // Si ya venía con sesión —abrió el link dos veces, o ya tenía cuenta de
+    // antes— no tiene sentido pedirle que se registre de nuevo: se lo mete al
+    // club directo. Sin esto, el que reenvía el link al grupo y lo prueba él
+    // mismo se topaba con un formulario de registro y creía que estaba roto.
+    const { data: sesion } = await supabase.auth.getSession();
+    if (sesion?.session?.user) {
+      setBusy(true);
+      try {
+        const asignado = await canjear(codigo);
+        const u = sesion.session.user;
+        setBusy(false);
+        onComplete({
+          id: u.id,
+          nombre: u.user_metadata?.nombre || data[0].name,
+          email: u.email,
+          rol: "jugador",
+          club: asignado?.club_name || data[0].name,
+          club_id: asignado?.club_id || data[0].id,
+          sport: asignado?.sport || data[0].sport,
+          cats: [],
+          isReal: true,
+        });
+        return;
+      } catch (e) {
+        setBusy(false);
+        // El caso más común acá: ya es de otro club, o ya es admin de este.
+        // Se muestra el motivo y se lo deja seguir a mano.
+        setError(e.message);
+      }
+    }
+
     setStep("form");
   };
 
