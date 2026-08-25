@@ -32,36 +32,36 @@ Intermedia y Pre no cuentan.
     60 caps · 40T · 20B
 12. Juan Harttig
     59 caps · 51T · 8B
-13. Vicente Pérez Neumann
-    56 caps · 44T · 12B
-14. Francisco Eduardo Bastias Manquian
-    54 caps · 31T · 23B
-15. Diego Bozzo Pizarro
+13. Francisco Eduardo Bastias Manquian
+    55 caps · 31T · 24B
+14. Vicente Pérez Neumann
+    55 caps · 44T · 11B
+15. DIego Bozzo Pizarro
     52 caps · 40T · 12B
 16. Ignacio Manzanares
-    47 caps · 41T · 6B
+    50 caps · 41T · 9B
 17. José Eduardo Rojas Espinoza
-    45 caps · 26T · 19B
+    46 caps · 26T · 20B
 18. Andrei Cherniavsky Bonacic
     42 caps · 40T · 2B
-19. filippo borghi
-    42 caps · 28T · 14B
-20. Nicolas Antonucci Sole
+19. Nicolas Antonucci Sole
     42 caps · 31T · 11B
-21. Enrique Faúndez Saldaño
-    41 caps · 18T · 23B
-22. Vicente San Martín Manriquez
-    40 caps · 28T · 12B
+20. filippo borghi
+    41 caps · 28T · 13B
+21. Vicente San Martín Manriquez
+    41 caps · 28T · 13B
+22. Enrique Faúndez Saldaño
+    40 caps · 18T · 22B
 23. Benjamín Machuca Celis
     39 caps · 35T · 4B
 24. Felipe Díaz Rettig
     35 caps · 19T · 16B
 25. Juan Mauricio Calderon Berrios
     33 caps · 24T · 9B
-26. Thomas Schmidt Puga
+26. Pablo O'Brien Gallegos
+    33 caps · 17T · 16B
+27. Thomas Schmidt Puga
     33 caps · 18T · 15B
-27. Pablo O'Brien Gallegos
-    32 caps · 17T · 15B
 28. Juan Pablo Coddou Reyes
     29 caps · 27T · 2B
 29. Vicente Gómez
@@ -86,12 +86,12 @@ Intermedia y Pre no cuentan.
     15 caps · 11T · 4B
 39. Vicente Piwonka
     15 caps · 8T · 7B
-40. Juan Pablo Pizarro johannesen
-    14 caps · 8T · 6B
-41. Axel Troncoso
+40. Axel Troncoso
     13 caps · 8T · 5B
-42. Javier Barrientos Pesce
+41. Javier Barrientos Pesce
     13 caps · 3T · 10B
+42. Juan Pablo Pizarro johannesen
+    13 caps · 8T · 5B
 43. Cristobal Claren Gallardo
     12 caps · 8T · 4B
 44. Felipe Garnham Rosenqvist
@@ -120,14 +120,14 @@ Intermedia y Pre no cuentan.
     7 caps · 5T · 2B
 56. Tomás Alonso
     7 caps · 4T · 3B
-57. Juan Bautista Mihura
+57. Domingo Estadella Rios
+    6 caps · 2T · 4B
+58. Juan Bautista Mihura
     6 caps · 6T · 0B
-58. Amin Diaz Abuauad
+59. Amin Diaz Abuauad
     5 caps · 3T · 2B
-59. Diego Astudillo Avendaño
+60. Diego Astudillo Avendaño
     5 caps · 0T · 5B
-60. Domingo Estadella Rios
-    5 caps · 2T · 3B
 61. Joaquín Henríquez Álvarez
     5 caps · 1T · 4B
 62. Francisco Andrés Álvarez
@@ -265,20 +265,20 @@ Juan Harttig — 59 caps
   2025: 9T + 3B
   2026: 9T
 
-Vicente Pérez Neumann — 56 caps
-  2021: 8T
-  2022: 15T + 2B
-  2023: 16T
-  2025: 1T + 4B
-  2026: 4T + 6B
-
-Francisco Eduardo Bastias Manquian — 54 caps
+Francisco Eduardo Bastias Manquian — 55 caps
   2021: 10T
   2022: 1T + 5B
   2023: 2T + 6B
   2024: 6T + 6B
-  2025: 1T + 6B
+  2025: 1T + 7B
   2026: 11T
+
+Vicente Pérez Neumann — 55 caps
+  2021: 8T
+  2022: 15T + 2B
+  2023: 16T
+  2025: 1T + 4B
+  2026: 4T + 5B
 
 DIego Bozzo Pizarro — 52 caps
   2021: 10T
@@ -291,6 +291,20 @@ DIego Bozzo Pizarro — 52 caps
 ────────────────────────
 Salen de las nóminas y los
 cambios de arusa, partido a
-partido. Faltan 6 de 104
-partidos que arusa nunca
-cargó (4 de 2021, 2 de 2024).
+partido (104 partidos).
+
+⚠️ Son un MÍNIMO. Arusa anota
+los cambios a mano y se le
+pasa un tercio, así que a
+varios les faltan partidos de
+banca. A los titulares fijos
+casi no les afecta; a los que
+rotan, bastante.
+
+Si sabés que entraste en algún
+partido que no te figura,
+avisá y se suma.
+
+También faltan 6 partidos que
+arusa nunca cargó (4 de 2021,
+2 de 2024).

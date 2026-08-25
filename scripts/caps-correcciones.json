@@ -1,0 +1,27 @@
+{
+  "_leeme": [
+    "Correcciones a lo que arusa NO registró. Arusa publica bien las nóminas,",
+    "pero los cambios los anota a mano y se le pasa un tercio: hay partidos con",
+    "cero cambios anotados, que en rugby no ocurre.",
+    "",
+    "Acá va lo que confirma el propio jugador, que sabe si entró o no.",
+    "  true  = entró, cuenta como cap",
+    "  false = quedó en la banca sin entrar, NO cuenta",
+    "Lo que no está acá sigue como lo dejó arusa.",
+    "",
+    "La clave del jugador es su nombre en minúsculas, sin acentos y con las",
+    "palabras ordenadas alfabéticamente — igual que en el resto del proyecto.",
+    "Para sacar la lista de un jugador:",
+    "  node scripts/caps-por-confirmar.mjs \"Nombre Apellido\""
+  ],
+
+  "ignacio manzanares": {
+    "_nombre": "Ignacio Manzanares",
+    "2022-05-08": true,
+    "2022-08-20": true,
+    "2024-09-01": null,
+    "2026-04-25": false,
+    "2026-07-12": true,
+    "2026-08-22": false
+  }
+}

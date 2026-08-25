@@ -21,21 +21,21 @@ Fuente: nóminas y sustituciones de arusa.cl, partido por partido.
 | 10 | tomas zehnder novoa | **63** | 50 | 13 |
 | 11 | benjamin frias davila | **60** | 40 | 20 |
 | 12 | Juan Harttig | **59** | 51 | 8 |
-| 13 | Vicente Pérez Neumann | **56** | 44 | 12 |
-| 14 | Francisco Eduardo Bastias Manquian | **54** | 31 | 23 |
+| 13 | Francisco Eduardo Bastias Manquian | **55** | 31 | 24 |
+| 14 | Vicente Pérez Neumann | **55** | 44 | 11 |
 | 15 | DIego Bozzo Pizarro | **52** | 40 | 12 |
 | 16 | Ignacio Manzanares | **47** | 41 | 6 |
-| 17 | José Eduardo Rojas Espinoza | **45** | 26 | 19 |
+| 17 | José Eduardo Rojas Espinoza | **46** | 26 | 20 |
 | 18 | Andrei Cherniavsky Bonacic | **42** | 40 | 2 |
-| 19 | filippo borghi | **42** | 28 | 14 |
-| 20 | Nicolas Antonucci Sole | **42** | 31 | 11 |
-| 21 | Enrique Faúndez Saldaño | **41** | 18 | 23 |
-| 22 | Vicente San Martín Manriquez | **40** | 28 | 12 |
+| 19 | Nicolas Antonucci Sole | **42** | 31 | 11 |
+| 20 | filippo borghi | **41** | 28 | 13 |
+| 21 | Vicente San Martín Manriquez | **41** | 28 | 13 |
+| 22 | Enrique Faúndez Saldaño | **40** | 18 | 22 |
 | 23 | Benjamín Machuca Celis | **39** | 35 | 4 |
 | 24 | Felipe Díaz Rettig | **35** | 19 | 16 |
 | 25 | Juan Mauricio Calderon Berrios | **33** | 24 | 9 |
-| 26 | Thomas Schmidt Puga | **33** | 18 | 15 |
-| 27 | Pablo O'Brien Gallegos | **32** | 17 | 15 |
+| 26 | Pablo O'Brien Gallegos | **33** | 17 | 16 |
+| 27 | Thomas Schmidt Puga | **33** | 18 | 15 |
 | 28 | Juan Pablo Coddou Reyes | **29** | 27 | 2 |
 | 29 | Vicente Gómez | **29** | 13 | 16 |
 | 30 | Maximiliano O'Ryan | **26** | 20 | 6 |
@@ -48,9 +48,9 @@ Fuente: nóminas y sustituciones de arusa.cl, partido por partido.
 | 37 | MAXIMILIANO BAUMANN ZAMORA | **16** | 14 | 2 |
 | 38 | Alonso Quiroga romero | **15** | 11 | 4 |
 | 39 | Vicente Piwonka | **15** | 8 | 7 |
-| 40 | Juan Pablo Pizarro johannesen | **14** | 8 | 6 |
-| 41 | Axel Troncoso | **13** | 8 | 5 |
-| 42 | Javier Barrientos Pesce | **13** | 3 | 10 |
+| 40 | Axel Troncoso | **13** | 8 | 5 |
+| 41 | Javier Barrientos Pesce | **13** | 3 | 10 |
+| 42 | Juan Pablo Pizarro johannesen | **13** | 8 | 5 |
 | 43 | Cristobal Claren Gallardo | **12** | 8 | 4 |
 | 44 | Felipe Garnham Rosenqvist | **12** | 9 | 3 |
 | 45 | matias valenzuela miranda | **12** | 8 | 4 |
@@ -65,10 +65,10 @@ Fuente: nóminas y sustituciones de arusa.cl, partido por partido.
 | 54 | Emilio de la Jara | **7** | 3 | 4 |
 | 55 | Mathias Claps | **7** | 5 | 2 |
 | 56 | Tomás Alonso | **7** | 4 | 3 |
-| 57 | Juan Bautista Mihura | **6** | 6 | 0 |
-| 58 | Amin Diaz Abuauad | **5** | 3 | 2 |
-| 59 | Diego Astudillo Avendaño | **5** | 0 | 5 |
-| 60 | Domingo Estadella Rios | **5** | 2 | 3 |
+| 57 | Domingo Estadella Rios | **6** | 2 | 4 |
+| 58 | Juan Bautista Mihura | **6** | 6 | 0 |
+| 59 | Amin Diaz Abuauad | **5** | 3 | 2 |
+| 60 | Diego Astudillo Avendaño | **5** | 0 | 5 |
 | 61 | Joaquín Henríquez Álvarez | **5** | 1 | 4 |
 | 62 | Francisco Andrés Álvarez | **4** | 1 | 3 |
 | 63 | José Antonio Pérez Santander | **3** | 0 | 3 |
@@ -105,21 +105,21 @@ Fuente: nóminas y sustituciones de arusa.cl, partido por partido.
 | tomas zehnder novoa | 10T | 17T | 6T+2B | 5T+5B | 6T+1B | 6T+5B | **63** |
 | benjamin frias davila | 5T | 12T+3B | 8T+2B | 0T+2B | 10T+7B | 5T+6B | **60** |
 | Juan Harttig | 2T+1B | 11T | 9T+3B | 11T+1B | 9T+3B | 9T | **59** |
-| Vicente Pérez Neumann | 8T | 15T+2B | 16T | — | 1T+4B | 4T+6B | **56** |
-| Francisco Eduardo Bastias Manquian | 10T | 1T+5B | 2T+6B | 6T+6B | 1T+6B | 11T | **54** |
+| Francisco Eduardo Bastias Manquian | 10T | 1T+5B | 2T+6B | 6T+6B | 1T+7B | 11T | **55** |
+| Vicente Pérez Neumann | 8T | 15T+2B | 16T | — | 1T+4B | 4T+5B | **55** |
 | DIego Bozzo Pizarro | 10T | 2T | 8T+4B | 9T+2B | 10T+4B | 1T+2B | **52** |
 | Ignacio Manzanares | — | 5T+2B | 10T+1B | 12T+1B | 10T+2B | 4T | **47** |
-| José Eduardo Rojas Espinoza | 0T+5B | 3T+1B | 5T+6B | 15T+2B | 3T+5B | — | **45** |
+| José Eduardo Rojas Espinoza | 0T+5B | 3T+1B | 5T+6B | 15T+2B | 3T+6B | — | **46** |
 | Andrei Cherniavsky Bonacic | 4T | — | — | 5T+2B | 16T | 15T | **42** |
-| filippo borghi | 6T+2B | 18T | 2T+5B | — | — | 2T+7B | **42** |
 | Nicolas Antonucci Sole | — | — | — | 7T+7B | 15T+1B | 9T+3B | **42** |
-| Enrique Faúndez Saldaño | — | 1T+2B | 0T+4B | 7T+7B | 5T+6B | 5T+4B | **41** |
-| Vicente San Martín Manriquez | 6T | 6T+1B | 5T+3B | — | 6T+1B | 5T+7B | **40** |
+| filippo borghi | 6T+2B | 18T | 2T+5B | — | — | 2T+6B | **41** |
+| Vicente San Martín Manriquez | 6T | 6T+1B | 5T+3B | — | 6T+2B | 5T+7B | **41** |
+| Enrique Faúndez Saldaño | — | 1T+2B | 0T+4B | 7T+7B | 5T+6B | 5T+3B | **40** |
 | Benjamín Machuca Celis | — | 1T+1B | 10T+2B | 11T | 13T | 0T+1B | **39** |
 | Felipe Díaz Rettig | 5T+4B | 1T+1B | 8T+3B | 5T+6B | 0T+2B | — | **35** |
 | Juan Mauricio Calderon Berrios | — | — | — | 7T+7B | 17T+1B | 0T+1B | **33** |
+| Pablo O'Brien Gallegos | — | 2T+2B | 2T+6B | 7T+4B | 5T+4B | 1T | **33** |
 | Thomas Schmidt Puga | 3T+2B | 4T+5B | 2T+4B | 9T+4B | — | — | **33** |
-| Pablo O'Brien Gallegos | — | 2T+2B | 2T+6B | 7T+4B | 5T+3B | 1T | **32** |
 | Juan Pablo Coddou Reyes | 1T | 7T+2B | 13T | 4T | — | 2T | **29** |
 | Vicente Gómez | — | — | — | — | 6T+10B | 7T+6B | **29** |
 | Maximiliano O'Ryan | — | 16T+1B | 4T+5B | — | — | — | **26** |
@@ -132,9 +132,9 @@ Fuente: nóminas y sustituciones de arusa.cl, partido por partido.
 | MAXIMILIANO BAUMANN ZAMORA | — | — | 1T+1B | 1T | 12T+1B | — | **16** |
 | Alonso Quiroga romero | — | — | 11T+4B | — | — | — | **15** |
 | Vicente Piwonka | — | 2T | 6T+7B | — | — | — | **15** |
-| Juan Pablo Pizarro johannesen | — | 0T+1B | 1T | 7T+1B | — | 0T+4B | **14** |
 | Axel Troncoso | — | — | — | 8T+5B | — | — | **13** |
 | Javier Barrientos Pesce | 0T+2B | 3T+3B | 0T+5B | — | — | — | **13** |
+| Juan Pablo Pizarro johannesen | — | 0T+1B | 1T | 7T+1B | — | 0T+3B | **13** |
 | Cristobal Claren Gallardo | — | 8T+1B | 0T+2B | — | 0T+1B | — | **12** |
 | Felipe Garnham Rosenqvist | 8T | — | — | 1T+3B | — | — | **12** |
 | matias valenzuela miranda | 0T+1B | — | — | 8T+2B | 0T+1B | — | **12** |
@@ -149,10 +149,10 @@ Fuente: nóminas y sustituciones de arusa.cl, partido por partido.
 | Emilio de la Jara | 0T+3B | 3T | 0T+1B | — | — | — | **7** |
 | Mathias Claps | 1T+1B | 3T | — | 1T+1B | — | — | **7** |
 | Tomás Alonso | — | — | — | 0T+2B | 1T+1B | 3T | **7** |
+| Domingo Estadella Rios | — | 2T | — | — | 0T+4B | — | **6** |
 | Juan Bautista Mihura | 6T | — | — | — | — | — | **6** |
 | Amin Diaz Abuauad | — | — | 3T+2B | — | — | — | **5** |
 | Diego Astudillo Avendaño | — | — | — | 0T+5B | — | — | **5** |
-| Domingo Estadella Rios | — | 2T | — | — | 0T+3B | — | **5** |
 | Joaquín Henríquez Álvarez | — | 1T+1B | 0T+3B | — | — | — | **5** |
 | Francisco Andrés Álvarez | — | — | — | 1T+3B | — | — | **4** |
 | José Antonio Pérez Santander | — | — | — | — | — | 0T+3B | **3** |

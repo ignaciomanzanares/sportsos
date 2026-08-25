@@ -10,6 +10,15 @@
 import { readFileSync, writeFileSync } from "fs";
 
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json", "utf8"));
+// Lo que confirmó el propio jugador sobre los cambios que arusa no anotó.
+// Manda sobre el dato scrapeado: el que jugó el partido sabe si entró.
+const CORR = (() => {
+  try {
+    const c = JSON.parse(readFileSync("scripts/caps-correcciones.json", "utf8"));
+    delete c._leeme;
+    return c;
+  } catch { return {}; }
+})();
 const SALIDA = "src/data/capsHistoricos.json";
 
 // arusa marca al capitán con "(c)" pegado al nombre en la nómina de ese
@@ -25,14 +34,25 @@ const clave = n => limpiarNombre(n)
 const porJugador = new Map();
 const cobertura = {};
 
+let corregidos = 0;
 for (const partido of Object.values(CRUDO)) {
   const a = String(partido.anio);
+  const fecha = String(partido.fecha).slice(0, 10);
   cobertura[a] = cobertura[a] || { partidos: 0, conNomina: 0 };
   cobertura[a].partidos++;
-  if (!partido.jugaron?.length) continue;
+  if (!partido.nomina?.length) continue;
   cobertura[a].conNomina++;
 
-  for (const j of partido.jugaron) {
+  // Se rehace quién jugó aplicando lo confirmado a mano. Solo puede cambiar a
+  // los de banca: si estaba en la nómina de titulares, jugó y punto.
+  const jugaron = partido.nomina.filter(j => {
+    if (j.t === "titular") return true;
+    const dicho = CORR[clave(j.n)]?.[fecha];
+    if (dicho === true || dicho === false) { corregidos++; return dicho; }
+    return j.jugo;
+  });
+
+  for (const j of jugaron) {
     const k = clave(j.n);
     if (!k) continue;
     const v = porJugador.get(k) || { n: limpiarNombre(j.n), id: null, a: {}, titular: 0, banca: 0 };
@@ -67,7 +87,8 @@ for (const [k, v] of porJugador) {
 
 writeFileSync(SALIDA, JSON.stringify(salida, null, 0));
 
-console.log("cobertura de nóminas en arusa:");
+console.log(`correcciones aplicadas: ${corregidos}`);
+console.log("\ncobertura de nóminas en arusa:");
 for (const [a, c] of Object.entries(cobertura).sort())
   console.log(`  ${a}: ${c.conNomina}/${c.partidos} partidos${c.conNomina < c.partidos ? `  ⚠️ faltan ${c.partidos - c.conNomina}` : ""}`);
 

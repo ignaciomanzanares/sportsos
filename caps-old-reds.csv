@@ -11,21 +11,21 @@ jugador,2021_titular,2021_banca,2022_titular,2022_banca,2023_titular,2023_banca,
 "tomas zehnder novoa",10,0,17,0,6,2,5,5,6,1,6,5,63,50,13
 "benjamin frias davila",5,0,12,3,8,2,0,2,10,7,5,6,60,40,20
 "Juan Harttig",2,1,11,0,9,3,11,1,9,3,9,0,59,51,8
-"Vicente Pérez Neumann",8,0,15,2,16,0,0,0,1,4,4,6,56,44,12
-"Francisco Eduardo Bastias Manquian",10,0,1,5,2,6,6,6,1,6,11,0,54,31,23
+"Francisco Eduardo Bastias Manquian",10,0,1,5,2,6,6,6,1,7,11,0,55,31,24
+"Vicente Pérez Neumann",8,0,15,2,16,0,0,0,1,4,4,5,55,44,11
 "DIego Bozzo Pizarro",10,0,2,0,8,4,9,2,10,4,1,2,52,40,12
 "Ignacio Manzanares",0,0,5,2,10,1,12,1,10,2,4,0,47,41,6
-"José Eduardo Rojas Espinoza",0,5,3,1,5,6,15,2,3,5,0,0,45,26,19
+"José Eduardo Rojas Espinoza",0,5,3,1,5,6,15,2,3,6,0,0,46,26,20
 "Andrei Cherniavsky Bonacic",4,0,0,0,0,0,5,2,16,0,15,0,42,40,2
-"filippo borghi",6,2,18,0,2,5,0,0,0,0,2,7,42,28,14
 "Nicolas Antonucci Sole",0,0,0,0,0,0,7,7,15,1,9,3,42,31,11
-"Enrique Faúndez Saldaño",0,0,1,2,0,4,7,7,5,6,5,4,41,18,23
-"Vicente San Martín Manriquez",6,0,6,1,5,3,0,0,6,1,5,7,40,28,12
+"filippo borghi",6,2,18,0,2,5,0,0,0,0,2,6,41,28,13
+"Vicente San Martín Manriquez",6,0,6,1,5,3,0,0,6,2,5,7,41,28,13
+"Enrique Faúndez Saldaño",0,0,1,2,0,4,7,7,5,6,5,3,40,18,22
 "Benjamín Machuca Celis",0,0,1,1,10,2,11,0,13,0,0,1,39,35,4
 "Felipe Díaz Rettig",5,4,1,1,8,3,5,6,0,2,0,0,35,19,16
 "Juan Mauricio Calderon Berrios",0,0,0,0,0,0,7,7,17,1,0,1,33,24,9
+"Pablo O'Brien Gallegos",0,0,2,2,2,6,7,4,5,4,1,0,33,17,16
 "Thomas Schmidt Puga",3,2,4,5,2,4,9,4,0,0,0,0,33,18,15
-"Pablo O'Brien Gallegos",0,0,2,2,2,6,7,4,5,3,1,0,32,17,15
 "Juan Pablo Coddou Reyes",1,0,7,2,13,0,4,0,0,0,2,0,29,27,2
 "Vicente Gómez",0,0,0,0,0,0,0,0,6,10,7,6,29,13,16
 "Maximiliano O'Ryan",0,0,16,1,4,5,0,0,0,0,0,0,26,20,6
@@ -38,9 +38,9 @@ jugador,2021_titular,2021_banca,2022_titular,2022_banca,2023_titular,2023_banca,
 "MAXIMILIANO BAUMANN ZAMORA",0,0,0,0,1,1,1,0,12,1,0,0,16,14,2
 "Alonso Quiroga romero",0,0,0,0,11,4,0,0,0,0,0,0,15,11,4
 "Vicente Piwonka",0,0,2,0,6,7,0,0,0,0,0,0,15,8,7
-"Juan Pablo Pizarro johannesen",0,0,0,1,1,0,7,1,0,0,0,4,14,8,6
 "Axel Troncoso",0,0,0,0,0,0,8,5,0,0,0,0,13,8,5
 "Javier Barrientos Pesce",0,2,3,3,0,5,0,0,0,0,0,0,13,3,10
+"Juan Pablo Pizarro johannesen",0,0,0,1,1,0,7,1,0,0,0,3,13,8,5
 "Cristobal Claren Gallardo",0,0,8,1,0,2,0,0,0,1,0,0,12,8,4
 "Felipe Garnham Rosenqvist",8,0,0,0,0,0,1,3,0,0,0,0,12,9,3
 "matias valenzuela miranda",0,1,0,0,0,0,8,2,0,1,0,0,12,8,4
@@ -55,10 +55,10 @@ jugador,2021_titular,2021_banca,2022_titular,2022_banca,2023_titular,2023_banca,
 "Emilio de la Jara",0,3,3,0,0,1,0,0,0,0,0,0,7,3,4
 "Mathias Claps",1,1,3,0,0,0,1,1,0,0,0,0,7,5,2
 "Tomás Alonso",0,0,0,0,0,0,0,2,1,1,3,0,7,4,3
+"Domingo Estadella Rios",0,0,2,0,0,0,0,0,0,4,0,0,6,2,4
 "Juan Bautista Mihura",6,0,0,0,0,0,0,0,0,0,0,0,6,6,0
 "Amin Diaz Abuauad",0,0,0,0,3,2,0,0,0,0,0,0,5,3,2
 "Diego Astudillo Avendaño",0,0,0,0,0,0,0,5,0,0,0,0,5,0,5
-"Domingo Estadella Rios",0,0,2,0,0,0,0,0,0,3,0,0,5,2,3
 "Joaquín Henríquez Álvarez",0,0,1,1,0,3,0,0,0,0,0,0,5,1,4
 "Francisco Andrés Álvarez",0,0,0,0,0,0,1,3,0,0,0,0,4,1,3
 "José Antonio Pérez Santander",0,0,0,0,0,0,0,0,0,0,0,3,3,0,3
