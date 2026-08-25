@@ -45,8 +45,16 @@ export default function CapsPrimera({ players = [], sportColor = "#1FA04A" }) {
       {/* Se dice qué se está contando y qué no: un número de caps sin la regla
           al lado se presta a que cada uno entienda otra cosa. */}
       <div style={{ ...ss.muted, fontSize: "11px", marginBottom: "14px", lineHeight: 1.5 }}>
-        Desde {HISTORICO_DESDE}. Cuenta el que arrancó de titular y el que entró
-        desde la banca. Intermedia y Pre-Intermedia no cuentan.
+        Desde {HISTORICO_DESDE}: titular, o entrando desde la banca. Intermedia y
+        Pre-Intermedia no cuentan.
+        {/* Se dice que el número es un piso porque lo es: la nómina publicada
+            está completa, pero los cambios los anota a mano quien hace la
+            planilla y se le pasan cerca de un tercio. Presentarlo como total
+            exacto sería mentir justo sobre los que más rotan. */}
+        <span style={{ display:"block", marginTop:"5px", color:"var(--text-4)" }}>
+          Son un mínimo: arusa no registra todos los cambios, así que a varios
+          les faltan partidos de banca.
+        </span>
       </div>
 
       {conCaps.map((p, i) => (

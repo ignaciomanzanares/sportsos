@@ -30,9 +30,23 @@ import DATOS from "./capsHistoricos.json";
  * 2024 cuenta porque el criterio es el EQUIPO, no la categoría: fueron
  * partidos del primer equipo aunque el club estuviera en segunda.
  *
- * Lo que falta y no se puede recuperar: 6 de los 104 partidos no tienen la
- * nómina cargada en arusa (4 de 2021, 2 de 2024). Son caps que existieron y
- * nadie va a poder contar. El resto, 98 partidos, está completo.
+ * ESTE NÚMERO ES UN PISO, no un total exacto.
+ *
+ * Las titularidades son firmes: salen de la nómina publicada. Los ingresos
+ * desde la banca no, porque los cambios los anota a mano quien hace la
+ * planilla del partido y se le pasan muchos. Medido sobre los 98 partidos con
+ * nómina: 11 figuran con CERO cambios (imposible en un partido de rugby) y el
+ * promedio es 5,1 cuando la banca son 8. O sea que arusa registra cerca de
+ * dos tercios de los ingresos.
+ *
+ * Lo detectó un jugador del club mirando su propia ficha: estaba en la banca
+ * con el 22 contra Sporting, entró, y arusa solo anotó los cambios del 21, 16,
+ * 20 y 23. La pantalla lo dice: son un mínimo, y a los que más rotan les
+ * faltan partidos.
+ *
+ * Además, 6 de los 104 partidos no tienen la nómina cargada (4 de 2021, 2 de
+ * 2024). Ahí no hay ni titulares. Son caps que existieron y nadie va a poder
+ * contar.
  *
  * Incluye la temporada en curso. Sumarla en vivo desde la tabla de ARUSA
  * habría sido cómodo pero incorrecto: esa tabla mide titularidades, así que

@@ -99,9 +99,16 @@ for (const m of PARTIDOS) {
     // trae el encabezado de la tabla y ninguna fila. Se anotan como sin datos
     // en vez de contarlos como "nadie jugó", que sería un cero falso.
     const jugaron = nomina.filter(j => j.tipo === "titular" || entraron.includes(j.num));
-    hecho[m.match] = { anio: m.anio, fecha: m.fecha, nomina: nomina.length,
+    // Se guarda la nómina ENTERA, no solo los que jugaron. arusa registra a
+    // mano los cambios y se le pasan como un tercio, así que hace falta saber
+    // quién quedó en la banca sin ingreso anotado: sin eso no se puede
+    // distinguir "no entró" de "entró y nadie lo escribió".
+    hecho[m.match] = { anio: m.anio, fecha: m.fecha,
                        titulares: nomina.filter(j => j.tipo === "titular").length,
                        entraron: entraron.length,
+                       nomina: nomina.map(j => ({ id: j.id, n: j.nombre, num: j.num,
+                                                  t: j.tipo,
+                                                  jugo: j.tipo === "titular" || entraron.includes(j.num) })),
                        jugaron: jugaron.map(j => ({ id: j.id, n: j.nombre, t: j.tipo })) };
     writeFileSync(SALIDA, JSON.stringify(hecho, null, 1));
     const h = hecho[m.match];

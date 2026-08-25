@@ -688,7 +688,7 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
             juvenil que nunca subió no le aporta nada. */}
         {carreraCaps > 0 && (
           <HeroStat icon="🎖" value={carreraCaps} label="Caps"
-            sub={`Primer equipo desde ${HISTORICO_DESDE}`}
+            sub={`Al menos, desde ${HISTORICO_DESDE}`}
             color="#D4AF37" onClick={()=>onNavigate("midashboard")}/>
         )}
         <HeroStat icon={anotJug.icono} value={player?.stats?.[anotJug.clave] ?? "—"} label={anotJug.etiqueta}
