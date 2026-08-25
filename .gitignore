@@ -32,3 +32,15 @@ dist-ssr
 
 # Grabador de sesión local — no se versiona
 bitacora-local.log
+
+# Informes de caps: se regeneran con los scripts a partir de
+# scripts/caps-arusa.json, así que versionarlos solo duplica el dato y
+# obliga a acordarse de commitear el .md cada vez que cambia un número.
+#   node scripts/caps-reporte.mjs
+#   node scripts/caps-whatsapp.mjs
+#   node scripts/caps-por-confirmar.mjs
+caps-old-reds.md
+caps-old-reds.csv
+caps-old-reds-whatsapp.txt
+caps-por-confirmar.json
+caps-por-confirmar.txt
