@@ -1,0 +1,2387 @@
+{
+ "jara jose montero": {
+  "n": "José Montero de la Jara",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-08",
+    "num": 22,
+    "rival": "Old Johns",
+    "match": "114733122",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-03",
+    "num": 23,
+    "rival": "Old Locks",
+    "match": "121244328",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "puga schmidt thomas": {
+  "n": "Thomas Schmidt Puga",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-08",
+    "num": 23,
+    "rival": "Old Johns",
+    "match": "114733122",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 20,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-09-26",
+    "num": 20,
+    "rival": "Old Macks",
+    "match": "114733141",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-10-16",
+    "num": 21,
+    "rival": "Old Johns",
+    "match": "114733147",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-07-31",
+    "num": 19,
+    "rival": "DOBS",
+    "match": "121244308",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-08-20",
+    "num": 19,
+    "rival": "CDA",
+    "match": "121244314",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-10-15",
+    "num": 20,
+    "rival": "Rucamanque",
+    "match": "121244321",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-15",
+    "num": 21,
+    "rival": "PWCC",
+    "match": "128069622",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-29",
+    "num": 20,
+    "rival": "Sporting RC",
+    "match": "128069628",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 20,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "harttig manuel": {
+  "n": "Manuel Harttig",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 16,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-08-28",
+    "num": 16,
+    "rival": "PWCC",
+    "match": "114733128",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 17,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "emilio jara": {
+  "n": "Emilio de la Jara",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 17,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-10",
+    "num": 16,
+    "rival": "Old Gabs",
+    "match": "121244330",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 17,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-09-06",
+    "num": 17,
+    "rival": "Old Macks",
+    "match": "140847670",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "benjamin diaz rodriguez": {
+  "n": "Benjamín Díaz Rodríguez",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 18,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "callejas felipe": {
+  "n": "Felipe Callejas",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 21,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-09-04",
+    "num": 20,
+    "rival": "COBS",
+    "match": "114733131",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-09-26",
+    "num": 19,
+    "rival": "Old Macks",
+    "match": "114733141",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-04-14",
+    "num": 23,
+    "rival": "Los Troncos",
+    "match": "134320019",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-04-20",
+    "num": 23,
+    "rival": "Old Locks",
+    "match": "134320022",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-25",
+    "num": 22,
+    "rival": "Old Anglonians",
+    "match": "134320060",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "gana henriquez jose manuel": {
+  "n": "Jose Manuel Henriquez Gana",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 22,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-05-13",
+    "num": 15,
+    "rival": "CDA",
+    "match": "128069638",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "papic prat santiago": {
+  "n": "SANTIAGO PRAT PAPIC",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-08-21",
+    "num": 23,
+    "rival": "Sporting",
+    "match": "114733124",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-09-11",
+    "num": 23,
+    "rival": "UC",
+    "match": "114733137",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-04-09",
+    "num": 23,
+    "rival": "Old Georgians",
+    "match": "121244250",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 23,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 22,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 23,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "manriquez martin san vicente": {
+  "n": "Vicente San Martín Manriquez",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-09-04",
+    "num": 21,
+    "rival": "COBS",
+    "match": "114733131",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-04-09",
+    "num": 20,
+    "rival": "Old Georgians",
+    "match": "121244250",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-07-31",
+    "num": 18,
+    "rival": "DOBS",
+    "match": "121244308",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 20,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-02",
+    "num": 20,
+    "rival": "PWCC",
+    "match": "128069663",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 20,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 21,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-09-06",
+    "num": 21,
+    "rival": "Old Macks",
+    "match": "140847670",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 20,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-15",
+    "num": 20,
+    "rival": "PWCC",
+    "match": "144047891",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "borghi filippo": {
+  "n": "filippo borghi",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-09-11",
+    "num": 19,
+    "rival": "UC",
+    "match": "114733137",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-02",
+    "num": 4,
+    "rival": "PWCC",
+    "match": "128069663",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-29",
+    "num": 5,
+    "rival": "Old Boys",
+    "match": "128069678",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 19,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-07-12",
+    "num": 19,
+    "rival": "Sporting RC",
+    "match": "144047871",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "mateluna thomas": {
+  "n": "Thomas Mateluna",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-09-11",
+    "num": 21,
+    "rival": "UC",
+    "match": "114733137",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-10-24",
+    "num": 22,
+    "rival": "Sporting",
+    "match": "114733154",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 23,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "amar gerard martin": {
+  "n": "Gerard Martin Amar",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-09-11",
+    "num": 22,
+    "rival": "UC",
+    "match": "114733137",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-09-26",
+    "num": 22,
+    "rival": "Old Macks",
+    "match": "114733141",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-08-13",
+    "num": 22,
+    "rival": "Old Newlanders",
+    "match": "121244278",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 23,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-04-18",
+    "num": 22,
+    "rival": "Sporting RC",
+    "match": "144047828",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "barrientos javier pesce": {
+  "n": "Javier Barrientos Pesce",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-09-26",
+    "num": 23,
+    "rival": "Old Macks",
+    "match": "114733141",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-11-06",
+    "num": 23,
+    "rival": "PWCC",
+    "match": "114733156",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 19,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-29",
+    "num": 19,
+    "rival": "Sporting RC",
+    "match": "128069628",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "castro hoyos osvaldo sebastian": {
+  "n": "Sebastian Osvaldo Castro Hoyos",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-10-02",
+    "num": 18,
+    "rival": "Old Boys",
+    "match": "114733143",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "cristobal juan torres wahl": {
+  "n": "Juan Cristobal Torres Wahl",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-10-16",
+    "num": 16,
+    "rival": "Old Johns",
+    "match": "114733147",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-10-24",
+    "num": 16,
+    "rival": "Sporting",
+    "match": "114733154",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-04-09",
+    "num": 16,
+    "rival": "Old Georgians",
+    "match": "121244250",
+    "cambiosRegistrados": 2
+   }
+  ]
+ },
+ "benavides max": {
+  "n": "MAX BENAVIDES",
+  "partidos": [
+   {
+    "anio": 2021,
+    "fecha": "2021-10-16",
+    "num": 22,
+    "rival": "Old Johns",
+    "match": "114733147",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2021,
+    "fecha": "2021-10-24",
+    "num": 23,
+    "rival": "Sporting",
+    "match": "114733154",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-07-23",
+    "num": 22,
+    "rival": "Los Troncos",
+    "match": "121244299",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "araya gonzalez ignacio tomas": {
+  "n": "Ignacio Tomás González Araya",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-04-09",
+    "num": 17,
+    "rival": "Old Georgians",
+    "match": "121244250",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-07-17",
+    "num": 24,
+    "rival": "Rucamanque",
+    "match": "121244283",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-07-10",
+    "num": 18,
+    "rival": "Old Newlanders",
+    "match": "121244298",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-10",
+    "num": 18,
+    "rival": "Old Gabs",
+    "match": "121244330",
+    "cambiosRegistrados": 2
+   }
+  ]
+ },
+ "alvarez henriquez joaquin": {
+  "n": "Joaquín Henríquez Álvarez",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-04-09",
+    "num": 19,
+    "rival": "Old Georgians",
+    "match": "121244250",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-03-25",
+    "num": 21,
+    "rival": "Stade Francais",
+    "match": "128069610",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "andres guillermo mateluna vatter": {
+  "n": "Guillermo Andrés Vatter Mateluna",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-04-24",
+    "num": 22,
+    "rival": "CDA",
+    "match": "121244257",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-08-20",
+    "num": 21,
+    "rival": "CDA",
+    "match": "121244314",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 21,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-01",
+    "num": 22,
+    "rival": "UC",
+    "match": "128069613",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-09",
+    "num": 23,
+    "rival": "Old Macks",
+    "match": "128069668",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "enrique faundez saldano": {
+  "n": "Enrique Faúndez Saldaño",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-05-08",
+    "num": 17,
+    "rival": "Old Locks",
+    "match": "121244262",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-07-17",
+    "num": 18,
+    "rival": "Rucamanque",
+    "match": "121244283",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-10-01",
+    "num": 16,
+    "rival": "Old Gabs",
+    "match": "121244290",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-08-20",
+    "num": 16,
+    "rival": "CDA",
+    "match": "121244314",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-10-15",
+    "num": 16,
+    "rival": "Rucamanque",
+    "match": "121244321",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 18,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-01",
+    "num": 16,
+    "rival": "UC",
+    "match": "128069613",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-15",
+    "num": 16,
+    "rival": "PWCC",
+    "match": "128069622",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 16,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-29",
+    "num": 18,
+    "rival": "Sporting RC",
+    "match": "128069628",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-05-13",
+    "num": 18,
+    "rival": "CDA",
+    "match": "128069638",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-06-17",
+    "num": 17,
+    "rival": "UC",
+    "match": "128069660",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-02",
+    "num": 17,
+    "rival": "PWCC",
+    "match": "128069663",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-09",
+    "num": 17,
+    "rival": "Old Macks",
+    "match": "128069668",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-08-13",
+    "num": 4,
+    "rival": "Old Johns",
+    "match": "128069688",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 18,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 17,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "ignacio manzanares": {
+  "n": "Ignacio Manzanares",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-05-08",
+    "num": 21,
+    "rival": "Old Locks",
+    "match": "121244262",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-08-20",
+    "num": 23,
+    "rival": "CDA",
+    "match": "121244314",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-09-01",
+    "num": 22,
+    "rival": "All Brads",
+    "match": "134320065",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-04-25",
+    "num": 23,
+    "rival": "Old Boys",
+    "match": "144047831",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-07-12",
+    "num": 22,
+    "rival": "Sporting RC",
+    "match": "144047871",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-22",
+    "num": 23,
+    "rival": "COBS",
+    "match": "144047894",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "claren cristobal gallardo": {
+  "n": "Cristobal Claren Gallardo",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-05-14",
+    "num": 20,
+    "rival": "DOBS",
+    "match": "121244267",
+    "cambiosRegistrados": 3
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-06-15",
+    "num": 19,
+    "rival": "Old Johns",
+    "match": "140847625",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "harttig juan": {
+  "n": "Juan Harttig",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-05-14",
+    "num": 21,
+    "rival": "DOBS",
+    "match": "121244267",
+    "cambiosRegistrados": 3
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-04",
+    "num": 22,
+    "rival": "UC",
+    "match": "140847600",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-17",
+    "num": 22,
+    "rival": "Sporting RC",
+    "match": "140847610",
+    "cambiosRegistrados": 3
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-07-12",
+    "num": 22,
+    "rival": "UC",
+    "match": "140847640",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-02",
+    "num": 22,
+    "rival": "COBS",
+    "match": "140847646",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 22,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "nicolas sabaj valderrama": {
+  "n": "Nicolas Sabaj Valderrama",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-05-14",
+    "num": 22,
+    "rival": "DOBS",
+    "match": "121244267",
+    "cambiosRegistrados": 3
+   }
+  ]
+ },
+ "eduardo espinoza jose rojas": {
+  "n": "José Eduardo Rojas Espinoza",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-08-13",
+    "num": 16,
+    "rival": "Old Newlanders",
+    "match": "121244278",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-10",
+    "num": 17,
+    "rival": "Old Gabs",
+    "match": "121244330",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 17,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 16,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 16,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   }
+  ]
+ },
+ "brien gallegos pablo": {
+  "n": "Pablo O'Brien Gallegos",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-07-17",
+    "num": 25,
+    "rival": "Rucamanque",
+    "match": "121244283",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-08-07",
+    "num": 17,
+    "rival": "Old Georgians",
+    "match": "121244312",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-10-15",
+    "num": 17,
+    "rival": "Rucamanque",
+    "match": "121244321",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 17,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-05-13",
+    "num": 17,
+    "rival": "CDA",
+    "match": "128069638",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 17,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-04",
+    "num": 17,
+    "rival": "UC",
+    "match": "140847600",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-17",
+    "num": 17,
+    "rival": "Sporting RC",
+    "match": "140847610",
+    "cambiosRegistrados": 3
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-06-07",
+    "num": 17,
+    "rival": "Old Boys",
+    "match": "140847619",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-06-28",
+    "num": 17,
+    "rival": "Stade Francais",
+    "match": "140847629",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-07-27",
+    "num": 17,
+    "rival": "PWCC",
+    "match": "140847645",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 17,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-23",
+    "num": 17,
+    "rival": "CDA",
+    "match": "140847660",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-04-11",
+    "num": 17,
+    "rival": "UC",
+    "match": "144047823",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "astorga lopez samuel": {
+  "n": "Samuel Astorga López",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-10-01",
+    "num": 20,
+    "rival": "Old Gabs",
+    "match": "121244290",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-10-15",
+    "num": 19,
+    "rival": "Rucamanque",
+    "match": "121244321",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 19,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-07-27",
+    "num": 20,
+    "rival": "Lagartos RC",
+    "match": "134320053",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-10-04",
+    "num": 20,
+    "rival": "Stade Francais",
+    "match": "140847679",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 21,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-07",
+    "num": 20,
+    "rival": "COBS",
+    "match": "144047850",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-20",
+    "num": 20,
+    "rival": "PWCC",
+    "match": "144047861",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "bastias eduardo francisco manquian": {
+  "n": "Francisco Eduardo Bastias Manquian",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-07-10",
+    "num": 17,
+    "rival": "Old Newlanders",
+    "match": "121244298",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 16,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-15",
+    "num": 17,
+    "rival": "PWCC",
+    "match": "128069622",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-06-03",
+    "num": 17,
+    "rival": "COBS",
+    "match": "128069652",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 18,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 18,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 18,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 18,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   }
+  ]
+ },
+ "berrios calderon juan mauricio": {
+  "n": "Juan Mauricio Calderon Berrios",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-10-15",
+    "num": 18,
+    "rival": "Rucamanque",
+    "match": "121244321",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 17,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 18,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-29",
+    "num": 16,
+    "rival": "Sporting RC",
+    "match": "128069628",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 17,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 16,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 16,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "tomas yanez": {
+  "n": "Tomás Yáñez",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-10-15",
+    "num": 23,
+    "rival": "Rucamanque",
+    "match": "121244321",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-06-15",
+    "num": 22,
+    "rival": "Old Johns",
+    "match": "140847625",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "diaz felipe rettig": {
+  "n": "Felipe Díaz Rettig",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-09-03",
+    "num": 20,
+    "rival": "Old Locks",
+    "match": "121244328",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-10",
+    "num": 20,
+    "rival": "Old Gabs",
+    "match": "121244330",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 21,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-06-17",
+    "num": 20,
+    "rival": "UC",
+    "match": "128069660",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-29",
+    "num": 20,
+    "rival": "Old Boys",
+    "match": "128069678",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 19,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-17",
+    "num": 19,
+    "rival": "Sporting RC",
+    "match": "140847610",
+    "cambiosRegistrados": 3
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-31",
+    "num": 19,
+    "rival": "CDA",
+    "match": "140847615",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "domingo estadella rios": {
+  "n": "Domingo Estadella Rios",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-09-10",
+    "num": 21,
+    "rival": "Old Gabs",
+    "match": "121244330",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-05-18",
+    "num": 21,
+    "rival": "Old Gergel",
+    "match": "134320031",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-17",
+    "num": 21,
+    "rival": "Sporting RC",
+    "match": "140847610",
+    "cambiosRegistrados": 3
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-07-06",
+    "num": 21,
+    "rival": "Old Macks",
+    "match": "140847635",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-07-12",
+    "num": 21,
+    "rival": "UC",
+    "match": "140847640",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-07-27",
+    "num": 21,
+    "rival": "PWCC",
+    "match": "140847645",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-23",
+    "num": 21,
+    "rival": "CDA",
+    "match": "140847660",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "matias sabaj": {
+  "n": "Matias Sabaj",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-09-10",
+    "num": 23,
+    "rival": "Old Gabs",
+    "match": "121244330",
+    "cambiosRegistrados": 2
+   },
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 22,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-09-29",
+    "num": 23,
+    "rival": "Lagartos RC",
+    "match": "138649590",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "benjamin davila frias": {
+  "n": "benjamin frias davila",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 16,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-05-18",
+    "num": 18,
+    "rival": "Old Gergel",
+    "match": "134320031",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "alonso quiroga romero": {
+  "n": "Alonso Quiroga romero",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 18,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-03-25",
+    "num": 18,
+    "rival": "Stade Francais",
+    "match": "128069610",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "amenabar santiago solar": {
+  "n": "Santiago Amenábar Del solar",
+  "partidos": [
+   {
+    "anio": 2022,
+    "fecha": "2022-09-24",
+    "num": 20,
+    "rival": "Lagartos RC",
+    "match": "121244334",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 21,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "gaspar gutierrez lorenzo saitua": {
+  "n": "Lorenzo Gaspar Gutiérrez Saitua",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 19,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 21,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-05-18",
+    "num": 19,
+    "rival": "Old Gergel",
+    "match": "134320031",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "piwonka vicente": {
+  "n": "Vicente Piwonka",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 20,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "bozzo diego pizarro": {
+  "n": "DIego Bozzo Pizarro",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 22,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 22,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "benjamin celis machuca": {
+  "n": "Benjamín Machuca Celis",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-03-18",
+    "num": 23,
+    "rival": "COBS",
+    "match": "128069604",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-31",
+    "num": 23,
+    "rival": "CDA",
+    "match": "140847615",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-07-12",
+    "num": 23,
+    "rival": "UC",
+    "match": "140847640",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-15",
+    "num": 22,
+    "rival": "PWCC",
+    "match": "144047891",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "baumann maximiliano zamora": {
+  "n": "MAXIMILIANO BAUMANN ZAMORA",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-04-22",
+    "num": 22,
+    "rival": "Old Macks",
+    "match": "128069627",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2023,
+    "fecha": "2023-07-02",
+    "num": 23,
+    "rival": "PWCC",
+    "match": "128069663",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "karim mosa yousef": {
+  "n": "Karim Mosa Yousef",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-05-06",
+    "num": 20,
+    "rival": "Old Boys",
+    "match": "128069633",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "maximiliano ryan": {
+  "n": "Maximiliano O'Ryan",
+  "partidos": [
+   {
+    "anio": 2023,
+    "fecha": "2023-07-29",
+    "num": 21,
+    "rival": "Old Boys",
+    "match": "128069678",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "benjamin lillo": {
+  "n": "benjamin lillo",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 16,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "claps mathias": {
+  "n": "Mathias Claps",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 20,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-10-05",
+    "num": 21,
+    "rival": "DOBS",
+    "match": "138649592",
+    "cambiosRegistrados": 7
+   }
+  ]
+ },
+ "axel troncoso": {
+  "n": "Axel Troncoso",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 21,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 20,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "andrei bonacic cherniavsky": {
+  "n": "Andrei Cherniavsky Bonacic",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-04-07",
+    "num": 22,
+    "rival": "Old Gabs",
+    "match": "134320015",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "gianpaolo molinari": {
+  "n": "Gianpaolo Molinari",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-04-20",
+    "num": 18,
+    "rival": "Old Locks",
+    "match": "134320022",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "matias miranda valenzuela": {
+  "n": "matias valenzuela miranda",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 5,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "perez rasmussen santiago": {
+  "n": "Santiago Perez Rasmussen",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 21,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-07-21",
+    "num": 23,
+    "rival": "Old Locks",
+    "match": "134320050",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-09-06",
+    "num": 22,
+    "rival": "Old Macks",
+    "match": "140847670",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "alonso tomas": {
+  "n": "Tomás Alonso",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-06-30",
+    "num": 23,
+    "rival": "Old Gabs",
+    "match": "134320044",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-07-27",
+    "num": 22,
+    "rival": "Lagartos RC",
+    "match": "134320053",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 21,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-02",
+    "num": 23,
+    "rival": "COBS",
+    "match": "140847646",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "damian fuentes lopez": {
+  "n": "Damian Lopez fuentes",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-07-27",
+    "num": 21,
+    "rival": "Lagartos RC",
+    "match": "134320053",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "burgos sebastian": {
+  "n": "Sebastian Burgos",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-07-27",
+    "num": 23,
+    "rival": "Lagartos RC",
+    "match": "134320053",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "jose miguel sanchez": {
+  "n": "Jose Miguel Sánchez",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 19,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "espinoza espinoza tomas": {
+  "n": "Tomás Espinoza Espinoza",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-08-11",
+    "num": 22,
+    "rival": "Old Gergel",
+    "match": "134320059",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "novoa tomas zehnder": {
+  "n": "tomas zehnder novoa",
+  "partidos": [
+   {
+    "anio": 2024,
+    "fecha": "2024-09-14",
+    "num": 22,
+    "rival": "DOBS",
+    "match": "134688788",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-10",
+    "num": 23,
+    "rival": "Stade Francais",
+    "match": "144047838",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 23,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "gomez vicente": {
+  "n": "Vicente Gómez",
+  "partidos": [
+   {
+    "anio": 2025,
+    "fecha": "2025-04-27",
+    "num": 18,
+    "rival": "PWCC",
+    "match": "140762308",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-04",
+    "num": 18,
+    "rival": "UC",
+    "match": "140847600",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-04-18",
+    "num": 18,
+    "rival": "Sporting RC",
+    "match": "144047828",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 19,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "andres martin romo san": {
+  "n": "Andres San Martin Romo",
+  "partidos": [
+   {
+    "anio": 2025,
+    "fecha": "2025-04-27",
+    "num": 20,
+    "rival": "PWCC",
+    "match": "140762308",
+    "cambiosRegistrados": 6
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-05-17",
+    "num": 20,
+    "rival": "Sporting RC",
+    "match": "140847610",
+    "cambiosRegistrados": 3
+   }
+  ]
+ },
+ "fernandez jose pablo thiers": {
+  "n": "José Pablo Fernández Thiers",
+  "partidos": [
+   {
+    "anio": 2025,
+    "fecha": "2025-05-11",
+    "num": 23,
+    "rival": "COBS",
+    "match": "140847601",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 22,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-13",
+    "num": 23,
+    "rival": "Old Johns",
+    "match": "144047856",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-20",
+    "num": 22,
+    "rival": "PWCC",
+    "match": "144047861",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-15",
+    "num": 23,
+    "rival": "PWCC",
+    "match": "144047891",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "neumann perez vicente": {
+  "n": "Vicente Pérez Neumann",
+  "partidos": [
+   {
+    "anio": 2025,
+    "fecha": "2025-08-02",
+    "num": 20,
+    "rival": "COBS",
+    "match": "140847646",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-09",
+    "num": 19,
+    "rival": "Sporting RC",
+    "match": "140847655",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 20,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 20,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "antonucci nicolas sole": {
+  "n": "Nicolas Antonucci Sole",
+  "partidos": [
+   {
+    "anio": 2025,
+    "fecha": "2025-08-31",
+    "num": 19,
+    "rival": "Old Boys",
+    "match": "140847664",
+    "cambiosRegistrados": 1
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-07-12",
+    "num": 17,
+    "rival": "Sporting RC",
+    "match": "144047871",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "joaquin manzanares": {
+  "n": "Joaquin Manzanares",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-04-18",
+    "num": 21,
+    "rival": "Sporting RC",
+    "match": "144047828",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 18,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "bozzo molina renzo": {
+  "n": "Renzo Bozzo Molina",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-04-25",
+    "num": 16,
+    "rival": "Old Boys",
+    "match": "144047831",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-10",
+    "num": 18,
+    "rival": "Stade Francais",
+    "match": "144047838",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "cardenas matias": {
+  "n": "Matias Cardenas",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-04-25",
+    "num": 17,
+    "rival": "Old Boys",
+    "match": "144047831",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 16,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-07",
+    "num": 16,
+    "rival": "COBS",
+    "match": "144047850",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-13",
+    "num": 16,
+    "rival": "Old Johns",
+    "match": "144047856",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-20",
+    "num": 18,
+    "rival": "PWCC",
+    "match": "144047861",
+    "cambiosRegistrados": 5
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-07-05",
+    "num": 18,
+    "rival": "UC",
+    "match": "144047866",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-07-12",
+    "num": 18,
+    "rival": "Sporting RC",
+    "match": "144047871",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 16,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-15",
+    "num": 17,
+    "rival": "PWCC",
+    "match": "144047891",
+    "cambiosRegistrados": 4
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-22",
+    "num": 16,
+    "rival": "COBS",
+    "match": "144047894",
+    "cambiosRegistrados": 6
+   }
+  ]
+ },
+ "arias tomas vargas": {
+  "n": "Tomas Vargas Arias",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-04-25",
+    "num": 21,
+    "rival": "Old Boys",
+    "match": "144047831",
+    "cambiosRegistrados": 4
+   }
+  ]
+ },
+ "estay fuente santiago": {
+  "n": "santiago de la fuente estay",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-05-17",
+    "num": 21,
+    "rival": "DOBS",
+    "match": "144047841",
+    "cambiosRegistrados": 7
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-13",
+    "num": 19,
+    "rival": "Old Johns",
+    "match": "144047856",
+    "cambiosRegistrados": 5
+   }
+  ]
+ },
+ "barrena botto rafael": {
+  "n": "Rafael Barrena Botto",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 18,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 17,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "johannesen juan pablo pizarro": {
+  "n": "Juan Pablo Pizarro johannesen",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 22,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-08-01",
+    "num": 21,
+    "rival": "Stade Francais",
+    "match": "144047881",
+    "cambiosRegistrados": 0
+   }
+  ]
+ },
+ "fantuzzi infante tomas": {
+  "n": "tomas infante fantuzzi",
+  "partidos": [
+   {
+    "anio": 2026,
+    "fecha": "2026-05-30",
+    "num": 23,
+    "rival": "Old Macks",
+    "match": "144047847",
+    "cambiosRegistrados": 0
+   },
+   {
+    "anio": 2026,
+    "fecha": "2026-06-07",
+    "num": 22,
+    "rival": "COBS",
+    "match": "144047850",
+    "cambiosRegistrados": 5
+   }
+  ]
+ }
+}
