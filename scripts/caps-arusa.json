@@ -1,0 +1,10787 @@
+{
+ "114733108": {
+  "anio": 2021,
+  "fecha": "2021-07-10 19:00:00",
+  "nomina": 0,
+  "titulares": 0,
+  "entraron": 6,
+  "jugaron": []
+ },
+ "114733112": {
+  "anio": 2021,
+  "fecha": "2021-07-24 19:00:00",
+  "nomina": 0,
+  "titulares": 0,
+  "entraron": 4,
+  "jugaron": []
+ },
+ "114733116": {
+  "anio": 2021,
+  "fecha": "2021-07-31 20:00:00",
+  "nomina": 0,
+  "titulares": 0,
+  "entraron": 0,
+  "jugaron": []
+ },
+ "114733122": {
+  "anio": 2021,
+  "fecha": "2021-08-08 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "banca"
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "36935504",
+    "n": "Benjamín Díaz Rodríguez",
+    "t": "banca"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "36935402",
+    "n": "Mathias Claps",
+    "t": "banca"
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733124": {
+  "anio": 2021,
+  "fecha": "2021-08-21 18:00:00",
+  "nomina": 22,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "titular"
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "titular"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "36935402",
+    "n": "Mathias Claps",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "t": "titular"
+   }
+  ]
+ },
+ "114733128": {
+  "anio": 2021,
+  "fecha": "2021-08-28 18:30:00",
+  "nomina": 21,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "titular"
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "titular"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36962152",
+    "n": "Emilio de la Jara",
+    "t": "banca"
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "36935403",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733131": {
+  "anio": 2021,
+  "fecha": "2021-09-04 17:00:00",
+  "nomina": 20,
+  "titulares": 14,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "titular"
+   },
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733137": {
+  "anio": 2021,
+  "fecha": "2021-09-11 20:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "36935486",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "banca"
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733141": {
+  "anio": 2021,
+  "fecha": "2021-09-26 19:00:00",
+  "nomina": 22,
+  "titulares": 14,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935486",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "banca"
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733143": {
+  "anio": 2021,
+  "fecha": "2021-10-02 19:00:00",
+  "nomina": 22,
+  "titulares": 14,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935486",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "banca"
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "36935498",
+    "n": "matias valenzuela miranda",
+    "t": "banca"
+   },
+   {
+    "id": "37055678",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   },
+   {
+    "id": "36935403",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733147": {
+  "anio": 2021,
+  "fecha": "2021-10-16 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "t": "titular"
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935486",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "36935499",
+    "n": "Sebastian Osvaldo Castro Hoyos",
+    "t": "banca"
+   },
+   {
+    "id": "37225147",
+    "n": "carlos figueroa romero",
+    "t": "banca"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   },
+   {
+    "id": "36935403",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733154": {
+  "anio": 2021,
+  "fecha": "2021-10-24 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi (c)",
+    "t": "titular"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "36962152",
+    "n": "Emilio de la Jara",
+    "t": "banca"
+   },
+   {
+    "id": "36935499",
+    "n": "Sebastian Osvaldo Castro Hoyos",
+    "t": "banca"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "37055678",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733156": {
+  "anio": 2021,
+  "fecha": "2021-11-06 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "t": "titular"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "banca"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "36962152",
+    "n": "Emilio de la Jara",
+    "t": "banca"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   }
+  ]
+ },
+ "114733162": {
+  "anio": 2021,
+  "fecha": "2021-11-14 17:00:00",
+  "nomina": 0,
+  "titulares": 0,
+  "entraron": 4,
+  "jugaron": []
+ },
+ "121244250": {
+  "anio": 2022,
+  "fecha": "2022-04-09 19:30:00",
+  "nomina": 22,
+  "titulares": 15,
+  "entraron": 2,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694858",
+    "n": "Mathias Claps",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694883",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694862",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244257": {
+  "anio": 2022,
+  "fecha": "2022-04-24 18:00:00",
+  "nomina": 21,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694858",
+    "n": "Mathias Claps (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694890",
+    "n": "Joaquín Henríquez Álvarez",
+    "t": "titular"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694883",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694836",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "banca"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244262": {
+  "anio": 2022,
+  "fecha": "2022-05-08 16:45:00",
+  "nomina": 19,
+  "titulares": 16,
+  "entraron": 2,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694858",
+    "n": "Mathias Claps (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244267": {
+  "anio": 2022,
+  "fecha": "2022-05-14 19:00:00",
+  "nomina": 21,
+  "titulares": 15,
+  "entraron": 3,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694874",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "banca"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244273": {
+  "anio": 2022,
+  "fecha": "2022-05-29 18:00:00",
+  "nomina": 21,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "39694836",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "39694865",
+    "n": "Nicolas Sabaj Valderrama",
+    "t": "banca"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "banca"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244278": {
+  "anio": 2022,
+  "fecha": "2022-08-13 17:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "39694836",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "40054178",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "39694889",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244283": {
+  "anio": 2022,
+  "fecha": "2022-07-17 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "39694874",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244287": {
+  "anio": 2022,
+  "fecha": "2022-06-19 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "39694874",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "banca"
+   },
+   {
+    "id": "39694890",
+    "n": "Joaquín Henríquez Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244290": {
+  "anio": 2022,
+  "fecha": "2022-10-01 19:00:00",
+  "nomina": 21,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "41723960",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694889",
+    "n": "Javier Barrientos Pesce",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39747259",
+    "n": "Matias Sabaj",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "40946071",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "banca"
+   },
+   {
+    "id": "41651757",
+    "n": "Benjamín Machuca Celis",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244298": {
+  "anio": 2022,
+  "fecha": "2022-07-10 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694881",
+    "n": "MAX BENAVIDES",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244299": {
+  "anio": 2022,
+  "fecha": "2022-07-23 19:00:00",
+  "nomina": 22,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "banca"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244308": {
+  "anio": 2022,
+  "fecha": "2022-07-31 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "40054178",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694874",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "banca"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "banca"
+   },
+   {
+    "id": "39694862",
+    "n": "Gerard Martin Amar",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244312": {
+  "anio": 2022,
+  "fecha": "2022-08-07 16:00:00",
+  "nomina": 21,
+  "titulares": 14,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694878",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694874",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "banca"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "banca"
+   },
+   {
+    "id": "41133171",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244314": {
+  "anio": 2022,
+  "fecha": "2022-08-20 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "39694861",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "titular"
+   },
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694843",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694874",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "39694889",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244321": {
+  "anio": 2022,
+  "fecha": "2022-10-15 19:00:00",
+  "nomina": 22,
+  "titulares": 15,
+  "entraron": 1,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39747259",
+    "n": "Matias Sabaj",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244328": {
+  "anio": 2022,
+  "fecha": "2022-09-03 19:00:00",
+  "nomina": 23,
+  "titulares": 17,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "41723963",
+    "n": "Emilio de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "39694889",
+    "n": "Javier Barrientos Pesce",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694863",
+    "n": "Domingo Estadella Rios",
+    "t": "titular"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "titular"
+   },
+   {
+    "id": "41723959",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39747259",
+    "n": "Matias Sabaj",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "41723960",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "40054178",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "39694837",
+    "n": "Felipe Rivas Bastidas",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244330": {
+  "anio": 2022,
+  "fecha": "2022-09-10 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 2,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39761382",
+    "n": "Santiago Amenábar Del solar",
+    "t": "titular"
+   },
+   {
+    "id": "41723959",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39694889",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   }
+  ]
+ },
+ "121244334": {
+  "anio": 2022,
+  "fecha": "2022-09-24 18:30:00",
+  "nomina": 22,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "41723960",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "40054178",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "41723963",
+    "n": "Emilio de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694863",
+    "n": "Domingo Estadella Rios",
+    "t": "titular"
+   },
+   {
+    "id": "39694889",
+    "n": "Javier Barrientos Pesce",
+    "t": "titular"
+   },
+   {
+    "id": "41133165",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694835",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   }
+  ]
+ },
+ "125852949": {
+  "anio": 2022,
+  "fecha": "2022-11-05 18:00:00",
+  "nomina": 23,
+  "titulares": 23,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "39784102",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "39694875",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39747261",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "39694886",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "39694838",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "39694871",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "39694860",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "39694880",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "39694879",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "39694841",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "39785796",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "39694877",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "39694885",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "39694839",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "39694869",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "41723960",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "39694882",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "41723963",
+    "n": "Emilio de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "39694868",
+    "n": "Cristobal Claren Gallardo",
+    "t": "titular"
+   },
+   {
+    "id": "40946071",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "39694872",
+    "n": "Guillermo Andrés Vatter Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "39694867",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "41651757",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   }
+  ]
+ },
+ "128069604": {
+  "anio": 2023,
+  "fecha": "2023-03-18 21:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "44179376",
+    "n": "MAX BENAVIDES",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   }
+  ]
+ },
+ "128069610": {
+  "anio": 2023,
+  "fecha": "2023-03-25 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179365",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "44179376",
+    "n": "MAX BENAVIDES",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069613": {
+  "anio": 2023,
+  "fecha": "2023-04-01 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179365",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "banca"
+   },
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "44179386",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "banca"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "44352245",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069622": {
+  "anio": 2023,
+  "fecha": "2023-04-15 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "44179386",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069627": {
+  "anio": 2023,
+  "fecha": "2023-04-22 17:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   }
+  ]
+ },
+ "128069628": {
+  "anio": 2023,
+  "fecha": "2023-04-29 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44352245",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "banca"
+   },
+   {
+    "id": "44179363",
+    "n": "Cristobal Claren Gallardo",
+    "t": "banca"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069633": {
+  "anio": 2023,
+  "fecha": "2023-05-06 22:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179403",
+    "n": "osvaldo silva",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "44179358",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069638": {
+  "anio": 2023,
+  "fecha": "2023-05-13 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "44179363",
+    "n": "Cristobal Claren Gallardo",
+    "t": "banca"
+   },
+   {
+    "id": "44179365",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069647": {
+  "anio": 2023,
+  "fecha": "2023-05-27 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "44179358",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "44179388",
+    "n": "Joaquín Henríquez Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "44179365",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069652": {
+  "anio": 2023,
+  "fecha": "2023-06-03 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "45741118",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44198630",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "44179358",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "44179388",
+    "n": "Joaquín Henríquez Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "44179365",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069654": {
+  "anio": 2023,
+  "fecha": "2023-06-11 17:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "45741118",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "44179377",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "banca"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "44179388",
+    "n": "Joaquín Henríquez Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "44179365",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "banca"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069660": {
+  "anio": 2023,
+  "fecha": "2023-06-17 20:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44204970",
+    "n": "Amin Diaz Abuauad",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "45741118",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "banca"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "banca"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "banca"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069663": {
+  "anio": 2023,
+  "fecha": "2023-07-02 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179378",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44204970",
+    "n": "Amin Diaz Abuauad",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "44179386",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "45741118",
+    "n": "Gerard Martin Amar",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069668": {
+  "anio": 2023,
+  "fecha": "2023-07-09 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179354",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44204970",
+    "n": "Amin Diaz Abuauad",
+    "t": "titular"
+   },
+   {
+    "id": "44179409",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "45741118",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "banca"
+   },
+   {
+    "id": "44179386",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069674": {
+  "anio": 2023,
+  "fecha": "2023-08-19 17:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179353",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "44179358",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "banca"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "banca"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069678": {
+  "anio": 2023,
+  "fecha": "2023-07-29 16:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44179353",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "44179402",
+    "n": "Emilio de la Jara",
+    "t": "banca"
+   },
+   {
+    "id": "44179386",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   },
+   {
+    "id": "44204970",
+    "n": "Amin Diaz Abuauad",
+    "t": "banca"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069684": {
+  "anio": 2023,
+  "fecha": "2023-08-05 20:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179370",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179353",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "44179368",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "banca"
+   },
+   {
+    "id": "44204970",
+    "n": "Amin Diaz Abuauad",
+    "t": "banca"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   }
+  ]
+ },
+ "128069688": {
+  "anio": 2023,
+  "fecha": "2023-08-13 17:00:00",
+  "nomina": 23,
+  "titulares": 16,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "44179408",
+    "n": "Alonso Quiroga romero",
+    "t": "titular"
+   },
+   {
+    "id": "44179369",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179391",
+    "n": "Ignacio Tomás González Araya",
+    "t": "titular"
+   },
+   {
+    "id": "44179383",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "44179387",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "44179375",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "44179381",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "44179373",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "44179364",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "44179353",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "44179371",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "44179372",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "44179382",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "44179374",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "44179407",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "44179398",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "44179401",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "44179404",
+    "n": "Vicente Piwonka",
+    "t": "banca"
+   },
+   {
+    "id": "44179395",
+    "n": "Maximiliano O'Ryan",
+    "t": "banca"
+   },
+   {
+    "id": "44179399",
+    "n": "Benjamín Machuca Celis",
+    "t": "banca"
+   },
+   {
+    "id": "44179357",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "44179396",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320015": {
+  "anio": 2024,
+  "fecha": "2024-04-07 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425700",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425701",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   }
+  ]
+ },
+ "134320019": {
+  "anio": 2024,
+  "fecha": "2024-04-14 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425700",
+    "n": "Juan Pablo Coddou Reyes (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425735",
+    "n": "Mathias Claps",
+    "t": "banca"
+   },
+   {
+    "id": "49425681",
+    "n": "benjamin lillo",
+    "t": "banca"
+   },
+   {
+    "id": "49425675",
+    "n": "Diego Astudillo Avendaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "banca"
+   },
+   {
+    "id": "49425736",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320022": {
+  "anio": 2024,
+  "fecha": "2024-04-20 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425735",
+    "n": "Mathias Claps",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425700",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425713",
+    "n": "Francisco Andrés Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "49425675",
+    "n": "Diego Astudillo Avendaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "banca"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "49425736",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320023": {
+  "anio": 2024,
+  "fecha": "2024-05-04 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425700",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "49425713",
+    "n": "Francisco Andrés Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "49425680",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "banca"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "49425736",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "banca"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320031": {
+  "anio": 2024,
+  "fecha": "2024-05-18 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "49425713",
+    "n": "Francisco Andrés Álvarez",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425678",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425736",
+    "n": "Felipe Garnham Rosenqvist",
+    "t": "titular"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425675",
+    "n": "Diego Astudillo Avendaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320034": {
+  "anio": 2024,
+  "fecha": "2024-05-26 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425701",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "49425675",
+    "n": "Diego Astudillo Avendaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320035": {
+  "anio": 2024,
+  "fecha": "2024-06-01 16:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "49425701",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "banca"
+   },
+   {
+    "id": "49425713",
+    "n": "Francisco Andrés Álvarez",
+    "t": "banca"
+   },
+   {
+    "id": "49425675",
+    "n": "Diego Astudillo Avendaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320044": {
+  "anio": 2024,
+  "fecha": "2024-06-30 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425719",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   }
+  ]
+ },
+ "134320046": {
+  "anio": 2024,
+  "fecha": "2024-07-06 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "49425680",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "banca"
+   },
+   {
+    "id": "49425683",
+    "n": "Tomás Alonso",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320050": {
+  "anio": 2024,
+  "fecha": "2024-07-21 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "banca"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "banca"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320053": {
+  "anio": 2024,
+  "fecha": "2024-07-27 21:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320059": {
+  "anio": 2024,
+  "fecha": "2024-08-11 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   }
+  ]
+ },
+ "134320060": {
+  "anio": 2024,
+  "fecha": "2024-08-25 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "49425678",
+    "n": "Santiago Perez Rasmussen",
+    "t": "banca"
+   },
+   {
+    "id": "49425683",
+    "n": "Tomás Alonso",
+    "t": "banca"
+   }
+  ]
+ },
+ "134320065": {
+  "anio": 2024,
+  "fecha": "2024-09-01 20:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "49425709",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   }
+  ]
+ },
+ "134464713": {
+  "anio": 2024,
+  "fecha": "2024-05-11 03:00:00",
+  "nomina": 0,
+  "titulares": 0,
+  "entraron": 0,
+  "jugaron": []
+ },
+ "134465779": {
+  "anio": 2024,
+  "fecha": "2024-06-16 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "49425710",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425701",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "banca"
+   },
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "banca"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   },
+   {
+    "id": "51081454",
+    "n": "Ignacio Tomás González Araya",
+    "t": "banca"
+   }
+  ]
+ },
+ "134688480": {
+  "anio": 2024,
+  "fecha": "2024-08-03 04:00:00",
+  "nomina": 0,
+  "titulares": 0,
+  "entraron": 0,
+  "jugaron": []
+ },
+ "134688788": {
+  "anio": 2024,
+  "fecha": "2024-09-14 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "titular"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425671",
+    "n": "Felipe Callejas",
+    "t": "titular"
+   },
+   {
+    "id": "49425725",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "49425716",
+    "n": "Samuel Astorga López",
+    "t": "banca"
+   },
+   {
+    "id": "49425681",
+    "n": "benjamin lillo",
+    "t": "banca"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "banca"
+   }
+  ]
+ },
+ "138649590": {
+  "anio": 2024,
+  "fecha": "2024-09-29 19:45:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "banca"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   },
+   {
+    "id": "49425711",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   }
+  ]
+ },
+ "138649592": {
+  "anio": 2024,
+  "fecha": "2024-10-05 16:45:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "49425723",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "49425727",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "49425728",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "49425676",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "49425670",
+    "n": "matias valenzuela miranda",
+    "t": "titular"
+   },
+   {
+    "id": "49425699",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425738",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "49425702",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "49425697",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "51081435",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "49425673",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "49425734",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "50835562",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "titular"
+   },
+   {
+    "id": "49425730",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "49425721",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "49425743",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "49425737",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "49425724",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "49425668",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "49520875",
+    "n": "Axel Troncoso",
+    "t": "banca"
+   },
+   {
+    "id": "49425712",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "49425741",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "banca"
+   }
+  ]
+ },
+ "140762308": {
+  "anio": 2025,
+  "fecha": "2025-04-27 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482180",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482229",
+    "n": "Tomás Alonso",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "53482192",
+    "n": "matias valenzuela miranda",
+    "t": "banca"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "banca"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847600": {
+  "anio": 2025,
+  "fecha": "2025-05-04 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "53482208",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "53482166",
+    "n": "Andres San Martin Romo",
+    "t": "banca"
+   },
+   {
+    "id": "53482180",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847601": {
+  "anio": 2025,
+  "fecha": "2025-05-11 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53493950",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "53482180",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847610": {
+  "anio": 2025,
+  "fecha": "2025-05-17 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 3,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482180",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847615": {
+  "anio": 2025,
+  "fecha": "2025-05-31 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482180",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482166",
+    "n": "Andres San Martin Romo",
+    "t": "banca"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847619": {
+  "anio": 2025,
+  "fecha": "2025-06-07 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "53493950",
+    "n": "Felipe Díaz Rettig",
+    "t": "banca"
+   },
+   {
+    "id": "53523566",
+    "n": "Cristobal Claren Gallardo",
+    "t": "banca"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "53482229",
+    "n": "Tomás Alonso",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847625": {
+  "anio": 2025,
+  "fecha": "2025-06-15 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482172",
+    "n": "Domingo Estadella Rios",
+    "t": "banca"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847629": {
+  "anio": 2025,
+  "fecha": "2025-06-28 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482207",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "banca"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847635": {
+  "anio": 2025,
+  "fecha": "2025-07-06 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "banca"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847640": {
+  "anio": 2025,
+  "fecha": "2025-07-12 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482180",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847645": {
+  "anio": 2025,
+  "fecha": "2025-07-27 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482208",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   },
+   {
+    "id": "53482223",
+    "n": "José Pablo Fernández Thiers",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847646": {
+  "anio": 2025,
+  "fecha": "2025-08-02 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   }
+  ]
+ },
+ "140847655": {
+  "anio": 2025,
+  "fecha": "2025-08-09 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482223",
+    "n": "José Pablo Fernández Thiers",
+    "t": "titular"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   }
+  ]
+ },
+ "140847660": {
+  "anio": 2025,
+  "fecha": "2025-08-23 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482185",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482178",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "banca"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "53482223",
+    "n": "José Pablo Fernández Thiers",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847664": {
+  "anio": 2025,
+  "fecha": "2025-08-31 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 1,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482169",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847670": {
+  "anio": 2025,
+  "fecha": "2025-09-06 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482223",
+    "n": "José Pablo Fernández Thiers",
+    "t": "titular"
+   },
+   {
+    "id": "53482201",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482208",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847675": {
+  "anio": 2025,
+  "fecha": "2025-09-27 16:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "titular"
+   },
+   {
+    "id": "53482198",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "53482184",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53482226",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "53482165",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "53482223",
+    "n": "José Pablo Fernández Thiers",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "53482217",
+    "n": "vicente Vargas Moya",
+    "t": "banca"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "53482208",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "53482172",
+    "n": "Domingo Estadella Rios",
+    "t": "banca"
+   },
+   {
+    "id": "53550732",
+    "n": "Gerard Martin Amar",
+    "t": "banca"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "banca"
+   }
+  ]
+ },
+ "140847679": {
+  "anio": 2025,
+  "fecha": "2025-10-04 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "53482193",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "titular"
+   },
+   {
+    "id": "53482197",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "53482173",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "53482210",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "53482208",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "53482171",
+    "n": "Diego Espinosa Nova",
+    "t": "titular"
+   },
+   {
+    "id": "53482186",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "53530869",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "53493948",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "53482170",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "53482181",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "53482168",
+    "n": "Benjamín Machuca Celis",
+    "t": "titular"
+   },
+   {
+    "id": "53482206",
+    "n": "Tomás Yáñez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "53550732",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "53482194",
+    "n": "MAXIMILIANO BAUMANN ZAMORA",
+    "t": "titular"
+   },
+   {
+    "id": "53530867",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "banca"
+   },
+   {
+    "id": "53491901",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "53482183",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "53482172",
+    "n": "Domingo Estadella Rios",
+    "t": "banca"
+   },
+   {
+    "id": "53482209",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "53482226",
+    "n": "Santiago Perez Rasmussen",
+    "t": "banca"
+   },
+   {
+    "id": "53482204",
+    "n": "Thomas Mateluna",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047823": {
+  "anio": 2026,
+  "fecha": "2026-04-11 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164736",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54164685",
+    "n": "Juan Mauricio Calderon Berrios",
+    "t": "banca"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "54164715",
+    "n": "José Pablo Fernández Thiers",
+    "t": "banca"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047828": {
+  "anio": 2026,
+  "fecha": "2026-04-18 18:30:00",
+  "nomina": 22,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "54164747",
+    "n": "Pablo O'Brien Gallegos",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164715",
+    "n": "José Pablo Fernández Thiers",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54166562",
+    "n": "Matias Cardenas",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047831": {
+  "anio": 2026,
+  "fecha": "2026-04-25 18:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "54164739",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047838": {
+  "anio": 2026,
+  "fecha": "2026-05-10 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164691",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164736",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "54166562",
+    "n": "Matias Cardenas",
+    "t": "banca"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54164759",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047841": {
+  "anio": 2026,
+  "fecha": "2026-05-17 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164759",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164736",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "54164679",
+    "n": "Renzo Bozzo Molina",
+    "t": "banca"
+   },
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "banca"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047847": {
+  "anio": 2026,
+  "fecha": "2026-05-30 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "54164750",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047850": {
+  "anio": 2026,
+  "fecha": "2026-06-07 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "banca"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "54164750",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047856": {
+  "anio": 2026,
+  "fecha": "2026-06-13 17:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164663",
+    "n": "Tomás Alonso",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "54164680",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047861": {
+  "anio": 2026,
+  "fecha": "2026-06-20 19:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 5,
+  "jugaron": [
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "54164680",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "54164750",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047866": {
+  "anio": 2026,
+  "fecha": "2026-07-05 16:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 7,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "54164736",
+    "n": "Ignacio Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164663",
+    "n": "Tomás Alonso",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "banca"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "54164714",
+    "n": "Enrique Faúndez Saldaño",
+    "t": "banca"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54164715",
+    "n": "José Pablo Fernández Thiers",
+    "t": "banca"
+   },
+   {
+    "id": "54164759",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047871": {
+  "anio": 2026,
+  "fecha": "2026-07-12 17:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "54164691",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164715",
+    "n": "José Pablo Fernández Thiers",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164663",
+    "n": "Tomás Alonso",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54164759",
+    "n": "Francisco Urroz",
+    "t": "banca"
+   },
+   {
+    "id": "54164750",
+    "n": "Juan Pablo Pizarro johannesen",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047881": {
+  "anio": 2026,
+  "fecha": "2026-08-01 17:30:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 0,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164748",
+    "n": "Santiago Perez Rasmussen",
+    "t": "titular"
+   },
+   {
+    "id": "54164759",
+    "n": "Francisco Urroz",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164761",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   }
+  ]
+ },
+ "144047885": {
+  "anio": 2026,
+  "fecha": "2026-08-09 17:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 8,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164680",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "54164739",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164715",
+    "n": "José Pablo Fernández Thiers",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "54166562",
+    "n": "Matias Cardenas",
+    "t": "banca"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "54164675",
+    "n": "filippo borghi",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54201871",
+    "n": "José Antonio Pérez Santander",
+    "t": "banca"
+   },
+   {
+    "id": "54203047",
+    "n": "Jose Tomas Barrena Botto",
+    "t": "banca"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047891": {
+  "anio": 2026,
+  "fecha": "2026-08-15 19:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 4,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164739",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164717",
+    "n": "benjamin frias davila",
+    "t": "banca"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "banca"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "54201871",
+    "n": "José Antonio Pérez Santander",
+    "t": "banca"
+   }
+  ]
+ },
+ "144047894": {
+  "anio": 2026,
+  "fecha": "2026-08-22 18:00:00",
+  "nomina": 23,
+  "titulares": 15,
+  "entraron": 6,
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164745",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164726",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54164739",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54256629",
+    "n": "José Miguel Pérez Santander",
+    "t": "banca"
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "t": "banca"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "banca"
+   },
+   {
+    "id": "54355743",
+    "n": "Benjamín Machuca Celis",
+    "t": "banca"
+   },
+   {
+    "id": "54201871",
+    "n": "José Antonio Pérez Santander",
+    "t": "banca"
+   },
+   {
+    "id": "54164715",
+    "n": "José Pablo Fernández Thiers",
+    "t": "banca"
+   }
+  ]
+ }
+}

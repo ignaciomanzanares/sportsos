@@ -611,8 +611,7 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
   // Caps de toda la carrera: lo guardado de temporadas anteriores más lo que
   // va del año. Para el que lleva seis temporadas, ver solo las de este año
   // le borra el resto.
-  const histCaps    = capsHistoricos(player)?.total || 0;
-  const carreraCaps = histCaps + (player?.stats?.capsPrimera || 0);
+  const carreraCaps = capsHistoricos(player)?.total || 0;
 
   const mesActual  = periodoDe();
   const delMes     = (payments || []).filter(p => p.playerId === player?.id && periodoDePago(p) === mesActual);
@@ -689,7 +688,7 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
             juvenil que nunca subió no le aporta nada. */}
         {carreraCaps > 0 && (
           <HeroStat icon="🎖" value={carreraCaps} label="Caps"
-            sub={histCaps > 0 ? `Primer equipo desde ${HISTORICO_DESDE}` : "Partidos en Primera"}
+            sub={`Primer equipo desde ${HISTORICO_DESDE}`}
             color="#D4AF37" onClick={()=>onNavigate("midashboard")}/>
         )}
         <HeroStat icon={anotJug.icono} value={player?.stats?.[anotJug.clave] ?? "—"} label={anotJug.etiqueta}

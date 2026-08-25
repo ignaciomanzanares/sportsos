@@ -23,10 +23,8 @@ export default function CapsPrimera({ players = [], sportColor = "#1FA04A" }) {
   // en el archivo, así no hay que regenerarlo cada fecha.
   const conCaps = players
     .map(p => {
-      const hist = capsHistoricos(p);
-      const esteAnio = p.stats?.capsPrimera || 0;
-      return { ...p, _hist: hist?.total || 0, _anio: esteAnio,
-               _carrera: (hist?.total || 0) + esteAnio };
+      const c = capsHistoricos(p);
+      return { ...p, _anio: c?.porAnio?.[anioEnCurso] || 0, _carrera: c?.total || 0 };
     })
     .filter(p => p._carrera > 0)
     .sort((a, b) => (b._carrera - a._carrera)
@@ -47,8 +45,8 @@ export default function CapsPrimera({ players = [], sportColor = "#1FA04A" }) {
       {/* Se dice qué se está contando y qué no: un número de caps sin la regla
           al lado se presta a que cada uno entienda otra cosa. */}
       <div style={{ ...ss.muted, fontSize: "11px", marginBottom: "14px", lineHeight: 1.5 }}>
-        Partidos de titular desde {HISTORICO_DESDE}. Intermedia y Pre-Intermedia no
-        cuentan. ARUSA no publica quién entró desde la banca, así que esos no están.
+        Desde {HISTORICO_DESDE}. Cuenta el que arrancó de titular y el que entró
+        desde la banca. Intermedia y Pre-Intermedia no cuentan.
       </div>
 
       {conCaps.map((p, i) => (
@@ -78,7 +76,7 @@ export default function CapsPrimera({ players = [], sportColor = "#1FA04A" }) {
               cuenta una historia distinta a 40 todos de este año. */}
           {p._anio > 0 && (
             <span style={{ fontSize: "10px", color: "var(--text-4)", flexShrink: 0 }}
-              title={`${p._anio} este año`}>
+              title={`${p._anio} en ${anioEnCurso}`}>
               +{p._anio}
             </span>
           )}

@@ -3,9 +3,23 @@ import DATOS from "./capsHistoricos.json";
 /**
  * Caps del primer equipo, temporadas 2021 a 2025.
  *
- * Un cap es un partido jugado por el equipo de Titulares. Sale de las tablas
- * de estadísticas de ARUSA, temporada por temporada — Leverade guarda las seis
- * y el torneo cambió de nombre y de formato casi todos los años:
+ * Un cap es un partido jugado por el equipo de Titulares: arrancó de titular
+ * o entró desde la banca. El que quedó de reserva sin entrar no suma.
+ *
+ * De dónde sale. La tabla de estadísticas de ARUSA no sirve para esto: cuenta
+ * solo al que arrancó. Se comprobó dividiendo las presencias de cada
+ * temporada por los partidos y daba el XV exacto (15,0 a 16,6). Lo real está
+ * partido por partido, en dos páginas que sí publica arusa:
+ *
+ *   /match/<id>/stats         la nómina, Regular 1-15 y Reserve 16-23
+ *   /match/<id>/live-scoring  cada Substitution, con quién sale y quién entra
+ *
+ * Se bajaron los 104 partidos de Titulares del club con
+ * scripts/caps-arusa.mjs y se consolidaron con scripts/caps-consolidar.mjs.
+ * Hay que navegar con un navegador de verdad: arusa pone un desafío de
+ * JavaScript que responde 429 a curl y también al proxy de Cloudflare.
+ *
+ * El torneo cambió de nombre y formato casi todos los años:
  *
  *   2021  TOP 8 · Titulares
  *   2022  Primera · Titulares
@@ -13,26 +27,20 @@ import DATOS from "./capsHistoricos.json";
  *   2024  SEGUNDA División · Titulares  ← el club estaba en segunda ese año
  *   2025  Primera División · grupo Titulares
  *
- * 2024 se incluye porque el criterio es el EQUIPO, no la categoría: fueron
- * partidos del primer equipo aunque el club estuviera en segunda. Si el club
- * prefiere contar solo primera división, es sacar ese año de la suma.
+ * 2024 cuenta porque el criterio es el EQUIPO, no la categoría: fueron
+ * partidos del primer equipo aunque el club estuviera en segunda.
  *
- * IMPORTANTE — lo que este número NO es: ARUSA cuenta solo al que arrancó de
- * titular. Se comprobó sumando todas las presencias de cada temporada y
- * dividiendo por los partidos: da entre 15,0 y 16,6, o sea el XV. Si contara
- * a los que entran desde la banca daría cerca de 23. Y no hay de dónde
- * sacarlo: arusa no publica formaciones ni sustituciones — el minuto a minuto
- * solo trae ensayos, conversiones, penales y tarjetas.
+ * Lo que falta y no se puede recuperar: 6 de los 104 partidos no tienen la
+ * nómina cargada en arusa (4 de 2021, 2 de 2024). Son caps que existieron y
+ * nadie va a poder contar. El resto, 98 partidos, está completo.
  *
- * O sea: esto es "partidos de titular", no "presencias". Es el techo de lo
- * que la fuente permite.
- *
- * El año en curso NO está acá: lo trae la API en vivo y se suma aparte, para
- * que no haya que regenerar este archivo cada fecha.
+ * Incluye la temporada en curso. Sumarla en vivo desde la tabla de ARUSA
+ * habría sido cómodo pero incorrecto: esa tabla mide titularidades, así que
+ * el jugador vería su historia con una regla y su año con otra. Se refresca
+ * corriendo los dos scripts después de cada fecha — caps-arusa.mjs baja solo
+ * los partidos nuevos.
  */
-
 const HISTORICO_DESDE = 2021;
-const HISTORICO_HASTA = 2025;
 
 /** Igual que clave_nombre en la base: palabras del nombre, sin acentos ni orden. */
 function clave(nombre) {
@@ -50,7 +58,7 @@ const POR_ID = new Map();
 for (const v of Object.values(DATOS)) if (v.id) POR_ID.set(String(v.id), v);
 
 /**
- * Caps históricos de un jugador: { total, porAnio } o null.
+ * Caps de un jugador: { total, porAnio } o null si nunca jugó en Titulares.
  * Se cruza primero por id de ARUSA y solo si no hay, por nombre.
  */
 export function capsHistoricos(player) {
@@ -62,4 +70,4 @@ export function capsHistoricos(player) {
   return total > 0 ? { total, porAnio, nombre: v.n } : null;
 }
 
-export { HISTORICO_DESDE, HISTORICO_HASTA };
+export { HISTORICO_DESDE };
