@@ -59,3 +59,24 @@ cliente que no ejecute JavaScript. No lo pasan ni `curl` ni el proxy de
 Cloudflare del proyecto rugby-chile, que reenvía la petición tal cual. Con
 Playwright el desafío se resuelve una vez y la sesión sirve para todo el
 recorrido.
+
+
+---
+
+# Respaldo de la base
+
+`respaldo-supabase.sh` saca una copia completa del esquema `public` más las
+cuentas de `auth`. Existe porque la base del club vive en una cuenta de
+Supabase que no es del club: los 142 jugadores, con sus fechas de nacimiento,
+teléfonos, contactos de emergencia y estado médico, más las cuotas.
+
+```
+ DB_URL='postgresql://...' ./scripts/respaldo-supabase.sh
+```
+
+El espacio antes del comando es a propósito: hace que bash no lo guarde en el
+historial. La cadena sale de Supabase → Project Settings → Database →
+Connection string → URI, usando el Session pooler (puerto 5432).
+
+Los archivos van a `~/respaldos-sportos` y no al repo — un dump con datos
+personales de menores no se versiona.

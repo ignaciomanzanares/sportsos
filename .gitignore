@@ -46,3 +46,7 @@ caps-old-reds.csv
 caps-old-reds-whatsapp.txt
 caps-por-confirmar.json
 caps-por-confirmar.txt
+
+# Respaldos de la base: datos personales, nunca al repo
+respaldos-sportos/
+*.dump
