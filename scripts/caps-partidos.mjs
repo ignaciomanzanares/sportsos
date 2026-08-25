@@ -42,4 +42,4 @@ for(const t of PLAN){
   console.log(`${t.anio}: ${n} partidos de Old Reds en Titulares`);
 }
 console.log("TOTAL:", salida.length);
-(await import("node:fs")).default.writeFileSync("/tmp/claude-1000/-home-ignaciomanzanares/145c833d-1c70-452b-961b-50643a430db8/scratchpad/partidos.json", JSON.stringify(salida,null,1));
+(await import("node:fs")).default.writeFileSync("scripts/partidos.json", JSON.stringify(salida,null,1));

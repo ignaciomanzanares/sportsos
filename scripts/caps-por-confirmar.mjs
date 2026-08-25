@@ -14,6 +14,7 @@
  *       node scripts/caps-por-confirmar.mjs            (todos, resumido)
  */
 import { readFileSync, writeFileSync } from "fs";
+import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
 
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json", "utf8"));
 const RIVALES = (() => {
@@ -22,10 +23,6 @@ const RIVALES = (() => {
 })();
 const quien = process.argv[2];
 
-const limpio = n => String(n || "").replace(/\s*\((c|cc)\)\s*$/i, "").trim();
-const clave = n => limpio(n).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
-  .split(/[^a-z]+/).filter(x => x.length > 1 && !["de","del","la","los"].includes(x))
-  .sort().join(" ");
 
 const dudosos = new Map();
 for (const [mid, p] of Object.entries(CRUDO)) {
@@ -33,7 +30,7 @@ for (const [mid, p] of Object.entries(CRUDO)) {
   for (const j of p.nomina) {
     if (j.t !== "banca" || j.jugo) continue;
     const k = clave(j.n);
-    const v = dudosos.get(k) || { n: limpio(j.n), partidos: [] };
+    const v = dudosos.get(k) || { n: limpiarNombre(j.n), partidos: [] };
     v.partidos.push({ anio: p.anio, fecha: String(p.fecha).slice(0, 10), num: j.num,
                       rival: RIVALES[mid] || "", match: mid,
                       cambiosRegistrados: p.entraron });

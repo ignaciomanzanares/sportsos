@@ -8,28 +8,13 @@
  * Uso: node scripts/caps-consolidar.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
+import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
 
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json", "utf8"));
-// Lo que confirmó el propio jugador sobre los cambios que arusa no anotó.
-// Manda sobre el dato scrapeado: el que jugó el partido sabe si entró.
-const CORR = (() => {
-  try {
-    const c = JSON.parse(readFileSync("scripts/caps-correcciones.json", "utf8"));
-    delete c._leeme;
-    return c;
-  } catch { return {}; }
-})();
+const CORR = leerCorrecciones();
 const SALIDA = "src/data/capsHistoricos.json";
 
-// arusa marca al capitán con "(c)" pegado al nombre en la nómina de ese
-// partido. Si no se saca, el mismo jugador queda partido en dos entradas —
-// una de los partidos que fue capitán y otra del resto.
-const limpiarNombre = n => String(n || "").replace(/\s*\((c|cc)\)\s*$/i, "").trim();
 
-const clave = n => limpiarNombre(n)
-  .normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
-  .split(/[^a-z]+/).filter(x => x.length > 1 && !["de","del","la","los"].includes(x))
-  .sort().join(" ");
 
 const porJugador = new Map();
 const cobertura = {};
@@ -40,17 +25,19 @@ for (const partido of Object.values(CRUDO)) {
   const fecha = String(partido.fecha).slice(0, 10);
   cobertura[a] = cobertura[a] || { partidos: 0, conNomina: 0 };
   cobertura[a].partidos++;
-  if (!partido.nomina?.length) continue;
-  cobertura[a].conNomina++;
+  if (!sinNomina(partido)) cobertura[a].conNomina++;
 
-  // Se rehace quién jugó aplicando lo confirmado a mano. Solo puede cambiar a
-  // los de banca: si estaba en la nómina de titulares, jugó y punto.
-  const jugaron = partido.nomina.filter(j => {
-    if (j.t === "titular") return true;
+  const jugaron = quienJugo(partido, CORR);
+  // Cuántas veces mandó la memoria del jugador por sobre lo que trae arusa:
+  // los ingresos de banca que no estaban registrados, más los partidos sin
+  // nómina que solo existen porque alguien los confirmó.
+  for (const j of jugaron) {
     const dicho = CORR[clave(j.n)]?.[fecha];
-    if (dicho === true || dicho === false) { corregidos++; return dicho; }
-    return j.jugo;
-  });
+    if (dicho === true || dicho === "titular" || dicho === "banca") corregidos++;
+  }
+  for (const j of (partido.nomina || [])) {
+    if (j.t === "banca" && j.jugo && CORR[clave(j.n)]?.[fecha] === false) corregidos++;
+  }
 
   for (const j of jugaron) {
     const k = clave(j.n);

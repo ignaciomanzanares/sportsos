@@ -8,23 +8,22 @@
  * Uso: node scripts/caps-reporte.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
+import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json","utf8"));
 const PART  = JSON.parse(readFileSync("scripts/partidos.json","utf8"));
+const CORR  = leerCorrecciones();
 const A=[2021,2022,2023,2024,2025,2026];
-const limpio = n => String(n||"").replace(/\s*\((c|cc)\)\s*$/i,"").trim();
-const clave = n => limpio(n).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()
-  .split(/[^a-z]+/).filter(x=>x.length>1&&!["de","del","la","los"].includes(x)).sort().join(" ");
 
 const J=new Map();
 const faltan=[];
 for (const [mid,p] of Object.entries(CRUDO)) {
-  if (!p.jugaron?.length) { faltan.push({...p, match:mid}); continue; }
-  for (const x of p.jugaron) {
+  if (sinNomina(p)) { faltan.push({...p, match:mid}); }
+  for (const x of quienJugo(p, CORR)) {
     const k=clave(x.n); if(!k) continue;
-    const v=J.get(k)||{n:limpio(x.n),y:{}};
+    const v=J.get(k)||{n:limpiarNombre(x.n),y:{}};
     v.y[p.anio]=v.y[p.anio]||{t:0,b:0};
     v.y[p.anio][x.t==="titular"?"t":"b"]++;
-    if(limpio(x.n).length>v.n.length) v.n=limpio(x.n);
+    if(limpiarNombre(x.n).length>v.n.length) v.n=limpiarNombre(x.n);
     J.set(k,v);
   }
 }
@@ -53,7 +52,7 @@ for(const v of lista){
 
 md+=`\n## Cobertura\n\n| Año | Partidos | Con nómina | Faltan |\n|---|---:|---:|---:|\n`;
 const cob={};
-for(const p of Object.values(CRUDO)){ cob[p.anio]=cob[p.anio]||{t:0,c:0}; cob[p.anio].t++; if(p.jugaron?.length) cob[p.anio].c++; }
+for(const p of Object.values(CRUDO)){ cob[p.anio]=cob[p.anio]||{t:0,c:0}; cob[p.anio].t++; if(!sinNomina(p)) cob[p.anio].c++; }
 for(const p of nuncaBajados){ cob[p.anio]=cob[p.anio]||{t:0,c:0}; cob[p.anio].t++; }
 for(const a of A){ const c=cob[a]; if(!c) continue; md+=`| ${a} | ${c.t} | ${c.c} | ${c.t-c.c} |\n`; }
 

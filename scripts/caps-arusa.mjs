@@ -20,7 +20,7 @@
 import { chromium } from "playwright";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 
-const PARTIDOS = JSON.parse(readFileSync(process.argv[2] || "/tmp/claude-1000/-home-ignaciomanzanares/145c833d-1c70-452b-961b-50643a430db8/scratchpad/partidos.json", "utf8"));
+const PARTIDOS = JSON.parse(readFileSync(process.argv[2] || "scripts/partidos.json", "utf8"));
 const SALIDA = "scripts/caps-arusa.json";
 const CLUB = /old\s*reds/i;
 const UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
@@ -57,7 +57,15 @@ for (const m of PARTIDOS) {
     const nomina = await p.evaluate((CLUBs) => {
       const re = new RegExp(CLUBs, "i");
       for (const tabla of document.querySelectorAll("table")) {
-        const filas = [...tabla.querySelectorAll("tr")].filter(tr => /Regular|Reserve/.test(tr.textContent));
+        // La tabla de la nómina se reconoce por su encabezado, no por el
+        // contenido de las filas: en 2021 la columna "Regular" existe pero
+        // viene VACÍA en cada fila —solo el número de camiseta distingue
+        // titular de suplente— y filtrar por esa palabra dejaba el partido
+        // entero como si no tuviera nómina.
+        const enc = tabla.querySelector("tr");
+        if (!enc || !/Player/i.test(enc.textContent)) continue;
+        const filas = [...tabla.querySelectorAll("tr")].slice(1)
+          .filter(tr => tr.querySelectorAll("td").length > 2);
         if (!filas.length) continue;
         let nodo = tabla, equipo = null;
         while (nodo && !equipo) {
@@ -69,9 +77,16 @@ for (const m of PARTIDOS) {
         return filas.map(tr => {
           const c = [...tr.querySelectorAll("td")].map(td => td.textContent.replace(/\s+/g, " ").trim());
           const a = tr.querySelector('a[href*="/players/"]');
-          return { tipo: /Regular/.test(c[1]) ? "titular" : "banca", num: +c[2],
-                   nombre: c[3], id: a?.href.match(/\/players\/(\d+)/)?.[1] || null };
-        }).filter(x => x.id);
+          const num = parseInt(c[2], 10);
+          // Con etiqueta, manda la etiqueta. Sin ella (2021), manda el número:
+          // del 1 al 15 arrancó, del 16 en adelante fue al banco. La tabla de
+          // 2021 lista el plantel COMPLETO —cincuenta y pico— y los que no
+          // fueron citados ese día van sin número: esos no jugaron.
+          const etiqueta = /Regular/.test(c[1]) ? "titular"
+                         : /Reserve/.test(c[1]) ? "banca" : null;
+          return { tipo: etiqueta || (num <= 15 ? "titular" : "banca"),
+                   num, nombre: c[3], id: a?.href.match(/\/players\/(\d+)/)?.[1] || null };
+        }).filter(x => x.id && Number.isFinite(x.num));
       }
       return [];
     }, CLUB.source);

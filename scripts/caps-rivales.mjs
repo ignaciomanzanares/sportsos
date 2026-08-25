@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from "fs";
 const H={Accept:"application/vnd.api+json","User-Agent":"Mozilla/5.0"};
 const g=async p=>(await fetch(`https://api.leverade.com${p}`,{headers:H})).json();
-const P=JSON.parse(readFileSync("/tmp/claude-1000/-home-ignaciomanzanares/145c833d-1c70-452b-961b-50643a430db8/scratchpad/partidos.json","utf8"));
+const P=JSON.parse(readFileSync("scripts/partidos.json","utf8"));
 const torneos=[...new Set(P.map(p=>p.torneo))];
 const out={};
 for(const tid of torneos){

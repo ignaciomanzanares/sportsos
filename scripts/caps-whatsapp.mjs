@@ -8,30 +8,20 @@
  * Uso: node scripts/caps-whatsapp.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
+import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
 const CRUDO=JSON.parse(readFileSync("scripts/caps-arusa.json","utf8"));
-const CORR=(()=>{try{const c=JSON.parse(readFileSync("scripts/caps-correcciones.json","utf8"));delete c._leeme;return c;}catch{return{};}})();
+const CORR = leerCorrecciones();
 const A=[2021,2022,2023,2024,2025,2026];
-const limpio=n=>String(n||"").replace(/\s*\((c|cc)\)\s*$/i,"").trim();
-const clave=n=>limpio(n).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()
-  .split(/[^a-z]+/).filter(x=>x.length>1&&!["de","del","la","los"].includes(x)).sort().join(" ");
 
 const J=new Map();
 for(const p of Object.values(CRUDO)){
-  if(!p.nomina?.length) continue;
-  const fecha=String(p.fecha).slice(0,10);
-  // Igual que el consolidador: lo que confirmó el jugador manda sobre arusa.
-  const jugaron=p.nomina.filter(j=>{
-    if(j.t==="titular") return true;
-    const dicho=CORR[clave(j.n)]?.[fecha];
-    return (dicho===true||dicho===false) ? dicho : j.jugo;
-  });
-  for(const x of jugaron){
+  for(const x of quienJugo(p, CORR)){
     const k=clave(x.n); if(!k) continue;
-    const v=J.get(k)||{n:limpio(x.n),y:{},t:0,b:0};
+    const v=J.get(k)||{n:limpiarNombre(x.n),y:{},t:0,b:0};
     v.y[p.anio]=v.y[p.anio]||{t:0,b:0};
     v.y[p.anio][x.t==="titular"?"t":"b"]++;
     if(x.t==="titular") v.t++; else v.b++;
-    if(limpio(x.n).length>v.n.length) v.n=limpio(x.n);
+    if(limpiarNombre(x.n).length>v.n.length) v.n=limpiarNombre(x.n);
     J.set(k,v);
   }
 }

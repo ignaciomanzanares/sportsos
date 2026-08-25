@@ -2,26 +2,733 @@
  "114733108": {
   "anio": 2021,
   "fecha": "2021-07-10 19:00:00",
-  "titulares": 0,
+  "titulares": 15,
   "entraron": 6,
-  "nomina": [],
-  "jugaron": []
+  "nomina": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "num": 1,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "num": 2,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "num": 3,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "num": 4,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "num": 5,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "num": 6,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "num": 7,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935402",
+    "n": "Mathias Claps",
+    "num": 8,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "num": 9,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "num": 10,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "num": 11,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "num": 12,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "num": 13,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "num": 14,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "num": 15,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "num": 16,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "num": 17,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935504",
+    "n": "Benjamín Díaz Rodríguez",
+    "num": 18,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "num": 19,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935468",
+    "n": "Cristobal Claren Gallardo",
+    "num": 20,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "num": 21,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "num": 22,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935477",
+    "n": "Benjamín Machuca Celis",
+    "num": 23,
+    "t": "banca",
+    "jugo": true
+   }
+  ],
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935402",
+    "n": "Mathias Claps",
+    "t": "titular"
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "banca"
+   },
+   {
+    "id": "36935468",
+    "n": "Cristobal Claren Gallardo",
+    "t": "banca"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "banca"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "banca"
+   },
+   {
+    "id": "36935477",
+    "n": "Benjamín Machuca Celis",
+    "t": "banca"
+   }
+  ]
  },
  "114733112": {
   "anio": 2021,
   "fecha": "2021-07-24 19:00:00",
-  "titulares": 0,
+  "titulares": 14,
   "entraron": 4,
-  "nomina": [],
-  "jugaron": []
+  "nomina": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "num": 1,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "num": 2,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "num": 3,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "num": 4,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "num": 5,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "num": 6,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "num": 7,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "num": 9,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "num": 10,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "num": 11,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "num": 12,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "num": 13,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "num": 14,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "num": 15,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "num": 16,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "num": 17,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935495",
+    "n": "Felipe Díaz Rettig",
+    "num": 19,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "num": 20,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "num": 21,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935403",
+    "n": "Felipe Callejas",
+    "num": 23,
+    "t": "banca",
+    "jugo": true
+   }
+  ],
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36935490",
+    "n": "Juan Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "t": "titular"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "banca"
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "t": "banca"
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "t": "banca"
+   },
+   {
+    "id": "36935403",
+    "n": "Felipe Callejas",
+    "t": "banca"
+   }
+  ]
  },
  "114733116": {
   "anio": 2021,
   "fecha": "2021-07-31 20:00:00",
-  "titulares": 0,
+  "titulares": 13,
   "entraron": 0,
-  "nomina": [],
-  "jugaron": []
+  "nomina": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "num": 1,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "num": 3,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "num": 4,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "num": 5,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "num": 6,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "num": 7,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "num": 8,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "num": 9,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "num": 10,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "num": 11,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "num": 12,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "num": 14,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "num": 15,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935405",
+    "n": "Nicolás Naranjo Sirandoni",
+    "num": 16,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935504",
+    "n": "Benjamín Díaz Rodríguez",
+    "num": 17,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935402",
+    "n": "Mathias Claps",
+    "num": 19,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "num": 20,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "num": 21,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "num": 23,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935407",
+    "n": "Felipe Garnham Rosenqvist",
+    "num": 27,
+    "t": "banca",
+    "jugo": false
+   }
+  ],
+  "jugaron": [
+   {
+    "id": "36935474",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935503",
+    "n": "Jose Manuel Henriquez Gana",
+    "t": "titular"
+   },
+   {
+    "id": "36935480",
+    "n": "Tomás Yáñez",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935469",
+    "n": "Juan Pablo Coddou Reyes",
+    "t": "titular"
+   }
+  ]
  },
  "114733122": {
   "anio": 2021,
@@ -690,6 +1397,13 @@
     "num": 21,
     "t": "banca",
     "jugo": true
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
+    "num": 23,
+    "t": "banca",
+    "jugo": true
    }
   ],
   "jugaron": [
@@ -791,6 +1505,11 @@
    {
     "id": "36935503",
     "n": "Jose Manuel Henriquez Gana",
+    "t": "banca"
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
     "t": "banca"
    }
   ]
@@ -2650,10 +3369,263 @@
  "114733162": {
   "anio": 2021,
   "fecha": "2021-11-14 17:00:00",
-  "titulares": 0,
+  "titulares": 15,
   "entraron": 4,
-  "nomina": [],
-  "jugaron": []
+  "nomina": [
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "num": 1,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "num": 2,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "num": 3,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "num": 4,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "num": 5,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "num": 6,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "num": 7,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "num": 8,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "num": 9,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "num": 10,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "num": 11,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
+    "num": 12,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "num": 13,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "num": 14,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "num": 15,
+    "t": "titular",
+    "jugo": true
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "num": 16,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "num": 17,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36962152",
+    "n": "Emilio de la Jara",
+    "num": 18,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935499",
+    "n": "Sebastian Osvaldo Castro Hoyos",
+    "num": 19,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "37055678",
+    "n": "Javier Barrientos Pesce",
+    "num": 20,
+    "t": "banca",
+    "jugo": true
+   },
+   {
+    "id": "36935498",
+    "n": "matias valenzuela miranda",
+    "num": 21,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "37006986",
+    "n": "Juan Bautista Mihura",
+    "num": 22,
+    "t": "banca",
+    "jugo": false
+   },
+   {
+    "id": "36935470",
+    "n": "Thomas Schmidt Puga",
+    "num": 23,
+    "t": "banca",
+    "jugo": false
+   }
+  ],
+  "jugaron": [
+   {
+    "id": "36935506",
+    "n": "Jose Miguel Sánchez",
+    "t": "titular"
+   },
+   {
+    "id": "36935475",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "36935500",
+    "n": "benjamin frias davila",
+    "t": "titular"
+   },
+   {
+    "id": "36935508",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "36935479",
+    "n": "filippo borghi",
+    "t": "titular"
+   },
+   {
+    "id": "36935404",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "36935494",
+    "n": "Karim Mosa Yousef",
+    "t": "titular"
+   },
+   {
+    "id": "36992940",
+    "n": "Vicente San Martín Manriquez",
+    "t": "titular"
+   },
+   {
+    "id": "36935501",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "36935507",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "36935408",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "36935406",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "36935467",
+    "n": "José Montero de la Jara",
+    "t": "titular"
+   },
+   {
+    "id": "36935482",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "36935492",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "36935476",
+    "n": "Juan Cristobal Torres Wahl",
+    "t": "banca"
+   },
+   {
+    "id": "36935487",
+    "n": "José Eduardo Rojas Espinoza",
+    "t": "banca"
+   },
+   {
+    "id": "37055678",
+    "n": "Javier Barrientos Pesce",
+    "t": "banca"
+   }
+  ]
  },
  "121244250": {
   "anio": 2022,
