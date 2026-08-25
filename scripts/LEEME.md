@@ -22,7 +22,11 @@ baja solo lo que falta.
 node scripts/caps-reporte.mjs        # caps-old-reds.md y .csv
 node scripts/caps-whatsapp.mjs       # caps-old-reds-whatsapp.txt
 node scripts/caps-por-confirmar.mjs  # los que hay que preguntarle a cada uno
+node scripts/caps-pdf.mjs            # caps-old-reds.pdf, el que se reparte
 ```
+
+El PDF se arma con el mismo navegador headless del scraper, así que no hace
+falta ninguna librería de PDF. Deja el HTML al lado por si hay que retocarlo.
 
 No están versionados: se regeneran de los datos y versionarlos obliga a
 acordarse de commitearlos cada vez que cambia un número.
