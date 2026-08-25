@@ -44,9 +44,9 @@ import DATOS from "./capsHistoricos.json";
  * 20 y 23. La pantalla lo dice: son un mínimo, y a los que más rotan les
  * faltan partidos.
  *
- * Además, 6 de los 104 partidos no tienen la nómina cargada (4 de 2021, 2 de
- * 2024). Ahí no hay ni titulares. Son caps que existieron y nadie va a poder
- * contar.
+ * Además, 4 de los 102 partidos no tienen la nómina cargada — los cuatro son
+ * de 2021. Ahí no hay ni titulares: son caps que existieron y nadie va a poder
+ * contar. De 2022 en adelante la cobertura es completa.
  *
  * Incluye la temporada en curso. Sumarla en vivo desde la tabla de ARUSA
  * habría sido cómodo pero incorrecto: esa tabla mide titularidades, así que

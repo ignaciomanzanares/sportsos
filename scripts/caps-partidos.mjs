@@ -32,6 +32,10 @@ for(const t of PLAN){
     if(!t.grupos.includes(gid)) continue;
     if(!equiposDeMatch.get(m.id)?.has(orId)) continue;
     if(!m.attributes?.finished) continue;
+    // Las fechas libres vienen como partidos "finished" con rest=true: un solo
+    // equipo, sin rival y sin marcador. Contarlas hacía figurar dos partidos
+    // de 2024 como "sin nómina en arusa" cuando en realidad no se jugaron.
+    if(m.attributes?.rest) continue;
     salida.push({anio:t.anio,torneo:t.torneo,match:m.id,fecha:m.attributes.datetime});
     n++;
   }
