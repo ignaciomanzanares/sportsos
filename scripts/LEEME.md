@@ -42,8 +42,15 @@ columnas cambió entre temporadas y contar celdas se rompía solo.
 divisiones, así que un try en Intermedia figura como del primer equipo. Acá se
 cuenta solo Titulares.
 
-Validado contra la API en vivo: los 32 jugadores de la temporada 2026 dan
-exactamente el mismo número de tries y conversiones por las dos vías.
+Validado por dos caminos independientes:
+
+- Contra la API en vivo: los 32 jugadores de 2026 dan exactamente el mismo
+  número de tries y conversiones por las dos vías.
+- Contra el marcador real: sumando lo que anotó cada jugador, **90 de los 102
+  partidos dan exacto**. En los otros 12 faltan 39 puntos (menos del 1% del
+  total), casi siempre una conversión sin anotar. Se revisó el minuto a minuto
+  de esos 12: no están ahí tampoco, y donde hay un evento de más viene sin
+  jugador asociado. No se pueden atribuir a nadie.
 
 ## Lo que hay que saber del dato
 
