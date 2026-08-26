@@ -158,7 +158,12 @@ const html = `<!doctype html><html lang="es"><head><meta charset="utf-8">
   Estos números <b>no son los que muestra la tabla de arusa</b>: esa suma las tres
   divisiones, así que un try en Intermedia figura como del primer equipo. Acá se
   cuenta solo Titulares, partido por partido. Los puntos suman tries (5),
-  conversiones (2), penales (3) y drops (3).
+  conversiones (2), penales (3) y drops (3).<br><br>
+  <b>Qué tan completo está.</b> Se sumó lo que anotó cada jugador y se comparó con el
+  marcador real: <b>90 de los 102 partidos dan exacto</b>, punto por punto. En los otros
+  12 faltan 39 puntos en total —menos del 1% de lo que anotó el club en seis
+  temporadas—, casi siempre una conversión que quien llenó la planilla no anotó. Se
+  revisó el minuto a minuto de esos 12 y no aparecen: arusa nunca registró quién los hizo.
 </div>
 
 <table>
