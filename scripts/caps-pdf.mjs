@@ -30,9 +30,31 @@ for (const p of Object.values(CRUDO)) {
     J.set(k, v);
   }
 }
+// Lo que anotó cada uno, de la misma tabla por partido. Solo Titulares: la
+// tabla general de arusa suma las tres divisiones y un try en Intermedia
+// inflaba el número del primer equipo.
+const ANOT = new Map();
+for (const p of Object.values(CRUDO)) {
+  for (const j of (p.nomina || [])) {
+    const k = clave(j.n); if (!k) continue;
+    const v = ANOT.get(k) || { t: 0, c: 0, pe: 0, d: 0, y: {} };
+    v.t += j.tries || 0; v.c += j.conv || 0; v.pe += j.pen || 0; v.d += j.drops || 0;
+    v.y[p.anio] = (v.y[p.anio] || 0) + (j.tries || 0);
+    ANOT.set(k, v);
+  }
+}
+const puntosDe = a => a ? a.t * 5 + a.c * 2 + a.pe * 3 + a.d * 3 : 0;
+
 const lista = [...J.values()].map(v => ({ ...v, total: v.t + v.b }))
   .sort((a, b) => b.total - a.total || a.n.localeCompare(b.n));
-for (const v of lista) v.dudas = DUDAS[clave(v.n)]?.partidos?.length || 0;
+for (const v of lista) {
+  v.dudas = DUDAS[clave(v.n)]?.partidos?.length || 0;
+  v.a = ANOT.get(clave(v.n)) || { t: 0, c: 0, pe: 0, d: 0, y: {} };
+  v.pts = puntosDe(v.a);
+}
+const anotadores = [...lista].filter(v => v.a.t > 0 || v.pts > 0)
+  .sort((x, y) => y.a.t - x.a.t || y.pts - x.pts || x.n.localeCompare(y.n));
+const triesTotal = lista.reduce((s2, v) => s2 + v.a.t, 0);
 
 const partidos = Object.keys(CRUDO).length;
 const totalDudas = lista.reduce((s, v) => s + v.dudas, 0);
@@ -125,6 +147,32 @@ const html = `<!doctype html><html lang="es"><head><meta charset="utf-8">
     <td class="tb">${v.t}·${v.b}</td>
     ${filaAnios(v)}
     <td class="d">${v.dudas || ""}</td></tr>`).join("")}
+</table>
+
+<div class="salto"></div>
+<div class="cinta"></div>
+<h2>Tries y puntos</h2>
+<div class="h2sub">Solo partidos de Titulares · ${triesTotal} tries en ${partidos} partidos</div>
+
+<div class="nota" style="margin-bottom:5mm">
+  Estos números <b>no son los que muestra la tabla de arusa</b>: esa suma las tres
+  divisiones, así que un try en Intermedia figura como del primer equipo. Acá se
+  cuenta solo Titulares, partido por partido. Los puntos suman tries (5),
+  conversiones (2), penales (3) y drops (3).
+</div>
+
+<table>
+  <tr><th class="l" colspan="2">Jugador</th><th>Tries</th>
+      ${A.map(a => `<th>${a}</th>`).join("")}
+      <th>Conv</th><th>Pen</th><th>Puntos</th></tr>
+  ${anotadores.map((v, i) => `<tr class="${i < 5 ? "top" : ""}">
+    <td class="p">${i + 1}</td>
+    <td class="n">${esc(v.n)}</td>
+    <td class="c">${v.a.t}</td>
+    ${A.map(a => `<td class="v">${v.a.y[a] || "·"}</td>`).join("")}
+    <td class="v">${v.a.c || "·"}</td>
+    <td class="v">${v.a.pe || "·"}</td>
+    <td class="c" style="color:#555">${v.pts}</td></tr>`).join("")}
 </table>
 
 <div class="pie">

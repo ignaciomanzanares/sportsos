@@ -74,10 +74,32 @@ for (const m of PARTIDOS) {
           if (t && t.length < 30 && /^[A-Za-zÁÉÍÓÚÑ][\w\s.'-]{2,28}$/.test(t)) equipo = t;
         }
         if (!re.test(equipo || "")) continue;
+        // Cada columna trae su propia clase (colstyle-tries, colstyle-dorsal…),
+        // así que se lee por nombre y no por posición: el orden de las columnas
+        // cambió entre temporadas y contar celdas se rompía solo.
+        const num0 = (tr, cls) => {
+          const e = tr.querySelector("." + cls);
+          const v = e ? e.textContent.trim() : "";
+          return /^\d+$/.test(v) ? +v : 0;
+        };
         return filas.map(tr => {
           const c = [...tr.querySelectorAll("td")].map(td => td.textContent.replace(/\s+/g, " ").trim());
           const a = tr.querySelector('a[href*="/players/"]');
           const num = parseInt(c[2], 10);
+          const est = {
+            tries:        num0(tr, "colstyle-tries"),
+            triesPenal:   num0(tr, "colstyle-tries-penalti"),
+            conversiones: num0(tr, "colstyle-conversiones"),
+            penales:      num0(tr, "colstyle-penalti"),
+            drops:        num0(tr, "colstyle-drops"),
+            amarillas:    num0(tr, "colstyle-tarjetas-amarillas"),
+            rojas:        num0(tr, "colstyle-tarjetas-rojas"),
+            // S marca al titular que SALIÓ, no al suplente que entró. Sirve
+            // para saber cuántos cambios hubo cuando el minuto a minuto está
+            // vacío… salvo que lo llena la misma persona, así que cuando falta
+            // uno falta el otro. Se guarda igual por si alguna vez difieren.
+            salio:        num0(tr, "colstyle-sustituciones") > 0,
+          };
           // Con etiqueta, manda la etiqueta. Sin ella (2021), manda el número:
           // del 1 al 15 arrancó, del 16 en adelante fue al banco. La tabla de
           // 2021 lista el plantel COMPLETO —cincuenta y pico— y los que no
@@ -85,7 +107,8 @@ for (const m of PARTIDOS) {
           const etiqueta = /Regular/.test(c[1]) ? "titular"
                          : /Reserve/.test(c[1]) ? "banca" : null;
           return { tipo: etiqueta || (num <= 15 ? "titular" : "banca"),
-                   num, nombre: c[3], id: a?.href.match(/\/players\/(\d+)/)?.[1] || null };
+                   num, nombre: c[3], id: a?.href.match(/\/players\/(\d+)/)?.[1] || null,
+                   ...est };
         }).filter(x => x.id && Number.isFinite(x.num));
       }
       return [];
@@ -123,7 +146,10 @@ for (const m of PARTIDOS) {
                        entraron: entraron.length,
                        nomina: nomina.map(j => ({ id: j.id, n: j.nombre, num: j.num,
                                                   t: j.tipo,
-                                                  jugo: j.tipo === "titular" || entraron.includes(j.num) })),
+                                                  jugo: j.tipo === "titular" || entraron.includes(j.num),
+                                                  tries: j.tries, triesPenal: j.triesPenal,
+                                                  conv: j.conversiones, pen: j.penales, drops: j.drops,
+                                                  ta: j.amarillas, tr: j.rojas, salio: j.salio })),
                        jugaron: jugaron.map(j => ({ id: j.id, n: j.nombre, t: j.tipo })) };
     writeFileSync(SALIDA, JSON.stringify(hecho, null, 1));
     const h = hecho[m.match];

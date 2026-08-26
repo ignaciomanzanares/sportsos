@@ -23,6 +23,7 @@ node scripts/caps-reporte.mjs        # caps-old-reds.md y .csv
 node scripts/caps-whatsapp.mjs       # caps-old-reds-whatsapp.txt
 node scripts/caps-por-confirmar.mjs  # los que hay que preguntarle a cada uno
 node scripts/caps-pdf.mjs            # caps-old-reds.pdf, el que se reparte
+node scripts/tries-reporte.mjs       # tries-old-reds.md
 ```
 
 El PDF se arma con el mismo navegador headless del scraper, así que no hace
@@ -30,6 +31,19 @@ falta ninguna librería de PDF. Deja el HTML al lado por si hay que retocarlo.
 
 No están versionados: se regeneran de los datos y versionarlos obliga a
 acordarse de commitearlos cada vez que cambia un número.
+
+## Tries
+
+Salen de la misma tabla por partido, leyendo cada columna por su clase
+(`colstyle-tries`, `colstyle-dorsal`) y no por su posición: el orden de las
+columnas cambió entre temporadas y contar celdas se rompía solo.
+
+**No coinciden con la tabla general de arusa, y está bien**: esa suma las tres
+divisiones, así que un try en Intermedia figura como del primer equipo. Acá se
+cuenta solo Titulares.
+
+Validado contra la API en vivo: los 32 jugadores de la temporada 2026 dan
+exactamente el mismo número de tries y conversiones por las dos vías.
 
 ## Lo que hay que saber del dato
 
