@@ -16,6 +16,17 @@ export const clave = n => limpiarNombre(n)
   .split(/[^a-z]+/).filter(x => x.length > 1 && !["de","del","la","los"].includes(x))
   .sort().join(" ");
 
+/**
+ * Anotaciones que la tabla del partido no registró, sacadas del minuto a minuto.
+ *
+ * Las produce scripts/tries-rescate.mjs. Incluye gente que anotó y ni siquiera
+ * figura en la nómina de ese partido —arusa se contradice a sí misma—, así que
+ * también suman un cap: no se puede anotar sin haber jugado.
+ */
+export function leerRescate(ruta = "scripts/tries-rescate.json") {
+  try { return JSON.parse(readFileSync(ruta, "utf8")); } catch { return {}; }
+}
+
 export function leerCorrecciones(ruta = "scripts/caps-correcciones.json") {
   try {
     const c = JSON.parse(readFileSync(ruta, "utf8"));
@@ -43,11 +54,19 @@ export function leerCorrecciones(ruta = "scripts/caps-correcciones.json") {
  *
  * Devuelve [{ id, n, t }] con t = "titular" | "banca".
  */
-export function quienJugo(partido, correcciones) {
+export function quienJugo(partido, correcciones, rescate = null) {
   const fecha = String(partido.fecha).slice(0, 10);
 
+  // El que anotó y no está en la nómina jugó igual. Se cuenta como banca
+  // porque el XV ya venía completo en la lista — lo que significa que esa
+  // lista está mal, no que estos hayan arrancado. Es una suposición, y es la
+  // menos arriesgada de las dos.
+  const rescatados = (rescate?.extras || [])
+    .filter(e => !e.enNomina)
+    .map(e => ({ id: null, n: e.n, t: "banca" }));
+
   if (partido.nomina?.length) {
-    return partido.nomina
+    return [...rescatados, ...partido.nomina
       .filter(j => {
         if (j.t === "titular") return true;
         const dicho = correcciones[clave(j.n)]?.[fecha];
@@ -55,11 +74,11 @@ export function quienJugo(partido, correcciones) {
         if (dicho === "titular" || dicho === "banca") return true;
         return j.jugo;
       })
-      .map(j => ({ id: j.id, n: limpiarNombre(j.n), t: j.t }));
+      .map(j => ({ id: j.id, n: limpiarNombre(j.n), t: j.t }))];
   }
 
   // Sin nómina: se arma solo con lo confirmado a mano.
-  const out = [];
+  const out = [...rescatados];
   for (const [k, v] of Object.entries(correcciones)) {
     const dicho = v?.[fecha];
     if (dicho !== "titular" && dicho !== "banca") continue;
@@ -70,3 +89,22 @@ export function quienJugo(partido, correcciones) {
 
 /** ¿Este partido depende enteramente de lo que recuerde la gente? */
 export const sinNomina = partido => !partido.nomina?.length;
+
+/** Lo que anotó un jugador en un partido, con el rescate ya sumado. */
+export function anotacionesDe(partido, mid, rescate) {
+  const extra = new Map(
+    (rescate?.[mid]?.extras || []).map(e => [clave(e.n), e]));
+  const out = [];
+  for (const j of (partido.nomina || [])) {
+    const e = extra.get(clave(j.n));
+    out.push({ n: limpiarNombre(j.n),
+      tries: (j.tries||0) + (e?.tries||0), conv: (j.conv||0) + (e?.conv||0),
+      pen: (j.pen||0) + (e?.pen||0), drops: (j.drops||0) + (e?.drops||0) });
+    if (e) extra.delete(clave(j.n));
+  }
+  // Los que anotaron sin figurar en la nómina.
+  for (const e of extra.values())
+    out.push({ n: limpiarNombre(e.n), tries: e.tries||0, conv: e.conv||0,
+               pen: e.pen||0, drops: e.drops||0 });
+  return out;
+}

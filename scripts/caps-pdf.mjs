@@ -9,18 +9,19 @@
  */
 import { readFileSync, writeFileSync } from "fs";
 import { chromium } from "playwright";
-import { clave, limpiarNombre, leerCorrecciones, quienJugo } from "./caps-lib.mjs";
+import { clave, limpiarNombre, leerCorrecciones, leerRescate, quienJugo, anotacionesDe } from "./caps-lib.mjs";
 
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json", "utf8"));
 const CORR  = leerCorrecciones();
+const RESC  = leerRescate();
 const DUDAS = (() => { try { return JSON.parse(readFileSync("caps-por-confirmar.json","utf8")); } catch { return {}; } })();
 const A = [2021, 2022, 2023, 2024, 2025, 2026];
 const ROJO = "#C0392B";
 
 // ── agregación ────────────────────────────────────────────────────────────
 const J = new Map();
-for (const p of Object.values(CRUDO)) {
-  for (const x of quienJugo(p, CORR)) {
+for (const [mid, p] of Object.entries(CRUDO)) {
+  for (const x of quienJugo(p, CORR, RESC[mid])) {
     const k = clave(x.n); if (!k) continue;
     const v = J.get(k) || { n: limpiarNombre(x.n), y: {}, t: 0, b: 0 };
     v.y[p.anio] = v.y[p.anio] || { t: 0, b: 0 };
@@ -160,10 +161,12 @@ const html = `<!doctype html><html lang="es"><head><meta charset="utf-8">
   cuenta solo Titulares, partido por partido. Los puntos suman tries (5),
   conversiones (2), penales (3) y drops (3).<br><br>
   <b>Qué tan completo está.</b> Se sumó lo que anotó cada jugador y se comparó con el
-  marcador real: <b>90 de los 102 partidos dan exacto</b>, punto por punto. En los otros
-  12 faltan 39 puntos en total —menos del 1% de lo que anotó el club en seis
-  temporadas—, casi siempre una conversión que quien llenó la planilla no anotó. Se
-  revisó el minuto a minuto de esos 12 y no aparecen: arusa nunca registró quién los hizo.
+  marcador real: <b>91 de los 102 partidos dan exacto</b>, punto por punto. Los 12
+  que no cuadraban se revisaron uno por uno en el minuto a minuto: en el de noviembre
+  de 2021 aparecieron los 15 puntos que faltaban, de dos jugadores que anotaron y ni
+  siquiera figuraban en la nómina de arusa de ese partido. En los 11 restantes falta
+  siempre lo mismo, 2 puntos: una conversión que quien llenó la planilla no anotó en
+  ninguna parte. Son 24 puntos de unos 4.000.
 </div>
 
 <table>

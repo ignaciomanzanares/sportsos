@@ -8,10 +8,11 @@
  * Uso: node scripts/caps-consolidar.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
-import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
+import { clave, limpiarNombre, leerCorrecciones, leerRescate, quienJugo, anotacionesDe, sinNomina } from "./caps-lib.mjs";
 
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json", "utf8"));
 const CORR = leerCorrecciones();
+const RESC = leerRescate();
 const SALIDA = "src/data/capsHistoricos.json";
 
 
@@ -20,14 +21,14 @@ const porJugador = new Map();
 const cobertura = {};
 
 let corregidos = 0;
-for (const partido of Object.values(CRUDO)) {
+for (const [mid, partido] of Object.entries(CRUDO)) {
   const a = String(partido.anio);
   const fecha = String(partido.fecha).slice(0, 10);
   cobertura[a] = cobertura[a] || { partidos: 0, conNomina: 0 };
   cobertura[a].partidos++;
   if (!sinNomina(partido)) cobertura[a].conNomina++;
 
-  const jugaron = quienJugo(partido, CORR);
+  const jugaron = quienJugo(partido, CORR, RESC[mid]);
   // Cuántas veces mandó la memoria del jugador por sobre lo que trae arusa:
   // los ingresos de banca que no estaban registrados, más los partidos sin
   // nómina que solo existen porque alguien los confirmó.

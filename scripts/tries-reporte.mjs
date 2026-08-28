@@ -11,26 +11,27 @@
  * Uso: node scripts/tries-reporte.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
-import { clave, limpiarNombre } from "./caps-lib.mjs";
+import { clave, limpiarNombre, leerRescate, anotacionesDe } from "./caps-lib.mjs";
 
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json", "utf8"));
 const A = [2021, 2022, 2023, 2024, 2025, 2026];
 
 const J = new Map();
 let sinDato = 0;
-for (const p of Object.values(CRUDO)) {
-  for (const j of (p.nomina || [])) {
-    if (j.tries === undefined) { sinDato++; continue; }
+const RESC = leerRescate();
+for (const [mid, p] of Object.entries(CRUDO)) {
+  if ((p.nomina || []).some(j => j.tries === undefined)) { sinDato++; continue; }
+  // anotacionesDe suma lo que el minuto a minuto tenía y la tabla no, incluida
+  // la gente que anotó sin figurar en la nómina.
+  for (const j of anotacionesDe(p, mid, RESC)) {
     const k = clave(j.n); if (!k) continue;
-    const v = J.get(k) || { n: limpiarNombre(j.n), y: {}, t: 0, c: 0, pe: 0, d: 0, ta: 0, tr: 0 };
+    const v = J.get(k) || { n: j.n, y: {}, t: 0, c: 0, pe: 0, d: 0, ta: 0, tr: 0 };
     v.y[p.anio] = (v.y[p.anio] || 0) + j.tries;
     v.t  += j.tries;
-    v.c  += j.conv || 0;
-    v.pe += j.pen  || 0;
-    v.d  += j.drops || 0;
-    v.ta += j.ta || 0;
-    v.tr += j.tr || 0;
-    if (limpiarNombre(j.n).length > v.n.length) v.n = limpiarNombre(j.n);
+    v.c  += j.conv;
+    v.pe += j.pen;
+    v.d  += j.drops;
+    if (j.n.length > v.n.length) v.n = j.n;
     J.set(k, v);
   }
 }

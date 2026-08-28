@@ -8,17 +8,18 @@
  * Uso: node scripts/caps-reporte.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
-import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
+import { clave, limpiarNombre, leerCorrecciones, leerRescate, quienJugo, anotacionesDe, sinNomina } from "./caps-lib.mjs";
 const CRUDO = JSON.parse(readFileSync("scripts/caps-arusa.json","utf8"));
 const PART  = JSON.parse(readFileSync("scripts/partidos.json","utf8"));
 const CORR  = leerCorrecciones();
+const RESC  = leerRescate();
 const A=[2021,2022,2023,2024,2025,2026];
 
 const J=new Map();
 const faltan=[];
 for (const [mid,p] of Object.entries(CRUDO)) {
   if (sinNomina(p)) { faltan.push({...p, match:mid}); }
-  for (const x of quienJugo(p, CORR)) {
+  for (const x of quienJugo(p, CORR, RESC[mid])) {
     const k=clave(x.n); if(!k) continue;
     const v=J.get(k)||{n:limpiarNombre(x.n),y:{}};
     v.y[p.anio]=v.y[p.anio]||{t:0,b:0};

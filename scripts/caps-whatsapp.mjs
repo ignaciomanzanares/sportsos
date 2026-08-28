@@ -8,14 +8,15 @@
  * Uso: node scripts/caps-whatsapp.mjs
  */
 import { readFileSync, writeFileSync } from "fs";
-import { clave, limpiarNombre, leerCorrecciones, quienJugo, sinNomina } from "./caps-lib.mjs";
+import { clave, limpiarNombre, leerCorrecciones, leerRescate, quienJugo, anotacionesDe, sinNomina } from "./caps-lib.mjs";
 const CRUDO=JSON.parse(readFileSync("scripts/caps-arusa.json","utf8"));
 const CORR = leerCorrecciones();
+const RESC = leerRescate();
 const A=[2021,2022,2023,2024,2025,2026];
 
 const J=new Map();
-for(const p of Object.values(CRUDO)){
-  for(const x of quienJugo(p, CORR)){
+for(const [mid,p] of Object.entries(CRUDO)){
+  for(const x of quienJugo(p, CORR, RESC[mid])){
     const k=clave(x.n); if(!k) continue;
     const v=J.get(k)||{n:limpiarNombre(x.n),y:{},t:0,b:0};
     v.y[p.anio]=v.y[p.anio]||{t:0,b:0};
