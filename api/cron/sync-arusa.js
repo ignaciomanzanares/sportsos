@@ -52,6 +52,14 @@ export default async function handler(req, res) {
 
       const { error } = await supabase
         .from("matches").upsert(filas, { onConflict: "club_id,external_source,external_id" });
+      // Dejar constancia de que esto corrió. Sin esto, la pantalla de Mi Club
+      // solo sabía cuándo alguien había apretado el botón a mano, y mostraba
+      // esa fecha como si fuera la de la última importación: el fixture estaba
+      // al día y el cartel decía que no se sincronizaba hacía veinte días.
+      if (!error) {
+        await supabase.from("clubs")
+          .update({ arusa_last_sync: new Date().toISOString() }).eq("id", club.id);
+      }
       resultados.push({ club: club.name, ok: !error, partidos: filas.length, error: error?.message });
     }
 

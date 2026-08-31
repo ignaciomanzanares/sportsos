@@ -512,8 +512,14 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
             {arusaSyncing?"Sincronizando...":"🔄 Sincronizar ahora"}
           </motion.button>
         </div>
+        {/* Decía "Última sincronización" y mostraba una fecha de hacía veinte
+            días, con el fixture al día: `arusa_last_sync` solo lo escribe este
+            botón, y la importación diaria no lo toca. La fecha era verdadera y
+            la etiqueta mentía — parecía que la integración estaba caída. */}
         <div style={{fontSize:"11px",color:"var(--text-3)"}}>
-          {arusaLastSync ? `Última sincronización: ${new Date(arusaLastSync).toLocaleString("es-CL")}` : "Todavía no se ha sincronizado"}
+          {arusaLastSync
+            ? `Última vez que se apretó este botón: ${new Date(arusaLastSync).toLocaleString("es-CL")}. La importación diaria corre igual y no queda registrada acá.`
+            : "Nadie apretó este botón todavía. La importación diaria corre igual."}
         </div>
       </motion.div>
 
@@ -523,7 +529,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           🏦 Datos de pago (transferencia)
         </div>
         <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
-          Los jugadores verán estos datos al pagar por transferencia. Solo tú (admin) puedes verlos y editarlos.
+          {/* Decía "Solo tú (admin) puedes verlos y editarlos" en la misma
+              frase que "los jugadores verán estos datos": se contradecía sola.
+              Editarlos sí es solo del admin; verlos los ve todo el club, que
+              es justamente para lo que están. */}
+          Los jugadores verán estos datos en Mi Cuota para transferir. Editarlos es solo tuyo.
         </div>
         <div style={{marginBottom:"14px"}}>
           <div style={ss.label}>Cuota mensual ({countryData?.currency||"CLP"})</div>
