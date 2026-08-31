@@ -1,3 +1,5 @@
+import { capsHistoricos } from "../data/capsHistoricos";
+
 /**
  * Pegar las estadísticas del torneo al plantel, una sola vez y para toda la app.
  *
@@ -27,6 +29,27 @@ const DESDE_ARUSA = ["partidos", "tries", "conversiones", "penales", "puntos", "
  */
 export const CAMPOS_DERIVADOS = ["arusaStats"];
 
+/**
+ * Partidos jugados de verdad en lo que va del año.
+ *
+ * La tabla de ARUSA se queda corta en Primera: cuenta los ingresos desde la
+ * banca que alguien anotó en la planilla, y se le pasa cerca de un tercio. En
+ * 2026, comparada con las nóminas partido por partido, le faltaban 52
+ * presencias — a Joaquín Manzanares le daba 9 donde jugó 13.
+ *
+ * Nuestro conteo sale de las nóminas (scripts/caps-arusa.mjs) y es mejor,
+ * salvo en los 6 partidos que ARUSA nunca cargó: ahí no hay nómina que leer y
+ * el que se queda corto es el nuestro. Ninguna de las dos fuentes infla, así
+ * que para Primera se toma la mayor, y las otras divisiones se suman aparte
+ * tal como vienen.
+ */
+function partidosCorregidos(player, a) {
+  const enPrimeraArusa = a.capsPrimera || 0;
+  const otrasDivisiones = Math.max(0, (a.partidos || 0) - enPrimeraArusa);
+  const nuestro = capsHistoricos(player)?.porAnio?.[new Date().getFullYear()] || 0;
+  return Math.max(nuestro, enPrimeraArusa) + otrasDivisiones;
+}
+
 export function enriquecerConArusa(players, jugadoresArusa) {
   if (!jugadoresArusa?.length) return players;
   const porId = new Map(jugadoresArusa.map(j => [String(j.id), j]));
@@ -38,6 +61,9 @@ export function enriquecerConArusa(players, jugadoresArusa) {
     for (const k of DESDE_ARUSA) {
       if (stats[k] == null && a[k] != null) stats[k] = a[k];
     }
+    // Solo si el número vino del torneo: lo que el club cargue a mano manda,
+    // igual que arriba.
+    if (p.stats?.partidos == null) stats.partidos = partidosCorregidos(p, a);
     // `arusaStats` deja ver de dónde salió cada número, para que la pantalla
     // pueda decirlo en vez de presentarlo como carga del club.
     return { ...p, stats, arusaStats: a };
