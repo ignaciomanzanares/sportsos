@@ -514,8 +514,10 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
   };
   const mrrEstimado = porPlan.pro * 29 + porPlan.elite * 59;
 
-  // Últimos 7 días de registros
-  const hace7dias = new Date(Date.now() - 7*24*3600*1000).toISOString();
+  // Últimos 7 días de registros. El corte se calcula una vez al montar y no
+  // en cada dibujado: si no, el render depende del reloj.
+  const [ahora] = useState(() => Date.now());
+  const hace7dias = new Date(ahora - 7*24*3600*1000).toISOString();
   const nuevosEstaSemana = users.filter(u => u.created_at > hace7dias).length;
   const clubesNuevos = clubs.filter(c => c.created_at > hace7dias).length;
 

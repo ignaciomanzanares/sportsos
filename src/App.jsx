@@ -424,6 +424,10 @@ export default function SportOS() {
   };
   // Se guarda en una ref porque los efectos de abajo corren después (el rol
   // llega con la sesión) y pondrían los valores por defecto encima.
+  // Se escribe con `.current` en dos efectos y la regla de inmutabilidad del
+  // compilador lo marca. Es exactamente para lo que sirve un ref: recordar algo
+  // entre renders sin provocar uno nuevo. Los dos avisos se silencian donde
+  // ocurren, con este motivo.
   const urlPendiente = useRef(estadoDeUrl());
 
   // El rol de la URL solo se respeta si el perfil puede verlo: el superadmin
@@ -438,6 +442,7 @@ export default function SportOS() {
     // se quedaría esperando para siempre un rol que nunca va a llegar y no
     // soltaría nunca la restauración.
     if (permitido) setRole(pedido);
+    // eslint-disable-next-line react-hooks/immutability
     else urlPendiente.current = { ...urlPendiente.current, rol: null };
   },[currentUser]);
 
@@ -464,6 +469,7 @@ export default function SportOS() {
     // Se suelta cuando el rol pedido ya quedó puesto (o se descartó): mientras
     // el rol siga moviéndose, el módulo permitido todavía puede cambiar.
     const rolListo = !pedido.rol || role === pedido.rol;
+    // eslint-disable-next-line react-hooks/immutability
     if (rolListo && (currentUser || screen === "app")) urlPendiente.current = null;
   },[role, currentUser, sport, screen]);
 

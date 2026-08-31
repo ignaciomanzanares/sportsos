@@ -114,15 +114,6 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   // Estado para gestión de jugadores
   const [playerForm, setPlayerForm] = useState(null); // null = cerrado | EMPTY_PLAYER = nuevo | {id,...} = editando
   const [playerSaving, setPlayerSaving] = useState(false);
-  // Llega desde el Inicio: se abre su ficha y se avisa, para que volver a
-  // Jugadores más tarde no reabra el formulario de la vez pasada.
-  useEffect(() => {
-    if (!jugadorAEditar) return;
-    setJugTab("plantel");
-    setPlayerForm({ ...jugadorAEditar, cat: jugadorAEditar.category, med: jugadorAEditar.med_status, cuota: jugadorAEditar.cuota_status });
-    onJugadorEditado();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jugadorAEditar]);
   const [playerSearch, setPlayerSearch] = useState("");
   // El 🗑 borraba de una. Ya se perdió una ficha así, y con ella su asistencia,
   // sus cuotas y su historial de lesiones. Ahora pregunta, y sobre todo ofrece
@@ -154,6 +145,19 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   const [joinRequests, setJoinRequests] = useState([]);
   const [jugTab, setJugTab]             = useState("plantel");
   const [approvedReq, setApprovedReq]   = useState(null);
+
+  // Llega desde el Inicio: se abre su ficha y se avisa, para que volver a
+  // Jugadores más tarde no reabra el formulario de la vez pasada.
+  //
+  // Va debajo de los useState y no arriba: usa setJugTab y setPlayerForm, y
+  // declarado antes que ellos leía variables que todavía no existían.
+  useEffect(() => {
+    if (!jugadorAEditar) return;
+    setJugTab("plantel");
+    setPlayerForm({ ...jugadorAEditar, cat: jugadorAEditar.category, med: jugadorAEditar.med_status, cuota: jugadorAEditar.cuota_status });
+    onJugadorEditado();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jugadorAEditar]);
   // Cargar miembros del club desde Supabase
   useEffect(() => {
     if (!clubId) return;
@@ -260,8 +264,14 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     const fichaExistente = candidatas.length === 1 ? candidatas[0] : null;
 
     const base  = window.location.origin;
+    // Lo que sigue corre al aprobar una solicitud, no durante el dibujado; la
+    // regla no puede distinguirlo porque la función se declara dentro del
+    // componente. Y el vencimiento y el token de una invitación tienen que ser
+    // distintos cada vez: es justamente para lo que sirven.
+    /* eslint-disable react-hooks/purity */
     const exp   = Date.now() + 48 * 60 * 60 * 1000;
     const token = Math.random().toString(36).slice(2,8).toUpperCase() + Math.random().toString(36).slice(2,8).toUpperCase();
+    /* eslint-enable react-hooks/purity */
 
     const { error: invErr } = await supabase.from("invitations").insert({
       token, club_id: clubId, rol: "jugador", cats: req.categoria || "",

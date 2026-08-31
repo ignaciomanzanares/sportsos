@@ -24,6 +24,38 @@ export default function UnirmeScreen({ codigoInicial = "", onComplete, onBack, o
   const [error, setError] = useState("");
   const [busy,  setBusy]  = useState(false);
 
+  /**
+   * Pide al servidor entrar al club. Devuelve la asignación o lanza.
+   *
+   * Va antes que buscarClub porque esa la llama: declarada después, se leía
+   * una constante que en ese punto todavía no existía.
+   */
+  const canjear = async (codigo) => {
+    const { data, error: rpcErr } = await supabase.rpc("unirme_con_codigo", { p_codigo: codigo });
+    if (rpcErr) {
+      const motivos = {
+        codigo_invalido: "Ese código ya no sirve. Pedile el nuevo a tu administrador.",
+        ya_perteneces_a_otro_club: "Tu cuenta ya está en otro club. Pedile a ese administrador que te dé de baja primero.",
+        sin_sesion: "Se perdió la sesión. Volvé a intentar.",
+      };
+      const clave = Object.keys(motivos).find(k => rpcErr.message?.includes(k));
+      if (clave) throw new Error(motivos[clave]);
+      // PGRST202 = la función no existe en la base. Pasa si se desplegó la app
+      // sin correr supabase/unirme_con_codigo.sql; el mensaje crudo de
+      // PostgREST no le dice nada a un jugador parado en la cancha.
+      if (rpcErr.code === "PGRST202") {
+        throw new Error("El club todavía no tiene activado el ingreso por código. Avisale a tu administrador.");
+      }
+      // Cualquier otra cosa es un problema nuestro, y el mensaje crudo de
+      // Postgres no le sirve a nadie: el ingreso estuvo roto mostrándole
+      // "column reference sport is ambiguous" a quien abría el link. Se avisa
+      // en castellano y el detalle queda en la consola, que es donde se busca.
+      console.error("[unirme] falló unirme_con_codigo:", rpcErr);
+      throw new Error("Tu cuenta quedó creada, pero no pudimos meterte al club. Avisale a tu administrador y volvé a abrir este link — no hace falta que te registres de nuevo.");
+    }
+    return data?.[0] || null;
+  };
+
   const buscarClub = async (valor) => {
     const codigo = String(valor ?? code).trim();
     if (!codigo) { setError("Escribe el código de tu club."); setStep("codigo"); return; }
@@ -76,33 +108,6 @@ export default function UnirmeScreen({ codigoInicial = "", onComplete, onBack, o
     if (codigoInicial) buscarClub(codigoInicial);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [codigoInicial]);
-
-  /** Pide al servidor entrar al club. Devuelve la asignación o lanza. */
-  const canjear = async (codigo) => {
-    const { data, error: rpcErr } = await supabase.rpc("unirme_con_codigo", { p_codigo: codigo });
-    if (rpcErr) {
-      const motivos = {
-        codigo_invalido: "Ese código ya no sirve. Pedile el nuevo a tu administrador.",
-        ya_perteneces_a_otro_club: "Tu cuenta ya está en otro club. Pedile a ese administrador que te dé de baja primero.",
-        sin_sesion: "Se perdió la sesión. Volvé a intentar.",
-      };
-      const clave = Object.keys(motivos).find(k => rpcErr.message?.includes(k));
-      if (clave) throw new Error(motivos[clave]);
-      // PGRST202 = la función no existe en la base. Pasa si se desplegó la app
-      // sin correr supabase/unirme_con_codigo.sql; el mensaje crudo de
-      // PostgREST no le dice nada a un jugador parado en la cancha.
-      if (rpcErr.code === "PGRST202") {
-        throw new Error("El club todavía no tiene activado el ingreso por código. Avisale a tu administrador.");
-      }
-      // Cualquier otra cosa es un problema nuestro, y el mensaje crudo de
-      // Postgres no le sirve a nadie: el ingreso estuvo roto mostrándole
-      // "column reference sport is ambiguous" a quien abría el link. Se avisa
-      // en castellano y el detalle queda en la consola, que es donde se busca.
-      console.error("[unirme] falló unirme_con_codigo:", rpcErr);
-      throw new Error("Tu cuenta quedó creada, pero no pudimos meterte al club. Avisale a tu administrador y volvé a abrir este link — no hace falta que te registres de nuevo.");
-    }
-    return data?.[0] || null;
-  };
 
   const registrarme = async () => {
     if (!form.nombre.trim())     { setError("Escribí tu nombre y apellido."); return; }

@@ -74,7 +74,8 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
       });
       const data = await resp.json();
       if (!resp.ok || !data.init_point) throw new Error(data.error || "No se pudo iniciar el pago");
-      window.location.href = data.init_point;
+      // eslint-disable-next-line react-hooks/immutability
+      window.location.href = data.init_point;   // irse a pagar a Mercado Pago
     } catch (e) {
       showToast("Error al iniciar el pago: " + e.message, "error");
       setPaying(false);
@@ -308,7 +309,7 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
       });
       setGymLog(buffer);
     }).catch(()=>{});
-  }, [clubId, player?.id]);
+  }, [clubId, player?.id, weekStart]);
 
   // Con club real, si el preparador no publicó plan no hay plan. Antes caía al
   // de demo aunque hubiera clubId (a diferencia de las dos líneas de abajo, que
@@ -487,12 +488,15 @@ function NominasClub({ teamsToShow, forms, sport, sportColor, clubId, players, p
   const [lineups, setLineups] = useState({});
   const [loading, setLoading] = useState(true);
 
+  // Los ids en una constante y no dentro del array de dependencias: ahí React
+  // no puede comparar una expresión, solo un valor.
+  const idsEquipos = teamsToShow.map(t => t.id).join(",");
   useEffect(() => {
     if (!clubId) { setLoading(false); return; }
     setLoading(true);
-    Promise.all(teamsToShow.map(t => getLineups(clubId, t.id).then(l => [t.id, l]).catch(() => [t.id, null])))
+    Promise.all(idsEquipos.split(",").map(id => getLineups(clubId, id).then(l => [id, l]).catch(() => [id, null])))
       .then(entries => { setLineups(Object.fromEntries(entries)); setLoading(false); });
-  }, [clubId, teamsToShow.map(t=>t.id).join(",")]);
+  }, [clubId, idsEquipos]);
 
   if (loading) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando nóminas...</div>;
 

@@ -15,6 +15,12 @@ export default function Toast({msg, type, onClose, onUndo, undoLabel="Deshacer"}
       setProgress(Math.max(0, 100 - (elapsed / duration) * 100));
     }, 50);
     return () => { clearTimeout(t); clearInterval(interval); };
+    // Sin dependencias a propósito: el temporizador arranca al aparecer el
+    // aviso y no se reinicia nunca. Si `onClose` entrara acá, cada dibujado
+    // del padre que le pase una función nueva reiniciaría la cuenta y el
+    // aviso no se cerraría jamás. La duración tampoco cambia: sale de si el
+    // aviso trae "Deshacer" o no, y eso queda fijo cuando se crea.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const colors = {

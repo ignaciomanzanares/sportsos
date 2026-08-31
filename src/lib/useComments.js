@@ -19,7 +19,7 @@ export function useComments(postId, clubId) {
       text: c.text,
       time: haceCuanto(c.created_at),
     })));
-  }, [postId, clubId, isReal]);
+  }, [postId, isReal]);
 
   useEffect(() => { load(); }, [load]);
 

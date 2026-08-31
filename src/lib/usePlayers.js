@@ -39,13 +39,11 @@ function soloColumnas(obj) {
 
 export function usePlayers(clubId) {
   const [players, setPlayers]   = useState(clubId ? [] : DEMO_PLAYERS);
-  const [loading, setLoading]   = useState(false);
   const [error,   setError]     = useState(null);
   const isReal = !!clubId;
 
   const load = useCallback(async () => {
     if (!isReal) return;
-    setLoading(true);
     try {
       // Dos fuentes, a propósito.
       //
@@ -73,8 +71,6 @@ export function usePlayers(clubId) {
       setPlayers(lista);
     } catch (e) {
       setError(e.message);
-    } finally {
-      setLoading(false);
     }
   }, [clubId, isReal]);
 
@@ -107,5 +103,5 @@ export function usePlayers(clubId) {
     setPlayers(p => p.filter(x => x.id !== id));
   };
 
-  return { players, loading, error, addPlayer, updatePlayer, removePlayer, reload: load };
+  return { players, error, addPlayer, updatePlayer, removePlayer, reload: load };
 }

@@ -27,21 +27,24 @@ function ReadRow({ label, value, icon }) {
   );
 }
 
+// Fuera del componente: no depende de props ni de estado, y adentro se
+// recreaba en cada dibujado, así que ningún efecto que lo mirara podía
+// considerarlo estable.
+const emptyForm = {
+  nombre:"", email:"", telefono:"", direccion:"",
+  fecha_nacimiento:"", altura_cm:"", peso_kg:"",
+  posicion_1:"", posicion_2:"",
+  seguro_salud:"", grupo_sanguineo:"",
+  contacto_emergencia_nombre:"", contacto_emergencia_tel:"",
+  pie_hab:"", numero_camiseta:"",
+};
+
 export default function PerfilView({ currentUser, sport, sportColor, readOnly=false, playerData=null, onSaved }) {
   const sp = SPORTS_CONFIG[sport] || SPORTS_CONFIG.rugby;
   const positions = puestosDeFicha(sp);
   // En rugby hay dos Lock y dos Centro de verdad, pero como opciones de un
   // desplegable repetirlas no aporta nada y ademas rompia las keys de React.
   const posicionesUnicas = [...new Set(positions)];
-
-  const emptyForm = {
-    nombre:"", email:"", telefono:"", direccion:"",
-    fecha_nacimiento:"", altura_cm:"", peso_kg:"",
-    posicion_1:"", posicion_2:"",
-    seguro_salud:"", grupo_sanguineo:"",
-    contacto_emergencia_nombre:"", contacto_emergencia_tel:"",
-    pie_hab:"", numero_camiseta:"",
-  };
 
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(true);
@@ -54,9 +57,12 @@ export default function PerfilView({ currentUser, sport, sportColor, readOnly=fa
   const [photoLinkedWarn, setPhotoLinkedWarn] = useState(false);
   const [uploadError, setUploadError] = useState("");
 
-  // Edad calculada
+  // Edad calculada. El reloj se lee una sola vez al montar: llamar a
+  // Date.now() en cada dibujado hace que el render dependa del momento exacto
+  // en que ocurre, y la edad de alguien no cambia entre dos renders.
+  const [ahora] = useState(() => Date.now());
   const edad = form.fecha_nacimiento
-    ? Math.floor((Date.now() - new Date(form.fecha_nacimiento)) / (365.25 * 24 * 3600 * 1000))
+    ? Math.floor((ahora - new Date(form.fecha_nacimiento)) / (365.25 * 24 * 3600 * 1000))
     : null;
 
   useEffect(() => {

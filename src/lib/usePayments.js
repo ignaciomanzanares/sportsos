@@ -36,17 +36,14 @@ function paymentToUI(p) {
  */
 export function usePayments(clubId) {
   const [payments, setPayments] = useState([]);
-  const [loading, setLoading]   = useState(false);
 
   const load = useCallback(async () => {
     if (!clubId) { setPayments([]); return; }
-    setLoading(true);
-    try {
-      const data = await getPayments(clubId);
-      setPayments(data.map(paymentToUI));
-    } finally {
-      setLoading(false);
-    }
+    // El try solo existía para apagar un indicador de carga en su finally, y
+    // ese indicador no lo leía ninguna pantalla. Sin él, el try no envolvía
+    // nada: si getPayments falla, que se propague.
+    const data = await getPayments(clubId);
+    setPayments(data.map(paymentToUI));
   }, [clubId]);
 
   useEffect(() => { load(); }, [load]);
@@ -105,7 +102,7 @@ export function usePayments(clubId) {
   // las políticas de la base lo habrían rechazado igual: un jugador no puede
   // marcarse su propia cuota como cobrada. Se llevó consigo la prop que
   // viajaba de App a JugadorView y de ahí a MiCuota sin que nadie la usara.
-  return { payments, loading, declarePayment, confirmPayment, rejectPayment,
+  return { payments, declarePayment, confirmPayment, rejectPayment,
            registrarPagoManual, borrarPago, reload: load, setPayments };
 }
 

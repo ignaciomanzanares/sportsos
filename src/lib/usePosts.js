@@ -10,12 +10,10 @@ import { haceCuanto } from "./tiempo";
 export function usePosts(clubId, userId=null) {
   const [posts,   setPosts]   = useState(clubId ? [] : MOCK_POSTS);
   const [likedByMe, setLikedByMe] = useState({}); // { [postId]: true }
-  const [loading, setLoading] = useState(false);
   const isReal = !!clubId;
 
   const load = useCallback(async () => {
     if (!isReal) { setPosts(MOCK_POSTS); return; }
-    setLoading(true);
     try {
       const { data, error } = await supabase
         .from("posts")
@@ -53,8 +51,6 @@ export function usePosts(clubId, userId=null) {
       setPosts(normalized);
     } catch {
       setPosts([]);
-    } finally {
-      setLoading(false);
     }
   }, [clubId, isReal, userId]);
 
@@ -126,6 +122,6 @@ export function usePosts(clubId, userId=null) {
     return data;
   };
 
-  return { posts, loading, createPost, toggleLike, likedByMe, reload: load };
+  return { posts, createPost, toggleLike, likedByMe, reload: load };
 }
 

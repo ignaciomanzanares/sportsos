@@ -167,7 +167,7 @@ export default function PreparadorView({module, sp, showToast, sportColor, publi
         const volumen = logs.reduce((s,l)=>s+(Number(l.volume_kg)||0),0);
         setKpis({ cumplimiento: Math.round(100*combos.size/totalPosible), activos, volumen: Math.round(volumen) });
       });
-  }, [clubId, players, weekStart, planSessions]);
+  }, [clubId, players, weekStart, planSessions, setKpis]);
 
   const publicarPlan = async () => {
     if (totalEjercicios === 0) {

@@ -26,7 +26,10 @@ export default function InvitationScreen({ params, onComplete, onBack }) {
   const token     = params.get("token")   || null;
   const expiry    = parseInt(params.get("exp") || "0", 10);
   const info      = ROL_INFO[rol] || ROL_INFO.jugador;
-  const isExpired = expiry > 0 && Date.now() > expiry;
+  // Una sola lectura del reloj, al montar: Date.now() en el cuerpo del
+  // componente cambia en cada dibujado y vuelve impredecible el render.
+  const [ahora] = useState(() => Date.now());
+  const isExpired = expiry > 0 && ahora > expiry;
 
   const [form, setForm]     = useState({ nombre:"", email:"", password:"" });
   const [step, setStep]     = useState("form"); // "form" | "success"

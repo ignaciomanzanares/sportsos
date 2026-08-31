@@ -1020,7 +1020,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     getMatches(clubId).then(rows => {
       if (rows && rows.length > 0) setPartidos(rows.map(matchToPartido));
     }).catch(() => {});
-  }, [clubId]);
+  }, [clubId, setPartidos]);
 
   // En modo real filtra jugadores por las categorías asignadas al entrenador
   const visiblePlayers = isDemo || userCats.length === 0 ? players : players.filter(p => userCats.includes(p.category));

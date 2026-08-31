@@ -8,7 +8,6 @@ import { getMatches, matchToPartido } from "./db";
  */
 export function useMatches(clubId) {
   const [partidos, setPartidos] = useState([]);
-  const [loading, setLoading]   = useState(false);
   // Antes había try/finally sin catch: si la consulta fallaba, la promesa se
   // rompía en silencio y el calendario mostraba "0 partidos" sin decir por qué
   // — indistinguible de un club que efectivamente no tiene partidos.
@@ -16,7 +15,6 @@ export function useMatches(clubId) {
 
   const load = useCallback(async () => {
     if (!clubId) { setPartidos([]); setError(null); return; }
-    setLoading(true);
     try {
       const data = await getMatches(clubId);
       setPartidos(data.map(matchToPartido));
@@ -24,12 +22,10 @@ export function useMatches(clubId) {
     } catch (err) {
       console.error("[useMatches] no se pudieron cargar los partidos:", err);
       setError(err);
-    } finally {
-      setLoading(false);
     }
   }, [clubId]);
 
   useEffect(() => { load(); }, [load]);
 
-  return { partidos, loading, error, reload: load, setPartidos };
+  return { partidos, error, reload: load, setPartidos };
 }
