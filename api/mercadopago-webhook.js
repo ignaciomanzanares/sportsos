@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ ok: true });
-  } catch (err) {
+  } catch {
     return res.status(200).json({ ok: true }); // siempre 200 para que MP no reintente en loop
   } finally {
     await client.end();

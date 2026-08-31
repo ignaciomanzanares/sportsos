@@ -1,4 +1,3 @@
-/* eslint-env serviceworker */
 /**
  * Service worker de SportOS — que la app abra sin señal.
  *
@@ -38,6 +37,7 @@
 const VERSION = "__VERSION__";
 const CACHE_APP    = `sportos-app-${VERSION}`;
 const CACHE_DATOS  = "sportos-datos-v1";
+/* global __SHELL__ */
 const SHELL        = __SHELL__;
 
 self.addEventListener("install", (e) => {

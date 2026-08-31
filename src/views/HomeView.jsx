@@ -394,7 +394,6 @@ function TrendBar({ data, color }) {
 }
 
 function HomeEntrenador({ players, sportColor, club, sp, partidos, onNavigate, clubId=null }) {
-  const hoy       = new Date().toISOString().split("T")[0];
   const ultimoRes = partidos.find(p=>p.estado==="jugado");
   // Era Math.floor(players.length * 0.78): la "asistencia de hoy" era el 78%
   // del plantel, inventado, todos los días. Ahora se cuenta la asistencia real

@@ -386,7 +386,6 @@ export default function SportOS() {
   // igual—, solo avisa que lo vacío es una falla y no la realidad.
   useEffect(() => {
     if (partidosError) showToast("No se pudieron cargar los partidos — reintentá recargando", "error");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [partidosError]);
 
   // Atajo de teclado para búsqueda global
@@ -615,7 +614,6 @@ export default function SportOS() {
       }
     });
     return () => subscription.unsubscribe();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Detecta link de invitación en la URL — va ANTES de landing para que no la tape
@@ -818,7 +816,7 @@ export default function SportOS() {
         {toast&&<Toast msg={toast.msg} type={toast.type} onUndo={toast.onUndo||null} onClose={()=>setToast(null)}/>}
       </AnimatePresence>
       <AnimatePresence>
-        {searchOpen&&<GlobalSearch players={players} posts={[]} sportColor={sportColor} role={role} modules={sportModules} onNavigate={(id)=>navigateTo(id)} onClose={()=>setSearchOpen(false)}/>}
+        {searchOpen&&<GlobalSearch players={players} posts={[]} sportColor={sportColor} modules={sportModules} onNavigate={(id)=>navigateTo(id)} onClose={()=>setSearchOpen(false)}/>}
       </AnimatePresence>
       {screen==="app"&&<OnboardingTip
         sportColor={sportColor}
@@ -1060,7 +1058,6 @@ export default function SportOS() {
           {upgradeFor && (
             <UpgradeModal
               requiredPlan={requiredPlan(upgradeFor)}
-              sportColor={sportColor}
               onClose={()=>setUpgradeFor(null)}
             />
           )}

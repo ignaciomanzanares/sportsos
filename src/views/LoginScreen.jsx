@@ -230,14 +230,6 @@ export default function LoginScreen({ onLogin, onDemo, onRegister, onBack }) {
     setResetSent(true);
   };
 
-  const handleGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: window.location.origin },
-    });
-    if (error) setError("Error al conectar con Google: " + error.message);
-  };
-
   // ── Pantalla de éxito ───────────────────────────────────────────────────
   if (step==="success" && loggedUser) {
     const info = ROL_INFO[loggedUser.rol] || ROL_INFO.jugador;

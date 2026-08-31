@@ -696,7 +696,7 @@ function enfrentamiento(p, clubName) {
   return p?.lugar === "Visita" ? `${p.rival} vs ${clubName}` : `${clubName} vs ${p?.rival}`;
 }
 
-export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, addPayment=null, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null, currentCategory=null}) {
+export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null, currentCategory=null}) {
   const camiseta = player.number;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};

@@ -193,7 +193,6 @@ const POST_TYPES = [
 function MuroInput({onPublish, players=[]}) {
   const [text, setText]       = useState("");
   const [type, setType]       = useState("general");
-  const [expanded, setExpanded] = useState(false);
   // campos extra según tipo
   const [honorado, setHonorado] = useState(""); // para insignia
   const [meta, setMeta]         = useState("");  // para reto
@@ -208,7 +207,7 @@ function MuroInput({onPublish, players=[]}) {
     if (type==="reto" && meta) fullText = `⚡ META: ${meta} — ${fullText}`;
     setBusy(true);
     await onPublish(fullText, type);
-    setText(""); setHonorado(""); setMeta(""); setExpanded(false);
+    setText(""); setHonorado(""); setMeta("");
     setBusy(false);
   };
 
@@ -715,7 +714,7 @@ function MuroModule({ sp, currentCategory, catsBanner, sportColor, sportCards, p
       {posts.length===0 && (
         <EmptyState icon="💬" title="El Muro está vacío" desc="Sé el primero en publicar. Comparte un resultado, da una insignia o lanza un reto al equipo." color={sportColor}/>
       )}
-      {posts.map((post,i)=>(
+      {posts.map((post)=>(
         <PostCard key={post.id} post={post} sportColor={sportColor}
           reactions={reactions} onReact={handleReact}
           liked={!!likedByMe[post.id]} onToggleLike={toggleLike}
@@ -979,8 +978,7 @@ function CalendarioModule({ sp, isDemo, userCats, club, sportColor, clubId, setP
 
 /* ── EntrenadorView ─────────────────────────────────────────── */
 export default function EntrenadorView({module, sport, sp, club, players, showToast, sportColor, currentCategory, hiaModal, setHiaModal, userCats=[], isDemo=true, partidos=[], setPartidos=()=>{}, clubId=null, currentUserId=null}) {
-  const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#3B82F6","advertencia":"#EF4444","insignia":"#F59E0B","reto":"#A855F7"};
-  // Sin tabla de estadísticas por jugador todavía — no inventar un número
+    // Sin tabla de estadísticas por jugador todavía — no inventar un número
   // cuando no hay dato real (antes generaba uno "consistente" por fórmula,
   // que además daba NaN con ids uuid reales).
   // Las estadísticas del torneo ya vienen pegadas al plantel desde App.jsx
@@ -1184,7 +1182,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
         </motion.div>
       )}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px",marginBottom:"20px"}}>
-        {[["verde","Aptos","#22C55E"],["amarillo","Alerta","#F59E0B"],["rojo","No aptos","#EF4444"]].map(([k,l,c],i)=>(
+        {[["verde","Aptos","#22C55E"],["amarillo","Alerta","#F59E0B"],["rojo","No aptos","#EF4444"]].map(([k,l,c])=>(
           <div key={k} style={{...ss.card,cursor:"default"}}>
             <div style={ss.muted}>{l}</div>
             <div style={{fontSize:"26px",fontWeight:800,color:c,letterSpacing:"-0.02em",lineHeight:1.1}}>{players.filter(p=>p.med_status===k).length}</div>

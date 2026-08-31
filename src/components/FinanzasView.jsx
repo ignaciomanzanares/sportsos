@@ -138,12 +138,10 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
   const [movimientos,  setMovimientos]  = useState(clubId ? [] : MOCK_MOVIMIENTOS);
   const [sueldos,      setSueldos]      = useState(clubId ? [] : MOCK_SUELDOS);
   const [gastosAdmin,  setGastosAdmin]  = useState(clubId ? [] : MOCK_GASTOS_ADMIN);
-  const [loading,      setLoading]      = useState(false);
 
   // Carga datos reales si hay club_id
   useEffect(() => {
     if (!clubId) return;
-    setLoading(true);
     Promise.all([
       supabase.from("finanzas_movimientos").select("*").eq("club_id", clubId).order("fecha", { ascending: false }),
       supabase.from("finanzas_sueldos").select("*").eq("club_id", clubId).order("created_at"),
@@ -152,7 +150,6 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
       setMovimientos((movRes.data || []).map(r => ({ ...r, desc: r.descripcion })));
       setSueldos(suelRes.data || []);
       setGastosAdmin((admRes.data || []).map(r => ({ ...r, desc: r.descripcion })));
-      setLoading(false);
     });
   }, [clubId]);
 
@@ -311,7 +308,6 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
           </motion.button>
           <motion.button whileHover={{scale:1.03}} whileTap={{scale:0.97}}
             onClick={()=>{
-              const sym2 = countryData?.symbol || "$";
               const rows = [
                 ["Tipo","Categoría","Descripción","Monto","Fecha"],
                 ...payments.map(p=>["ingreso","Cuotas",`Cuota ${p.playerName||p.jugador||""}`,p.amount||p.monto||0,p.date||p.fecha||""]),
@@ -417,7 +413,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
               <div style={{ ...ss.card, padding:"20px" }}>
                 <div style={{ fontWeight:700, fontSize:"13px", marginBottom:"14px", color:"#C0392B" }}>📤 Egresos por categoría</div>
                 {[...CAT_EGRESOS, "Sueldos", "Gastos Admin"].map(cat => {
-                  let total = 0;
+                  let total;
                   if (cat==="Sueldos") total = totalSueldos;
                   else if (cat==="Gastos Admin") total = totalGastosAdmin;
                   else total = movimientos.filter(m=>m.tipo==="egreso"&&m.cat===cat).reduce((s,m)=>s+m.monto,0);
@@ -615,7 +611,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
                 <span style={{ fontWeight:800, color:"#1FA04A", fontSize:"14px" }}>{fmt(totalIngresosReal,sym)}</span>
               </div>
               {/* Cuotas de jugadores — solo las confirmadas son ingreso */}
-              {cuotasPagadas.map((p,i) => (
+              {cuotasPagadas.map((p) => (
                 <div key={p.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
                   padding:"12px 16px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px" }}>
                   <div>
@@ -822,7 +818,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
               <div style={{ padding:"14px 16px", borderBottom:"1px solid var(--border-soft)", fontWeight:700, fontSize:"13px" }}>
                 Todos los movimientos
               </div>
-              {[...movimientos].sort((a,b)=>b.fecha.localeCompare(a.fecha)).map((m,i) => (
+              {[...movimientos].sort((a,b)=>b.fecha.localeCompare(a.fecha)).map((m) => (
                 <div key={m.id} style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
                   padding:"11px 16px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px" }}>
                   <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>

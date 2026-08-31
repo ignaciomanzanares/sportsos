@@ -16,7 +16,7 @@ const MODULE_LABELS = {
   migym:"Mi Gym", nominasclub:"Nóminas Club", miconvocatoria:"Mi Convocatoria",
 };
 
-export default function GlobalSearch({ players=[], posts=[], sportColor="#A855F7", role, modules=[], onNavigate, onClose }) {
+export default function GlobalSearch({ players=[], posts=[], sportColor="#A855F7", modules=[], onNavigate, onClose }) {
   const [query, setQuery]     = useState("");
   const [results, setResults] = useState([]);
   const inputRef = useRef(null);

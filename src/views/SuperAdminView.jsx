@@ -230,12 +230,12 @@ function VistaRoles({ rolePreviewProps, showToast }) {
         {modActivo!=="miperfil" && rolActivo==="preparador" && modActivo==="home" &&
           <HomeView role="preparador" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
         {modActivo!=="miperfil" && rolActivo==="preparador" && modActivo!=="home" &&
-          <PreparadorView module={modActivo} sp={rp.sp} showToast={showToast} sportColor={rp.sportColor} publishedPlan={rp.publishedPlan} setPublishedPlan={rp.setPublishedPlan||((v)=>{})} newExForm={rp.newExForm||false} setNewExForm={rp.setNewExForm||((v)=>{})} newEx={rp.newEx||{name:"",sets:3,reps:8,pct:70,rest:120,notes:"",muscles:""}} setNewEx={rp.setNewEx||((v)=>{})} gymPlanExercises={rp.gymPlanExercises} setGymPlanExercises={rp.setGymPlanExercises||((v)=>{})} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||((v)=>{})} expandedDay={rp.expandedDay||"lunes"} setExpandedDay={rp.setExpandedDay||((v)=>{})} userCats={[]} isDemo={true}/>}
+          <PreparadorView module={modActivo} sp={rp.sp} showToast={showToast} sportColor={rp.sportColor} publishedPlan={rp.publishedPlan} setPublishedPlan={rp.setPublishedPlan||(()=>{})} newExForm={rp.newExForm||false} setNewExForm={rp.setNewExForm||(()=>{})} newEx={rp.newEx||{name:"",sets:3,reps:8,pct:70,rest:120,notes:"",muscles:""}} setNewEx={rp.setNewEx||(()=>{})} gymPlanExercises={rp.gymPlanExercises} setGymPlanExercises={rp.setGymPlanExercises||(()=>{})} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||(()=>{})} expandedDay={rp.expandedDay||"lunes"} setExpandedDay={rp.setExpandedDay||(()=>{})} userCats={[]} isDemo={true}/>}
 
         {modActivo!=="miperfil" && rolActivo==="jugador" && modActivo==="home" &&
           <HomeView role="jugador" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
         {modActivo!=="miperfil" && rolActivo==="jugador" && modActivo!=="home" &&
-          <JugadorView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} player={(rp.players||[])[0]} players={rp.players||[]} sportColor={rp.sportColor} countryData={rp.countryData} convocado={null} setConvocado={()=>{}} setWhatsappModal={()=>{}} showToast={showToast} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||((v)=>{})} payments={rp.payments||[]} setPayments={()=>{}} userCats={[]} isDemo={true} partidos={rp.partidos||[]} clubId={null}/>}
+          <JugadorView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} player={(rp.players||[])[0]} players={rp.players||[]} sportColor={rp.sportColor} countryData={rp.countryData} convocado={null} setConvocado={()=>{}} setWhatsappModal={()=>{}} showToast={showToast} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||(()=>{})} payments={rp.payments||[]} setPayments={()=>{}} userCats={[]} isDemo={true} partidos={rp.partidos||[]} clubId={null}/>}
       </div>
     </div>
   );
@@ -457,7 +457,7 @@ function MembresiasModule({ clubs, users, loading, history, cambiarPlan, suspend
               {/* Historial mini */}
               {histClub.length > 0 && !enEdit && (
                 <div style={{ padding:"8px 20px 10px", borderTop:"1px solid var(--border-soft)" }}>
-                  {histClub.map((h,hi)=>(
+                  {histClub.map((h)=>(
                     <div key={h.id} style={{ fontSize:"10px", color:"var(--text-4)", display:"flex", gap:"8px", padding:"2px 0" }}>
                       <span>{new Date(h.created_at).toLocaleDateString("es-CL")}</span>
                       <span style={{ color:"var(--text-3)" }}>{h.plan_antes} → <span style={{ fontWeight:700, color:PLAN_COLOR[h.plan_nuevo]||"var(--text-2)" }}>{PLAN_LABELS[h.plan_nuevo]||h.plan_nuevo}</span></span>
@@ -478,7 +478,7 @@ function MembresiasModule({ clubs, users, loading, history, cambiarPlan, suspend
             <div style={{ fontWeight:700, fontSize:"13px" }}>📋 Historial de cambios de plan</div>
             <span style={{ fontSize:"11px", color:"var(--text-3)" }}>{verHistorial?"Ocultar":"Ver todos"} ({history.length})</span>
           </div>
-          {verHistorial && history.map((h,i)=>{
+          {verHistorial && history.map((h)=>{
             const club = clubs.find(c=>c.id===h.club_id);
             return (
               <div key={h.id} style={{ display:"flex", gap:"12px", padding:"10px 20px", borderBottom:"1px solid var(--border-soft)", fontSize:"12px" }}>

@@ -31,7 +31,7 @@ export function parseArusaCalendarHtml(html, clubName) {
     const row = rawRow.split("</tr>")[0];
     const idMatch = row.match(/tournament\/(\d+)\/match\/(\d+)\/results/);
     if (!idMatch) continue; // fila vacía de relleno (paginación fija de 25)
-    const [, tournamentId, matchId] = idMatch;
+    const [, , matchId] = idMatch;
 
     const [, equipoCell = "", parcialesCell = ""] = row.split(/<td class="colstyle-/);
 

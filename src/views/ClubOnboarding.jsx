@@ -122,7 +122,7 @@ export default function ClubOnboarding({ onComplete, onBack, existingUser = null
           nombre_solicitante: (existingUser?.nombre || nombre || "").trim(),
           email_solicitante: (existingUser?.email || email || "").trim(),
         });
-      } catch (_) { /* no crítico */ }
+      } catch { /* no crítico */ }
 
       if (existingUser) {
         // Usuario ya autenticado (Google): reclamar admin del club recién creado

@@ -20,7 +20,7 @@ const PLAN_FEATURES = {
   ],
 };
 
-export default function UpgradeModal({ requiredPlan, onClose, sportColor="#C0392B" }) {
+export default function UpgradeModal({ requiredPlan, onClose }) {
   if (!requiredPlan) return null;
   const plan = PLANS[requiredPlan];
   const text = UPGRADE_TEXT[requiredPlan];
