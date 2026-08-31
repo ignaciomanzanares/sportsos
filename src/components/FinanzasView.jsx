@@ -119,7 +119,7 @@ export default function FinanzasView({ countryData, payments=[], sportColor, sho
   // falta y para registrar el pago de quien pagó en efectivo.
   useEffect(() => {
     if (!clubId) return;
-    supabase.from("club_payment_info").select("cuota_mensual").eq("club_id", clubId).single()
+    supabase.from("club_payment_info").select("cuota_mensual").eq("club_id", clubId).maybeSingle()
       .then(({ data }) => setCuotaMensual(Number(data?.cuota_mensual) || 0));
   }, [clubId]);
 
