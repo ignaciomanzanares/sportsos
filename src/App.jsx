@@ -563,20 +563,19 @@ export default function SportOS() {
         // Usuarios no-admin heredan el plan del admin de su club (cubre antiguos y nuevos)
         let planEfectivo = esSuperAdmin ? "elite" : (profile?.plan || "free");
         if (!esSuperAdmin && profile?.club_id && !["admin","superadmin"].includes(rolPerfil)) {
-          // limit(1).maybeSingle() y no single(): single() exige exactamente
-          // una fila y contesta 406 con cero o con dos. Las dos pasan de
-          // verdad — un club cuyo dueño es superadmin no tiene ninguna fila
-          // con rol 'admin', y un club con dos administradores tiene dos —,
-          // así que cada jugador que entraba se llevaba un error rojo en la
-          // consola. El plan cae al de su propio perfil, que es lo correcto.
-          const { data: adminClub } = await supabase
+          // Una lista de a lo más una fila, y no single()/maybeSingle(): las
+          // dos piden "un objeto" por cabecera y el servidor contesta 406
+          // cuando no hay ninguno. Pasa de verdad —un club cuyo dueño es
+          // superadmin no tiene ninguna fila con rol 'admin'—, así que cada
+          // jugador que entraba se llevaba un error rojo en la consola. Con
+          // lista la respuesta es 200 con [], que es lo que esto es: nada.
+          const { data: admins } = await supabase
             .from("profiles")
             .select("plan")
             .eq("club_id", profile.club_id)
             .eq("rol", "admin")
-            .limit(1)
-            .maybeSingle();
-          if (adminClub?.plan) planEfectivo = adminClub.plan;
+            .limit(1);
+          if (admins?.[0]?.plan) planEfectivo = admins[0].plan;
         }
         const usuario = {
           id: u.id,

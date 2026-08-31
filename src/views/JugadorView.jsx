@@ -49,11 +49,12 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
 
   useEffect(() => {
     if (!clubId) return;
-    // maybeSingle y no single: un club que todavía no cargó sus datos de
-    // transferencia no tiene fila, y single() contesta 406 — un error rojo en
-    // la consola de cada jugador que abre Mi Cuota, por algo que es normal.
-    supabase.from("club_payment_info").select("*").eq("club_id", clubId).maybeSingle()
-      .then(({ data }) => setBankInfo(data || null));
+    // Lista de a lo más una fila: un club que todavía no cargó sus datos de
+    // transferencia no tiene ninguna, y pedir "un objeto" contesta 406 — un
+    // error rojo en la consola de cada jugador que abre Mi Cuota, por algo
+    // que es perfectamente normal.
+    supabase.from("club_payment_info").select("*").eq("club_id", clubId).limit(1)
+      .then(({ data }) => setBankInfo(data?.[0] || null));
   }, [clubId]);
 
   const copy = (text, field) => {

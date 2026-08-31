@@ -46,8 +46,9 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
 
   useEffect(() => {
     if (!clubId) return;
-    supabase.from("club_payment_settings").select("*").eq("club_id", clubId).maybeSingle()
-      .then(({ data }) => {
+    supabase.from("club_payment_settings").select("*").eq("club_id", clubId).limit(1)
+      .then(({ data: filas }) => {
+        const data = filas?.[0];
         if (!data) return;
         // Las columnas vacías vienen como null desde Postgres y, al mezclarlas,
         // pisaban el "" del formulario. Un <input value={null}> deja de ser
