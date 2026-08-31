@@ -1,0 +1,7 @@
+# Todo el sitio es una sola dirección: la app no tiene rutas propias, así que
+# no hay nada que excluir. Los datos del club no están acá — viven detrás de
+# la sesión y de las políticas de la base, no de este archivo.
+User-agent: *
+Allow: /
+
+Sitemap: https://sportos-app.vercel.app/sitemap.xml

@@ -6,9 +6,8 @@
     <!-- Instalable en el teléfono ("Agregar a pantalla de inicio"): la app se
          usa al borde de la cancha y hasta ahora había que abrir el navegador y
          buscar la dirección cada vez. Con esto queda como un ícono más, y abre
-         a pantalla completa sin la barra del navegador.
-         Ojo: NO da uso sin conexión — eso necesita un service worker, que no
-         existe todavía. Sin señal la app sigue sin cargar. -->
+         a pantalla completa sin la barra del navegador. El uso sin señal lo
+         agrega el service worker (public/sw.js), que es cosa aparte. -->
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,7 +16,35 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#040812" />
-    <meta name="description" content="SportOS — La plataforma deportiva de América Latina" />
+
+    <!-- ── Cómo se ve esta página fuera de la página ──────────────────────
+         El título y la descripción son lo que aparece en Google; las og:* son
+         lo que se dibuja cuando alguien pega el link en WhatsApp, que es por
+         donde llega toda la gente del club. Sin og:image WhatsApp muestra un
+         rectángulo gris y el link parece roto.
+
+         El título no lleva emoji: en la pestaña se ve simpático, pero en el
+         resultado de búsqueda Google lo recorta o lo ignora, y en el nombre
+         del acceso directo del teléfono queda un cuadrito. -->
+    <title>SportOS — Gestión de clubes deportivos</title>
+    <meta name="description" content="Plantel, convocatorias, asistencia, cuotas, estadísticas y salud del club en una sola app. Para clubes de rugby, fútbol, básquetbol, handball y hockey." />
+    <link rel="canonical" href="https://sportos-app.vercel.app/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SportOS" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:url" content="https://sportos-app.vercel.app/" />
+    <meta property="og:title" content="SportOS — Gestión de clubes deportivos" />
+    <meta property="og:description" content="Plantel, convocatorias, asistencia, cuotas, estadísticas y salud del club en una sola app. Cada uno ve lo que le toca." />
+    <meta property="og:image" content="https://sportos-app.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SportOS — tu club entero, en una sola app" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SportOS — Gestión de clubes deportivos" />
+    <meta name="twitter:description" content="Plantel, convocatorias, asistencia, cuotas, estadísticas y salud del club en una sola app." />
+    <meta name="twitter:image" content="https://sportos-app.vercel.app/og.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Se carga sin bloquear el dibujado: como hoja de estilos normal, el
@@ -33,7 +60,23 @@
       <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" />
     </noscript>
-    <title>SportOS ⚡</title>
+
+    <!-- Le dice a Google qué es esto, en su vocabulario: una aplicación web,
+         gratis para empezar, en español. Es lo que puede hacer que el
+         resultado salga con más que un título y dos líneas. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SportOS",
+      "url": "https://sportos-app.vercel.app/",
+      "applicationCategory": "SportsApplication",
+      "operatingSystem": "Web, Android, iOS",
+      "inLanguage": "es",
+      "description": "Gestión de clubes deportivos: plantel, convocatorias, asistencia, cuotas, estadísticas y salud.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

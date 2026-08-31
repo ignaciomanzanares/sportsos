@@ -1,7 +1,7 @@
 {
   "name": "SportOS",
   "short_name": "SportOS",
-  "description": "La plataforma deportiva de América Latina",
+  "description": "Plantel, convocatorias, asistencia, cuotas, estadísticas y salud del club en una sola app.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
