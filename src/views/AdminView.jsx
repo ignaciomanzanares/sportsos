@@ -812,12 +812,17 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           }
         />
 
-        {/* Tabs: Plantel | Solicitudes */}
-        <div style={{display:"flex",gap:"6px",marginBottom:"20px"}}>
+        {/* Las tres pestañas no son tres planteles, y por los nombres cortos
+            que tenían lo parecían. Solo la primera es la lista del club: la
+            segunda es gente que TODAVÍA no está adentro y pide entrar, y la
+            tercera es la herramienta para enganchar una ficha con su registro
+            del torneo. Los nombres lo dicen y abajo hay una línea que lo
+            explica. */}
+        <div style={{display:"flex",gap:"6px",marginBottom:"10px",flexWrap:"wrap"}}>
           {[
             { id:"plantel",      label:`👥 Plantel (${players.length})` },
-            { id:"solicitudes",  label:`📩 Solicitudes${pendingCount>0?` (${pendingCount})`:""}` },
-            { id:"arusa",        label:`🔗 ARUSA` },
+            { id:"solicitudes",  label:`📩 Piden entrar${pendingCount>0?` (${pendingCount})`:""}` },
+            { id:"arusa",        label:`🔗 Vincular con ARUSA` },
           ].map(t=>(
             <motion.button key={t.id} whileTap={{scale:0.97}} onClick={()=>setJugTab(t.id)}
               style={{...ss.btn, fontSize:"12px", padding:"8px 16px",
@@ -834,6 +839,11 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
               )}
             </motion.button>
           ))}
+        </div>
+        <div style={{fontSize:"10.5px",color:"var(--text-3)",marginBottom:"18px",lineHeight:1.6}}>
+          {jugTab === "plantel"     && `Tu plantel. Es la única lista de jugadores del club: la misma que ven Nómina, Asistencia, Estadísticas y Finanzas. Estás viendo ${currentCategory || "todas las categorías"}${inactivos > 0 ? `, sin los ${inactivos} dados de baja` : ""}.`}
+          {jugTab === "solicitudes" && "Gente que todavía NO está en el club y pidió entrar. Con el código de ingreso casi nadie pasa por acá: se registran solos y aparecen directo en el plantel."}
+          {jugTab === "arusa"       && "Herramienta de configuración, no una segunda lista. Engancha una ficha del plantel con su registro del torneo para que le lleguen sus partidos, tries y puntos."}
         </div>
 
         {/* ── Vista: Vincular con ARUSA ── */}

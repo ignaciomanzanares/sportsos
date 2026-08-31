@@ -84,12 +84,18 @@ export function useArusaJugadores(activo = true, clubName = null) {
         // dentro del club, que es justamente distinguir quién jugó arriba.
         const capsPrimera = (prev?.capsPrimera || 0) +
           (r.division === "PRIMERA" ? (j.partidos || 0) : 0);
+        // Además de la suma se guarda cada división por separado. La suma es
+        // lo que se muestra por defecto —lo que hizo el jugador en el año—,
+        // pero sin el desglose no se puede contestar "¿y en Primera?" sin
+        // volver a pedirle todo al servidor.
+        const porDivision = { ...(prev?.porDivision || {}), [r.division]: j };
         acc.set(id, prev ? {
           ...prev,
           capsPrimera,
+          porDivision,
           ...Object.fromEntries(SUMABLES.map(k =>
             [k, (prev[k] || 0) + (j[k] || 0)])),
-        } : { ...j, id, capsPrimera });
+        } : { ...j, id, capsPrimera, porDivision });
       }
       if (!clubName) { setJugadores([...acc.values()]); return; }
       // El caché en vivo perdió a siete jugadores del club —los que jugaron

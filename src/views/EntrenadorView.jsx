@@ -5,7 +5,7 @@ import { ss } from "../styles/tokens";
 import { FORMATIONS, equiposDeCategoria, terminoAnotacion } from "../data/sports";
 import { usePosts } from "../lib/usePosts";
 import { useAttendance, useAttendanceStats, useAsistenciaPrevia, fechasDeEntrenamiento, DIAS_ENTRENAMIENTO } from "../lib/useAttendance";
-import { vieneDeArusa } from "../lib/statsArusa";
+import { vieneDeArusa, estadisticasDe, DIVISIONES } from "../lib/statsArusa";
 import { coincide } from "../lib/buscarNombre";
 import { useComments } from "../lib/useComments";
 import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
@@ -985,7 +985,11 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
   // (statsArusa), así que acá solo se lee. Antes el cruce se hacía en esta
   // pantalla y solo en esta: el resto de la app mostraba cero para el mismo
   // jugador.
-  const sv = (p,k)=> p.stats?.[k] ?? null;
+  // Qué división se está mirando en Estadísticas. "TODAS" es la suma de las
+  // tres adultas, que es lo que el jugador hizo en el año; las otras tres
+  // contestan "¿y en Primera?" sin volver a pedirle nada al servidor.
+  const [divStats, setDivStats] = useState("TODAS");
+  const sv = (p,k)=> estadisticasDe(p, divStats)?.[k] ?? null;
   const [reactions, setReactions] = useState({});
   const handleReact = (postId, emoji) => {
     setReactions(prev=>{
@@ -1118,10 +1122,33 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
               hay tabla ni estadísticas oficiales — elige <strong>Adulta</strong> arriba para verlas.
             </div>
       )}
-      {/* Caps: aparte de los bloques de abajo porque cuenta SOLO Primera,
-          mientras que tries/puntos suman las tres divisiones. */}
+      {/* Caps: aparte de los bloques de abajo y sin filtro, porque un cap es
+          por definición un partido del primer equipo. Las estadísticas de
+          abajo sí se filtran: son de la temporada, no del primer equipo. */}
       {sport==="rugby" && clubId && sp.teamsByCategory?.[currentCategory] && (
         <CapsPrimera players={visiblePlayers} sportColor={sportColor}/>
+      )}
+      {/* El filtro de división. Sin esto, todos los números de abajo eran la
+          suma de las tres divisiones y no había forma de separarlas, mientras
+          que la tarjeta de arriba contaba solo Primera: dos reglas conviviendo
+          sin que la pantalla dijera cuál era cuál. */}
+      {sport==="rugby" && clubId && sp.teamsByCategory?.[currentCategory] && (
+        <div style={{display:"flex",gap:"6px",flexWrap:"wrap",margin:"4px 0 16px"}}>
+          {DIVISIONES.map(d=>(
+            <motion.button key={d.id} whileTap={{scale:0.97}} onClick={()=>setDivStats(d.id)}
+              style={{...ss.btn, fontSize:"11.5px", padding:"7px 14px",
+                background: divStats===d.id ? sportColor : "var(--bg-elev-2)",
+                color: divStats===d.id ? "#fff" : "var(--text-2)",
+                border: `1px solid ${divStats===d.id ? sportColor : "var(--border-soft)"}`}}>
+              {d.label}
+            </motion.button>
+          ))}
+          <span style={{...ss.muted,fontSize:"11px",alignSelf:"center",marginLeft:"4px"}}>
+            {divStats==="TODAS"
+              ? "Suma de las tres divisiones adultas — la temporada completa del jugador."
+              : `Solo ${DIVISIONES.find(d=>d.id===divStats).label}.`}
+          </span>
+        </div>
       )}
       {sp.stats.map((stat,si)=>{
         const conDato = visiblePlayers.filter(p=>sv(p,stat.key)!=null);
@@ -1131,7 +1158,9 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
             <div style={{fontWeight:600,marginBottom:"14px",fontSize:"13px",display:"flex",alignItems:"center",gap:"8px"}}>{stat.icon} {stat.label}</div>
             <div style={{...ss.muted,fontSize:"12px"}}>
               {["tries","conversiones","penales"].includes(stat.key)
-                ? `Nadie del plantel figura con ${stat.label.toLowerCase()} en el torneo todavía. Si faltan jugadores por vincular con ARUSA, se hace en Mi Club.`
+                ? (divStats==="TODAS"
+                    ? `Nadie del plantel figura con ${stat.label.toLowerCase()} en el torneo todavía. Si faltan jugadores por vincular con ARUSA, se hace en Mi Club.`
+                    : `Nadie del plantel tiene ${stat.label.toLowerCase()} en ${DIVISIONES.find(d=>d.id===divStats).label}. Probá con "Todas".`)
                 : `"${stat.label}" no lo publica el torneo y todavía no se carga a mano para este plantel.`}
             </div>
           </motion.div>

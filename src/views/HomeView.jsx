@@ -367,6 +367,14 @@ function HomeAdmin({ players, sportColor, sp, payments, partidos, onNavigate, cl
             </tbody>
           </table>
         </div>
+        {/* Sin esta línea, la misma persona figuraba con un número acá y otro
+            en Estadísticas y no había forma de saber por qué. Los dos son
+            ciertos: cuentan cosas distintas, y ahora lo dice la pantalla. */}
+        <div style={{fontSize:"10.5px",color:"#4a4743",marginTop:"10px",lineHeight:1.6}}>
+          PJ = partidos de esta temporada sumando Primera, Intermedia y
+          Pre-Intermedia. En <strong>Estadísticas</strong> se pueden ver por división,
+          y ahí están también los caps del primer equipo, que cuentan solo Primera.
+        </div>
       </div>
     </div>
   );
@@ -679,7 +687,7 @@ function HomeJugador({ player, sportColor, sp, club, payments, onNavigate, convo
             tries del jugador en el torneo, que son datos suyos y reales. Ir al
             gym ya está en Acciones rápidas, abajo. */}
         <HeroStat icon="🏉" value={player?.stats?.partidos ?? "—"} label="Partidos"
-          sub="Jugados en el torneo" color="#3B82F6" onClick={()=>onNavigate("midashboard")}/>
+          sub="Este año, las tres divisiones" color="#3B82F6" onClick={()=>onNavigate("midashboard")}/>
         {/* Los caps van aparte de "Partidos" a propósito: son solo los de
             Primera. En el rugby esa distinción es el dato, no un detalle —
             sumarle Intermedia y Pre lo convertiría en otro número. Solo

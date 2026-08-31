@@ -70,6 +70,40 @@ export function enriquecerConArusa(players, jugadoresArusa) {
   });
 }
 
+/** Las divisiones adultas que publica el torneo, más la suma de las tres. */
+export const DIVISIONES = [
+  { id: "TODAS",          label: "Todas" },
+  { id: "PRIMERA",        label: "Primera" },
+  { id: "INTERMEDIA",     label: "Intermedia" },
+  { id: "PRE_INTERMEDIA", label: "Pre-Intermedia" },
+];
+
+/**
+ * Las estadísticas de un jugador en la división que se esté mirando.
+ *
+ * Por defecto la app muestra la suma de las tres divisiones adultas, que es
+ * lo que el jugador hizo en el año. Pero el club también pregunta "¿y en
+ * Primera?", y para eso hace falta el desglose que guarda useArusaJugadores.
+ *
+ * En Primera el número de partidos no sale de la tabla de ARUSA sino del
+ * conteo propio, que es mayor: ARUSA se pierde cerca de un tercio de los
+ * ingresos desde la banca. Es el mismo criterio que usa la tarjeta de Caps,
+ * así que las dos pantallas dicen lo mismo.
+ */
+export function estadisticasDe(player, division = "TODAS") {
+  const stats = player?.stats || {};
+  if (division === "TODAS") return stats;
+
+  const fila = player?.arusaStats?.porDivision?.[division];
+  if (!fila) return null;   // no jugó en esa división
+
+  if (division !== "PRIMERA") return { ...fila, partidos: fila.partidos || 0 };
+
+  // Primera: manda el conteo hecho desde las nóminas, partido por partido.
+  const nuestro = capsHistoricos(player)?.porAnio?.[new Date().getFullYear()] || 0;
+  return { ...fila, partidos: Math.max(nuestro, fila.partidos || 0) };
+}
+
 /** ¿Este número vino del torneo y no del club? */
 export function vieneDeArusa(player, clave) {
   return player?.arusaStats?.[clave] != null && player.arusaStats[clave] === player.stats?.[clave];
