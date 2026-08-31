@@ -46,6 +46,18 @@ import NewPasswordScreen from "./views/NewPasswordScreen";
 import SinClubScreen from "./views/SinClubScreen";
 import { redeemPendingInvitation, redeemPendingCode } from "./lib/pendingInvitation";
 
+// La dirección tal como llegó, leída al cargar el módulo: la app escribe su
+// propio estado en el hash (#/home?rol=…) y pisa el del link antes de que
+// nadie pueda mirarlo. Esto se evalúa una sola vez, antes de todo eso.
+const URL_INICIAL = typeof window !== "undefined" ? window.location.href : "";
+
+// El link de "olvidé mi contraseña" trae type=recovery. Hace falta saberlo
+// aparte del evento de Supabase porque INITIAL_SESSION —que entra a la app—
+// se emite antes que PASSWORD_RECOVERY, y su rama es asíncrona: terminaba
+// después y pisaba la pantalla de contraseña nueva. La persona quedaba
+// adentro sin haberla cambiado, y a la próxima volvía a estar afuera.
+const LLEGA_DE_RECUPERACION = /type=recovery/.test(URL_INICIAL);
+
 const ROLES = [
   {id:"superadmin",label:"Super Admin",icon:"⚡"},
   {id:"admin",label:"Admin Club",icon:"🏢"},
@@ -127,6 +139,12 @@ export default function SportOS() {
   // verdadero, se recalculaba el perfil y el rol volvía al del perfil: si
   // estabas mirando como Entrenador, te devolvía a Super Admin.
   const sesionYaResuelta = useRef(false);
+  // El link de "olvidé mi contraseña" trae type=recovery en el hash. Se lee
+  // acá, antes de cualquier await, porque supabase-js emite INITIAL_SESSION
+  // (que entra a la app) antes que PASSWORD_RECOVERY: sin esta marca, la
+  // rama asíncrona terminaba después y pisaba la pantalla de contraseña
+  // nueva. La persona quedaba adentro, sin haberla cambiado.
+  const enRecuperacion = useRef(LLEGA_DE_RECUPERACION);
   const [upgradeFor,setUpgradeFor]       = useState(null); // id de feature bloqueada
   // Editar un jugador desde la tabla del Inicio: la ficha se edita en
   // Jugadores, así que se anota a quién y se navega. Sin esto, la fila del
@@ -485,6 +503,7 @@ export default function SportOS() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_OUT") { sesionYaResuelta.current = false; }
       if (event === "PASSWORD_RECOVERY") {
+        enRecuperacion.current = true;
         setScreen("newpassword");
         return;
       }
@@ -495,6 +514,10 @@ export default function SportOS() {
         setScreen(p => p === "cargando" ? "landing" : p);
         return;
       }
+      // Durante una recuperación hay sesión válida —el link la crea— pero
+      // entrar a la app es justamente lo que no se quiere: primero cambia la
+      // contraseña, si no vuelve a quedar afuera la próxima vez.
+      if (enRecuperacion.current) { setScreen("newpassword"); return; }
       if ((event === "SIGNED_IN" || event === "INITIAL_SESSION") && session?.user && !sesionYaResuelta.current) {
         sesionYaResuelta.current = true;
         const u = session.user;
@@ -631,7 +654,13 @@ export default function SportOS() {
 
   // Pantalla de nueva contraseña (viene del link de recuperación por email)
   if(screen==="newpassword") return (
-    <NewPasswordScreen onSuccess={()=>setScreen("login")}/>
+    <NewPasswordScreen onSuccess={()=>{
+      enRecuperacion.current = false;
+      // El hash con el token queda en la barra; si no se limpia, recargar
+      // vuelve a meter a la persona en la pantalla de contraseña nueva.
+      window.history.replaceState({}, "", "/");
+      setScreen("login");
+    }}/>
   );
 
   // Solicitud de jugador con código de club
