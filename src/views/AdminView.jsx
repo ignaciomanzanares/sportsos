@@ -12,14 +12,13 @@ import VincularArusa from "../components/VincularArusa";
 import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
 import FinanzasView from "../components/FinanzasView";
-import { downloadTemplate, parsePlayersFile } from "../lib/playerImport";
 import { clave, contieneNombre } from "../lib/vincularArusa";
 import { filtrarPorNombre } from "../lib/buscarNombre";
 import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, importOrUpdatePlayers, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null, verInactivos=false, setVerInactivos=null, inactivos=0}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null, verInactivos=false, setVerInactivos=null, inactivos=0}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -154,25 +153,6 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   const [joinRequests, setJoinRequests] = useState([]);
   const [jugTab, setJugTab]             = useState("plantel");
   const [approvedReq, setApprovedReq]   = useState(null);
-  const [importBusy, setImportBusy]     = useState(false);
-  const [importError, setImportError]   = useState("");
-
-  const handleImportFile = async (file) => {
-    if (!file) return;
-    setImportBusy(true);
-    setImportError("");
-    try {
-      const result = await parsePlayersFile(file);
-      if (!result.ok) { setImportError(result.error); return; }
-      await importOrUpdatePlayers(result.players);
-      showToast(`${result.players.length} jugadores importados/actualizados ✅`, "success");
-    } catch (e) {
-      setImportError("Error al leer el archivo: " + e.message);
-    } finally {
-      setImportBusy(false);
-    }
-  };
-
   // Cargar miembros del club desde Supabase
   useEffect(() => {
     if (!clubId) return;
@@ -825,7 +805,6 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           {[
             { id:"plantel",      label:`👥 Plantel (${players.length})` },
             { id:"solicitudes",  label:`📩 Solicitudes${pendingCount>0?` (${pendingCount})`:""}` },
-            { id:"importar",     label:`📥 Importar Excel` },
             { id:"arusa",        label:`🔗 ARUSA` },
           ].map(t=>(
             <motion.button key={t.id} whileTap={{scale:0.97}} onClick={()=>setJugTab(t.id)}
@@ -892,43 +871,6 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
                   </div>
                 </motion.div>
               ))
-            )}
-          </div>
-        )}
-
-        {/* ── Vista: Importar Excel ── */}
-        {jugTab === "importar" && (
-          <div style={{...ss.card, maxWidth:"560px"}}>
-            <div style={{fontWeight:700,fontSize:"14px",marginBottom:"6px"}}>📥 Importar / actualizar plantel desde Excel</div>
-            <div style={{fontSize:"12px",color:"var(--text-3)",lineHeight:1.7,marginBottom:"16px"}}>
-              Sube la nómina de tu club tal como la tengas — detectamos automáticamente nombre,
-              RUT, edad/fecha de nacimiento, teléfono, email, posición y otros datos, sin importar
-              el orden ni los títulos exactos de las columnas. Puedes volver a subirla cuando
-              quieras: a los jugadores que ya existen (por RUT o nombre) se les actualiza su info,
-              y los nuevos se agregan.
-            </div>
-
-            <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}}
-              onClick={()=>downloadTemplate().catch(()=>showToast("No se pudo generar la plantilla","error"))}
-              style={{...ss.btn,background:"var(--bg-elev-2)",color:"var(--text-1)",border:"1px solid var(--border-soft)",fontSize:"12px",padding:"10px 18px",fontWeight:600,marginBottom:"18px"}}>
-              ⬇️ Descargar plantilla de ejemplo (.xlsx)
-            </motion.button>
-
-            <div style={{marginBottom:"10px"}}>
-              <div style={ss.label}>Subir Excel de tu club</div>
-              <input type="file" accept=".xlsx,.xls,.csv"
-                disabled={importBusy}
-                onChange={e => handleImportFile(e.target.files?.[0])}
-                style={{...ss.input, padding:"8px", cursor:importBusy?"not-allowed":"pointer"}}/>
-            </div>
-
-            {importBusy && (
-              <div style={{fontSize:"12px",color:"var(--text-3)"}}>⏳ Leyendo archivo...</div>
-            )}
-            {importError && (
-              <div style={{fontSize:"12px",color:"#EF4444",marginTop:"8px",padding:"10px 12px",borderRadius:"var(--r-sm)",background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)"}}>
-                ⚠️ {importError}
-              </div>
             )}
           </div>
         )}
