@@ -46,7 +46,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
 
   useEffect(() => {
     if (!clubId) return;
-    supabase.from("club_payment_settings").select("*").eq("club_id", clubId).single()
+    supabase.from("club_payment_settings").select("*").eq("club_id", clubId).maybeSingle()
       .then(({ data }) => {
         if (!data) return;
         // Las columnas vacías vienen como null desde Postgres y, al mezclarlas,
