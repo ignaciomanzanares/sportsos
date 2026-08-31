@@ -94,7 +94,12 @@ export default function UnirmeScreen({ codigoInicial = "", onComplete, onBack, o
       if (rpcErr.code === "PGRST202") {
         throw new Error("El club todavía no tiene activado el ingreso por código. Avisale a tu administrador.");
       }
-      throw new Error(rpcErr.message);
+      // Cualquier otra cosa es un problema nuestro, y el mensaje crudo de
+      // Postgres no le sirve a nadie: el ingreso estuvo roto mostrándole
+      // "column reference sport is ambiguous" a quien abría el link. Se avisa
+      // en castellano y el detalle queda en la consola, que es donde se busca.
+      console.error("[unirme] falló unirme_con_codigo:", rpcErr);
+      throw new Error("Tu cuenta quedó creada, pero no pudimos meterte al club. Avisale a tu administrador y volvé a abrir este link — no hace falta que te registres de nuevo.");
     }
     return data?.[0] || null;
   };

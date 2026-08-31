@@ -1,31 +1,21 @@
 -- ═══════════════════════════════════════════════════════════════════════════
---  Autoservicio: entrar al club con el código, sin que el admin mande links
+--  ARREGLO: "column reference sport is ambiguous" al entrar con el código
 -- ═══════════════════════════════════════════════════════════════════════════
 --
---  El problema que resuelve: hasta ahora, para que entrara una persona el
---  admin tenía que aprobar su solicitud, copiar un link y mandárselo por
---  WhatsApp. Con 109 jugadores son 109 mensajes uno por uno, y por eso el
---  club tiene 142 fichas y casi ninguna cuenta.
+--  Qué pasaba: la función no funcionaba NUNCA. Cualquiera que abriera el link
+--  del club veía el error crudo de Postgres y se quedaba con una cuenta creada
+--  y sin club.
 --
---  Ahora se manda UN link al grupo y cada uno entra solo.
+--  Por qué: `returns table(club_id uuid, club_name text, sport text, ...)`
+--  declara club_id y sport como variables de salida. Dentro del cuerpo, un
+--  `select id, name, sport from clubs` deja a Postgres sin saber si `sport` es
+--  la columna de la tabla o la variable, y aborta.
 --
---  Los límites de seguridad, que son lo que hace que esto sea aceptable:
---
---   · Solo crea JUGADORES. Nunca admin, entrenador ni preparador — esos
---     siguen necesitando invitación dirigida. Un código filtrado no puede
---     entregar el control del club.
---   · Exige sesión iniciada: sin auth.uid() no hace nada.
---   · No le saca el club a nadie que ya tenga uno. Si el que llama ya es
---     miembro de otro club, se rechaza en vez de mudarlo.
---   · Engancha con la ficha existente solo si hay UNA candidata por nombre.
---     Con dos Pérez no adivina: darle a alguien la ficha equivocada le
---     entrega la asistencia y los tries de otro.
+--  El arreglo es ponerle apodo a cada tabla y nombrar las columnas con él, así
+--  no queda ninguna suelta que se pueda confundir con una variable. No cambian
+--  los nombres de salida, porque la app los lee tal cual.
 --
 --  Correr entero en el SQL Editor de Supabase.
-
--- La baja reversible de jugadores se agregó a mano en producción y nunca entró
--- al esquema base. Idempotente: si ya está, no hace nada.
-alter table public.players add column if not exists activo boolean not null default true;
 
 create or replace function public.unirme_con_codigo(p_codigo text)
 returns table(club_id uuid, club_name text, sport text, player_id uuid)
@@ -42,9 +32,8 @@ begin
     raise exception 'sin_sesion';
   end if;
 
-  -- Cada columna con el apodo de su tabla. Sin eso, `sport` y `club_id`
-  -- chocan con las variables de salida del mismo nombre y la función aborta
-  -- con "column reference is ambiguous" — pasó, y rompía el ingreso entero.
+  -- `cl.` en cada columna: sin el apodo, `sport` chocaba con la variable de
+  -- salida del mismo nombre y era el error que rompía todo.
   select cl.id, cl.name, cl.sport into c
     from public.clubs cl
    where upper(trim(cl.join_code)) = upper(trim(p_codigo))
@@ -77,6 +66,8 @@ begin
    where pr.id = auth.uid();
 
   -- ¿Ya tenía ficha en este club? (volvió a entrar, segundo intento)
+  -- Acá `club_id` sin apodo era el siguiente choque, escondido detrás del
+  -- primero: se habría caído igual apenas se arreglara `sport`.
   select pl.id into v_player_id
     from public.players pl
    where pl.club_id = c.id and pl.profile_id = auth.uid()
@@ -124,11 +115,8 @@ end;
 $function$;
 
 -- Postgres da EXECUTE a PUBLIC por defecto, así que un grant sin revoke no
--- restringe nada: sin esto, un anónimo podría llamarla.
+-- restringe nada. Se repiten porque `create or replace` los conserva, pero si
+-- alguna vez se recrea la función desde cero tienen que estar acá.
 revoke execute on function public.unirme_con_codigo(text) from public;
 revoke execute on function public.unirme_con_codigo(text) from anon;
 grant  execute on function public.unirme_con_codigo(text) to authenticated;
-
--- Comprobación: tiene que devolver la función y su dueño.
-select proname, pg_get_function_identity_arguments(oid) as args
-  from pg_proc where proname = 'unirme_con_codigo';
