@@ -1089,15 +1089,10 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
           )}
         </motion.div>
       </div>
-      <motion.div {...fadeUp} style={ss.card}>
-        <div style={{fontWeight:600,marginBottom:"10px",fontSize:"14px"}}>📊 Stats de temporada</div>
-        {/* La posición en el torneo es un dato real y ya lo tenemos; el resto
-            (racha, posesión) no lo carga nadie todavía y no se inventa. */}
-        <div style={{...ss.muted,fontSize:"12px"}}>
-          Racha y posesión todavía no se cargan en el sistema. La posición en el
-          torneo está en Estadísticas.
-        </div>
-      </motion.div>
+      {/* Acá había una tarjeta "Stats de temporada" cuyo contenido era avisar
+          que racha y posesión no las carga nadie. Una tarjeta que solo existe
+          para decir que está vacía ocupa el lugar de una que sirva; la tabla
+          del torneo, que es el dato real, está en Estadísticas. */}
     </div>
   );
 
@@ -1199,15 +1194,27 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
             <h3 style={{margin:0,color:"#EF4444",fontSize:"15px",display:"flex",alignItems:"center",gap:"8px"}}>🚨 Protocolo HIA</h3>
             <motion.button whileHover={{scale:1.1,rotate:90}} whileTap={{scale:0.9}} onClick={()=>setHiaModal(false)} style={{...ss.btn,background:"transparent",color:"var(--text-2)",padding:"2px 8px"}}>✕</motion.button>
           </div>
-          <div style={{...ss.muted,fontSize:"11px",marginBottom:"10px"}}>Pasos a seguir cuando un jugador sale por sospecha de conmoción — todavía no hay seguimiento por jugador guardado en el sistema, es solo la referencia del protocolo.</div>
-          {[{step:1,label:"Evaluación inicial en cancha",status:"pendiente",color:"#4A5568"},{step:2,label:"Evaluación médica post-partido",status:"pendiente",color:"#4A5568"},{step:3,label:"Clearance médico para volver",status:"pendiente",color:"#4A5568"}].map((s,i)=>(
-            <motion.div key={s.step} initial={{opacity:0,x:-20}} animate={{opacity:1,x:0}} transition={{duration:0.3,delay:i*0.1}} style={{display:"flex",gap:"12px",alignItems:"center",padding:"12px",borderRadius:"var(--r-sm)",marginBottom:"8px",background:"var(--bg-elev-2)"}}>
-              <div style={{width:"30px",height:"30px",borderRadius:"50%",background:`linear-gradient(135deg,${s.color},${s.color}dd)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",fontWeight:800,color:"#fff",boxShadow:`0 0 12px ${s.color}88`}}>{s.step}</div>
-              <div style={{flex:1,fontSize:"13px"}}>{s.label}</div>
-              <Badge color={s.color}>{s.status}</Badge>
+          {/* Cada paso traía una insignia "pendiente" y abajo decía "jugador
+              bloqueado de nóminas hasta completar paso 3". Las dos cosas eran
+              mentira: no hay seguimiento por jugador y el sistema no bloquea a
+              nadie. Un panel de conmociones que finge controlar algo es peor
+              que uno que no existe — el entrenador confía y nadie está
+              mirando. Queda como lo que de verdad es: la referencia escrita
+              del protocolo, para tenerla a mano en la cancha. */}
+          <div style={{...ss.muted,fontSize:"11px",marginBottom:"12px"}}>
+            Los pasos a seguir cuando un jugador sale por sospecha de conmoción.
+            Es la referencia del protocolo — el sistema no lleva el seguimiento
+            ni impide convocarlo, eso lo controla el cuerpo técnico.
+          </div>
+          {["Evaluación inicial en cancha","Evaluación médica post-partido","Alta médica para volver a jugar"].map((paso,i)=>(
+            <motion.div key={paso} initial={{opacity:0,x:-20}} animate={{opacity:1,x:0}} transition={{duration:0.3,delay:i*0.1}} style={{display:"flex",gap:"12px",alignItems:"center",padding:"12px",borderRadius:"var(--r-sm)",marginBottom:"8px",background:"var(--bg-elev-2)"}}>
+              <div style={{width:"30px",height:"30px",borderRadius:"50%",background:"linear-gradient(135deg,#EF4444,#DC2626)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",fontWeight:800,color:"#fff",flexShrink:0}}>{i+1}</div>
+              <div style={{flex:1,fontSize:"13px"}}>{paso}</div>
             </motion.div>
           ))}
-          <div style={{...ss.muted,fontSize:"11px",marginTop:"10px"}}>🔒 Jugador bloqueado de nóminas hasta completar paso 3</div>
+          <div style={{...ss.muted,fontSize:"11px",marginTop:"10px"}}>
+            Hasta el alta médica, el jugador no debería entrar en ninguna nómina.
+          </div>
         </motion.div>
       )}
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:"12px",marginBottom:"20px"}}>

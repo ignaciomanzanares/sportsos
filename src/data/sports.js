@@ -1,5 +1,8 @@
 export const SPORTS_CONFIG = {
-  rugby: { name:"Rugby",icon:"🏉",color:"#1FA04A",squadSize:23,teamSize:15,positions:["Loosehead Prop","Hooker","Tighthead Prop","Lock","Lock","Blindside Flanker","Openside Flanker","Number 8","Scrum-half","Fly-half","Left Wing","Inside Centre","Outside Centre","Right Wing","Fullback"],stats:[{key:"tries",label:"Tries",icon:"🏉"},{key:"conversiones",label:"Conv.",icon:"⚡"},{key:"penales",label:"Pen.",icon:"🎯"},{key:"minutos",label:"Min.",icon:"⏱"},{key:"tackles",label:"Tackles",icon:"💪"}],categories:["M6","M8","M10","M12","M13","M14","M16","M18","Adulta"],teamsByCategory:{Adulta:["Primera","Intermedia","Pre-Intermedia"]},
+  rugby: { name:"Rugby",icon:"🏉",color:"#1FA04A",squadSize:23,teamSize:15,positions:["Loosehead Prop","Hooker","Tighthead Prop","Lock","Lock","Blindside Flanker","Openside Flanker","Number 8","Scrum-half","Fly-half","Left Wing","Inside Centre","Outside Centre","Right Wing","Fullback"],/* Minutos y tackles no están: ARUSA no los publica y no hay ninguna pantalla
+     para cargarlos a mano, así que en Estadísticas eran dos bloques que solo
+     existían para decir que no tenían nada. */
+    stats:[{key:"tries",label:"Tries",icon:"🏉"},{key:"conversiones",label:"Conv.",icon:"⚡"},{key:"penales",label:"Pen.",icon:"🎯"}],categories:["M6","M8","M10","M12","M13","M14","M16","M18","Adulta"],teamsByCategory:{Adulta:["Primera","Intermedia","Pre-Intermedia"]},
     // Los quince puestos de arriba son la formación: existen para armar la
     // nómina, donde cada camiseta es un puesto distinto. Para la ficha de un
     // jugador esa lista es demasiado fina —nadie es "Loosehead" y no

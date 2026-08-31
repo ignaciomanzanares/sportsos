@@ -167,7 +167,6 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
   const [activeSport, setActiveSport] = useState(0);
   const [activeRole,  setActiveRole]  = useState("entrenador");
   const [openFaq,     setOpenFaq]     = useState(null);
-  const [email,       setEmail]       = useState("");
 
   const sport    = SPORTS[activeSport];
   const roleData = ROLES_FEATURES[activeRole];
@@ -184,10 +183,7 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
     return () => { const el = document.getElementById(id); if (el) el.remove(); };
   }, []);
 
-  const handleCTA = () => {
-    if (email.trim()) setTimeout(() => onRegister(), 200);
-    else onRegister();
-  };
+  const handleCTA = () => onRegister();
 
   const btn = {
     border:"none", borderRadius:"2px", cursor:"pointer",
@@ -196,11 +192,6 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
     gap:"6px", transition:"all 0.15s ease",
   };
 
-  const inp = {
-    background:T.bgCard, border:`1px solid ${T.border}`, borderRadius:"2px",
-    color:T.text, fontFamily:FF.body, fontSize:"14px",
-    padding:"12px 16px", outline:"none",
-  };
 
   const card = {
     background:T.bgCard, border:`1px solid ${T.border}`,
@@ -347,9 +338,10 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
         {/* CTA */}
         <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3 }}
           style={{ display:"flex", gap:"8px", flexWrap:"wrap", alignItems:"center", marginBottom:"14px" }}>
-          <input value={email} onChange={e => setEmail(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && handleCTA()}
-            placeholder="tu@email.com" style={{ ...inp, width:"220px" }} />
+          {/* Acá había una casilla para el correo. Lo que se escribiera se
+              perdía: el botón llevaba al formulario de registro sin llevarlo,
+              y había que escribirlo de nuevo. Pedir un dato y tirarlo es peor
+              que no pedirlo. */}
           <motion.button
             whileHover={{ scale:1.03, y:-2, boxShadow:`0 14px 36px rgba(201,245,39,0.38)` }}
             whileTap={{ scale:0.97 }} onClick={handleCTA}
@@ -718,13 +710,8 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
           </p>
 
           <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginBottom:"14px" }}>
-            <input value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="tu@email.com"
-              style={{
-                ...inp,
-                background:"rgba(8,8,10,0.1)", border:"1px solid rgba(8,8,10,0.18)",
-                color:T.bg, width:"220px",
-              }} />
+            {/* Ídem que arriba: la casilla de correo no llevaba a ninguna
+                parte lo que se escribía. */}
             <motion.button
               whileHover={{ scale:1.03, y:-2 }} whileTap={{ scale:0.97 }}
               onClick={handleCTA}
