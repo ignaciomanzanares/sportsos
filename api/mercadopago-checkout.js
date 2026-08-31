@@ -3,6 +3,7 @@
 // Postgres, nunca expuesta al cliente) para leer el access_token del club
 // y para registrar el pago pendiente.
 import pg from "pg";
+import { createClient } from "@supabase/supabase-js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "method_not_allowed" });
@@ -11,6 +12,43 @@ export default async function handler(req, res) {
   if (!club_id || !player_id) {
     return res.status(400).json({ error: "faltan club_id o player_id" });
   }
+
+  // ── Quién llama ────────────────────────────────────────────────────────
+  //
+  // Esto no estaba, y era el agujero: el endpoint aceptaba cualquier POST con
+  // un club_id y un player_id. Sin sesión, sin pertenecer al club, sin nada.
+  // Cualquiera que conociera dos UUID podía sembrarle filas de cuota
+  // "pendiente" al club entero, o generarle a otro jugador un cobro a su
+  // nombre. No cobraba de más —el monto se lee del servidor— pero ensuciar
+  // las finanzas de un club ajeno ya es suficiente.
+  //
+  // Se valida con el token del propio usuario, igual que sync-arusa: se le
+  // pregunta a Supabase quién es y de qué club, y tiene que ser el mismo club
+  // que dice el cuerpo del pedido.
+  const token = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+  if (!token) return res.status(401).json({ error: "no autenticado" });
+
+  const comoUsuario = createClient(
+    process.env.VITE_SUPABASE_URL,
+    process.env.VITE_SUPABASE_ANON_KEY,
+    { global: { headers: { Authorization: `Bearer ${token}` } } },
+  );
+  const { data: userData, error: userErr } = await comoUsuario.auth.getUser(token);
+  if (userErr || !userData?.user) return res.status(401).json({ error: "sesión inválida" });
+
+  // El perfil se lee con la sesión del usuario, así que RLS ya garantiza que
+  // solo puede ver el suyo.
+  const { data: perfil } = await comoUsuario
+    .from("profiles").select("club_id").eq("id", userData.user.id).limit(1);
+  if (perfil?.[0]?.club_id !== club_id) {
+    return res.status(403).json({ error: "no perteneces a ese club" });
+  }
+
+  // Y la ficha tiene que ser del mismo club. Sin esto, un socio podría
+  // generarle un cobro a un jugador de otro club pasando su id.
+  const { data: ficha } = await comoUsuario
+    .from("plantel_publico").select("id").eq("id", player_id).eq("club_id", club_id).limit(1);
+  if (!ficha?.[0]) return res.status(403).json({ error: "esa ficha no es de tu club" });
 
   const client = new pg.Client({ connectionString: process.env.SUPABASE_DB_URL, ssl: { rejectUnauthorized: false } });
 

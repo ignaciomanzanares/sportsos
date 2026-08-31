@@ -67,9 +67,13 @@ function MiCuota({player, club, countryData, sportColor, showToast, payments, se
   const handleMercadoPago = async () => {
     setPaying(true);
     try {
+      // El token va en la cabecera: el endpoint ahora comprueba quién llama y
+      // que sea de este club. Antes aceptaba el pedido de cualquiera.
+      const { data: { session } } = await supabase.auth.getSession();
       const resp = await fetch("/api/mercadopago-checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                   Authorization: `Bearer ${session?.access_token}` },
         body: JSON.stringify({ club_id: clubId, player_id: player.id }),
       });
       const data = await resp.json();

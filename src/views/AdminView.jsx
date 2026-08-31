@@ -486,18 +486,14 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
           🏉 Integración con ARUSA
         </div>
         <div style={{fontSize:"12px",color:"var(--text-3)",marginBottom:"14px"}}>
-          {/* El ID de ARUSA ya no se usa: el club se reconoce por su nombre
-              contra los equipos del torneo. El campo se deja porque hay clubes
-              que lo tienen guardado, pero no condiciona nada. */}
           Trae el fixture oficial del torneo: adulta (Primera, Intermedia,
           Pre-Intermedia) y juveniles (M13 a M18). Se importa solo cada día;
           este botón lo adelanta.
         </div>
         <div style={{display:"flex",gap:"10px",alignItems:"center",flexWrap:"wrap",marginBottom:"12px"}}>
-          {/* Se fueron el campo del ID de ARUSA y su botón de guardar: el club
-              se reconoce por su nombre contra los equipos del torneo, así que
-              ese número no cambiaba nada. Dejarlo era pedirle al usuario que
-              configurara algo que no se usa. */}
+          {/* No hay nada que configurar: el club se reconoce por su nombre
+              contra los equipos del torneo. Acá había un campo para el "ID de
+              ARUSA" con su botón de guardar, que no cambiaba nada. */}
           <motion.button whileHover={{scale:1.02}} whileTap={{scale:0.97}} onClick={sincronizarArusa} disabled={arusaSyncing}
             style={{...ss.btn,background:"linear-gradient(135deg,#C0392B,#9B2335)",color:"#fff",fontSize:"12px",fontWeight:700,opacity:arusaSyncing?0.6:1}}>
             {arusaSyncing?"Sincronizando...":"🔄 Sincronizar ahora"}
