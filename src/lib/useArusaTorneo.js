@@ -34,6 +34,23 @@ export function useArusaTorneo(division = "PRIMERA") {
   return { posiciones, jugadores, cargando, error };
 }
 
+/**
+ * Columnas que se suman entre divisiones.
+ *
+ * Antes solo se sumaban tries, puntos y partidos, y el resto se quedaba con el
+ * valor de la primera división en que aparecía el jugador — siempre Primera,
+ * por el orden de la lista. Al pateador del club le daba cero conversiones:
+ * patea en Intermedia (20 conv, 3 pen) y en Primera jugó de otra cosa, así que
+ * ganaba la fila de Primera, que dice 0. Quedaba fuera del ranking de patadas
+ * siendo el que más patea, y con 59 puntos sumados al lado: los puntos se
+ * sumaban y las conversiones que los produjeron, no.
+ *
+ * Se suma todo lo que es un conteo de la temporada. `capsPrimera` es la única
+ * excepción y se calcula aparte, más abajo.
+ */
+const SUMABLES = ["partidos", "puntos", "tries", "triesPenal", "conversiones",
+                  "penales", "drops", "amarillas", "rojas", "mvp"];
+
 const DIVISIONES_ADULTAS = ["PRIMERA", "INTERMEDIA", "PRE_INTERMEDIA"];
 
 /**
@@ -70,9 +87,8 @@ export function useArusaJugadores(activo = true, clubName = null) {
         acc.set(id, prev ? {
           ...prev,
           capsPrimera,
-          tries:    (prev.tries || 0)    + (j.tries || 0),
-          puntos:   (prev.puntos || 0)   + (j.puntos || 0),
-          partidos: (prev.partidos || 0) + (j.partidos || 0),
+          ...Object.fromEntries(SUMABLES.map(k =>
+            [k, (prev[k] || 0) + (j[k] || 0)])),
         } : { ...j, id, capsPrimera });
       }
       if (!clubName) { setJugadores([...acc.values()]); return; }
