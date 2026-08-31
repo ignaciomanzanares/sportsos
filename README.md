@@ -305,6 +305,9 @@ exacto contra el marcador real.
 
 ## Deploy
 
+Producción: **https://sportos-app.vercel.app** — se despliega sola con cada
+push a `main`.
+
 Hosting en Vercel, con `vercel.json` declarando el cron diario que sincroniza
 el fixture (10:00 UTC).
 

@@ -24,7 +24,7 @@ const ARUSA_BASE = `https://arusa.cl/en/tournament/${TOURNAMENT_ID}`;
 const ARUSA_AJAX_EN = "https://arusa.cl/en/ajax";
 // Tope por petición: una conexión colgada no puede dejar esperando al usuario.
 const TIMEOUT_MS = 8000;
-const USER_AGENT = "SportOSBot/1.0 (+https://sportos-v02.vercel.app)";
+const USER_AGENT = "SportOSBot/1.0 (+https://sportos-app.vercel.app)";
 
 // El torneo 1328550 tiene tres grupos, uno por división. Las tres son adulta
 // (+18): son los tres equipos que presenta cada club, no categorías de edad.

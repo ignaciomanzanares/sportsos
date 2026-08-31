@@ -25,7 +25,7 @@
 - Vista jugador: pantalla "Confirmar presencia ✅" al abrir el link del QR
 - Tabla Supabase: `asistencia` con jugador_id, club_id, fecha, metodo (qr/manual)
 - Librería: qrcode.react
-- URL del QR: sportsos-iota.vercel.app?asistencia=<club_id>&fecha=<hoy>
+- URL del QR: sportos-app.vercel.app?asistencia=<club_id>&fecha=<hoy>
 
 
 ## 2026-06-14
@@ -53,7 +53,7 @@
   - framer-motion instalado para transiciones y micro-interacciones
   - Fuente Inter + meta tags en index.html
 - Git push a GitHub (commit 9f43910)
-- Deploy producción Vercel: https://sportsos-iota.vercel.app
+- Deploy producción Vercel: https://sportos-app.vercel.app
 - Proyecto 100% independiente — fuera de Lovable, en repo propio + Vercel
 
 ## 2026-06-10 (Supabase + datos reales)
@@ -105,9 +105,10 @@ Verificado: `update_tabla_entera = 0`, `update_por_columna = 16`,
 `clubes_huerfanos = 0`, policy de clubs = `{authenticated}`.
 
 ## 2026-08-10 (infraestructura, invitaciones y lesiones)
-- Se descubrió que producción es `sportos-v02.vercel.app` (no `sportsos-iota`,
-  que apunta a un Supabase borrado y ya no lo usa nadie). El proyecto de Vercel
-  no tiene Git conectado: cada deploy es manual con `npx vercel --prod`.
+- Se descubrió que el despliegue que usaba el club no era el que creíamos, y
+  que su proyecto de Vercel no tenía Git conectado: cada deploy era manual con
+  `npx vercel --prod`. (Resuelto en agosto: hoy la única producción es
+  `sportos-app.vercel.app`, que despliega sola desde GitHub.)
 - Registro de club probado de punta a punta: funciona.
 - Invitaciones: funcionan, pero aparecieron tres problemas y se arreglaron.
   1. Aceptar una invitación degradaba de rol a quien ya estaba en el club (un

@@ -100,7 +100,7 @@ export default defineConfig({
     // lectura y datos públicos del torneo.
     proxy: {
       '/api': {
-        target: 'https://sportos-v02.vercel.app',
+        target: 'https://sportos-app.vercel.app',
         changeOrigin: true,
         secure: true,
       },
