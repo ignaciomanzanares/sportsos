@@ -18,7 +18,7 @@ import { ordenarPlantel } from "../lib/ordenPlantel";
 
 const EMPTY_PLAYER = {name:"", number:"", cat:"", position:"", age:"", med:"verde", cuota:"ok"};
 
-export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, updatePlayer, removePlayer, showToast, sportColor, payments=[], setPayments, confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null, verInactivos=false, setVerInactivos=null, inactivos=0}) {
+export default function AdminView({module, sport, sp, club, activeClubs, setActiveClubs, countryData, players, addPlayer, updatePlayer, removePlayer, showToast, sportColor, payments=[], confirmPayment, rejectPayment, clubId=null, currentUser=null, userPlan="free", currentCategory=null, jugadorAEditar=null, onJugadorEditado=()=>{}, irA=null, todosLosPlayers=null, registrarPagoManual=null, borrarPago=null, onSolicitudesCambiaron=null, verInactivos=false, setVerInactivos=null, inactivos=0}) {
   const [primaryColor, setPrimaryColor] = useState(club?.colors?.primary || "#1B4332");
   const [secondaryColor, setSecondaryColor] = useState(club?.colors?.secondary || "#FFD700");
 
@@ -73,14 +73,16 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   const pagosPendientes = payments.filter(p => p.estado === "declarado");
 
   // Integración con ARUSA (importa partidos automáticamente)
-  const [arusaClubId, setArusaClubId] = useState("");
   const [arusaLastSync, setArusaLastSync] = useState(null);
   const [arusaSyncing, setArusaSyncing] = useState(false);
 
   useEffect(() => {
     if (!clubId) return;
-    supabase.from("clubs").select("arusa_club_id, arusa_last_sync").eq("id", clubId).single()
-      .then(({ data }) => { if (data) { setArusaClubId(data.arusa_club_id || ""); setArusaLastSync(data.arusa_last_sync); } });
+    // Solo la fecha: el arusa_club_id se leía para guardarlo en un estado que
+    // no consultaba nadie. El club se reconoce por su nombre contra los
+    // equipos del torneo desde que se rehízo la sincronización.
+    supabase.from("clubs").select("arusa_last_sync").eq("id", clubId).limit(1)
+      .then(({ data }) => { if (data?.[0]) setArusaLastSync(data[0].arusa_last_sync); });
   }, [clubId]);
 
 
@@ -122,7 +124,6 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jugadorAEditar]);
   const [playerSearch, setPlayerSearch] = useState("");
-  const [pendingDelete, setPendingDelete] = useState(null); // {id, name, timeoutId}
   // El 🗑 borraba de una. Ya se perdió una ficha así, y con ella su asistencia,
   // sus cuotas y su historial de lesiones. Ahora pregunta, y sobre todo ofrece
   // la salida que el admin casi siempre quiere: sacarlo de la lista sin perder
@@ -773,15 +774,16 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
     };
 
     const startDelete = (player) => {
-      // Borra optimistamente y muestra toast con undo 5 seg
+      // Se espera 5 segundos antes de borrar de verdad, y mientras tanto el
+      // aviso ofrece deshacer. Había además un estado `pendingDelete` con el
+      // jugador y su temporizador que no leía ninguna pantalla: el deshacer
+      // siempre funcionó con el temporizador que queda en esta función.
       const tid = setTimeout(async () => {
         try { await removePlayer(player.id); }
         catch(e) { showToast("Error al eliminar: "+e.message,"error"); }
-        setPendingDelete(null);
       }, 5000);
-      setPendingDelete({id:player.id, name:player.name, timeoutId:tid});
       showToast(`${player.name} eliminado`, "warning",
-        () => { clearTimeout(tid); setPendingDelete(null); showToast("Eliminación cancelada ✓","success"); }
+        () => { clearTimeout(tid); showToast("Eliminación cancelada ✓","success"); }
       );
     };
 

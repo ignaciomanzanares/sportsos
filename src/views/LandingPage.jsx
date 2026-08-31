@@ -90,22 +90,30 @@ const ROLES_FEATURES = {
 };
 
 
+// Los planes existen como estructura en el código, pero hoy no cobran nada:
+// FEATURE_PLAN tiene todas las funciones en "free" y no hay ninguna pasarela
+// de suscripción conectada. Así que las listas dicen qué trae cada uno cuando
+// se activen, y arriba de la sección se avisa que hoy está todo abierto.
+//
+// Se fueron de acá: el "Probar 14 días gratis" (no hay prueba, no hay cobro),
+// los límites de "hasta 25 jugadores" y "1 categoría" (no los aplica nadie),
+// y "Soporte prioritario" y "Onboarding dedicado", que no existen.
 const PLANS = [
   { name:"Starter", price:"$0",  period:"/ mes",     color:"#6B7896", badge:null,
-    cta:"Empezar gratis",        features:["Hasta 25 jugadores","1 categoría","Asistencia y plantel","El Muro básico"] },
+    cta:"Empezar gratis",  features:["Plantel y asistencia","El Muro","Calendario del torneo"] },
   { name:"Pro",     price:"$29", period:"USD / mes", color:T.accent,  badge:"MÁS POPULAR",
-    cta:"Probar 14 días gratis", features:["Jugadores ilimitados","Todas las categorías","Match Center + nóminas","Finanzas y reportes","Soporte prioritario"] },
+    cta:"Empezar gratis",  features:["Match Center + nóminas","Estadísticas del torneo","Panel de salud","Finanzas del club"] },
   { name:"Elite",   price:"$59", period:"USD / mes", color:"#C98408", badge:null,
-    cta:"Hablar con ventas",     features:["Todo lo de Pro","Múltiples deportes","Ranking de fuerza","Wellness avanzado","Onboarding dedicado"] },
+    cta:"Empezar gratis",  features:["Todo lo de Pro","Varios deportes","Microciclo y ranking de fuerza","Wellness del plantel"] },
 ];
 
 const FAQS = [
   { q:"¿Necesito saber de tecnología para usar SportOS?", a:"No. Si sabes usar WhatsApp, sabes usar SportOS. El setup inicial tarda menos de 5 minutos y te guiamos en cada paso." },
-  { q:"¿Funciona en celular?",                            a:"Sí, está diseñado primero para celular. Los jugadores marcan asistencia, ven la nómina y pagan su cuota desde su teléfono sin instalar nada." },
-  { q:"¿Qué pasa con los datos de mis jugadores?",        a:"Tus datos son tuyos. Están encriptados en servidores seguros. Nunca los compartimos ni vendemos. Puedes exportarlos cuando quieras." },
-  { q:"¿Puedo cambiar de plan o cancelar?",               a:"Sí, en cualquier momento y sin penalidad. Puedes subir, bajar o cancelar tu plan desde la configuración del club." },
-  { q:"¿Funciona para cualquier deporte?",                a:"Hoy soportamos Rugby, Fútbol, Handball, Basketball y Hockey. Cada deporte tiene sus propias posiciones, estadísticas y formaciones." },
-  { q:"¿Qué pasa si mi club tiene varias categorías?",    a:"Con el plan Pro puedes manejar todas las categorías — Sub-10, Sub-14, Primera, etc. — con sus propios jugadores y calendarios." },
+  { q:"¿Funciona en celular?",                            a:"Sí, está pensado primero para el celular, y se puede agregar a la pantalla de inicio como una app. Los jugadores ven la nómina, marcan asistencia y consultan los datos para transferir su cuota desde el teléfono. Sigue funcionando sin señal, que es lo normal en una cancha." },
+  { q:"¿Qué pasa con los datos de mis jugadores?",        a:"Son del club. Viajan cifrados y cada club solo ve los suyos. Los datos personales — RUT, teléfono, ficha médica — los ve el propio jugador y el cuerpo técnico, no el resto del plantel. Nunca los compartimos ni los vendemos." },
+  { q:"¿Cuánto cuesta hoy?",                              a:"Nada. Todas las funciones están abiertas en todos los planes mientras la plataforma crece. Cuando eso cambie se va a avisar antes, y nunca se va a cobrar sin que lo autorices." },
+  { q:"¿Funciona para cualquier deporte?",                a:"Está construido para rugby, que es donde se usa todos los días. Fútbol, handball, básquetbol y hockey ya tienen sus posiciones y estadísticas cargadas, pero todavía no los usa ningún club: si sos el primero, esperá que falte algo." },
+  { q:"¿Qué pasa si mi club tiene varias categorías?",    a:"Se manejan todas — M6 a M18, Adulta — cada una con su plantel, su calendario y sus nóminas. El torneo oficial solo publica estadísticas de las divisiones adultas; en las menores queda el calendario y lo que cargue el club." },
 ];
 
 // ── Micro-componentes ─────────────────────────────────────────────────────────
@@ -351,7 +359,7 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
           </motion.button>
         </motion.div>
         <div style={{ fontFamily:FF.mono, fontSize:"11px", color:T.text3, letterSpacing:"0.05em" }}>
-          14 días gratis · Sin tarjeta de crédito · Cancela cuando quieras
+          Gratis · Sin tarjeta de crédito · Cancela cuando quieras
         </div>
 
         {/* Stats */}
@@ -359,7 +367,11 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
           display:"flex", gap:"clamp(24px,5vw,56px)", marginTop:"68px",
           paddingTop:"28px", borderTop:`1px solid ${T.border}`, flexWrap:"wrap",
         }}>
-          {[["5","deportes"],["65+","clubes activos"],["3","países LATAM"],["4h","ahorradas/sem"]].map(([n, l], i) => (
+          {/* Acá decía "65+ clubes activos" y "3 países LATAM". No es cierto:
+              hay un club, en Chile. También "4h ahorradas/sem", que no se
+              midió nunca. Quedan las cifras que se pueden comprobar mirando la
+              app, que además son las que de verdad dicen algo. */}
+          {[["5","deportes"],["6","temporadas de historial"],["23","por nómina"],["5","roles"]].map(([n, l], i) => (
             <motion.div key={i} initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
               transition={{ delay:0.4 + i * 0.08 }}>
               <div style={{ fontFamily:FF.display, fontSize:"clamp(32px,5vw,48px)",
@@ -538,8 +550,17 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
           <Eyebrow>Planes</Eyebrow>
           <BigH>SIMPLE Y TRANSPARENTE</BigH>
           <p style={{ color:T.text2, fontSize:"15px", maxWidth:"460px",
-            lineHeight:1.65, margin:"0 0 44px" }}>
+            lineHeight:1.65, margin:"0 0 20px" }}>
             Sin costos ocultos. Sin contratos anuales forzados. Cancela cuando quieras.
+          </p>
+          {/* Lo dice acá y no en letra chica: mostrar tres precios sin aclarar
+              que hoy no se cobra nada es dejar que el que lee saque la
+              conclusión equivocada. La app ya lo avisa por dentro; la página
+              que lo promete tiene que decir lo mismo. */}
+          <p style={{ color:T.accent, fontFamily:FF.mono, fontSize:"12px",
+            maxWidth:"520px", lineHeight:1.7, margin:"0 0 44px" }}>
+            HOY TODO ESTÁ ABIERTO EN TODOS LOS PLANES, GRATIS. ESTOS PRECIOS SON
+            A DÓNDE VA LA PLATAFORMA, NO LO QUE SE COBRA AHORA.
           </p>
           <div style={{
             display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",
@@ -693,7 +714,7 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
 
           <p style={{ fontSize:"16px", color:"rgba(8,8,10,0.58)",
             marginBottom:"36px", lineHeight:1.6, maxWidth:"460px" }}>
-            Únete a los clubes de LATAM que ya dejaron el Excel atrás. Crea tu club gratis hoy.
+            Dejá el Excel y el grupo de WhatsApp. Creá tu club gratis hoy.
           </p>
 
           <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginBottom:"14px" }}>
@@ -714,7 +735,7 @@ export default function LandingPage({ onLogin, onRegister, onJoinRequest }) {
           </div>
           <div style={{ fontFamily:FF.mono, fontSize:"11px", color:"rgba(8,8,10,0.45)",
             letterSpacing:"0.05em" }}>
-            14 días gratis · Sin tarjeta · 5 minutos para configurar
+            Gratis · Sin tarjeta · 5 minutos para configurar
           </div>
         </div>
       </section>
