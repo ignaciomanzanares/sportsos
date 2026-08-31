@@ -48,13 +48,30 @@ export function usePlayers(clubId) {
     if (!isReal) return;
     setLoading(true);
     try {
-      const { data, error: err } = await supabase
-        .from("players")
-        .select("*")
-        .eq("club_id", clubId)
-        .order("number");
-      if (err) throw err;
-      setPlayers(data);
+      // Dos fuentes, a propósito.
+      //
+      // `plantel_publico` es la vista que puede leer cualquier miembro del
+      // club: nombre, puesto, categoría, estado médico. Lo que hace falta
+      // para armar una nómina y nada más.
+      //
+      // `players` es la tabla, y el RLS decide cuánto devuelve: al cuerpo
+      // técnico el plantel entero, al jugador su propia ficha y nada más.
+      // Antes cualquier jugador se bajaba los 145 RUT y teléfonos del club.
+      //
+      // Se superpone lo segundo sobre lo primero, así que cada pantalla
+      // recibe una sola lista y no tiene que saber nada de esto: el que ve
+      // más, ve más, sin ninguna rama por rol en las vistas.
+      const [publico, completo] = await Promise.all([
+        supabase.from("plantel_publico").select("*").eq("club_id", clubId).order("number"),
+        supabase.from("players").select("*").eq("club_id", clubId).order("number"),
+      ]);
+      if (publico.error && completo.error) throw publico.error;
+
+      const porId = new Map((publico.data || []).map(p => [p.id, p]));
+      for (const p of completo.data || []) porId.set(p.id, { ...porId.get(p.id), ...p });
+      const lista = [...porId.values()].sort(
+        (a, b) => (a.number ?? 999) - (b.number ?? 999));
+      setPlayers(lista);
     } catch (e) {
       setError(e.message);
     } finally {
