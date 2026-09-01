@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { m as motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
 import { PLANS } from "../lib/freemium";
@@ -11,7 +11,11 @@ import PanelLesiones from "../components/PanelLesiones";
 import VincularArusa from "../components/VincularArusa";
 import Semaforo from "../components/Semaforo";
 import EmptyState from "../components/EmptyState";
-import FinanzasView from "../components/FinanzasView";
+// Finanzas trae recharts, que son 338 kB — más que todo el resto del panel
+// de admin junto. Con la importación normal, ese peso viajaba al abrir
+// CUALQUIER módulo de admin: mirar el plantel se bajaba la librería de
+// gráficos por si acaso. Ahora llega cuando se abre Finanzas y no antes.
+const FinanzasView = lazy(() => import("../components/FinanzasView"));
 import { clave, contieneNombre } from "../lib/vincularArusa";
 import { filtrarPorNombre } from "../lib/buscarNombre";
 import { ordenarPlantel } from "../lib/ordenPlantel";
@@ -1189,7 +1193,7 @@ export default function AdminView({module, sport, sp, club, activeClubs, setActi
   }
 
   if(module==="finanzas") {
-    return <FinanzasView countryData={countryData} payments={payments} sportColor={sportColor} showToast={showToast} clubId={clubId} confirmPayment={confirmPayment} rejectPayment={rejectPayment} registrarPagoManual={registrarPagoManual} borrarPago={borrarPago} plantel={todosLosPlayers || players}/>;
+    return <Suspense fallback={<div style={{...ss.card, ...ss.muted, fontSize:"12px"}}>Cargando finanzas…</div>}><FinanzasView countryData={countryData} payments={payments} sportColor={sportColor} showToast={showToast} clubId={clubId} confirmPayment={confirmPayment} rejectPayment={rejectPayment} registrarPagoManual={registrarPagoManual} borrarPago={borrarPago} plantel={todosLosPlayers || players}/></Suspense>;
   }
 
   return null;
