@@ -225,18 +225,32 @@ export async function getLineups(clubId, teamId) {
 }
 
 export async function saveLineup({ clubId, teamId, formation, slots, bench }) {
-  const { data, error } = await supabase
-    .from("lineups")
-    .upsert({
-      club_id: clubId,
-      team_id: teamId,
-      formation,
-      slots,
-      bench,
-      updated_at: new Date().toISOString(),
-    })
-    .select()
-    .single();
+  const fila = {
+    club_id: clubId,
+    team_id: teamId,
+    formation,
+    slots,
+    bench,
+    updated_at: new Date().toISOString(),
+  };
+
+  // Sin onConflict el upsert no tenía contra qué chocar y se comportaba como
+  // un insert: cada publicación de la nómina de Primera dejaba otra fila. No
+  // se notaba —getLineups lee la más reciente— pero la tabla crecía sola y
+  // updated_at no se actualizaba nunca.
+  //
+  // El onConflict necesita la restricción única que crea
+  // supabase/lineups_una_por_equipo.sql. Si esa migración todavía no se
+  // corrió, Postgres responde 42P10 ("no unique or exclusion constraint
+  // matching") y acá se cae al comportamiento viejo. Publicar una nómina es
+  // lo primero que va a hacer el entrenador: no puede depender de en qué
+  // orden se desplegó el código y se corrió el SQL.
+  const conConflicto = await supabase
+    .from("lineups").upsert(fila, { onConflict: "club_id,team_id" }).select().single();
+  if (!conConflicto.error) return conConflicto.data;
+  if (conConflicto.error.code !== "42P10") throw conConflicto.error;
+
+  const { data, error } = await supabase.from("lineups").insert(fila).select().single();
   if (error) throw error;
   return data;
 }

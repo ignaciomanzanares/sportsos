@@ -26,7 +26,14 @@ export function fechasDeEntrenamiento(hasta, cantidad = 6) {
  * Hook para asistencia — guarda en Supabase.
  * En modo demo, solo estado local.
  */
-export function useAttendance(clubId, date) {
+/**
+ * @param avisar  callback para contarle al usuario que algo falló. Sin esto,
+ *   cuando la escritura no pasaba —RLS, red caída— la marca aparecía y
+ *   desaparecía sola y el entrenador se quedaba sin saber si quedó guardada.
+ *   Una asistencia que se revierte en silencio es peor que una que no se
+ *   guarda: parece que sí.
+ */
+export function useAttendance(clubId, date, avisar = () => {}) {
   const [present, setPresent] = useState({});
   const [saving,  setSaving]  = useState({});
   const isReal = !!clubId;
@@ -58,9 +65,10 @@ export function useAttendance(clubId, date) {
         club_id: clubId, player_id: playerId, date, present: next,
       }, { onConflict: "player_id,date" });
       if (error) throw error;
-    } catch {
-      // revertir si falla
+    } catch (e) {
+      // revertir si falla, y decirlo
       setPresent(p => ({ ...p, [playerId]: !next }));
+      avisar("No se pudo guardar la asistencia: " + (e?.message || "sin conexión"));
     } finally {
       setSaving(s => ({ ...s, [playerId]: false }));
     }
@@ -81,7 +89,10 @@ export function useAttendance(clubId, date) {
       playerIds.map(id => ({ club_id: clubId, player_id: id, date, present: valor })),
       { onConflict: "player_id,date" },
     );
-    if (error) setPresent(antes);
+    if (error) {
+      setPresent(antes);
+      avisar("No se pudo guardar la asistencia: " + error.message);
+    }
   };
 
   return { present, saving, toggle, marcarVarios, load };

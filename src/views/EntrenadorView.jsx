@@ -1011,7 +1011,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
       ? today
       : fechasDeEntrenamiento(today, 1)[0],
   );
-  const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, marcarVarios: attendanceMarcarVarios, load: loadAttendance } = useAttendance(clubId, fechaAsistencia);
+  const { present: attendancePresent, saving: attendanceSaving, toggle: attendanceToggle, marcarVarios: attendanceMarcarVarios, load: loadAttendance } = useAttendance(clubId, fechaAsistencia, (m)=>showToast(m, "error"));
   const attendanceConteo = useAttendanceStats(clubId);
   const attendancePrevios = useAsistenciaPrevia(clubId, fechaAsistencia);
 
