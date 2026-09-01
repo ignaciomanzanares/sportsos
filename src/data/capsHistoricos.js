@@ -1,4 +1,5 @@
 import DATOS from "./capsHistoricos.json";
+import { PALABRAS_IGNORADAS } from "../lib/vincularArusa";
 
 /**
  * Caps del primer equipo, temporadas 2021 a 2025.
@@ -56,13 +57,22 @@ import DATOS from "./capsHistoricos.json";
  */
 const HISTORICO_DESDE = 2021;
 
-/** Igual que clave_nombre en la base: palabras del nombre, sin acentos ni orden. */
+/**
+ * Igual que clave_nombre en la base: palabras del nombre, sin acentos ni orden.
+ *
+ * La lista de palabras a ignorar se importa y no se escribe acá. Estaba
+ * copiada a mano y se había quedado corta —le faltaban "las", "y", "da",
+ * "do", "van" y "von"—, así que un "Nicolás van der Berg" daba una clave
+ * distinta a la que usan el vinculador de ARUSA y la base. Ninguno de los 125
+ * nombres del club la pisa hoy, pero el día que entre un Von Mühlenbrock su
+ * ficha se engancha bien y sus caps aparecen en cero, sin ningún error.
+ */
 function clave(nombre) {
   return String(nombre || "")
     .normalize("NFD").replace(/[̀-ͯ]/g, "")
     .toLowerCase()
     .split(/[^a-z]+/)
-    .filter(p => p.length > 1 && !["de", "del", "la", "los"].includes(p))
+    .filter(p => p.length > 1 && !PALABRAS_IGNORADAS.has(p))
     .sort()
     .join(" ");
 }

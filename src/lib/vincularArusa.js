@@ -15,7 +15,24 @@
  * y queda — no se adivina en cada carga.
  */
 
-const RUIDO = new Set(["de", "del", "la", "las", "los", "y", "da", "do", "van", "von"]);
+/**
+ * Palabras que no distinguen a nadie y se ignoran al comparar nombres.
+ *
+ * Esta lista tiene que ser LA MISMA en tres lugares o el mismo jugador calza
+ * en una pantalla y no en otra:
+ *
+ *   · acá, para vincular una ficha con su registro de ARUSA
+ *   · src/data/capsHistoricos.js, para encontrarle los caps
+ *   · clave_nombre() en la base (supabase/invitacion_reclama_ficha.sql), para
+ *     engancharle la ficha a quien entra con el código del club
+ *
+ * Los dos de JavaScript comparten esta constante. El de la base es una copia
+ * escrita en SQL y no hay forma de compartirla: si se toca acá, hay que
+ * tocarla allá.
+ */
+export const PALABRAS_IGNORADAS =
+  new Set(["de", "del", "la", "las", "los", "y", "da", "do", "van", "von"]);
+const RUIDO = PALABRAS_IGNORADAS;
 
 /** "SANTIAGO PRAT PAPIC" → Set{papic, prat, santiago} */
 export function clave(nombre) {
