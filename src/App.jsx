@@ -67,7 +67,7 @@ const ROLES = [
 ];
 
 const MODULE_MAP = {
-  superadmin:[{id:"home",label:"Inicio",icon:"🏠"},{id:"dashboard",label:"Dashboard Global",icon:"📊"},{id:"clubes",label:"Clubes",icon:"🏢"},{id:"membresias",label:"Membresías",icon:"💳"},{id:"comisiones",label:"Comisiones",icon:"💰"},{id:"comparativa",label:"vs SportEasy",icon:"📈"},{id:"vistaroles",label:"Vista Roles",icon:"👁️"}],
+  superadmin:[{id:"home",label:"Inicio",icon:"🏠"},{id:"dashboard",label:"Dashboard Global",icon:"📊"},{id:"clubes",label:"Clubes",icon:"🏢"},{id:"membresias",label:"Membresías",icon:"💳"},{id:"vistaroles",label:"Vista Roles",icon:"👁️"}],
   // El admin tenía inicio, club, jugadores, salud y finanzas — pero su propia
   // portada le ofrecía "ver todos" los partidos, el KPI de partidos ganados y
   // el de tries, todos apuntando a módulos que su rol no tenía: la pantalla
@@ -1084,7 +1084,6 @@ export default function SportOS() {
               <Suspense fallback={<div style={{padding:"40px",textAlign:"center",color:"var(--text-3)",fontSize:"13px"}}>Cargando…</div>}>
               {module==="home"&&<HomeView role={role} onEditPlayer={(p)=>{ setJugadorAEditar(p); navigateTo("jugadores"); }} players={playersVisibles} sportColor={sportColor} club={club} sp={sp} countryData={countryData} payments={payments} partidos={partidosVisibles} onNavigate={navigateTo} currentUser={currentUser} convocado={convocado} clubId={clubId} miJugador={miJugador}/>}
               {module!=="home"&&module!=="miperfil"&&role==="superadmin"&&<SuperAdminView module={module} showToast={showToast}
-                rolePreviewProps={{players, sp, sportColor, club, countryData, payments, partidos, sport, userCats:[], isDemo:true, publishedPlan, setPublishedPlan, newExForm, setNewExForm, newEx, setNewEx, gymPlanExercises, setGymPlanExercises, rankTab, setRankTab, expandedDay, setExpandedDay}}
               />}
               {module!=="home"&&module!=="miperfil"&&role==="admin"&&!MODULOS_COMPARTIDOS.includes(module)&&<AdminView module={module} sport={sport} sp={sp} club={club} activeClubs={activeClubs} setActiveClubs={cambiarDeportes} countryData={countryData} players={playersVisibles} addPlayer={addPlayer} updatePlayer={updatePlayer} removePlayer={removePlayer} showToast={showToast} sportColor={sportColor} payments={payments} confirmPayment={confirmPayment} rejectPayment={rejectPayment} clubId={clubId} currentUser={currentUser} userPlan={userPlan} currentCategory={currentCategory} jugadorAEditar={jugadorAEditar} onJugadorEditado={()=>setJugadorAEditar(null)} onSolicitudesCambiaron={()=>setRecuentoSolicitudes(n=>n+1)} verInactivos={verInactivos} setVerInactivos={setVerInactivos} inactivos={inactivos} irA={navigateTo} todosLosPlayers={players} registrarPagoManual={clubId?registrarPagoManual:null} borrarPago={clubId?borrarPago:null}/>}
               {module!=="home"&&module!=="miperfil"&&(role==="entrenador"||(role==="admin"&&MODULOS_COMPARTIDOS.includes(module)))&&<EntrenadorView module={module} sport={sport} sp={sp} club={club} players={playersVisibles} showToast={showToast} sportColor={sportColor} currentCategory={currentCategory} hiaModal={hiaModal} setHiaModal={setHiaModal} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} setPartidos={setPartidos} clubId={clubId} currentUserId={currentUser?.id||null}/>}

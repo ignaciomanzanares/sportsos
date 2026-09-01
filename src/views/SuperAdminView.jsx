@@ -3,16 +3,10 @@ import { m as motion } from "framer-motion";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { fadeUp } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { SPORTS_CONFIG, COUNTRIES } from "../data/sports";
+import { SPORTS_CONFIG } from "../data/sports";
 import { supabase } from "../lib/supabase";
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
-import AdminView from "./AdminView";
-import EntrenadorView from "./EntrenadorView";
-import PreparadorView from "./PreparadorView";
-import JugadorView from "./JugadorView";
-import HomeView from "./HomeView";
-import PerfilView from "./PerfilView";
 
 const PLAN_COLOR = { free:"#6B7896", pro:"#C0392B", elite:"#C98408" };
 
@@ -40,38 +34,6 @@ function AlertRow({ icon, msg, color }) {
   );
 }
 
-function ComparisonTable() {
-  const rows=[
-    ["Deportes soportados","3 (fútbol, básquet, béisbol)","5 (Rugby, Fútbol, Handball, Basketball, Hockey)"],
-    ["Mercado objetivo","Europa","América Latina"],
-    ["Pagos locales LATAM","❌","✅ Khipu / Mercado Pago / Pix / SPEI / PSE"],
-    ["Integración WhatsApp","❌","✅ Nativo"],
-    ["Módulo gym profesional","❌","✅ Con preparador físico"],
-    ["Protocolo HIA Rugby","❌","✅ Pasos 1-2-3"],
-    ["Multi-moneda LATAM","❌","✅ 6 países, 6 monedas"],
-    ["Cumplimiento tributario local","❌","✅ SII / AFIP / SAT / DIAN / SUNAT"],
-    ["Personalización por deporte","Parcial","✅ Total — posiciones, stats, formaciones"],
-  ];
-  return (
-    <motion.div {...fadeUp} style={{...ss.card,border:"1px solid rgba(59,130,246,0.3)",background:"linear-gradient(135deg,rgba(59,130,246,0.05),transparent)"}}>
-      <div style={{fontWeight:700,fontSize:"16px",marginBottom:"16px",color:"#3B82F6"}}>⚡ SportOS vs SportEasy</div>
-      <table style={{width:"100%",fontSize:"12px",borderCollapse:"collapse"}}>
-        <thead><tr>
-          <th style={{textAlign:"left",color:"var(--text-3)",padding:"10px 8px",borderBottom:"1px solid var(--border-soft)",textTransform:"uppercase",letterSpacing:"0.05em",fontSize:"10px"}}>Característica</th>
-          <th style={{textAlign:"center",color:"var(--text-3)",padding:"10px 8px",borderBottom:"1px solid var(--border-soft)",textTransform:"uppercase",letterSpacing:"0.05em",fontSize:"10px"}}>SportEasy</th>
-          <th style={{textAlign:"center",color:"#22C55E",padding:"10px 8px",borderBottom:"1px solid var(--border-soft)",textTransform:"uppercase",letterSpacing:"0.05em",fontSize:"10px"}}>SportOS ⚡</th>
-        </tr></thead>
-        <tbody>{rows.map(([f,s,o],i)=>(
-          <tr key={i} style={{borderBottom:"1px solid var(--border-soft)"}}>
-            <td style={{padding:"10px 8px",fontWeight:500}}>{f}</td>
-            <td style={{textAlign:"center",color:"#EF4444",padding:"10px 8px"}}>{s}</td>
-            <td style={{textAlign:"center",color:"#22C55E",fontWeight:600,padding:"10px 8px"}}>{o}</td>
-          </tr>
-        ))}</tbody>
-      </table>
-    </motion.div>
-  );
-}
 
 const PLAN_LABELS    = { free:"Free", starter:"Starter", pro:"Pro", elite:"Elite" };
 const PLAN_PRICES    = { free:0, starter:0, pro:29, elite:59 };
@@ -131,115 +93,6 @@ function useAdminData() {
 }
 
 // ── Vista previa de roles ─────────────────────────────────────────────────
-const ROLES_PREVIEW = [
-  { id:"admin",      label:"Admin",      icon:"🏢", color:"#1FA04A" },
-  { id:"entrenador", label:"Entrenador", icon:"📋", color:"#3B82F6" },
-  { id:"preparador", label:"Preparador", icon:"💪", color:"#C98408" },
-  { id:"jugador",    label:"Jugador",    icon:"👤", color:"#8040CC" },
-];
-
-const MODULES_PER_ROLE = {
-  admin:      [{id:"home",label:"Inicio"},{id:"jugadores",label:"Jugadores"},{id:"finanzas",label:"Finanzas"},{id:"miclub",label:"Mi Club"}],
-  entrenador: [{id:"home",label:"Inicio"},{id:"muro",label:"El Muro"},{id:"asistencia",label:"Asistencia"},{id:"matchcenter",label:"Match Center"},{id:"salud",label:"Salud"},{id:"estadisticas",label:"Estadísticas"}],
-  preparador: [{id:"home",label:"Inicio"},{id:"microciclo",label:"Microciclo"},{id:"estadoplantel",label:"Estado Plantel"},{id:"rankingfuerza",label:"Ranking Fuerza"}],
-  jugador:    [{id:"home",label:"Inicio"},{id:"midashboard",label:"Mi Dashboard"},{id:"noticias",label:"Noticias"},{id:"migym",label:"Mi Gym"},{id:"miperfil",label:"Mi Perfil"}],
-};
-
-function VistaRoles({ rolePreviewProps, showToast }) {
-  const [rolActivo, setRolActivo]     = useState("admin");
-  const [modActivo, setModActivo]     = useState("home");
-  const rp = rolePreviewProps;
-  const rolColor = ROLES_PREVIEW.find(r=>r.id===rolActivo)?.color || "#1FA04A";
-
-  const handleRol = (rid) => { setRolActivo(rid); setModActivo("home"); };
-
-  return (
-    <div>
-      <SectionTitle title="Vista de Roles" sub="Previsualiza la app exactamente como la ve cada tipo de usuario"/>
-
-      {/* Selector de rol */}
-      <div style={{display:"flex",gap:"10px",marginBottom:"20px",flexWrap:"wrap"}}>
-        {ROLES_PREVIEW.map(r=>(
-          <motion.button key={r.id} whileHover={{y:-2}} whileTap={{scale:0.97}}
-            onClick={()=>handleRol(r.id)}
-            style={{...ss.btn, padding:"10px 20px", fontSize:"13px", fontWeight:700, gap:"8px",
-              background: rolActivo===r.id ? `linear-gradient(135deg,${r.color},${r.color}cc)` : "var(--bg-elev-2)",
-              color: rolActivo===r.id ? "#fff" : "var(--text-2)",
-              border: `1px solid ${rolActivo===r.id ? r.color : "var(--border-soft)"}`,
-              boxShadow: rolActivo===r.id ? `0 4px 14px ${r.color}44` : "none"}}>
-            {r.icon} {r.label}
-          </motion.button>
-        ))}
-      </div>
-
-      {/* Selector de módulo */}
-      <div style={{display:"flex",gap:"6px",marginBottom:"20px",borderBottom:"1px solid var(--border-soft)",paddingBottom:"0",overflowX:"auto"}}>
-        {(MODULES_PER_ROLE[rolActivo]||[]).map(m=>(
-          <motion.button key={m.id} whileHover={{y:-1}} onClick={()=>setModActivo(m.id)}
-            style={{...ss.btn, background:"transparent", color:modActivo===m.id?"var(--text-1)":"var(--text-3)",
-              borderBottom:`2px solid ${modActivo===m.id?rolColor:"transparent"}`,
-              borderRadius:0, padding:"8px 14px 10px", fontSize:"12px", flexShrink:0, whiteSpace:"nowrap"}}>
-            {m.label}
-          </motion.button>
-        ))}
-      </div>
-
-      {/* Render de la vista del rol */}
-      <div style={{...ss.card, padding:"20px", border:`1px solid ${rolColor}22`}}>
-        <div style={{fontSize:"10px",color:"var(--text-4)",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:"16px",fontWeight:600}}>
-          👁️ Viendo como: {ROLES_PREVIEW.find(r=>r.id===rolActivo)?.icon} {ROLES_PREVIEW.find(r=>r.id===rolActivo)?.label} → {modActivo}
-        </div>
-
-        {/* Mi Perfil: igual para todos los roles — muestra foto del jugador demo */}
-        {modActivo==="miperfil" && (() => {
-          const demoPlayer = (rp.players||[])[0] || {};
-          const demoUser = {
-            id: demoPlayer.profile_id || null,
-            nombre: demoPlayer.name || "Jugador Demo",
-            email: "jugador@demo.com",
-            rol: rolActivo,
-            avatar_url: demoPlayer.avatar_url || null,
-          };
-          return (
-            <div>
-              <div style={{marginBottom:"12px",padding:"8px 12px",borderRadius:"var(--r-sm)",background:"rgba(59,130,246,0.07)",border:"1px solid rgba(59,130,246,0.2)",fontSize:"11px",color:"var(--text-3)"}}>
-                💡 Vista de demostración — el jugador real puede subir su foto desde aquí. Si el jugador tiene foto cargada en Supabase, aparece en el círculo de abajo.
-              </div>
-              <PerfilView
-                currentUser={demoUser}
-                sport={rp.sport||"rugby"}
-                sportColor={rolColor}
-                readOnly={!demoPlayer.profile_id}
-                playerData={demoPlayer.avatar_url ? demoPlayer : null}
-                onSaved={()=>{}}
-              />
-            </div>
-          );
-        })()}
-
-        {modActivo!=="miperfil" && rolActivo==="admin" && modActivo==="home" &&
-          <HomeView role="admin" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
-        {modActivo!=="miperfil" && rolActivo==="admin" && modActivo!=="home" &&
-          <AdminView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} activeClubs={{rugby:true}} setActiveClubs={()=>{}} countryData={rp.countryData} players={rp.players||[]} addPlayer={()=>{}} updatePlayer={()=>{}} removePlayer={()=>{}} showToast={showToast} sportColor={rp.sportColor} payments={rp.payments||[]} setPayments={()=>{}} userPlan="free"/>}
-
-        {modActivo!=="miperfil" && rolActivo==="entrenador" && modActivo==="home" &&
-          <HomeView role="entrenador" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
-        {modActivo!=="miperfil" && rolActivo==="entrenador" && modActivo!=="home" &&
-          <EntrenadorView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} players={rp.players||[]} postLikes={{}} setPostLikes={()=>{}} showToast={showToast} sportColor={rp.sportColor} currentCategory={rp.sp?.categories?.[0]||""} hiaModal={false} setHiaModal={()=>{}} userCats={[]} isDemo={true} partidos={rp.partidos||[]} setPartidos={()=>{}} clubId={null} currentUserId={null}/>}
-
-        {modActivo!=="miperfil" && rolActivo==="preparador" && modActivo==="home" &&
-          <HomeView role="preparador" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
-        {modActivo!=="miperfil" && rolActivo==="preparador" && modActivo!=="home" &&
-          <PreparadorView module={modActivo} sp={rp.sp} showToast={showToast} sportColor={rp.sportColor} publishedPlan={rp.publishedPlan} setPublishedPlan={rp.setPublishedPlan||(()=>{})} newExForm={rp.newExForm||false} setNewExForm={rp.setNewExForm||(()=>{})} newEx={rp.newEx||{name:"",sets:3,reps:8,pct:70,rest:120,notes:"",muscles:""}} setNewEx={rp.setNewEx||(()=>{})} gymPlanExercises={rp.gymPlanExercises} setGymPlanExercises={rp.setGymPlanExercises||(()=>{})} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||(()=>{})} expandedDay={rp.expandedDay||"lunes"} setExpandedDay={rp.setExpandedDay||(()=>{})} userCats={[]} isDemo={true}/>}
-
-        {modActivo!=="miperfil" && rolActivo==="jugador" && modActivo==="home" &&
-          <HomeView role="jugador" players={rp.players||[]} sportColor={rp.sportColor} club={rp.club} sp={rp.sp} countryData={rp.countryData} payments={rp.payments||[]} partidos={rp.partidos||[]} onNavigate={setModActivo} currentUser={null} isDemo={true}/>}
-        {modActivo!=="miperfil" && rolActivo==="jugador" && modActivo!=="home" &&
-          <JugadorView module={modActivo} sport={rp.sport} sp={rp.sp} club={rp.club} player={(rp.players||[])[0]} players={rp.players||[]} sportColor={rp.sportColor} countryData={rp.countryData} convocado={null} setConvocado={()=>{}} setWhatsappModal={()=>{}} showToast={showToast} rankTab={rp.rankTab||"volumen"} setRankTab={rp.setRankTab||(()=>{})} payments={rp.payments||[]} setPayments={()=>{}} userCats={[]} isDemo={true} partidos={rp.partidos||[]} clubId={null}/>}
-      </div>
-    </div>
-  );
-}
 
 const MESES = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
@@ -277,7 +130,6 @@ function MembresiasModule({ clubs, users, loading, history, cambiarPlan, suspend
 
   const adminDeClub = (clubId) => users.find(u => u.club_id === clubId && u.rol === "admin");
   const activosReales = clubs.filter(c => !c.suspended);
-  const mrr = activosReales.reduce((s,c) => s + (PLAN_PRICES[c.plan]||0), 0);
 
   const abrirEdicion = (club) => {
     setEditando(club.id);
@@ -329,7 +181,12 @@ function MembresiasModule({ clubs, users, loading, history, cambiarPlan, suspend
       {/* KPIs */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:"14px", marginBottom:"24px" }}>
         <StatCard icon="🏢" value={activosReales.length} label="Clubes activos" color="#3B82F6"/>
-        <StatCard icon="💰" value={`$${mrr}`} label="MRR (USD/mes)" sub="Suma de planes activos" color="#1FA04A"/>
+        {/* Acá decía "MRR (USD/mes)" con la suma de los precios de lista. No
+            hay ninguna pasarela de cobro conectada y todas las funciones están
+            abiertas en todos los planes: ese dinero no entra. Un tablero que
+            muestra facturación que no existe es el peor lugar para mentirse.
+            Va el dato que sí es cierto. */}
+        <StatCard icon="👥" value={users.length} label="Cuentas creadas" color="#1FA04A"/>
         <StatCard icon="⚡" value={clubs.filter(c=>c.plan==="elite"&&!c.suspended).length} label="Plan Elite" color="#C98408"/>
         <StatCard icon="🚫" value={clubs.filter(c=>c.suspended).length} label="Suspendidos" color="#EF4444"/>
       </div>
@@ -496,7 +353,15 @@ function MembresiasModule({ clubs, users, loading, history, cambiarPlan, suspend
 }
 
 // ── Vista principal ───────────────────────────────────────────────────────
-export default function SuperAdminView({ module, showToast, rolePreviewProps={} }) {
+// Acá vivía "Vista de Roles": un mini-app dentro de la app que dibujaba
+// cada rol con datos de demo. Duplicaba el selector de rol de la barra de
+// arriba, que hace lo mismo y con los datos reales del club.
+//
+// Y salía caro: para dibujar esas vistas importaba AdminView,
+// EntrenadorView, PreparadorView, JugadorView, HomeView y PerfilView acá
+// adentro, así que abrir el panel de plataforma se bajaba media aplicación.
+// Justo lo que el lazy() de App.jsx estaba tratando de evitar.
+export default function SuperAdminView({ module, showToast }) {
   const { clubs, users, loading, history, clubRequests, cambiarPlan, suspenderClub, marcarClubRequestsVistos } = useAdminData();
 
   useEffect(() => {
@@ -512,7 +377,6 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
     pro:   users.filter(u=>u.plan==="pro").length,
     elite: users.filter(u=>u.plan==="elite").length,
   };
-  const mrrEstimado = porPlan.pro * 29 + porPlan.elite * 59;
 
   // Últimos 7 días de registros. El corte se calcula una vez al montar y no
   // en cada dibujado: si no, el render depende del reloj.
@@ -544,7 +408,8 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))", gap:"14px", marginBottom:"20px" }}>
         <StatCard icon="🏢" value={totalClubes} label="Clubes activos" sub={`+${clubesNuevos} esta semana`} color="#3B82F6" delay={0}/>
         <StatCard icon="👥" value={totalUsuarios} label="Usuarios totales" sub={`+${nuevosEstaSemana} esta semana`} color="#1FA04A" delay={0.05}/>
-        <StatCard icon="💰" value={`$${mrrEstimado}`} label="MRR estimado (USD)" sub={`${porPlan.pro} Pro · ${porPlan.elite} Elite`} color="#C98408" delay={0.1}/>
+        {/* Ídem: no hay cobro. Se muestra el reparto de planes, que es real. */}
+        <StatCard icon="⚡" value={porPlan.pro + porPlan.elite} label="En Pro o Elite" sub={`${porPlan.pro} Pro · ${porPlan.elite} Elite`} color="#C98408" delay={0.1}/>
         <StatCard icon="🆓" value={porPlan.free} label="Usuarios Free" sub="Sin plan de pago aún" color="#6B7896" delay={0.15}/>
       </div>
 
@@ -721,35 +586,6 @@ export default function SuperAdminView({ module, showToast, rolePreviewProps={} 
     </div>
   );
 
-  if (module==="comisiones") return (
-    <div>
-      <SectionTitle title="Comisiones por País" sub="Método de facturación local por país"/>
-      {Object.entries(COUNTRIES).map(([k,v],i) => (
-        <motion.div key={k} {...fadeUp} transition={{ delay:i*0.1 }} whileHover={{ y:-2 }}
-          style={{ ...ss.card, marginBottom:"12px", display:"flex", alignItems:"center", gap:"16px" }}>
-          <div style={{ fontSize:"40px" }}>{v.flag}</div>
-          <div style={{ flex:1 }}>
-            <div style={{ fontWeight:700, fontSize:"15px", display:"flex", alignItems:"center", gap:"8px" }}>
-              {v.name} <Badge color="#3B82F6">{v.currency}</Badge>
-            </div>
-            <div style={{ ...ss.muted, marginTop:"6px", fontSize:"12px" }}>
-              Documento fiscal: <span style={{ color:"var(--text-1)" }}>{v.tax}</span> · Métodos: {v.payments.join(", ")}
-            </div>
-          </div>
-          <div style={{ textAlign:"right" }}>
-            <div style={{ fontSize:"22px", fontWeight:800, color:"#22C55E", letterSpacing:"-0.02em" }}>
-              ${clubs.filter(c=>c.country===k && !c.suspended).reduce((s,c)=>s+(PLAN_PRICES[c.plan]||0),0).toLocaleString()}
-            </div>
-            <div style={ss.muted}>MRR este país (USD)</div>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-
-  if (module==="comparativa") return <ComparisonTable/>;
-
-  if (module==="vistaroles") return <VistaRoles rolePreviewProps={rolePreviewProps} showToast={showToast}/>;
 
   if (module==="membresias") return <MembresiasModule clubs={clubs} users={users} loading={loading} history={history}
     cambiarPlan={cambiarPlan} suspenderClub={suspenderClub} showToast={showToast}/>;
