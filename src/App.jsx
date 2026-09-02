@@ -1119,7 +1119,7 @@ export default function SportOS() {
                   </span>
                 </div>
               )}
-              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId} currentCategory={currentCategory}/>}
+              {module!=="home"&&module!=="miperfil"&&role==="jugador"&&miJugador&&<JugadorView module={module} sport={sport} sp={sp} club={club} player={miJugador} players={playersVisibles} sportColor={sportColor} countryData={countryData} convocado={convocado} setConvocado={setConvocado} setWhatsappModal={setWhatsappModal} showToast={showToast} rankTab={rankTab} setRankTab={setRankTab} payments={payments} setPayments={setPayments} declarePayment={clubId?declarePayment:null} userCats={userCats} isDemo={isDemo} partidos={partidosVisibles} clubId={clubId}/>}
               </Suspense>
             </motion.div>
           </AnimatePresence>

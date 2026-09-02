@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { fadeUp, scaleIn } from "../styles/motion";
 import { ss } from "../styles/tokens";
-import { FORMATIONS, TEAMS, equiposDeCategoria, nombrePuesto } from "../data/sports";
+import { FORMATIONS, nombrePuesto } from "../data/sports";
 import { GYM_PLAN } from "../data/gymPlan";
 import { ejercicioEsDe, ORDEN_DIAS, ETIQUETA_DIA } from "../lib/gymImport";
 import { usePosts } from "../lib/usePosts";
 import { periodoDe, periodoDePago, nombrePeriodo } from "../lib/periodo";
-import { getNotifications, getLineups, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
+import { getNotifications, getLineupsConPartido, getGymPlan, saveGymSet, getGymHistory, getWeekStart, formatWeekLabel } from "../lib/db";
 import { supabase } from "../lib/supabase";
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
@@ -488,49 +488,104 @@ function GymJugador({player, sportColor, showToast, rankTab, setRankTab, players
 /* ── NominasClub — muestra la nómina REAL publicada por el entrenador
    (antes fabricaba una alineación al azar rotando el array de jugadores,
    sin relación con lo que el entrenador realmente publicó) ──────────── */
-function NominasClub({ teamsToShow, forms, sport, sportColor, clubId, players, player, sp, PlantelBanner }) {
-  const [lineups, setLineups] = useState({});
-  const [loading, setLoading] = useState(true);
+function NominasClub({ forms, miPlantel, sport, sportColor, clubId, players, player, sp, PlantelBanner }) {
+  const [nominas, setNominas] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [verViejas, setVerViejas] = useState(false);
 
-  // Los ids en una constante y no dentro del array de dependencias: ahí React
-  // no puede comparar una expresión, solo un valor.
-  const idsEquipos = teamsToShow.map(t => t.id).join(",");
+  // Todas las nóminas con su partido. Antes se pedía una por equipo y solo
+  // existía la última publicada de cada uno: no había historial, y la del
+  // sábado que viene borraba la del anterior.
   useEffect(() => {
-    if (!clubId) { setLoading(false); return; }
-    setLoading(true);
-    Promise.all(idsEquipos.split(",").map(id => getLineups(clubId, id).then(l => [id, l]).catch(() => [id, null])))
-      .then(entries => { setLineups(Object.fromEntries(entries)); setLoading(false); });
-  }, [clubId, idsEquipos]);
+    if (!clubId) { setCargando(false); return; }
+    getLineupsConPartido(clubId)
+      .then(rows => setNominas(rows))
+      .catch(() => setNominas([]))
+      .finally(() => setCargando(false));
+  }, [clubId]);
 
-  if (loading) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando nóminas...</div>;
+  if (cargando) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Cargando nóminas...</div>;
+
+  const jugado = n => n.matches?.estado === "jugado";
+  // Si el jugador tiene plantel asignado, ve el suyo: al de Intermedia no le
+  // sirve la nómina de Primera para saber si juega.
+  const delPlantel = miPlantel
+    ? nominas.filter(n => (n.team_id || n.matches?.equipo) === miPlantel)
+    : nominas;
+  const proximas = delPlantel.filter(n => !jugado(n));
+  const pasadas  = delPlantel.filter(jugado);
+  const visibles = verViejas ? [...proximas, ...pasadas] : proximas;
+
+  // Cuántas veces lo convocaron: es el número que el jugador venía a buscar y
+  // que hasta ahora la app no podía contestar, porque solo guardaba la última.
+  const misConvocatorias = nominas.filter(n =>
+    (n.slots || []).includes(player.id) || (n.bench || []).includes(player.id)).length;
 
   return (
     <div>
       <PlantelBanner/>
-      <SectionTitle title="Nóminas del Club" sub={`Alineaciones publicadas por el entrenador · ${sp.name}`}/>
-      {teamsToShow.map((t,ti)=>{
-        const saved = lineups[t.id];
-        const formation = forms.find(f=>f.key===saved?.formation) || forms[ti%forms.length];
-        const size = formation.positions.length;
-        const byId = id => players.find(p=>p.id===id) || null;
-        const lineup = saved ? Array.from({length:size},(_,i)=>byId(saved.slots?.[i])) : Array(size).fill(null);
-        const myIdx = lineup.findIndex(p=>p&&p.id===player.id);
-        return (
-          <motion.div key={t.id} {...fadeUp} transition={{duration:0.4,delay:ti*0.1}} style={{marginBottom:"20px"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px",flexWrap:"wrap",gap:"8px"}}>
-              <div style={{fontWeight:700,fontSize:"14px"}}>{t.name}</div>
-              {saved && <div style={{display:"flex",gap:"8px",alignItems:"center"}}>
-                <Badge color={sportColor}>{formation.label}</Badge>
-                {myIdx>=0?<Badge color="#F59E0B" glow>⭐ Titular #{myIdx+1}</Badge>:<Badge color="#6B7896">No convocado</Badge>}
-              </div>}
+      <SectionTitle title="Nóminas del Club"
+        sub={`Alineaciones publicadas por el entrenador · ${sp.name}`}/>
+
+      {misConvocatorias > 0 && (
+        <div style={{...ss.card, marginBottom:"16px", display:"flex", alignItems:"center", gap:"12px"}}>
+          <div style={{fontSize:"26px"}}>🎽</div>
+          <div>
+            <div style={{fontWeight:800, fontSize:"18px", color:sportColor}}>{misConvocatorias}</div>
+            <div style={{...ss.muted, fontSize:"11.5px"}}>
+              {misConvocatorias === 1 ? "convocatoria" : "convocatorias"} tuyas registradas
             </div>
-            {saved
-              ? <Cancha type={sport} formation={formation} lineup={lineup} sportColor={sportColor} dragging={false} highlightId={player.id} onDrop={()=>{}} onSlotClick={()=>{}}/>
-              : <EmptyState icon="📋" title="Sin nómina publicada" desc="El entrenador todavía no publicó la alineación de este equipo." color={sportColor}/>}
+          </div>
+        </div>
+      )}
+
+      {visibles.length === 0 && (
+        <EmptyState icon="📋" title="Sin nóminas publicadas"
+          desc="El entrenador todavía no publicó ninguna alineación." color={sportColor}/>
+      )}
+
+      {visibles.map((n, i) => {
+        const formation = forms.find(f => f.key === n.formation) || forms[0];
+        const size = formation.positions.length;
+        const byId = id => players.find(p => p.id === id) || null;
+        const lineup = Array.from({ length: size }, (_, k) => byId(n.slots?.[k]));
+        const myIdx  = lineup.findIndex(p => p && p.id === player.id);
+        const enBanca = (n.bench || []).includes(player.id);
+        const m = n.matches || {};
+        return (
+          <motion.div key={n.id} {...fadeUp} transition={{duration:0.4, delay:Math.min(i,4)*0.08}} style={{marginBottom:"22px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"8px",flexWrap:"wrap",gap:"8px"}}>
+              <div>
+                <div style={{fontWeight:700,fontSize:"14px"}}>vs {m.rival || "Rival por confirmar"}</div>
+                <div style={{...ss.muted,fontSize:"11px"}}>
+                  {m.match_date} · {n.team_id || m.equipo}
+                  {jugado(n) && m.score_home != null && ` · ${m.score_home}-${m.score_away}`}
+                </div>
+              </div>
+              <div style={{display:"flex",gap:"8px",alignItems:"center",flexWrap:"wrap"}}>
+                <Badge color={sportColor}>{formation.label}</Badge>
+                {myIdx >= 0   && <Badge color="#F59E0B" glow>⭐ Titular #{myIdx+1}</Badge>}
+                {myIdx < 0 && enBanca && <Badge color="#3B82F6">Banca</Badge>}
+                {myIdx < 0 && !enBanca && <Badge color="#6B7896">No convocado</Badge>}
+              </div>
+            </div>
+            <Cancha type={sport} formation={formation} lineup={lineup} sportColor={sportColor}
+              dragging={false} highlightId={player.id} onDrop={()=>{}} onSlotClick={()=>{}}/>
           </motion.div>
         );
       })}
-      <div style={{...ss.card,padding:"10px 14px",fontSize:"11px",color:"var(--text-2)"}}>⭐ Tu posición aparece resaltada en dorado cuando estás convocado en la nómina de un equipo.</div>
+
+      {pasadas.length > 0 && (
+        <motion.button whileTap={{scale:0.98}} onClick={()=>setVerViejas(v=>!v)}
+          style={{...ss.btn, width:"100%", background:"var(--bg-elev-2)", color:"var(--text-2)",
+                  border:"1px solid var(--border-soft)", fontSize:"12px", padding:"11px", marginBottom:"14px"}}>
+          {verViejas ? "Ocultar partidos jugados" : `Ver ${pasadas.length} ${pasadas.length===1?"nómina":"nóminas"} de partidos ya jugados`}
+        </motion.button>
+      )}
+
+      <div style={{...ss.card,padding:"10px 14px",fontSize:"11px",color:"var(--text-2)"}}>
+        ⭐ Tu posición aparece resaltada en dorado cuando estás en la nómina.
+      </div>
     </div>
   );
 }
@@ -542,21 +597,36 @@ function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado,
   const [llamado, setLlamado] = useState(null); // null = cargando, true/false
   const [misNomina, setMisNomina] = useState(null); // { team, starters, bench } de la nómina real donde aparezco
 
+  // "¿Juego este sábado?" es una pregunta sobre el PRÓXIMO partido, no sobre
+  // cualquier nómina. Antes se miraban las tres del club sin fecha —eran las
+  // últimas publicadas de cada equipo— y una convocatoria de marzo seguía
+  // diciendo "estás convocado" en septiembre.
   useEffect(() => {
     if (!clubId) { setLlamado(true); return; } // demo/preview: mantener comportamiento anterior
-    Promise.all(TEAMS.map(t => getLineups(clubId, t.id).then(l => ({ team: t, lineup: l })).catch(() => null)))
-      .then(results => {
-        const match = results.find(r => (r?.lineup?.slots || []).includes(playerId));
-        setLlamado(!!match);
-        if (match) {
+    getLineupsConPartido(clubId)
+      .then(rows => {
+        const pendientes = rows
+          .filter(n => n.matches?.estado !== "jugado")
+          .sort((a, b) => String(a.matches?.match_date || "").localeCompare(String(b.matches?.match_date || "")));
+        const mia = pendientes.find(n =>
+          (n.slots || []).includes(playerId) || (n.bench || []).includes(playerId));
+        setLlamado(!!mia);
+        if (mia) {
           const forms = FORMATIONS[sport] || [];
-          const formacion = forms.find(f => f.key === match.lineup.formation) || forms[0];
+          const formacion = forms.find(f => f.key === mia.formation) || forms[0];
           const nombreDe = id => players.find(p => p.id === id)?.name || "Jugador";
-          const starters = (match.lineup.slots || []).map((id, i) => id ? { name: nombreDe(id), pos: formacion?.positions?.[i] || "" } : null).filter(Boolean);
-          const bench = (match.lineup.bench || []).map(id => ({ name: nombreDe(id) }));
-          setMisNomina({ team: match.team, starters, bench });
+          const starters = (mia.slots || []).map((id, i) => id ? { name: nombreDe(id), pos: formacion?.positions?.[i] || "" } : null).filter(Boolean);
+          const bench = (mia.bench || []).map(id => ({ name: nombreDe(id) }));
+          setMisNomina({
+            team: { name: mia.team_id || mia.matches?.equipo || "" },
+            rival: mia.matches?.rival,
+            fecha: mia.matches?.match_date,
+            esBanca: !(mia.slots || []).includes(playerId),
+            starters, bench,
+          });
         }
-      });
+      })
+      .catch(() => setLlamado(false));
   }, [clubId, playerId, sport, players]);
 
   if (llamado === null) return <div style={{...ss.muted,padding:"20px",textAlign:"center"}}>Revisando convocatoria...</div>;
@@ -576,9 +646,16 @@ function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado,
       <motion.div {...scaleIn} style={{...ss.card,textAlign:"center",marginBottom:"20px",border:`2px solid ${sportColor}55`,background:`linear-gradient(135deg,${sportColor}22,${sportColor}05)`,position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",top:0,left:0,right:0,height:"3px",background:`linear-gradient(90deg,transparent,${sportColor},transparent)`}}/>
         <motion.div animate={{scale:[1,1.05,1]}} transition={{duration:2,repeat:Infinity,ease:"easeInOut"}} style={{fontSize:"72px",fontWeight:900,color:sportColor,margin:"20px 0",filter:`drop-shadow(0 0 24px ${sportColor}88)`,letterSpacing:"-0.04em"}}>{camiseta}</motion.div>
-        <div style={{fontSize:"16px",fontWeight:700,marginBottom:"4px"}}>Estás convocado #{camiseta}</div>
+        <div style={{fontSize:"16px",fontWeight:700,marginBottom:"4px"}}>
+          {misNomina?.esBanca ? `Estás en la banca #${camiseta}` : `Estás convocado #${camiseta}`}
+        </div>
+        {/* El rival sale de la nómina en la que está, no del próximo partido
+            del club: no son lo mismo si lo convocaron a Intermedia y Primera
+            juega otro día. */}
         <div style={{...ss.muted,textTransform:"capitalize"}}>
-          {club.next.rival ? `vs ${club.next.rival} · ${club.next.dia}` : "Partido por confirmar"}
+          {misNomina?.rival
+            ? `vs ${misNomina.rival}${misNomina.fecha ? ` · ${misNomina.fecha}` : ""}${misNomina.team?.name ? ` · ${misNomina.team.name}` : ""}`
+            : club.next.rival ? `vs ${club.next.rival} · ${club.next.dia}` : "Partido por confirmar"}
         </div>
       </motion.div>
       <div style={{display:"flex",gap:"12px",marginBottom:"16px"}}>
@@ -704,7 +781,7 @@ function enfrentamiento(p, clubName) {
   return p?.lugar === "Visita" ? `${p.rival} vs ${clubName}` : `${clubName} vs ${p?.rival}`;
 }
 
-export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null, currentCategory=null}) {
+export default function JugadorView({module, sport, sp, club, player, players, sportColor, countryData, convocado, setConvocado, setWhatsappModal, showToast, rankTab, setRankTab, payments, setPayments, declarePayment=null, userCats=[], isDemo=true, partidos=[], clubId=null}) {
   const camiseta = player.number;
   const { posts: realPosts } = usePosts(clubId);
   const postColors = {"resultado":"#22C55E","médico":"#3B82F6","admin":"#F59E0B","advertencia":"#EF4444"};
@@ -938,11 +1015,7 @@ export default function JugadorView({module, sport, sp, club, player, players, s
 
   if(module==="nominasclub") {
     const forms = FORMATIONS[sport];
-    // Los equipos del club, no "Primer Equipo / Reserva / Sub-20": en rugby
-    // chileno son Primera, Intermedia y Pre-Intermedia.
-    const equipos = equiposDeCategoria(sp, currentCategory);
-    const teamsToShow = miPlantel ? equipos.filter(t=>t.name===miPlantel) : equipos;
-    return <NominasClub teamsToShow={teamsToShow} forms={forms} sport={sport} sportColor={sportColor} clubId={clubId} players={players} player={player} sp={sp} PlantelBanner={PlantelBanner}/>;
+    return <NominasClub forms={forms} miPlantel={miPlantel} sport={sport} sportColor={sportColor} clubId={clubId} players={players} player={player} sp={sp} PlantelBanner={PlantelBanner}/>;
   }
 
   if(module==="miconvocatoria") return (

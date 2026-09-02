@@ -8,7 +8,7 @@ import { useAttendance, useAttendanceStats, useAsistenciaPrevia, fechasDeEntrena
 import { vieneDeArusa, estadisticasDe, DIVISIONES } from "../lib/statsArusa";
 import { coincide } from "../lib/buscarNombre";
 import { useComments } from "../lib/useComments";
-import { getLineups, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
+import { getLineup, saveLineup, saveMatch, matchToPartido, saveNotification, getMatches } from "../lib/db";
 import SectionTitle from "../components/SectionTitle";
 import Badge from "../components/Badge";
 import EmptyState from "../components/EmptyState";
@@ -21,17 +21,40 @@ import Cancha from "../components/Cancha";
 import WhatsAppModal from "../components/WhatsAppModal";
 import CapsPrimera from "../components/CapsPrimera";
 
+// El desplegable nativo lo dibuja el sistema operativo y no hereda el tema.
+const OPCION_NOMINA = { background:"#16140f", color:"#f0ede8" };
+
 /* ── NominaDND ─────────────────────────────────────────────── */
-function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, currentCategory}) {
+function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, currentCategory, partidos = []}) {
   const forms = FORMATIONS[sport];
   const [fKey, setFKey] = useState(forms[0].key);
   // Los equipos dependen de la categoría elegida arriba: en rugby, Adulta
   // presenta Primera, Intermedia y Pre-Intermedia. "Primer Equipo / Reserva /
   // Sub-20" era un listado inventado que no existe en ningún club chileno.
   const equipos = equiposDeCategoria(sp, currentCategory);
-  const [teamId, setTeamId] = useState(equipos[0].id);
-  useEffect(() => { setTeamId(equipos[0].id); }, [currentCategory]); // eslint-disable-line react-hooks/exhaustive-deps
-  const equipoActual = equipos.find(t => t.id === teamId) || equipos[0];
+
+  // La nómina es de un PARTIDO, no de un equipo. Antes se elegía "Primera" y
+  // la del sábado siguiente pisaba la del anterior: no quedaba historial de a
+  // quién se convocó contra quién.
+  //
+  // Se ofrecen los partidos de la categoría abierta, del más próximo al más
+  // viejo, con los que todavía no se jugaron primero: armar la nómina del
+  // sábado que viene es el 99% de las veces.
+  const partidosDeLaCategoria = [...partidos]
+    .filter(p => !currentCategory || p.cat === currentCategory)
+    .sort((a, b) => {
+      const jugadoA = a.estado === "jugado", jugadoB = b.estado === "jugado";
+      if (jugadoA !== jugadoB) return jugadoA ? 1 : -1;
+      return jugadoA ? String(b.fecha).localeCompare(String(a.fecha))
+                     : String(a.fecha).localeCompare(String(b.fecha));
+    });
+  const [matchId, setMatchId] = useState(partidosDeLaCategoria[0]?.id || null);
+  useEffect(() => { setMatchId(partidosDeLaCategoria[0]?.id || null); }, [currentCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+  const partidoActual = partidosDeLaCategoria.find(p => p.id === matchId) || null;
+  // El equipo sale del partido: un partido de Intermedia lleva la nómina de
+  // Intermedia y no hay forma de equivocarse eligiéndolos por separado.
+  const teamId = partidoActual?.equipo || equipos[0].id;
+  const equipoActual = equipos.find(t => t.id === teamId) || { id: teamId, name: teamId };
   const [store, setStore] = useState({});
   const [benchStore, setBenchStore] = useState({});
   const [dragged, setDragged] = useState(null);
@@ -41,11 +64,11 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, cur
 
   // Cargar nómina guardada desde Supabase al cambiar equipo o formación
   useEffect(() => {
-    if (!clubId || !teamId) return;
-    getLineups(clubId, teamId).then(saved => {
+    if (!clubId || !matchId) return;
+    getLineup(clubId, matchId).then(saved => {
       if (!saved) return;
-      const sk = `${sport}|${teamId}|${saved.formation}`;
-      const bk = `${sport}|${teamId}`;
+      const sk = `${sport}|${matchId}|${saved.formation}`;
+      const bk = `${sport}|${matchId}`;
       // Reconstruir objetos de jugador a partir de IDs guardados
       const slots = (saved.slots || []).map(id => players.find(p => p.id === id) || null);
       const bench  = (saved.bench  || []).map(id => players.find(p => p.id === id)).filter(Boolean);
@@ -53,12 +76,12 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, cur
       setStore(s => ({ ...s, [sk]: slots }));
       setBenchStore(s => ({ ...s, [bk]: bench }));
     }).catch(() => {});
-  }, [clubId, teamId, sport, players]);
+  }, [clubId, matchId, sport, players]);
 
   const formation = forms.find(f=>f.key===fKey)||forms[0];
   const size = formation.positions.length;
-  const sk = `${sport}|${teamId}|${fKey}`;
-  const bk = `${sport}|${teamId}`;
+  const sk = `${sport}|${matchId}|${fKey}`;
+  const bk = `${sport}|${matchId}`;
   const lineup = store[sk]||Array(size).fill(null);
   const bench  = benchStore[bk]||[];
   const setLineup = (nl)=>setStore(p=>({...p,[sk]:nl}));
@@ -102,15 +125,16 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, cur
           <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}}
             disabled={saving}
             onClick={async () => {
+              if (!matchId) { showToast("Elegí el partido primero","warning"); return; }
               if (!starters.length) { showToast("Agrega al menos un titular","warning"); return; }
               setSaving(true);
               try {
                 // Guardar nómina con IDs de jugadores
-                await saveLineup({ clubId, teamId, formation: fKey, slots: lineup.map(p=>p?.id??null), bench: bench.map(p=>p.id) });
+                await saveLineup({ clubId, matchId, teamId, formation: fKey, slots: lineup.map(p=>p?.id??null), bench: bench.map(p=>p.id) });
                 // Crear notificación real en BD
-                await saveNotification({ clubId, type:"nomina", title:"Nómina publicada", body:`${starters.length} titulares convocados para el próximo partido`, data:{ starters: starters.map(s=>s.name), bench: bench.map(b=>b.name) } });
+                await saveNotification({ clubId, type:"nomina", title:"Nómina publicada", body:`${starters.length} titulares convocados${partidoActual ? ` vs ${partidoActual.rival}` : ""}`, data:{ starters: starters.map(s=>s.name), bench: bench.map(b=>b.name) } });
                 showToast("✅ Nómina guardada y notificación enviada al plantel","success");
-              } catch { showToast("Error al guardar","error"); }
+              } catch (e) { showToast(e.message || "Error al guardar","error"); }
               setSaving(false);
             }}
             style={{...ss.btn,background:"linear-gradient(135deg,#3B82F6,#2563EB)",color:"#fff",fontSize:"12px",boxShadow:"0 4px 12px rgba(59,130,246,0.35)",opacity:saving?0.7:1}}>
@@ -120,11 +144,31 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, cur
         </div>}
       />
       <div style={{display:"flex",gap:"10px",marginBottom:"16px",flexWrap:"wrap",alignItems:"flex-end"}}>
+        {/* Se elige el partido, no el equipo: el equipo lo trae el partido.
+            Antes se elegían por separado y la nómina quedaba pegada al equipo,
+            así que la del sábado siguiente pisaba la del anterior. */}
         <div>
-          <div style={ss.label}>Equipo del club</div>
-          <select value={teamId} onChange={e=>setTeamId(e.target.value)} style={{...ss.input,width:"180px",cursor:"pointer"}}>
-            {equipos.map(t=><option key={t.id} value={t.id}>{t.name}</option>)}
-          </select>
+          <div style={ss.label}>Partido</div>
+          {partidosDeLaCategoria.length === 0 ? (
+            <div style={{...ss.input,width:"320px",color:"var(--text-3)",fontSize:"12px",display:"flex",alignItems:"center"}}>
+              No hay partidos en {currentCategory}
+            </div>
+          ) : (
+            <select value={matchId || ""} onChange={e=>setMatchId(e.target.value)}
+              style={{...ss.input,width:"320px",cursor:"pointer"}}>
+              {partidosDeLaCategoria.map(p=>(
+                <option key={p.id} value={p.id} style={OPCION_NOMINA}>
+                  {p.estado === "jugado" ? "✔ " : ""}{p.fecha} · {p.equipo} · vs {p.rival}
+                </option>
+              ))}
+            </select>
+          )}
+          {partidoActual && (
+            <div style={{...ss.muted,fontSize:"11px",marginTop:"5px"}}>
+              {equipoActual.name} · {partidoActual.lugar}
+              {partidoActual.estado === "jugado" && " · ya jugado"}
+            </div>
+          )}
         </div>
         {forms.length>1&&<div style={{flex:1}}>
           <div style={ss.label}>Formación ({forms.length} disponibles)</div>
@@ -1096,7 +1140,7 @@ export default function EntrenadorView({module, sport, sp, club, players, showTo
     </div>
   );
 
-  if(module==="nomina") return <div>{catsBanner}<NominaDND sport={sport} sp={sp} club={club} players={visiblePlayers} sportColor={sportColor} showToast={showToast} clubId={clubId} currentCategory={currentCategory}/></div>;
+  if(module==="nomina") return <div>{catsBanner}<NominaDND sport={sport} sp={sp} club={club} players={visiblePlayers} sportColor={sportColor} showToast={showToast} clubId={clubId} currentCategory={currentCategory} partidos={partidos}/></div>;
 
   if(module==="estadisticas") return (
     <div>

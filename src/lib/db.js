@@ -212,21 +212,49 @@ export async function likePost(postId, userId) {
 
 // ─── NÓMINAS ─────────────────────────────────────────────────────────────────
 
-export async function getLineups(clubId, teamId) {
+/**
+ * La nómina de un partido.
+ *
+ * Antes esto se pedía por equipo ("Primera") y devolvía la última publicada,
+ * porque las nóminas se pisaban entre sí. Ahora cada una es de su partido.
+ */
+export async function getLineup(clubId, matchId) {
+  if (!matchId) return null;
   const { data, error } = await supabase
     .from("lineups")
     .select("*")
     .eq("club_id", clubId)
-    .eq("team_id", teamId)
-    .order("created_at", { ascending: false })
+    .eq("match_id", matchId)
     .limit(1);
   if (error) throw error;
   return data[0] ?? null;
 }
 
-export async function saveLineup({ clubId, teamId, formation, slots, bench }) {
+/**
+ * Todas las nóminas del club con los datos de su partido: rival, fecha,
+ * categoría. Es lo que hace posible el historial de convocatorias.
+ *
+ * Se piden en una sola consulta con el partido embebido en vez de una por
+ * nómina — con una temporada entera guardada eso serían decenas de viajes.
+ */
+export async function getLineupsConPartido(clubId) {
+  const { data, error } = await supabase
+    .from("lineups")
+    .select("*, matches(id, rival, match_date, cat, equipo, estado, score_home, score_away)")
+    .eq("club_id", clubId)
+    .not("match_id", "is", null);
+  if (error) throw error;
+  // El más próximo primero: para el jugador, "¿juego este sábado?" importa
+  // más que lo que pasó en marzo.
+  return (data || []).sort((a, b) =>
+    String(b.matches?.match_date || "").localeCompare(String(a.matches?.match_date || "")));
+}
+
+export async function saveLineup({ clubId, matchId, teamId, formation, slots, bench }) {
+  if (!matchId) throw new Error("Elegí el partido antes de guardar la nómina.");
   const fila = {
     club_id: clubId,
+    match_id: matchId,
     team_id: teamId,
     formation,
     slots,
@@ -234,24 +262,22 @@ export async function saveLineup({ clubId, teamId, formation, slots, bench }) {
     updated_at: new Date().toISOString(),
   };
 
-  // Sin onConflict el upsert no tenía contra qué chocar y se comportaba como
-  // un insert: cada publicación de la nómina de Primera dejaba otra fila. No
-  // se notaba —getLineups lee la más reciente— pero la tabla crecía sola y
-  // updated_at no se actualizaba nunca.
+  // Una nómina por partido: volver a publicar la del mismo partido la
+  // reemplaza, y la del sábado siguiente es otra fila. Antes, sin ninguna
+  // restricción contra la que chocar, el upsert insertaba siempre y solo se
+  // leía la última: el historial se perdía.
   //
-  // El onConflict necesita la restricción única que crea
-  // supabase/lineups_una_por_equipo.sql. Si esa migración todavía no se
-  // corrió, Postgres responde 42P10 ("no unique or exclusion constraint
-  // matching") y acá se cae al comportamiento viejo. Publicar una nómina es
-  // lo primero que va a hacer el entrenador: no puede depender de en qué
-  // orden se desplegó el código y se corrió el SQL.
-  const conConflicto = await supabase
-    .from("lineups").upsert(fila, { onConflict: "club_id,team_id" }).select().single();
-  if (!conConflicto.error) return conConflicto.data;
-  if (conConflicto.error.code !== "42P10") throw conConflicto.error;
-
-  const { data, error } = await supabase.from("lineups").insert(fila).select().single();
-  if (error) throw error;
+  // Necesita supabase/nominas_por_partido.sql corrido. Si todavía no está,
+  // Postgres responde 42P10 o 42703 (no existe la columna) y se avisa en
+  // castellano en vez de dejar al entrenador con un error crudo.
+  const { data, error } = await supabase
+    .from("lineups").upsert(fila, { onConflict: "club_id,match_id" }).select().single();
+  if (error) {
+    if (error.code === "42P10" || error.code === "42703" || error.code === "PGRST204") {
+      throw new Error("El club todavía no tiene activadas las nóminas por partido. Avisale a tu administrador.");
+    }
+    throw error;
+  }
   return data;
 }
 
