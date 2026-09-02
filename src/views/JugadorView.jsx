@@ -635,7 +635,7 @@ function MiConvocatoria({ camiseta, club, sport, players, sportColor, convocado,
     <div>
       <PlantelBanner/>
       <SectionTitle title="Mi Convocatoria"/>
-      <EmptyState icon="📋" title="No estás convocado por ahora" desc="El entrenador todavía no te incluyó en ninguna nómina publicada. Te avisaremos apenas te convoque." color={sportColor}/>
+      <EmptyState icon="📋" title="Sin nómina para el próximo partido" desc="Esta pantalla muestra solo el partido que viene. Apenas el entrenador publique la nómina vas a ver si estás. Las convocatorias anteriores están en Nóminas Club." color={sportColor}/>
     </div>
   );
 
