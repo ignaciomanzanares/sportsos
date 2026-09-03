@@ -2,7 +2,7 @@
 --  Nóminas ya jugadas, cargadas desde lo que publica ARUSA
 -- ═══════════════════════════════════════════════════════════════
 --
---  15 partidos de Primera desde 2026, 344 convocatorias.
+--  16 partidos de Primera desde 2026, 367 convocatorias.
 --  
 --
 --  Los partidos se buscan por fecha y los jugadores por nombre con
@@ -271,6 +271,29 @@ with datos(fecha, lugar, nombre, tipo) as (values
   ('2026-07-12'::date, 5, 'Francisco Urroz', 'banca'),
   ('2026-07-12'::date, 6, 'Ignacio Manzanares', 'banca'),
   ('2026-07-12'::date, 7, 'Juan Pablo Pizarro johannesen', 'banca'),
+  ('2026-08-29'::date, 0, 'Francisco Eduardo Bastias Manquian', 'titular'),
+  ('2026-08-29'::date, 1, 'Manuel Harttig', 'titular'),
+  ('2026-08-29'::date, 2, 'Rafael Barrena Botto', 'titular'),
+  ('2026-08-29'::date, 3, 'Vicente Pérez Neumann', 'titular'),
+  ('2026-08-29'::date, 4, 'Vicente Gómez', 'titular'),
+  ('2026-08-29'::date, 5, 'Lorenzo Gaspar Gutiérrez Saitua', 'titular'),
+  ('2026-08-29'::date, 6, 'Joaquin Manzanares', 'titular'),
+  ('2026-08-29'::date, 7, 'Jose Miguel Sánchez (c)', 'titular'),
+  ('2026-08-29'::date, 8, 'DIego Bozzo Pizarro', 'titular'),
+  ('2026-08-29'::date, 9, 'Gerard Martin Amar', 'titular'),
+  ('2026-08-29'::date, 10, 'Thomas Mateluna', 'titular'),
+  ('2026-08-29'::date, 11, 'Diego Arturo Espinoza Merino', 'titular'),
+  ('2026-08-29'::date, 12, 'Andrei Cherniavsky Bonacic', 'titular'),
+  ('2026-08-29'::date, 13, 'tomas zehnder novoa', 'titular'),
+  ('2026-08-29'::date, 14, 'SANTIAGO PRAT PAPIC', 'titular'),
+  ('2026-08-29'::date, 0, 'Matias Cardenas', 'banca'),
+  ('2026-08-29'::date, 1, 'Matías Flores Opazo', 'banca'),
+  ('2026-08-29'::date, 2, 'Vicente San Martín Manriquez', 'banca'),
+  ('2026-08-29'::date, 3, 'Nicolas Antonucci Sole', 'banca'),
+  ('2026-08-29'::date, 4, 'Benjamín Machuca Celis', 'banca'),
+  ('2026-08-29'::date, 5, 'Sebastian Umaña lolic', 'banca'),
+  ('2026-08-29'::date, 6, 'Jose Tomas Barrena Botto', 'banca'),
+  ('2026-08-29'::date, 7, 'Ignacio Manzanares', 'banca'),
   ('2026-08-01'::date, 0, 'Francisco Eduardo Bastias Manquian', 'titular'),
   ('2026-08-01'::date, 1, 'Manuel Harttig', 'titular'),
   ('2026-08-01'::date, 2, 'benjamin frias davila', 'titular'),

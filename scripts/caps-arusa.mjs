@@ -53,7 +53,9 @@ for (const m of PARTIDOS) {
   intento++;
   try {
     await p.goto(`${base}/stats`, { waitUntil: "domcontentloaded", timeout: 60000 });
-    await p.waitForTimeout(1200);
+    // La tabla pinta primero los quince titulares y los suplentes entran una
+    // fracción después: con 1200 ms un partido salió con la banca vacía.
+    await p.waitForTimeout(3500);
     const nomina = await p.evaluate((CLUBs) => {
       const re = new RegExp(CLUBs, "i");
       for (const tabla of document.querySelectorAll("table")) {

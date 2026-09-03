@@ -44154,6 +44154,446 @@
    }
   ]
  },
+ "144047875": {
+  "anio": 2026,
+  "fecha": "2026-08-29 17:00:00",
+  "titulares": 15,
+  "entraron": 2,
+  "nomina": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "num": 1,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "num": 2,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "num": 3,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": true
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "num": 4,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "num": 5,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "num": 6,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "num": 7,
+    "t": "titular",
+    "jugo": true,
+    "tries": 1,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": true
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "num": 8,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164680",
+    "n": "DIego Bozzo Pizarro",
+    "num": 9,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164739",
+    "n": "Gerard Martin Amar",
+    "num": 10,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "num": 11,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "num": 12,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "num": 13,
+    "t": "titular",
+    "jugo": true,
+    "tries": 1,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "num": 14,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "num": 15,
+    "t": "titular",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54166562",
+    "n": "Matias Cardenas",
+    "num": 16,
+    "t": "banca",
+    "jugo": false,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54210762",
+    "n": "Matías Flores Opazo",
+    "num": 17,
+    "t": "banca",
+    "jugo": false,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164756",
+    "n": "Vicente San Martín Manriquez",
+    "num": 18,
+    "t": "banca",
+    "jugo": false,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "num": 19,
+    "t": "banca",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54355743",
+    "n": "Benjamín Machuca Celis",
+    "num": 20,
+    "t": "banca",
+    "jugo": true,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54347371",
+    "n": "Sebastian Umaña lolic",
+    "num": 21,
+    "t": "banca",
+    "jugo": false,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54203047",
+    "n": "Jose Tomas Barrena Botto",
+    "num": 22,
+    "t": "banca",
+    "jugo": false,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   },
+   {
+    "id": "54164736",
+    "n": "Ignacio Manzanares",
+    "num": 23,
+    "t": "banca",
+    "jugo": false,
+    "tries": 0,
+    "triesPenal": 0,
+    "conv": 0,
+    "pen": 0,
+    "drops": 0,
+    "ta": 0,
+    "tr": 0,
+    "salio": false
+   }
+  ],
+  "jugaron": [
+   {
+    "id": "54204496",
+    "n": "Francisco Eduardo Bastias Manquian",
+    "t": "titular"
+   },
+   {
+    "id": "54164725",
+    "n": "Manuel Harttig",
+    "t": "titular"
+   },
+   {
+    "id": "54256628",
+    "n": "Rafael Barrena Botto",
+    "t": "titular"
+   },
+   {
+    "id": "54164749",
+    "n": "Vicente Pérez Neumann",
+    "t": "titular"
+   },
+   {
+    "id": "54164721",
+    "n": "Vicente Gómez",
+    "t": "titular"
+   },
+   {
+    "id": "54164723",
+    "n": "Lorenzo Gaspar Gutiérrez Saitua",
+    "t": "titular"
+   },
+   {
+    "id": "54164735",
+    "n": "Joaquin Manzanares",
+    "t": "titular"
+   },
+   {
+    "id": "54164757",
+    "n": "Jose Miguel Sánchez (c)",
+    "t": "titular"
+   },
+   {
+    "id": "54164680",
+    "n": "DIego Bozzo Pizarro",
+    "t": "titular"
+   },
+   {
+    "id": "54164739",
+    "n": "Gerard Martin Amar",
+    "t": "titular"
+   },
+   {
+    "id": "54164743",
+    "n": "Thomas Mateluna",
+    "t": "titular"
+   },
+   {
+    "id": "54164710",
+    "n": "Diego Arturo Espinoza Merino",
+    "t": "titular"
+   },
+   {
+    "id": "54164699",
+    "n": "Andrei Cherniavsky Bonacic",
+    "t": "titular"
+   },
+   {
+    "id": "54164762",
+    "n": "tomas zehnder novoa",
+    "t": "titular"
+   },
+   {
+    "id": "54164751",
+    "n": "SANTIAGO PRAT PAPIC",
+    "t": "titular"
+   },
+   {
+    "id": "54164662",
+    "n": "Nicolas Antonucci Sole",
+    "t": "banca"
+   },
+   {
+    "id": "54355743",
+    "n": "Benjamín Machuca Celis",
+    "t": "banca"
+   }
+  ]
+ },
  "144047881": {
   "anio": 2026,
   "fecha": "2026-08-01 17:30:00",

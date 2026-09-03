@@ -1,4 +1,5 @@
 import { m as motion } from "framer-motion";
+import { primerApellido } from "../lib/nombres";
 
 /**
  * Nombres cortos para la cancha.
@@ -19,7 +20,7 @@ const CORTO = {
 export default function Token({x, y, num, player, pos, color, onDrop, onClick, dragging, mine}) {
   const filled = !!player;
   const puesto = CORTO[String(pos||"").toLowerCase()] || pos;
-  const etiqueta = player ? player.name.split(" ").slice(-1)[0] : puesto;
+  const etiqueta = player ? primerApellido(player.name) : puesto;
   const hasPhoto = filled && !!player.avatar_url;
   const borderEmpty = dragging ? `2px dashed ${color}` : "1.5px dashed rgba(255,255,255,0.35)";
   const circleBorder = filled ? (mine ? "2px solid #F59E0B" : `2px solid ${color}`) : borderEmpty;

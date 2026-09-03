@@ -20,6 +20,7 @@ import MedalBadge from "../components/MedalBadge";
 import Cancha from "../components/Cancha";
 import WhatsAppModal from "../components/WhatsAppModal";
 import CapsPrimera from "../components/CapsPrimera";
+import { primerApellido } from "../lib/nombres";
 
 // El desplegable nativo lo dibuja el sistema operativo y no hereda el tema.
 const OPCION_NOMINA = { background:"#16140f", color:"#f0ede8" };
@@ -191,7 +192,7 @@ function NominaDND({sport, sp, club, players, sportColor, showToast, clubId, cur
             <div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>
               {bench.length===0&&<span style={{...ss.muted,fontSize:"11px"}}>Arrastra jugadores aquí o se agregan al llenar los titulares</span>}
               {bench.map(p=><motion.div key={p.id} initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}} whileHover={{scale:1.05}} onClick={()=>setBench(bench.filter(x=>x.id!==p.id))} style={{display:"flex",alignItems:"center",gap:"6px",background:"var(--bg-elev-2)",borderRadius:"99px",padding:"5px 10px",cursor:"pointer",fontSize:"11px",border:"1px solid var(--border-soft)"}}>
-                <Semaforo status={p.med_status}/>{p.name.split(" ").slice(-1)[0]} <span style={{color:"#EF4444",fontWeight:700}}>✕</span>
+                <Semaforo status={p.med_status}/>{primerApellido(p.name)} <span style={{color:"#EF4444",fontWeight:700}}>✕</span>
               </motion.div>)}
             </div>
           </motion.div>
